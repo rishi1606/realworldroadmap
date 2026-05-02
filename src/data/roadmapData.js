@@ -326,7 +326,7 @@ export const roadmapData = [
   },
   {
     id: 2,
-    title: "Sessioon-Based Auth",
+    title: "Session-Based Auth",
 
     topics: [
 
@@ -1970,14 +1970,354 @@ export const roadmapData = [
   ]
   },
   {
-    id: "netflix-caching",
-    title: "How caching works in Netflix",
-    nodes: [
+  id: "netflix-caching",
+  title: "How caching works in Netflix",
+  nodes: [
+    {
+      id: 1,
+      title: "Caching Fundamentals",
+      topics: [
+        "What is Caching",
+        "Cache Hit & Cache Miss",
+        "Cache Hit Ratio",
+        "Why Caching Matters",
+        "Where Cache Lives (Browser, Server, DB, CDN)"
+      ],
+      topicDetails: {
+    "What is Caching": [
       {
-        id: 1,
-        title: "How caching works in Netflix",
-        topics: ["How caching works in Netflix"],
+        type: "paragraph",
+        text: "You open Netflix. Click on Stranger Things. The thumbnail loads instantly. The description appears instantly. The 'Continue Watching' badge is already there. All of this in under 100ms."
+      },
+      {
+        type: "curious-callout",
+        text: "❓ Netflix has 280 million subscribers. If every click hit the database — how is any of this instant?"
+      },
+      {
+        type: "heading",
+        text: "The Problem That Led to Caching"
+      },
+      {
+        type: "error-callout",
+        title: "Imagine Netflix had no caching — every request hits the database directly:",
+        list: [
+          "280 million users open Netflix at the same time",
+          "Every homepage load = 50+ database queries (thumbnails, titles, ratings, continue-watching...)",
+          "Database gets 14 billion queries per second",
+          "Database crashes. Netflix goes down.",
+          "Even if it survived — each query takes 50–200ms. Nothing feels instant."
+        ],
+        footer: "👉 Databases are powerful but slow. They're not built for 280 million simultaneous reads."
+      },
+      {
+        type: "heading",
+        text: "What is Caching?"
+      },
+      {
+        type: "paragraph",
+        text: "Caching is basically storing data temporarily so it can be returned faster next time."
+      },
+      {
+        type: "heading",
+        text: "How Caching Works in Netflix — a Simple Example"
+      },
+      {
+        type: "step",
+        title: "Step 1 — First user requests the Top 10 list",
+        desc: "Netflix's server needs the Top 10 trending shows for India. It queries the database — joins multiple tables, runs aggregations, fetches thumbnails. Takes 200ms."
+      },
+      {
+        type: "code",
+        code: "// Without cache — database query:\nconst top10 = await db.query(`\n  SELECT shows.id, shows.title, shows.thumbnail, COUNT(views.id) as view_count\n  FROM shows\n  JOIN views ON views.show_id = shows.id\n  WHERE views.region = 'IN'\n  GROUP BY shows.id\n  ORDER BY view_count DESC\n  LIMIT 10\n`);\n// ⏱️ Takes ~200ms. Hits the DB every time."
+      },
+      {
+        type: "step",
+        title: "Step 2 — Server stores the result in cache",
+        desc: "After fetching from the database, Netflix saves that result into Redis (a fast in-memory cache) with a key like 'top10:IN'. This takes under 1ms to write."
+      },
+      {
+        type: "code",
+        code: "// Store result in Redis for 10 minutes:\nawait redis.set('top10:IN', JSON.stringify(top10), 'EX', 600);\n// 'EX', 600 → expires automatically after 600 seconds"
+      },
+      {
+        type: "step",
+        title: "Step 3 — Every other user gets it from cache",
+        desc: "The next 10 million users who open Netflix and ask for the Top 10 list — the server checks Redis first. Finds it. Returns it instantly. The database is never touched again for those 10 minutes."
+      },
+      {
+        type: "code",
+        code: "// Every subsequent request:\nconst cached = await redis.get('top10:IN');\n\nif (cached) {\n  return JSON.parse(cached); // ⚡ Returns in ~1ms — from memory\n}\n\n// Only reaches DB if cache is empty:\nconst top10 = await db.query(...);"
+      },
+      {
+        type: "success-callout",
+        text: "One database query. 10 million users served. That's caching — do the expensive work once, serve the result to everyone fast."
+      },
+      {
+        type: "heading",
+        text: "What Exactly Gets Cached?"
+      },
+      {
+        type: "paragraph",
+        text: "Not everything is worth caching — only things that are expensive to compute and requested frequently. Netflix caches things like:"
+      },
+      {
+        type: "table",
+        headers: ["What", "Cache Key Example", "Why Cache It"],
+        rows: [
+          ["Top 10 trending shows", "top10:IN", "Same for all Indian users, changes rarely"],
+          ["Show metadata (title, cast, rating)", "show:tt0903747", "Fetched millions of times, almost never changes"],
+          ["User's continue-watching list", "user:42:continue", "Fetched on every homepage load"],
+          ["Search results", "search:breaking+bad", "Same query = same results, expensive to compute"],
+          ["Thumbnail images", "CDN cache", "Static files, no reason to re-fetch from origin"]
+        ]
+      },
+      {
+        type: "warning-callout",
+        text: "⚠️ Cache stores a snapshot of data. If the database changes — the cache might return outdated info. Managing when to update the cache is one of the hardest problems in engineering. We'll get to that."
+      },
+      {
+        type: "curious-callout",
+        text: "❓ But what actually happens when a user's request finds data in the cache vs doesn't find it? And how does Netflix even know whether to check the cache first?"
+      }
+    ],
+
+    "Cache Hit & Cache Miss": [
+      {
+        type: "paragraph",
+        text: "Every time Netflix's server receives a request, it checks the cache first. What happens next depends entirely on whether the data is there or not. These two outcomes — hit and miss — drive every caching decision Netflix makes."
+      },
+      {
+        type: "heading",
+        text: "Cache Hit"
+      },
+      {
+        type: "paragraph",
+        text: "A cache hit happens when the server checks the cache and finds exactly what it was looking for. No database. No computation. Just an instant return from memory."
+      },
+      {
+        type: "step",
+        title: "Scenario — Priya opens Netflix",
+        desc: "Priya is in Mumbai. She opens the Netflix homepage. The server checks Redis for 'top10:IN'."
+      },
+      {
+        type: "code",
+        code: "// Server receives: GET /api/homepage\n// Step 1 — Check cache first:\nconst cached = await redis.get('top10:IN');\n\n// Step 2 — Cache has it ✅ (CACHE HIT)\nif (cached) {\n  console.log('Cache HIT — returning from Redis');\n  return res.json(JSON.parse(cached));\n  // ⚡ Done in ~1ms. Database never involved.\n}"
+      },
+      {
+        type: "success-callout",
+        text: "Cache Hit = The data was in cache. Returned in ~1ms. Database load: zero. This is the best case — and what Netflix optimizes every layer of its system to achieve."
+      },
+      {
+        type: "heading",
+        text: "Cache Miss"
+      },
+      {
+        type: "paragraph",
+        text: "A cache miss happens when the server checks the cache and finds nothing — either because the data was never cached, or it expired. Now the server has to do the expensive thing: go to the database."
+      },
+      {
+        type: "step",
+        title: "Scenario — Cache expired, Priya opens Netflix",
+        desc: "The 'top10:IN' cache entry expired 5 seconds ago. Priya is the first person to open Netflix since. The server checks Redis — nothing there."
+      },
+      {
+        type: "code",
+        code: "// Server receives: GET /api/homepage\n// Step 1 — Check cache:\nconst cached = await redis.get('top10:IN');\n\n// Step 2 — Nothing found ❌ (CACHE MISS)\nif (!cached) {\n  console.log('Cache MISS — querying database');\n\n  // Step 3 — Go to database (slow path):\n  const top10 = await db.query(`\n    SELECT shows.id, shows.title, COUNT(views.id) as view_count\n    FROM shows JOIN views ON views.show_id = shows.id\n    WHERE views.region = 'IN'\n    GROUP BY shows.id ORDER BY view_count DESC LIMIT 10\n  `); // ⏱️ ~200ms\n\n  // Step 4 — Populate the cache for next time:\n  await redis.set('top10:IN', JSON.stringify(top10), 'EX', 600);\n\n  return res.json(top10);\n}"
+      },
+      {
+        type: "insight-callout",
+        text: "💡 After a cache miss, the server always writes the fresh result back into the cache. So the very next person to ask gets a cache hit — even if Ram's request was slow."
+      },
+      {
+        type: "heading",
+        text: "Hit vs Miss — Side by Side"
+      },
+      {
+        type: "table",
+        headers: ["", "Cache Hit", "Cache Miss"],
+        rows: [
+          ["Data found in cache?", "✅ Yes", "❌ No"],
+          ["Database queried?", "No", "Yes"],
+          ["Response time", "~1ms", "~200ms"],
+          ["What happens next", "Returns cached result instantly", "Fetches from DB, writes to cache, returns result"],
+          ["Cost", "Extremely cheap", "Expensive — compute + DB load"]
+        ]
+      },
+      {
+        type: "heading",
+        text: "The Three Reasons a Cache Miss Happens"
+      },
+      {
+        type: "step",
+        title: "1 — Cold Miss (first time ever)",
+        desc: "The data was never cached before. A brand new show just dropped on Netflix — no one has requested it yet. Cache is empty. First request always misses."
+      },
+      {
+        type: "code",
+        code: "// New show added to Netflix:\n// Cache key 'show:squidgame2' doesn't exist yet.\n// First user to open that show page → CACHE MISS → DB hit\n// Cache populated → every user after → CACHE HIT"
+      },
+      {
+        type: "step",
+        title: "2 — Expiry Miss (TTL expired)",
+        desc: "The data was cached, but it expired. Netflix sets a TTL (Time to Live) on every cache entry. When it expires, the next request misses and refreshes the cache. "
+      },
+      {
+        type: "code",
+        code: "// Cache was set with 10 min TTL:\nawait redis.set('top10:IN', data, 'EX', 600);\n\n// After 600 seconds — Redis auto-deletes it.\n// Next request → CACHE MISS → fresh DB fetch → cache repopulated"
+      },
+      {
+        type: "step",
+        title: "3 — Eviction Miss (cache ran out of space)",
+        desc: "Redis has a memory limit. When it's full and a new entry needs to be stored, Redis evicts (removes) old or less-used entries to make room. If the evicted data gets requested again — it's a miss."
+      },
+      {
+        type: "code",
+        code: "// Redis is configured with a max memory limit:\n// maxmemory 4gb\n// maxmemory-policy allkeys-lru  ← evict least recently used keys first\n\n// When memory is full:\n// Redis removes the least recently used entry automatically\n// If that entry is requested → CACHE MISS"
+      },
+      {
+        type: "heading",
+        text: "Why Cache Misses Are Expensive — The Real Cost"
+      },
+      {
+        type: "error-callout",
+        title: "If Netflix's cache suddenly went down and every request became a miss:",
+        list: [
+          "280 million simultaneous users → billions of DB queries per second",
+          "Database server CPU hits 100% → queries queue up → response time climbs to seconds",
+          "Users see spinning loaders → frustration → they leave",
+        ],
+        footer: "👉 This is why Netflix runs multiple layers of caching. A miss at Layer 1 hits Layer 2. Only if all layers miss does the database get touched."
+      },
+      {
+        type: "curious-callout",
+        text: "❓ If cache hits are fast and misses are slow — how does Netflix measure whether its caching is actually working? Is there a number that tells them 'the cache is healthy'?"
       }
     ]
   }
+      
+    },
+    {
+      id: 2,
+      title: "Cache Reading Strategies",
+      topics: [
+        "Cache-Aside (Lazy Loading)",
+        "Read-Through Cache"
+      ]
+    },
+    {
+      id: 3,
+      title: "Cache Writing Strategies",
+      topics: [
+        "Write-Through Cache",
+        "Write-Behind (Write-Back) Cache",
+        "Write-Around Cache"
+      ]
+    },
+    {
+      id: 4,
+      title: "Cache Invalidation",
+      topics: [
+        "TTL (Time to Live)",
+        "LRU (Least Recently Used)",
+        "LFU (Least Frequently Used)",
+        "FIFO (First In First Out)",
+        "Manual & Event-Driven Invalidation"
+      ]
+    },
+    {
+      id: 5,
+      title: "Redis as a Cache",
+      topics: [
+        "What is Redis & How it Works",
+        "Redis vs Memcached — When to Use Which",
+        "Redis TTL & Key Expiry",
+        "Redis Eviction Policies",
+        "Redis Persistence (RDB vs AOF)",
+        "Redis Memory Optimization",
+        "Redis Pipelining & Batching",
+        "Redis Transactions (MULTI/EXEC)",
+        "Redis Keyspace Notifications"
+      ]
+    },
+    {
+      id: 6,
+      title: "Redis Data Structures for Caching",
+      topics: [
+        "Strings — Simple Key Value Cache",
+        "Hashes — Cache Objects & User Sessions",
+        "Lists — Cache Feeds & Queues",
+        "Sets — Cache Unique Items",
+        "Sorted Sets — Cache Leaderboards & Rankings",
+        "Bitmaps — Cache User Activity Flags",
+        "HyperLogLog — Cache Unique Visitor Counts"
+      ]
+    },
+    {
+      id: 7,
+      title: "HTTP & CDN Caching",
+      topics: [
+        "How CDN Caching Works",
+        "Cache-Control Headers",
+        "ETag & Conditional Requests",
+        "Stale-While-Revalidate",
+        "Browser Cache vs CDN Cache"
+      ]
+    },
+    {
+      id: 8,
+      title: "Cache Problems & Solutions",
+      topics: [
+        "Cache Stampede (Thundering Herd)",
+        "Cache Penetration",
+        "Cache Avalanche",
+        "Hotspot Key Problem",
+        "Negative Caching",
+        "Cache Poisoning",
+        "Mutex Lock & Probabilistic Early Expiry"
+      ]
+    },
+    {
+      id: 9,
+      title: "Distributed Caching",
+      topics: [
+        "What is Distributed Caching",
+        "Consistent Hashing",
+        "Cache Replication",
+        "Cache Partitioning (Sharding)",
+        "Redis Cluster",
+        "Leader-Follower Redis Setup",
+        "CAP Theorem Applied to Cache",
+        "Replication Lag & Stale Reads"
+      ]
+    },
+    {
+      id: 10,
+      title: "Advanced Cache Patterns",
+      topics: [
+        "Multi-Layer Caching (L1, L2, L3)",
+        "Cache Warming & Pre-population",
+        "Session Caching",
+        "Rate Limiting with Redis",
+        "Idempotency Keys with Cache",
+        "Geo-distributed Cache (Multi-region)",
+        "Write-Heavy vs Read-Heavy Cache Design"
+      ]
+    },
+    {
+      id: 11,
+      title: "System Design with Cache",
+      topics: [
+        "Netflix Open Connect (ISP-level CDN)",
+        "Design Twitter Feed with Cache",
+        "Design YouTube View Counter with Cache",
+        "Design Rate Limiter using Redis",
+        "Design Autocomplete using Redis",
+        "Designing Cache for 10M Users",
+        "Cache Consistency vs Availability",
+        "Cache Monitoring & Eviction Metrics",
+        "When NOT to Use Cache"
+      ]
+    }
+  ]
+}
 ];

@@ -1,7 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import { GoogleLogin } from '@react-oauth/google';
+import { SkeletonLoader } from "../common/SkeletonLoader";
+import { Button } from "../common/Button";
+import { Select } from "../common/Select";
 import {
   FiLayers,
   FiX,
+  FiLock,
   FiChevronDown,
   FiChevronUp,
   FiXCircle,
@@ -12,6 +20,7 @@ import {
 // ─── Block Renderers ────────────────────────────────────────────────────────
 
 const blockRenderers = {
+
   heading: ({ block, index }) => (
     <h2
       key={index}
@@ -52,7 +61,7 @@ const blockRenderers = {
       <table className="w-full text-[14px]">
         <thead>
           <tr className="bg-bg-subtle border-b border-border-subtle">
-            {block.headers.map((header, i) => (
+            {block.headers?.map((header, i) => (
               <th key={i} className="text-left px-4 py-3 font-bold text-text-main">
                 {header}
               </th>
@@ -60,7 +69,7 @@ const blockRenderers = {
           </tr>
         </thead>
         <tbody>
-          {block.rows.map((row, rowIndex) => (
+          {block.rows?.map((row, rowIndex) => (
             <tr
               key={rowIndex}
               className={rowIndex % 2 === 0 ? "bg-bg-surface" : "bg-bg-subtle"}
@@ -164,18 +173,54 @@ function RenderBlock({ block, index }) {
 
 // ─── Main Component ──────────────────────────────────────────────────────────
 
-export function RoadmapContent({ selectedNode, selectedTopic, onSelectTopic }) {
-  if (!selectedNode) return null;
+export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, progress = {}, setProgress }) {
+  const navigate = useNavigate();
+  const { user, login, setShowLoginModal } = useAuth();
 
-  const currentTopicIndex = selectedNode.topics.indexOf(selectedTopic);
+  if (!selectedNode || !selectedTopic) return null;
+
+  const currentTopicIndex = selectedNode.topics.findIndex(t => t._id === selectedTopic._id);
   const nextTopic =
-    currentTopicIndex !== -1 &&
-      currentTopicIndex < selectedNode.topics.length - 1
+    currentTopicIndex !== -1 && currentTopicIndex < selectedNode.topics.length - 1
       ? selectedNode.topics[currentTopicIndex + 1]
       : null;
 
-  const topicBlocks = selectedNode.topicDetails?.[selectedTopic] ?? [];
-  const faqs = selectedNode.faqs ?? [];
+  const topicBlocks = selectedTopic.contentBlocks || [];
+
+  const handleStatusChange = async (e) => {
+    if (!user) {
+      return setShowLoginModal(true);
+    }
+
+    const newStatus = e.target.value;
+
+    // Optimistic update
+    setProgress(prev => ({
+      ...prev,
+      [selectedTopic._id]: newStatus
+    }));
+
+    try {
+      await axios.post(`http://localhost:5000/api/progress/${roadmap._id}/${selectedTopic._id}`,
+        { status: newStatus },
+        { withCredentials: true }
+      );
+    } catch (error) {
+      console.error("Failed to update progress", error);
+      // Could revert state here on failure
+    }
+  };
+
+  const currentStatus = progress[selectedTopic._id] || "pending";
+
+  const totalTopics = roadmap?.nodes?.reduce((acc, node) => acc + (node.topics?.length || 0), 0) || 0;
+  const progressValues = Object.values(progress);
+  const doneCount = progressValues.filter(s => s === 'done').length;
+  const inProgressCount = progressValues.filter(s => s === 'in-progress').length;
+  const skipCount = progressValues.filter(s => s === 'skip').length;
+  const pendingCount = Math.max(0, totalTopics - (doneCount + inProgressCount + skipCount));
+
+
 
   return (
     <div
@@ -183,24 +228,68 @@ export function RoadmapContent({ selectedNode, selectedTopic, onSelectTopic }) {
       className="w-full md:w-[50%] md:h-full md:overflow-y-auto bg-bg-surface relative flex flex-col custom-scrollbar"
     >
       <div className="w-full relative">
-        <button className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded border border-border-subtle hover:bg-bg-base text-text-muted transition-colors">
-          <FiX className="w-5 h-5" />
-        </button>
+        <div className="flex justify-between p-4 border-b border-border-subtle items-center flex-wrap gap-4">
+          <div className="flex gap-2">
+          </div>
 
-        <div className="flex gap-2 p-4 border-b border-border-subtle">
-          <button className="flex items-center gap-2 bg-text-main text-bg-surface px-4 py-1.5 rounded-md text-sm font-bold shadow-sm cursor-pointer">
-            <FiLayers className="w-4 h-4" />
-            Resources
-          </button>
+          <div className="flex items-center gap-4">
+            {/* Progress Stats */}
+            {user && (
+              <div className="flex items-center gap-2">
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                  <span className="hidden lg:inline">Done</span>
+                  <span className="text-text-muted ml-0.5">{doneCount}</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                  <span className="hidden lg:inline">In Progress</span>
+                  <span className="text-text-muted ml-0.5">{inProgressCount}</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                  <span className="hidden lg:inline">Skipped</span>
+                  <span className="text-text-muted ml-0.5">{skipCount}</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                  <span className="hidden lg:inline">Pending</span>
+                  <span className="text-text-muted ml-0.5">{pendingCount}</span>
+                </div>
+              </div>
+            )}
+
+            {/* Status Dropdown */}
+            <div className="relative">
+              {!user && (
+                <div
+                  className="absolute inset-0 z-10 cursor-pointer"
+                  onClick={() => setShowLoginModal(true)}
+                />
+              )}
+              <Select
+                value={currentStatus}
+                onChange={handleStatusChange}
+                options={[
+                  { value: 'pending', label: 'Pending' },
+                  { value: 'in-progress', label: 'In Progress' },
+                  { value: 'skip', label: 'Skip' },
+                  { value: 'done', label: 'Done' }
+                ]}
+              />
+            </div>
+          </div>
         </div>
+
+
 
         <div className="p-8 md:p-12 w-full">
           <h1 className="text-3xl font-extrabold text-text-main mb-4 tracking-tight">
-            {selectedTopic || selectedNode.title}
+            {selectedTopic.title || selectedNode.title}
           </h1>
 
           <p className="text-text-muted text-[15px] leading-relaxed mb-8 font-medium">
-            {selectedNode.description}
+            {selectedNode.title}
           </p>
 
           {topicBlocks.length > 0 && (
@@ -215,16 +304,16 @@ export function RoadmapContent({ selectedNode, selectedTopic, onSelectTopic }) {
             <div className="mt-12 flex justify-end">
               <button
                 onClick={() => onSelectTopic(nextTopic)}
-                className="group flex items-center gap-3 bg-white border border-gray-200 hover:border-gray-300 text-text-main px-6 py-3 rounded-lg font-bold transition-all cursor-pointer shadow-sm hover:shadow"
+                className="group flex items-center gap-3 bg-bg-surface border border-border-subtle hover:border-border-subtle text-text-main px-6 py-3 rounded-lg font-bold transition-all cursor-pointer shadow-sm hover:shadow"
               >
                 <div className="flex flex-col items-end">
-                  <span className="text-xs text-gray-500 font-semibold uppercase tracking-wider mb-0.5">
+                  <span className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
                     Next Topic
                   </span>
-                  <span>{nextTopic}</span>
+                  <span>{nextTopic.title}</span>
                 </div>
-                <div className="w-8 h-8 rounded-full bg-gray-50 flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                  <FiChevronDown className="w-5 h-5 transform -rotate-90 text-gray-400" />
+                <div className="w-8 h-8 rounded-full bg-bg-base flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                  <FiChevronDown className="w-5 h-5 transform -rotate-90 text-text-muted" />
                 </div>
               </button>
             </div>
@@ -232,10 +321,10 @@ export function RoadmapContent({ selectedNode, selectedTopic, onSelectTopic }) {
 
           {/* {faqs.length > 0 && (
             <div className="mt-16 mb-8">
-              <div className="inline-block bg-white border border-border-subtle px-5 py-2.5 rounded-t-lg font-bold text-text-main text-[15px] shadow-sm relative z-10 -mb-px">
+              <div className="inline-block bg-bg-surface border border-border-subtle px-5 py-2.5 rounded-t-lg font-bold text-text-main text-[15px] shadow-sm relative z-10 -mb-px">
                 Interview Questions
               </div>
-              <div className="my-4 bg-[#f8f9fa] border border-border-subtle rounded-b-lg rounded-tr-lg overflow-hidden">
+              <div className="my-4 bg-bg-base border border-border-subtle rounded-b-lg rounded-tr-lg overflow-hidden">
                 {faqs.map((faq, index) => (
                   <FAQItem key={index} faq={faq} isFirst={index === 0} />
                 ))}
@@ -244,9 +333,6 @@ export function RoadmapContent({ selectedNode, selectedTopic, onSelectTopic }) {
           )} */}
         </div>
 
-        <button className="fixed md:absolute bottom-8 right-8 w-12 h-12 bg-blue-400 text-white rounded-xl shadow-lg flex items-center justify-center hover:bg-blue-500 transition-colors z-50">
-          <FiLayers className="w-6 h-6 transform rotate-45" />
-        </button>
       </div>
     </div>
   );
@@ -258,22 +344,22 @@ function FAQItem({ faq, isFirst }) {
   const [isOpen, setIsOpen] = useState(isFirst);
 
   return (
-    <div className="border-b border-border-subtle last:border-b-0 bg-white">
+    <div className="border-b border-border-subtle last:border-b-0 bg-bg-surface">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-gray-50 transition-colors"
+        className="w-full flex items-center justify-between px-5 py-4 text-left hover:bg-bg-base transition-colors"
       >
         <span className="font-bold text-[15px] text-text-main pr-4">
           {faq.question}
         </span>
         {isOpen ? (
-          <FiChevronUp className="text-gray-400 shrink-0" />
+          <FiChevronUp className="text-text-muted shrink-0" />
         ) : (
-          <FiChevronDown className="text-gray-400 shrink-0" />
+          <FiChevronDown className="text-text-muted shrink-0" />
         )}
       </button>
       {isOpen && (
-        <div className="px-5 pb-6 pt-1 text-text-muted text-[15px] leading-relaxed whitespace-pre-wrap font-medium border-t border-border-subtle bg-[#f8f9fa] shadow-inner">
+        <div className="px-5 pb-6 pt-1 text-text-muted text-[15px] leading-relaxed whitespace-pre-wrap font-medium border-t border-border-subtle bg-bg-base shadow-inner">
           <div className="pt-4">{faq.answer}</div>
         </div>
       )}
@@ -302,7 +388,7 @@ function CodeBlock({ code }) {
         </div>
         <button
           onClick={handleCopy}
-          className="text-gray-400 hover:text-white transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
+          className="text-text-muted hover:text-white transition-colors flex items-center gap-1.5 text-xs font-semibold cursor-pointer"
         >
           {copied ? (
             <FiCheck className="w-4 h-4 text-green-400" />

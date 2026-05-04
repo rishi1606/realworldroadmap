@@ -4,6 +4,7 @@ import { HomePage } from './pages/HomePage';
 import { RoadmapPage } from './pages/RoadmapPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
+import { BookmarksPage } from './pages/BookmarksPage';
 import { Layout } from './components/layout/Layout';
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/roadmap/:title" element={<RoadmapPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/bookmarks" element={<BookmarksPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

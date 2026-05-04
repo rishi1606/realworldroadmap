@@ -1,99 +1,116 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiBookmark } from 'react-icons/fi';
+import { FiBookmark, FiLayers } from 'react-icons/fi';
+import axios from 'axios';
+import { SkeletonLoader } from '../components/common/SkeletonLoader';
+import { RatingBadge } from '../components/common/RatingBadge';
+
+import { RoadmapCard } from '../components/common/RoadmapCard';
 
 export function HomePage() {
-  const roadmaps = [
-    {
-      type: "featured",
-      title: "How authentication works in Flipkart",
-      description: "Learn how Flipkart securely handles logins and user sessions.",
-      tags: ["System Design", "Security"],
-      logo: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png"
-    },
-    {
-      type: "featured",
-      title: "How caching works in Netflix",
-      description: "Understand the video caching strategies used globally.",
-      tags: ["Architecture", "Caching"],
-      logo: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png"
-    },
-   
-  ];
+  const [roadmaps, setRoadmaps] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchRoadmaps = async () => {
+      try {
+        const { data } = await axios.get('http://localhost:5000/api/roadmaps');
+
+        // Add logos locally for UI aesthetics since they aren't in DB right now
+        const enhancedData = data.map(rm => ({
+          ...rm,
+          type: "featured",
+          tags: ["System Design", "Architecture"],
+          logo: rm.slug.includes('flipkart')
+            ? "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png"
+            : "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png"
+        }));
+
+        setRoadmaps(enhancedData);
+      } catch (error) {
+        console.error("Failed to fetch roadmaps", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchRoadmaps();
+  }, []);
 
   return (
     <div className="bg-bg-base text-text-main font-sans flex-1 overflow-x-hidden">
-      
+
       {/* Hero Section */}
-      <div className="max-w-[1600px] mx-auto w-full px-4 md:px-8 pt-20 pb-16 flex flex-col items-center text-center">
-        
-        <h1 className="text-5xl md:text-6xl font-extrabold mb-6 tracking-tight">
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
+      <div className="relative overflow-hidden bg-bg-surface border-b border-border-subtle">
+        {/* Vector Background Grid & Orbs */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute left-0 right-0 top-0 -z-10 m-auto h-[310px] w-[310px] rounded-full bg-fuchsia-500 opacity-[0.15] blur-[100px]"></div>
+        <div className="absolute right-0 top-20 -z-10 h-[250px] w-[250px] rounded-full bg-blue-500 opacity-[0.1] blur-[100px]"></div>
+
+        <div className="max-w-[1600px] mx-auto w-full px-4 md:px-8 pt-28 pb-20 flex flex-col items-center text-center relative z-10">
+
+          <div className="inline-flex items-center rounded-full border border-border-subtle bg-white/50 px-3 py-1 text-sm text-text-main backdrop-blur-sm mb-8 hover:bg-bg-surface transition-colors cursor-pointer shadow-sm">
+            <span className="flex h-2 w-2 rounded-full bg-blue-600 mr-2 animate-pulse"></span>
+            Introducing Role-based Roadmaps
+            <svg className="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" /></svg>
+          </div>
+
+          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
             Developer Roadmaps
-          </span>
-        </h1>
-        
-        <p className="text-text-muted text-[17px] leading-relaxed max-w-3xl">
-          <strong className="text-text-main">TechPaths</strong> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
-        </p>
-        
+          </h1>
+
+          <p className="text-[#71717A] text-[18px] md:text-[20px] leading-relaxed max-w-2xl font-medium">
+            <strong className="text-text-main">TechPaths</strong> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
+          </p>
+
+          <div className="flex items-center gap-4 mt-10">
+            <button className="h-11 px-8 inline-flex items-center justify-center rounded-md bg-text-main text-sm font-medium text-[#FAFAFA] hover:bg-text-main/90 transition-colors shadow cursor-pointer">
+              Get Started
+            </button>
+            <button className="h-11 px-8 inline-flex items-center justify-center rounded-md border border-[#E4E4E7] bg-bg-surface text-sm font-medium text-text-main hover:bg-[#F4F4F5] transition-colors shadow-sm cursor-pointer">
+              Browse Paths
+            </button>
+          </div>
+
+        </div>
       </div>
 
       {/* Grid Section */}
       <div className="max-w-[1600px] mx-auto w-full px-4 md:px-8 pb-32">
-        
+
         {/* Divider Pill */}
         <div className="flex items-center justify-center relative mb-12">
           <div className="absolute w-full h-px bg-border-subtle z-0"></div>
-          <span className="relative z-10 bg-bg-surface border border-border-subtle text-text-muted text-[13px] font-semibold px-4 py-1.5 rounded-full">
-            Role-based Roadmaps
-          </span>
+
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-          
-          {roadmaps.map((item, index) => {
-            const destUrl = `/roadmap/${encodeURIComponent(item.title)}`;
-            
+
+          {loading ? (
+            <>
+              <SkeletonLoader type="card" />
+              <SkeletonLoader type="card" />
+              <SkeletonLoader type="card" />
+            </>
+          ) : roadmaps.map((item, index) => {
             if (item.type === "featured") {
-              return (
-                <Link 
-                  key={index}
-                  to={destUrl} 
-                  className="bg-bg-surface border  border-border-subtle rounded-xl flex flex-col p-4 hover:border-gray-400 hover:shadow-sm transition-all group col-span-1"
-                >
-                  <div className="flex items-center gap-3 mb-2">
-                    <img src={item.logo} alt={`${item.title} logo`} className="w-6 h-6 object-contain" />
-                    <h3 className="font-semibold text-[18px] text-text-main group-hover:text-blue-600 transition-colors leading-tight">
-                      {item.title}
-                    </h3>
-                  </div>
-                  <p className="text-text-muted text-[13px] mb-4 line-clamp-2">
-                    {item.description}
-                  </p>
-                  <div className="flex items-center gap-2 mt-auto">
-                    {item.tags.map(tag => (
-                      <span key={tag} className="bg-gray-100 text-gray-600 border border-gray-200 text-[11px] px-2 py-0.5 rounded-md font-medium">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </Link>
-              );
+              return <RoadmapCard key={index} item={item} />;
             }
 
+            const destUrl = `/roadmap/${encodeURIComponent(item.slug || item.title)}`;
+
             return (
-              <Link 
+              <Link
                 key={index}
-                to={destUrl} 
+                to={destUrl}
                 className="bg-bg-surface border border-border-subtle rounded flex items-center justify-between p-4 hover:border-gray-400 hover:shadow-sm transition-all group"
               >
                 <span className="font-semibold text-[15px] text-text-main group-hover:text-blue-600 transition-colors">{item.title}</span>
-                <FiBookmark className="text-gray-300 group-hover:text-gray-400 w-4 h-4 transition-colors" />
+                <FiBookmark className="text-gray-300 group-hover:text-text-muted w-4 h-4 transition-colors" />
               </Link>
             );
           })}
-          
+
         </div>
       </div>
 

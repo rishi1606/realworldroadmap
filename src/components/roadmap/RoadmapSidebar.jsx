@@ -1,23 +1,155 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { FiCheck, FiMail, FiBookmark, FiBell, FiDownload, FiShare2, FiUser, FiMap, FiFolder, FiZap, FiLock } from 'react-icons/fi';
+import {
+  FiCheck, FiBookmark, FiBell, FiShare2, FiMap, FiFolder,
+  FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode,
+  FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX
+} from 'react-icons/fi';
+
+// Cycle of different icons for each node
+const NODE_ICONS = [FiSettings, FiLayers, FiZap, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox];
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { bookmarkAPI } from '../../api/client';
+import { bookmarkAPI, notifyAPI } from '../../api/client';
 import toast from 'react-hot-toast';
-
 import { RatingBadge } from '../common/RatingBadge';
 import { ShareModal } from '../common/ShareModal';
 import { Button } from '../common/Button';
 
-// ─── Levels are now assigned directly in roadmapData.js ─────────────
+// ─── Coming Soon Section ───────────────────────────────────────────────────────
+function ComingSoonSection({ intermNodes, expNodes, roadmapId, user }) {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-const LEVEL_CHIPS = [
-  { key: 'all', label: 'All', dotColor: 'bg-slate-400' },
-  { key: 'freshers', label: 'Freshers', dotColor: 'bg-emerald-500' },
-  { key: 'intermediate', label: 'Intermediate', dotColor: 'bg-blue-500', isLocked: true },
-  { key: 'experienced', label: 'Experienced', dotColor: 'bg-purple-500', isLocked: true },
-];
+  useEffect(() => {
+    if (user?.email) {
+      notifyAPI.check(user.email)
+        .then(({ data }) => {
+          if (data.isSubscribed) setSubscribed(true);
+        })
+        .catch(() => {});
+    }
+  }, [user]);
 
+  const handleNotify = async () => {
+    if (!email.trim()) return toast.error('Please enter your email');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast.error('Invalid email');
+    setLoading(true);
+    try {
+      const { data } = await notifyAPI.subscribe(email, roadmapId, 'all');
+      toast.success(data.message || 'Subscribed!');
+      setSubscribed(true);
+      setTimeout(() => setShowModal(false), 2000);
+    } catch (e) {
+      toast.error(e.response?.data?.message || 'Something went wrong.');
+    } finally { setLoading(false); }
+  };
+
+  const renderLevel = (levelKey, nodes) => {
+    if (!nodes || nodes.length === 0) return null;
+    const isInter = levelKey === 'intermediate';
+    const levelNum = isInter ? 2 : 3;
+    const theme = isInter
+      ? { bg: 'bg-blue-50/80', iconBg: 'bg-blue-100', icon: 'text-blue-600', title: 'text-blue-900', dot: 'bg-blue-400', bullet: 'text-slate-700' }
+      : { bg: 'bg-purple-50/80', iconBg: 'bg-purple-100', icon: 'text-purple-600', title: 'text-purple-900', dot: 'bg-purple-400', bullet: 'text-slate-700' };
+
+    const cardTitle = nodes.length === 1 ? `Level ${levelNum}: ${nodes[0].title}` : `Level ${levelNum}: Coming Soon`;
+
+    return (
+      <div className={`w-full rounded-lg ${theme.bg} p-5 flex flex-col`}>
+        <div className="flex items-start justify-between mb-3">
+          <div className="flex items-center gap-2">
+            <div className={`w-7 h-7 rounded-full ${theme.iconBg} flex items-center justify-center shrink-0`}>
+              <FiZap className={`w-3.5 h-3.5 ${theme.icon}`} />
+            </div>
+            <span className={`text-[13px] font-bold ${theme.title} leading-tight`}>{cardTitle}</span>
+          </div>
+          <FiLock className={`w-4 h-4 ${theme.icon} shrink-0 mt-0.5`} />
+        </div>
+        <ul className="flex flex-col gap-1.5 ml-1 flex-1">
+          {nodes.map((n, i) => (
+            <li key={i} className="flex items-start gap-2">
+              <span className={`w-1.5 h-1.5 rounded-full ${theme.dot} shrink-0 mt-[7px]`} />
+              <span className={`text-[13px] font-medium ${theme.bullet} leading-snug`}>{n.title}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  };
+
+  return (
+    <>
+      <div className="w-full rounded-xl border border-slate-200 bg-white p-5 mt-6 shadow-sm flex flex-col gap-5">
+        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full">
+          {renderLevel('intermediate', intermNodes)}
+          {renderLevel('experienced', expNodes)}
+        </div>
+
+        <div className="border-t border-dashed border-slate-200 pt-5 flex justify-center">
+          {subscribed ? (
+            <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
+              <FiCheck className="w-5 h-5" /> All set! You will be notified.
+            </div>
+          ) : (
+            <button
+              onClick={() => setShowModal(true)}
+              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white border-2 border-dashed border-slate-300 text-slate-700 text-[14px] font-bold transition-colors cursor-pointer hover:bg-slate-50"
+            >
+              <FiBell className="w-4 h-4" />
+              Notify Me for Upcoming Levels
+            </button>
+          )}
+        </div>
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
+          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative animate-fadeIn">
+            <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer">
+              <FiX className="w-5 h-5" />
+            </button>
+            <div className="flex flex-col items-center text-center mt-2">
+              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+                <FiLock className="w-6 h-6 text-slate-600" />
+              </div>
+              <h3 className="text-[18px] font-bold text-text-main mb-2">Get Notified</h3>
+              <p className="text-[14px] text-text-muted mb-6 leading-relaxed">
+                Enter your email to be the first to know when the advanced modules are released.
+              </p>
+              
+              {subscribed ? (
+                <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
+                  <FiCheck className="w-5 h-5" /> You're on the list!
+                </div>
+              ) : (
+                <div className="w-full flex flex-col gap-3">
+                  <input
+                    autoFocus type="email" value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    onKeyDown={e => e.key === 'Enter' && handleNotify()}
+                    placeholder="your@email.com"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-[14px] text-text-main placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand focus:bg-white transition-all"
+                  />
+                  <button
+                    onClick={handleNotify} disabled={loading}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] text-white text-[14px] font-semibold transition-colors cursor-pointer disabled:opacity-60"
+                  >
+                    <FiBell className="w-4 h-4" />
+                    {loading ? 'Subscribing...' : 'Notify Me'}
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+    </>
+  );
+}
+
+// ─── Main Sidebar ──────────────────────────────────────────────────────────────
 export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, progress = {} }) {
   const { user, requireAuth } = useAuth();
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -25,319 +157,198 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
   const [activeLevel, setActiveLevel] = useState('all');
 
   useEffect(() => {
-    const checkBookmark = async () => {
-      if (user && roadmap?._id) {
-        try {
-          const { data } = await bookmarkAPI.getBookmarks();
-          setIsBookmarked(data.some(b => b._id === roadmap._id || b === roadmap._id));
-        } catch (err) {
-          console.error('Error checking bookmark status', err);
-        }
-      }
-    };
-    checkBookmark();
+    if (!user || !roadmap?._id) return;
+    bookmarkAPI.getBookmarks()
+      .then(({ data }) => setIsBookmarked(data.some(b => b._id === roadmap._id || b === roadmap._id)))
+      .catch(() => {});
   }, [roadmap, user]);
 
   const handleBookmarkToggle = async () => {
     if (!requireAuth()) return;
-
     try {
       const { data } = await bookmarkAPI.toggleBookmark(roadmap._id);
       setIsBookmarked(data.isBookmarked);
-      if (data.isBookmarked) {
-        toast.success('Bookmark added successfully');
-      } else {
-        toast.success('Bookmark removed');
-      }
-    } catch (err) {
-      toast.error('Failed to update bookmark');
-    }
+      toast.success(data.isBookmarked ? 'Bookmark added' : 'Bookmark removed');
+    } catch { toast.error('Failed to update bookmark'); }
   };
 
-  // Use level from data (default to freshers if not present)
-  const nodesWithLevels = useMemo(() => {
-    if (!data) return [];
-    return data.map(node => ({ ...node, _level: node.level || 'freshers' }));
-  }, [data]);
+  const nodesWithLevels = useMemo(() =>
+    (data || []).map(n => ({ ...n, _level: n.level || 'freshers' })), [data]);
 
+  const fresherNodes = useMemo(() => nodesWithLevels.filter(n => n._level === 'freshers'), [nodesWithLevels]);
+  const intermNodes = useMemo(() => nodesWithLevels.filter(n => n._level === 'intermediate'), [nodesWithLevels]);
+  const expNodes = useMemo(() => nodesWithLevels.filter(n => n._level === 'experienced'), [nodesWithLevels]);
+  const comingSoonCount = intermNodes.length + expNodes.length;
 
-  // Filter based on selected chip
-  const filteredNodes = useMemo(() => {
-    if (activeLevel === 'all') return nodesWithLevels;
-    return nodesWithLevels.filter(n => n._level === activeLevel);
-  }, [nodesWithLevels, activeLevel]);
-
-  // Counts per level
-  const levelCounts = useMemo(() => {
-    const counts = { all: nodesWithLevels.length, freshers: 0, intermediate: 0, experienced: 0 };
-    nodesWithLevels.forEach(n => { counts[n._level]++; });
-    return counts;
-  }, [nodesWithLevels]);
-
-  const TOPIC_HEIGHT = 42;
-  const GAP = 10;
-  const SVG_WIDTH = 40;
-
-  // Level badge styling
-  const getLevelBadge = (level) => {
-    if (level === 'freshers') return { cls: 'bg-emerald-100 text-emerald-700 border-emerald-200', label: 'Freshers' };
-    if (level === 'intermediate') return { cls: 'bg-blue-100 text-blue-700 border-blue-200', label: 'Intermediate' };
-    return { cls: 'bg-purple-100 text-purple-700 border-purple-200', label: 'Experienced' };
-  };
+  const showFreshers = activeLevel === 'all' || activeLevel === 'freshers';
+  const showComingSoon = activeLevel === 'all' || activeLevel === 'comingSoon';
 
   return (
     <div className="w-full md:w-[50%] md:h-full md:overflow-y-auto border-b md:border-b-0 md:border-r border-border-subtle relative z-20 bg-bg-base custom-scrollbar">
-      <div className="p-4 md:p-8 pb-16 flex flex-col items-start overflow-x-hidden">
+      <div className="p-6 md:p-8 pb-16 flex flex-col items-start">
 
-        {/* Header Section */}
-        <div className="w-full mb-8 text-left">
-
-          {/* Top Actions */}
-          <div className="flex items-center justify-between mb-8 w-full">
-            <Link to="/" className="text-text-muted font-bold text-sm hover:text-brand transition-colors">
-              ← All Roadmaps
-            </Link>
-
-            <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={handleBookmarkToggle}
-                className={`transition-colors cursor-pointer !shadow-none ${isBookmarked ? 'text-brand border-brand/20 bg-brand/5' : 'text-text-muted'}`}
-              >
-                <FiBookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
-              </Button>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={() => setIsShareOpen(true)}
-                className="text-text-muted cursor-pointer !shadow-none"
-              >
-                <FiShare2 className="w-4 h-4" />
-              </Button>
-            </div>
+        {/* ── Top actions */}
+        <div className="flex items-center justify-between mb-6 w-full">
+          <Link to="/" className="text-text-muted font-semibold text-[13px] hover:text-brand transition-colors">
+            ← All Roadmaps
+          </Link>
+          <div className="flex items-center gap-2">
+            <Button variant="outline" size="icon" onClick={handleBookmarkToggle}
+              className={`cursor-pointer !shadow-none ${isBookmarked ? 'text-brand border-brand/20 bg-brand/5' : 'text-text-muted'}`}>
+              <FiBookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            </Button>
+            <Button variant="outline" size="icon" onClick={() => setIsShareOpen(true)}
+              className="text-text-muted cursor-pointer !shadow-none">
+              <FiShare2 className="w-4 h-4" />
+            </Button>
           </div>
-
-          <h1 className="text-4xl md:text-5xl font-extrabold text-text-main mb-3 tracking-tight">
-            {roadmap?.title || 'Roadmap'}
-          </h1>
-          <p className="text-text-muted text-[17px] mb-4 leading-relaxed font-medium">
-            {roadmap?.description || 'Step by step guide to mastering this topic'}
-          </p>
-
-          <RatingBadge roadmapId={roadmap?._id} />
-
-          {/* Tabs */}
-          <div className="flex items-center justify-between border-b border-border-subtle pb-0 text-[15px]">
-            <div className="flex gap-6">
-              <span className="flex items-center gap-2 font-bold text-text-main border-b-2 border-text-main pb-2 cursor-pointer">
-                <FiMap className="w-4 h-4" /> Roadmap
-              </span>
-              <span className="flex items-center gap-2 text-text-muted font-semibold pb-2 cursor-pointer hover:text-text-main transition-colors">
-                <FiFolder className="w-4 h-4" /> Projects
-              </span>
-            </div>
-          </div>
-
         </div>
 
-        {/* ─── Difficulty Filter Chips ──────────────────────────────────── */}
-        <div className="w-full flex items-center gap-2 flex-wrap mb-3">
-          {LEVEL_CHIPS.map(chip => {
-            const isActive = activeLevel === chip.key;
+        {/* ── Title */}
+        <h1 className="text-[28px] md:text-[32px] font-extrabold text-text-main mb-2 tracking-tight leading-[1.15]">
+          {roadmap?.title || 'Roadmap'}
+        </h1>
+        <p className="text-text-muted text-[14px] mb-4 leading-relaxed font-medium">
+          {roadmap?.description || 'Step by step guide to mastering this topic'}
+        </p>
+
+        <RatingBadge roadmapId={roadmap?._id} />
+
+        {/* ── Tabs */}
+        <div className="flex gap-6 border-b border-border-subtle w-full mt-5 mb-5 text-[14px]">
+          <span className="flex items-center gap-2 font-bold text-text-main border-b-2 border-text-main pb-2 cursor-pointer">
+            <FiMap className="w-4 h-4" /> Roadmap
+          </span>
+          <span className="flex items-center gap-2 text-text-muted font-semibold pb-2 cursor-pointer hover:text-text-main transition-colors">
+            <FiFolder className="w-4 h-4" /> Projects
+          </span>
+        </div>
+
+        {/* ── Filter chips: Freshers (N) | Coming Soon (N) */}
+        <div className="flex items-center gap-2 flex-wrap mb-5 w-full">
+          {[
+            { key: 'freshers', label: 'Freshers', count: fresherNodes.length, dot: 'bg-emerald-500' },
+            { key: 'comingSoon', label: 'Coming Soon', count: comingSoonCount, dot: 'bg-slate-400', locked: true },
+          ].map(chip => {
+            const active = activeLevel === chip.key || (activeLevel === 'all');
             return (
-              <button
-                key={chip.key}
+              <button key={chip.key}
                 onClick={() => {
-                  if (chip.key !== activeLevel) {
-                    const newNodes = chip.key === 'all'
-                      ? nodesWithLevels
-                      : nodesWithLevels.filter(n => n._level === chip.key);
-                    const firstNode = newNodes[0] || null;
-                    onSelectNode(firstNode);
-                    onSelectTopic(firstNode?.topics?.[0] || null);
+                  setActiveLevel(prev => prev === chip.key ? 'all' : chip.key);
+                  if (chip.key === 'freshers') {
+                    const f = fresherNodes[0];
+                    if (f) { onSelectNode(f); onSelectTopic(f.topics?.[0] || null); }
                   }
-                  setActiveLevel(chip.key);
                 }}
-                className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-0.5 text-[11px] font-semibold transition-all cursor-pointer ${isActive
-                  ? 'border-border-subtle bg-bg-surface text-text-main shadow-sm'
-                  : 'border-border-subtle bg-bg-surface text-text-muted hover:text-text-main'
-                  }`}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-semibold transition-all cursor-pointer ${
+                  active ? 'border-slate-300 bg-white text-text-main shadow-sm' : 'border-border-subtle bg-bg-surface text-text-muted hover:text-text-main'
+                }`}
               >
-                <span className={`w-1.5 h-1.5 rounded-full ${chip.dotColor}`} />
+                <span className={`w-1.5 h-1.5 rounded-full ${chip.dot}`} />
                 {chip.label}
-                {chip.isLocked && <FiLock className="w-2.5 h-2.5 text-text-muted/70 ml-0.5" />}
-                <span className="text-text-muted ml-0.5">{levelCounts[chip.key]}</span>
+                {chip.locked && <FiLock className="w-2.5 h-2.5 opacity-50" />}
+                <span className="text-text-muted">({chip.count})</span>
               </button>
             );
           })}
         </div>
 
-        {/* ─── Branching Roadmap Graph ──────────────────────────────────── */}
-        <div className="flex flex-col items-center relative w-full px-4 max-w-4xl mx-auto py-2">
+        {/* ── Numbered nodes with dotted vertical line */}
+        {showFreshers && (
+          <div className="w-full relative">
+            {fresherNodes.map((node, index) => {
+              const NodeIcon = NODE_ICONS[index % NODE_ICONS.length];
+              const isNodeSel = selectedNode?._id === node._id;
+              const doneCnt = node.topics.filter(t => user && progress[t._id] === 'done').length;
+              const total = node.topics.length;
+              const allDone = doneCnt === total && total > 0;
+              const isLast = index === fresherNodes.length - 1;
 
-          {filteredNodes.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-16 text-text-muted animate-fadeIn">
-              <p className="text-[15px] font-semibold">No topics at this level</p>
-              <p className="text-[13px] mt-1">Try selecting a different difficulty</p>
-            </div>
-          )}
+              return (
+                <div key={node._id || index} className="relative flex w-full">
 
-          {filteredNodes.map((node, index) => {
-            const isSelected = selectedNode?._id === node._id;
-            const isEven = index % 2 === 0;
-            const containerHeight = node.topics.length * TOPIC_HEIGHT + (node.topics.length - 1) * GAP;
-            const startY = containerHeight / 2;
-
-            const hasTopics = node.topics.length > 0;
-            const firstStatus = hasTopics ? (user ? (progress[node.topics[0]._id] || 'pending') : 'none') : null;
-            const allSame = hasTopics && node.topics.every(t => (user ? (progress[t._id] || 'pending') : 'none') === firstStatus);
-            const allDone = allSame && firstStatus === 'done';
-
-            const badge = getLevelBadge(node._level);
-
-            let nodeBaseStyle = 'border-border-subtle text-text-main hover:border-gray-400 bg-bg-surface';
-            if (allSame) {
-              if (firstStatus === 'done') nodeBaseStyle = 'border-green-500 text-green-700 bg-green-50';
-              else if (firstStatus === 'in-progress') nodeBaseStyle = 'border-blue-400 text-blue-700 bg-blue-50';
-              else if (firstStatus === 'skip') nodeBaseStyle = 'border-border-subtle text-text-muted bg-bg-base';
-              else if (firstStatus === 'pending') nodeBaseStyle = 'border-yellow-400 text-yellow-700 bg-yellow-50';
-            }
-
-            let nodeStyles = nodeBaseStyle;
-            if (isSelected) {
-              nodeStyles += ' shadow-md ring-2 ring-opacity-40 z-20';
-              if (allSame) {
-                if (firstStatus === 'done') nodeStyles += ' ring-green-400';
-                else if (firstStatus === 'in-progress') nodeStyles += ' ring-blue-400';
-                else if (firstStatus === 'skip') nodeStyles += ' ring-border-subtle';
-                else if (firstStatus === 'pending') nodeStyles += ' ring-yellow-400';
-                else nodeStyles += ' border-brand text-brand ring-brand/20 bg-bg-surface';
-              } else {
-                nodeStyles += ' border-gray-800 text-text-main bg-bg-base ring-gray-200';
-              }
-            }
-
-            return (
-              <div key={node._id || index} className="relative flex flex-col items-center w-full my-0">
-
-                {/* Horizontally scrolling container */}
-                <div className={`flex items-center justify-center w-full overflow-x-auto custom-scrollbar py-3 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}>
-
-                  {/* Main Node + Level Badge */}
-                  <div className="flex flex-col items-center shrink-0 gap-1">
-                    <div
-                      onClick={() => onSelectNode(node)}
-                      className={`bg-bg-surface border-2 rounded-lg px-5 py-3 w-[200px] text-center shadow-sm relative font-bold text-[14px] cursor-pointer transition-all flex flex-col items-center justify-center ${nodeStyles}`}
-                    >
-                      <div className="flex items-center justify-center gap-1.5 w-full">
-                        <span className="line-clamp-2">{node.title}</span>
-                        {(node._level === 'intermediate' || node._level === 'experienced') && (
-                          <FiLock className="w-3.5 h-3.5 text-text-muted/70 shrink-0" />
-                        )}
-                      </div>
-                      {allDone && (
-                        <div className={`absolute ${isEven ? '-right-3' : '-left-3'} top-1/2 -translate-y-1/2 rounded-full w-6 h-6 flex items-center justify-center bg-bg-surface text-green-600 z-20`}>
-                          <FiCheck className="w-4 h-4" strokeWidth={3} />
-                        </div>
-                      )}
+                  {/* Left column: circle + dotted line */}
+                  <div className="flex flex-col items-center shrink-0 w-8 mr-3">
+                    {/* Circle number */}
+                    <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-[12px] font-black z-10 ${
+                      allDone ? 'bg-green-500 text-white' : 'bg-slate-200 text-slate-700'
+                    }`}>
+                      {allDone ? <FiCheck className="w-3.5 h-3.5" strokeWidth={3} /> : index + 1}
                     </div>
-                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${badge.cls}`}>
-                      {badge.label}
-                    </span>
+                    {/* Dotted line below (except last node) */}
+                    {!isLast && (
+                      <div className="flex-1 w-0 border-l-2 border-dashed border-slate-200 mt-1 mb-0" />
+                    )}
                   </div>
 
-                  {/* SVG Dotted Curves */}
-                  <div className="relative shrink-0" style={{ width: SVG_WIDTH, height: containerHeight }}>
-                    <svg width={SVG_WIDTH} height={containerHeight} className="absolute top-0 left-0 overflow-visible z-0">
-                      {node.topics.map((topic, i) => {
-                        const endY = i * (TOPIC_HEIGHT + GAP) + (TOPIC_HEIGHT / 2);
-                        const path = isEven
-                          ? `M 0 ${startY} C ${SVG_WIDTH / 2} ${startY}, ${SVG_WIDTH / 2} ${endY}, ${SVG_WIDTH} ${endY}`
-                          : `M ${SVG_WIDTH} ${startY} C ${SVG_WIDTH / 2} ${startY}, ${SVG_WIDTH / 2} ${endY}, 0 ${endY}`;
+                  {/* Right column: header + topics in one bordered card */}
+                  <div className={`flex-1 min-w-0 pb-4`}>
+                    <div className={`rounded-lg border border-slate-200 bg-white ${isNodeSel ? 'shadow-sm' : ''}`}>
+                      {/* Node header row */}
+                      <div
+                        onClick={() => { onSelectNode(node); onSelectTopic(node.topics?.[0] || null); }}
+                        className="flex items-center gap-2 px-3 py-2.5 cursor-pointer"
+                      >
+                        <NodeIcon className={`w-4 h-4 shrink-0 ${isNodeSel ? 'text-slate-700' : 'text-slate-400'}`} />
+                        <span className="flex-1 text-[14px] font-bold text-text-main leading-snug">
+                          {node.title}
+                        </span>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 shrink-0">
+                          Freshers
+                        </span>
+                        <span className="text-[12px] font-semibold text-text-muted shrink-0 ml-1">
+                          {doneCnt} / {total}
+                        </span>
+                      </div>
 
-                        const tStat = user ? (progress[topic._id] || 'pending') : 'none';
-                        let strokeColor = '#cbd5e1';
-                        if (tStat === 'pending') strokeColor = '#facc15';
-                        else if (tStat === 'done') strokeColor = '#22c55e';
-                        else if (tStat === 'in-progress') strokeColor = '#60a5fa';
-                        else if (tStat === 'skip') strokeColor = '#d1d5db';
+                      {/* Topic rows */}
+                      <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5">
+                        {node.topics.map((topic, i) => {
+                          const isSel = selectedTopic?._id === topic._id;
+                          const status = user ? (progress[topic._id] || 'pending') : 'none';
+                          
+                          let circleClass = 'border-[1.5px] border-slate-300 bg-white';
+                          if (status === 'done') circleClass = 'bg-green-500 border-green-500 text-white';
+                          else if (status === 'in-progress') circleClass = 'bg-blue-500 border-blue-500 text-white';
+                          else if (status === 'skip') circleClass = 'bg-gray-400 border-gray-400 text-white';
+                          else if (status === 'pending') circleClass = 'bg-yellow-400 border-yellow-400 text-white';
 
-                        return <path key={i} d={path} fill="none" stroke={strokeColor} strokeWidth="2.5" strokeDasharray="4 4" />
-                      })}
-                    </svg>
-                  </div>
-
-                  {/* Sub-Topics Stack */}
-                  <div className="flex flex-col shrink-0 relative z-10" style={{ gap: GAP }}>
-                    {node.topics.map((topic, i) => {
-                      const isTopicSelected = selectedTopic?._id === topic._id;
-                      const status = user ? (progress[topic._id] || 'pending') : 'none';
-
-                      let baseStyle = '';
-                      let iconColorClass = '';
-
-                      if (status === 'done') {
-                        baseStyle = 'border-green-500 text-green-700 bg-green-50';
-                        iconColorClass = 'text-green-600';
-                      } else if (status === 'in-progress') {
-                        baseStyle = 'border-blue-400 text-blue-700 bg-blue-50';
-                        iconColorClass = 'text-blue-500';
-                      } else if (status === 'skip') {
-                        baseStyle = 'border-border-subtle text-text-muted bg-bg-base';
-                        iconColorClass = 'text-text-muted';
-                      } else if (status === 'pending') {
-                        baseStyle = 'border-yellow-300 text-yellow-700 bg-yellow-50';
-                        iconColorClass = 'text-yellow-500';
-                      } else {
-                        baseStyle = 'border-border-subtle text-text-main bg-bg-surface';
-                        iconColorClass = 'text-border-subtle';
-                      }
-
-                      let topicStyles = baseStyle;
-                      if (isTopicSelected) {
-                        topicStyles += ' shadow-md font-bold z-20';
-                        if (status === 'done') topicStyles += ' bg-green-100 border-green-600';
-                        else if (status === 'in-progress') topicStyles += ' bg-blue-100 border-blue-500';
-                        else if (status === 'skip') topicStyles += ' bg-border-subtle border-gray-400';
-                        else if (status === 'pending') topicStyles += ' bg-yellow-100 border-yellow-400';
-                        else topicStyles += ' bg-bg-surface border-brand text-brand ring-2 ring-brand/20';
-                      } else {
-                        topicStyles += ' font-semibold hover:shadow-sm z-10 hover:border-gray-400';
-                      }
-
-                      return (
-                        <div
-                          key={i}
-                          onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
-                          className={`border rounded-md px-4 flex items-center w-[210px] cursor-pointer transition-all relative ${topicStyles}`}
-                          style={{ height: TOPIC_HEIGHT }}
-                        >
-                          <span className={`text-[12px] leading-tight w-full ${isEven ? 'pr-4 text-left' : 'pl-4 text-right'}`}>{topic.title}</span>
-                          <div className={`absolute ${isEven ? '-right-2.5' : '-left-2.5'} top-1/2 -translate-y-1/2 w-5 h-5 rounded-full flex items-center justify-center bg-bg-surface z-30 ${iconColorClass}`}>
-                            {status === 'done' ? (
-                              <FiCheck className="w-3.5 h-3.5" strokeWidth={3} />
-                            ) : (
-                              <div className="w-1.5 h-1.5 rounded-full bg-current" />
-                            )}
-                          </div>
-                        </div>
-                      );
-                    })}
+                          return (
+                            <div key={i}
+                              onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
+                              className={`flex items-center gap-3 px-2.5 py-2 rounded-md cursor-pointer transition-colors ${
+                                isSel ? 'bg-blue-50' : 'hover:bg-slate-50'
+                              }`}
+                            >
+                              <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 ${circleClass}`}>
+                                {status === 'done' && <FiCheck className="w-2.5 h-2.5" strokeWidth={4} />}
+                              </div>
+                              <span className={`flex-1 text-[13px] leading-snug ${
+                                isSel ? 'font-semibold text-text-main' : 'font-medium text-slate-600'
+                              }`}>
+                                {topic.title}
+                              </span>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
                   </div>
                 </div>
+              );
+            })}
+          </div>
+        )}
 
-              </div>
-            );
-          })}
-        </div>
+        {/* ── Coming Soon cards */}
+        {showComingSoon && (
+          <ComingSoonSection intermNodes={intermNodes} expNodes={expNodes} roadmapId={roadmap?._id} user={user} />
+        )}
+
       </div>
-      <ShareModal
-        isOpen={isShareOpen}
-        onClose={() => setIsShareOpen(false)}
-        url={window.location.href}
-        title={roadmap?.title || 'Roadmap'}
-      />
+
+      <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)}
+        url={window.location.href} title={roadmap?.title || 'Roadmap'} />
     </div>
   );
 }

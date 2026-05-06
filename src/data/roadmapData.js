@@ -21,39 +21,1072 @@ export const roadmapData = [
         level: "freshers",
         topics: [
           "What is Authentication?",
-          "Authentication vs Authorization",
-          "Why Authentication matters",
-          "HTTP Stateless nature & why sessions are needed",
-          "Password Hashing basics (bcrypt)"
-        ]
-      },
+          "What is Authorization? (Auth vs Authz)",  // ✅ added
+          "Password Hashing (bcrypt and salting)"
+        ],
+        topicDetails: {
+          "What is Authentication?": [
+            {
+              type: "paragraph",
+              text: "You spend 10 minutes on Flipkart. Found the perfect iPhone. Added to cart. Hit Buy Now. And suddenly — Flipkart stops you. Wants you to log in first. You've seen this a hundred times. But have you ever stopped to think — why right at checkout? Why not when you were just browsing?"
+            },
+            { type: "image", src: checkout, alt: "Flipkart checkout page asking user to login" },
+            {
+              type: "curious-callout",
+              text: "❓ Why does Flipkart let you browse freely but stops you the moment you try to buy something?"
+            },
+            {
+              type: "heading",
+              text: "What Happens If Flipkart Has No Login System?"
+            },
+            {
+              type: "error-callout",
+              title: "Without any login system on Flipkart:",
+              list: [
+                "Anyone can open your account and see your orders",
+                "Anyone can view your saved addresses and bank details",
+                "Anyone can place or cancel orders on your behalf",
+                "No way to know who is actually doing what"
+              ],
+              footer: "No privacy. No security. Total chaos. That's exactly the problem Authentication solves."
+            },
+            {
+              type: "heading",
+              text: "What is Authentication?"
+            },
+            {
+              type: "paragraph",
+              text: "Authentication is simply verifying who you are. Before Flipkart lets you buy anything, save an address, or view your orders — it needs to confirm: 'Are you really who you say you are?' That's it. That's authentication."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of it like the security guard at your office building. You can stand outside freely. But the moment you try to enter — he checks your ID. He's not checking what you're allowed to do inside. He's just confirming you are who you claim to be. That check is Authentication."
+            },
+            {
+              type: "heading",
+              text: "How Flipkart's Login Actually Works"
+            },
+            {
+              type: "step",
+              title: "You enter your email and password",
+              desc: "You type ram@gmail.com and your password on Flipkart's login page and hit Login."
+            },
+            {
+              type: "step",
+              title: "Frontend sends it to the backend",
+              desc: "Your credentials travel to Flipkart's server as a POST request."
+            },
+            {
+              type: "code",
+              code: "POST /login\n{\n  email: \"ram@gmail.com\",\n  password: \"ram123\"\n}"
+            },
+            {
+              type: "step",
+              title: "Server checks the database",
+              desc: "Flipkart's server searches the database — is there any account with this email?"
+            },
+            {
+              type: "code",
+              code: "const user = await User.findOne({ email: \"ram@gmail.com\" })"
+            },
+            {
+              type: "step",
+              title: "Password is verified",
+              desc: "If the user exists, it checks if the password matches what's stored."
+            },
+            {
+              type: "step",
+              title: "Server responds",
+              desc: "✅ Password matches → Login successful. You're in.\n❌ Password wrong → Access denied. 'Invalid credentials.'"
+            },
+            { type: "image", src: login, alt: "Flipkart login page" },
+            {
+              type: "warning-callout",
+              text: "⚠️ Wait — we just said Flipkart checks your password from the database. Does Flipkart really store your password like this?\n\npassword: 'ram123'\n\nIf someone hacks Flipkart's database — every user's password is exposed in plain text. That's a nightmare. So how does Flipkart actually store passwords safely? That's coming up."
+            }
+          ],
 
+          "What is Authorization? (Auth vs Authz)": [
+            {
+              type: "paragraph",
+              text: "You just logged into Flipkart. You're in. But now — you try to open another user's order history by changing the URL. Flipkart blocks you. Or you try to access the seller dashboard even though you're a regular buyer. Blocked again. Logging in worked. So why are you still being stopped?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Flipkart knows who you are. So why does it still block certain pages and actions?"
+            },
+            {
+              type: "heading",
+              text: "Authentication vs Authorization — Two Different Questions"
+            },
+            {
+              type: "paragraph",
+              text: "Authentication asks — Who are you? Authorization asks — What are you allowed to do? These are two completely separate checks. Passing one doesn't mean you pass the other."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Back to the office building analogy. The security guard checked your ID and let you in — that's Authentication. But once inside, you try to enter the CEO's private office. A different lock stops you — because your ID doesn't give you that access. That second check is Authorization."
+            },
+            {
+              type: "heading",
+              text: "How This Plays Out on Flipkart"
+            },
+            {
+              type: "step",
+              title: "You log in as a regular buyer",
+              desc: "Flipkart verifies your email and password. Authentication done. ✅ You're in."
+            },
+            {
+              type: "step",
+              title: "You try to open the Seller Dashboard",
+              desc: "You type flipkart.com/seller/dashboard in the browser."
+            },
+            {
+              type: "step",
+              title: "Flipkart checks your role",
+              desc: "Your account is tagged as 'buyer'. Seller Dashboard requires role: 'seller'. You don't have it."
+            },
+            {
+              type: "step",
+              title: "Access denied",
+              desc: "Flipkart blocks the page. Not because you aren't logged in — but because your account doesn't have seller permissions. ❌"
+            },
+            {
+              type: "code",
+              code: "// Authentication — who are you?\nuser = { id: 1, email: 'ram@gmail.com', role: 'buyer' }\n// ✅ Logged in\n\n// Authorization — what can you do?\nif (user.role !== 'seller') {\n  return 'Access Denied' // ❌\n}"
+            },
+            {
+              type: "heading",
+              text: "Flipkart Has Multiple Roles"
+            },
+            {
+              type: "paragraph",
+              text: "Flipkart isn't just buyers and sellers. There are admins who can ban accounts, delivery agents who can update order status, support staff who can view any order. Each role has different permissions — and Authorization enforces exactly that."
+            },
+            {
+              type: "code",
+              code: "Buyer        → view own orders, add to cart, buy\nSeller       → manage listings, view sales, update stock\nDelivery     → update delivery status only\nAdmin        → access everything, ban users, manage all orders"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Authentication = Flipkart confirms you are Ram.\nAuthorization = Flipkart checks what Ram is allowed to do.\nBoth checks happen. Both are necessary. One without the other is incomplete."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Now that we know how Flipkart identifies and controls users — let's go back to that uncomfortable question. When you set your Flipkart password, how does Flipkart actually store it? Because storing 'ram123' as plain text in a database is a disaster waiting to happen."
+            }
+          ],
+
+          "Password Hashing (bcrypt and salting)": [
+            {
+              type: "paragraph",
+              text: "Imagine Flipkart's database gets hacked today. The attacker opens the users table. And sees this:"
+            },
+            {
+              type: "code",
+              code: "| email              | password    |\n|--------------------|-------------|\n| ram@gmail.com      | ram123      |\n| priya@gmail.com    | priya@456   |\n| arjun@gmail.com    | iloveyou    |"
+            },
+            {
+              type: "error-callout",
+              title: "Every single user's password is visible in plain text.",
+              list: [
+                "Attacker logs into every Flipkart account instantly",
+                "Most people reuse passwords — same password works on Gmail, Instagram, bank apps",
+                "Millions of accounts compromised in minutes",
+                "Flipkart gets destroyed — legally, financially, reputation-wise"
+              ],
+              footer: "This is not hypothetical. This has happened to real companies. Plain text password storage is unforgivable."
+            },
+            {
+              type: "heading",
+              text: "Step 1 — Hashing: Store a Scrambled Version, Not the Real Password"
+            },
+            {
+              type: "paragraph",
+              text: "Instead of storing your actual password, Flipkart runs it through a hashing algorithm — bcrypt. Bcrypt takes your password and converts it into a completely scrambled, fixed-length string called a hash. This process is one-way — you can never reverse a hash back to the original password."
+            },
+            {
+              type: "code",
+              code: "bcrypt('ram123') \n→ '$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy'"
+            },
+            {
+              type: "paragraph",
+              text: "That long scrambled string is what Flipkart stores in the database — never 'ram123'. When you log in, Flipkart hashes what you typed and compares the two hashes. If they match, you're in. The real password never gets stored anywhere."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Now even if the database is hacked, the attacker sees only scrambled hashes. Useless without the original password."
+            },
+            {
+              type: "heading",
+              text: "Step 2 — Salting: Make Every Hash Unique"
+            },
+            {
+              type: "paragraph",
+              text: "There's still one problem. If Ram and Priya both use the password 'iloveyou' — they'll both get the exact same hash. An attacker can pre-compute hashes for common passwords and look them up instantly. This is called a Rainbow Table attack."
+            },
+            {
+              type: "code",
+              code: "bcrypt('iloveyou') → '$2b$10$sameHashEveryTime...'\nbcrypt('iloveyou') → '$2b$10$sameHashEveryTime...'\n// Same password = same hash. Predictable. ❌"
+            },
+            {
+              type: "paragraph",
+              text: "Salting fixes this. Before hashing, bcrypt adds a random string — called a salt — to your password. Now even if two users have the same password, their hashes are completely different."
+            },
+            {
+              type: "code",
+              code: "Ram's password:   'iloveyou' + salt1 → unique hash A\nPriya's password: 'iloveyou' + salt2 → unique hash B\n\n// Same password. Completely different hashes. ✅"
+            },
+            {
+              type: "step",
+              title: "You set your Flipkart password: 'ram123'",
+              desc: "Flipkart generates a random salt — a unique random string just for you."
+            },
+            {
+              type: "step",
+              title: "Salt is added to your password",
+              desc: "'ram123' + 'xK9mP2' (salt) = 'ram123xK9mP2'"
+            },
+            {
+              type: "step",
+              title: "bcrypt hashes the combined string",
+              desc: "The final hash is stored in the database — along with the salt."
+            },
+            {
+              type: "code",
+              code: "// Stored in database:\n{\n  email: 'ram@gmail.com',\n  hash: '$2b$10$xK9mP2...longscrambledstring',\n  salt: 'xK9mP2'\n}"
+            },
+            {
+              type: "step",
+              title: "You log in next time",
+              desc: "Flipkart takes your typed password + your stored salt → hashes it → compares with stored hash. Match = Login success. ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Now Flipkart's database has zero plain text passwords. Every hash is unique even for identical passwords. An attacker with the full database still can't log in as anyone. That's bcrypt + salting doing its job."
+            },
+            {
+              type: "info-callout",
+              text: "💡 You never need to implement this from scratch. In Node.js, one library handles everything:\n\nbcrypt.hash('ram123', 10)  // hash + salt — done\nbcrypt.compare('ram123', storedHash)  // verify — done\n\nThe '10' is the salt rounds — how many times bcrypt scrambles the password. Higher = slower to crack. 10 is the standard for most apps."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Flipkart now knows who you are and stores your password safely. But after login — how does Flipkart remember you as you move from page to page? Every click is a new request. The server doesn't automatically know it's still you. That's the next problem — and it's solved by Sessions."
+            }
+          ]
+        }
+      },
       {
         id: 2,
-        title: "Token Based Authentication",
-        level: "freshers",
-        topics: [
-          "What is JWT (JSON Web Token)?",
-          "JWT Structure (Header, Payload, Signature)",
-          "Signing & Verifying JWT",
-          "Access Token vs Refresh Token",
-          "Storing Tokens (Cookie vs LocalStorage)",
-          "Token Expiry & Renewal"
-        ]
-      },
-
-      {
-        id: 3,
         title: "Session Based Authentication",
         level: "freshers",
         topics: [
           "Session-based auth (cookies + server session)",
-          "Session vs Token based Auth",
           "Session Store (Memory, Redis)",
-          "Session Fixation basics",
+
           "Logout & Session Destruction"
-        ]
+        ],
+        topicDetails: {
+          "Session-based auth (cookies + server session)": [
+            {
+              type: "paragraph",
+              text: "You just logged into Flipkart. Verified. But now you click on 'My Orders'. Then 'Wishlist'. Then 'Cart'. Each click is a brand new HTTP request — and HTTP is stateless. The server remembers nothing between requests. So how does Flipkart know it's still you on every single page?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ You logged in once — but how does Flipkart remember you across every page you visit after that?"
+            },
+            {
+              type: "heading",
+              text: "What is a Session?"
+            },
+            {
+              type: "paragraph",
+              text: "After you log in, Flipkart's server creates a Session — a small record stored on the server that says 'User Ram is currently logged in'. The server gives this session a unique ID — called a Session ID. That ID gets sent to your browser and stored as a Cookie."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of it like a token at a restaurant. You place your order and the waiter gives you a token number — say #42. Every time you ask for something, you show token #42. The waiter doesn't need to re-verify who you are each time — he just looks up token #42 in his records. That token is your Session ID. The waiter's record book is the Session Store."
+            },
+            {
+              type: "heading",
+              text: "How Session-Based Auth Works on Flipkart — Step by Step"
+            },
+            {
+              type: "step",
+              title: "You log in with email and password",
+              desc: "Flipkart verifies your credentials. Authentication successful. ✅"
+            },
+            {
+              type: "step",
+              title: "Server creates a session",
+              desc: "Flipkart creates a session object and stores it server-side."
+            },
+            {
+              type: "code",
+              code: "// Session stored on server:\nsessionStore['abc123xyz'] = {\n  userId: 1,\n  email: 'ram@gmail.com',\n  role: 'buyer',\n  createdAt: '2024-01-01T10:00:00Z'\n}"
+            },
+            {
+              type: "step",
+              title: "Server sends Session ID to browser via Cookie",
+              desc: "The session ID is set as a cookie in the response headers."
+            },
+            {
+              type: "code",
+              code: "Set-Cookie: sessionId=abc123xyz; HttpOnly; Secure"
+            },
+            {
+              type: "step",
+              title: "Browser stores the cookie",
+              desc: "Your browser automatically saves this cookie and sends it with every future request to Flipkart."
+            },
+            {
+              type: "step",
+              title: "You click 'My Orders'",
+              desc: "Your browser sends the request — with the cookie attached automatically."
+            },
+            {
+              type: "code",
+              code: "GET /my-orders\nCookie: sessionId=abc123xyz"
+            },
+            {
+              type: "step",
+              title: "Server looks up the session",
+              desc: "Flipkart takes the session ID, looks it up in the session store, finds your user data. No re-login needed. ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ One login. Cookie stored. Every request after that — server reads the cookie, finds the session, knows it's you. That's session-based auth in a nutshell."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Sessions work — but where are they actually stored? In the server's memory? In a database? What happens when Flipkart restarts a server and all sessions vanish? That's the next problem — and it's solved by the Session Store."
+            }
+          ],
+
+          "Session Store (Memory, Redis)": [
+            {
+              type: "paragraph",
+              text: "Flipkart just created a session for Ram. Great. But now — where does it save it? Every time Ram makes a request, the server needs to look up that session ID and find his data. That means sessions need to be stored somewhere fast, reliable, and accessible by all servers. That somewhere is called the Session Store."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Flipkart runs on thousands of servers. If Ram's session is stored on Server #12 — what happens when his next request hits Server #47?"
+            },
+            {
+              type: "heading",
+              text: "Option 1 — Memory Store"
+            },
+            {
+              type: "paragraph",
+              text: "By default, sessions are stored directly in the server's RAM — the Memory Store. It's fast. Zero setup. Works fine on your local machine."
+            },
+            {
+              type: "code",
+              code: "// Sessions live in server RAM:\nconst sessionStore = {}\nsessionStore['abc123xyz'] = { userId: 1, email: 'ram@gmail.com' }\n// Request comes in → look up in RAM → found instantly ✅"
+            },
+            {
+              type: "error-callout",
+              title: "But Memory Store breaks in production:",
+              list: [
+                "Server restarts → RAM is wiped → all sessions gone → every user logged out",
+                "Flipkart has 10,000 servers → each has its own memory → sessions don't sync",
+                "Ram logs in on Server #12 → next request hits Server #47 → session not found → logged out instantly",
+                "Memory fills up with millions of sessions → server crashes"
+              ],
+              footer: "Memory Store is for local development only. Never for production."
+            },
+            {
+              type: "heading",
+              text: "Option 2 — Redis (The Production Standard)"
+            },
+            {
+              type: "paragraph",
+              text: "Redis is an external key-value store — blazing fast, runs in memory, but persists to disk. All of Flipkart's servers connect to one central Redis instance. Every session is stored there. Any server can look up any session. Problem solved."
+            },
+            {
+              type: "code",
+              code: "// Redis session store:\n// Server #12 creates session:\nredis.set('abc123xyz', JSON.stringify({ userId: 1, email: 'ram@gmail.com' }))\n\n// Server #47 gets next request:\nredis.get('abc123xyz') // ✅ Found — same Redis, different server\n\n// Server restarts? Redis is external — sessions survive ✅"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of Redis like a shared locker room. Every server in Flipkart's fleet has a key to the same locker room. It doesn't matter which server Ram hits — they all look in the same place for his session."
+            },
+            {
+              type: "code",
+              code: "Memory Store vs Redis:\n\nMemory Store:\n  Speed      → ✅ Fast\n  Persistence → ❌ Lost on restart\n  Multi-server → ❌ Not shared\n  Production  → ❌ Never\n\nRedis:\n  Speed       → ✅ Fast (in-memory)\n  Persistence → ✅ Survives restarts\n  Multi-server → ✅ Shared by all\n  Production  → ✅ Standard choice"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Redis gives Flipkart one central session store that all servers share. Fast lookups. Persistent. Scalable to millions of sessions. That's why every production app uses Redis for sessions."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Sessions are created and stored — but what happens when Ram clicks Logout? Just clearing the cookie in the browser isn't enough. If the session still exists on the server, someone with the old cookie ID can still use it. The session needs to be actively destroyed — on the server."
+            }
+          ],
+
+          "Logout & Session Destruction": [
+            {
+              type: "paragraph",
+              text: "Ram is done shopping on Flipkart. He clicks Logout. The page refreshes. He's back to the login screen. Looks simple. But something very specific just happened on the server — and if it didn't happen correctly, Ram's account is still wide open to anyone who has his session ID."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If someone copies Ram's session cookie before he logs out — can they still use it after he clicks Logout? What actually happens during logout?"
+            },
+            {
+              type: "heading",
+              text: "What Logout Must Do"
+            },
+            {
+              type: "paragraph",
+              text: "Logout is not just clearing a cookie on the browser. The session ID stored in the cookie is just a key. The actual session data lives on the server. If the server doesn't destroy the session — the key still works. Someone with the old cookie can still make authenticated requests."
+            },
+            {
+              type: "error-callout",
+              title: "What happens if logout only clears the browser cookie:",
+              list: [
+                "Session still exists in Redis — fully valid",
+                "Attacker who copied the cookie earlier sends it in a request",
+                "Server finds the session in Redis — thinks it's Ram",
+                "Attacker has full access to Ram's account — even after Ram 'logged out'"
+              ],
+              footer: "Browser-only logout is incomplete. The server must kill the session."
+            },
+            {
+              type: "heading",
+              text: "Correct Logout — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Ram clicks Logout",
+              desc: "Browser sends a POST /logout request — with the session cookie attached."
+            },
+            {
+              type: "code",
+              code: "POST /logout\nCookie: sessionId=abc123xyz"
+            },
+            {
+              type: "step",
+              title: "Server deletes the session from Redis",
+              desc: "The session record is permanently removed. The session ID is now dead — points to nothing."
+            },
+            {
+              type: "code",
+              code: "// Server-side logout:\nredis.del('abc123xyz')\n// Session is gone. Forever."
+            },
+            {
+              type: "step",
+              title: "Server clears the cookie in the browser",
+              desc: "Server tells the browser to expire the cookie immediately."
+            },
+            {
+              type: "code",
+              code: "Set-Cookie: sessionId=; Max-Age=0; HttpOnly; Secure\n// Max-Age=0 tells browser: delete this cookie right now"
+            },
+            {
+              type: "step",
+              title: "Attacker tries the old session ID",
+              desc: "Too late. Redis has no record of 'abc123xyz' anymore. Server returns 401 Unauthorized."
+            },
+            {
+              type: "code",
+              code: "// Attacker sends stolen cookie:\nGET /my-orders\nCookie: sessionId=abc123xyz\n\n// Server checks Redis:\nredis.get('abc123xyz') // → null\n\n// Response:\n401 Unauthorized ❌"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Real logout = server destroys the session first, then clears the browser cookie. Even if someone stole the session ID — the moment Ram logs out, that ID is dead on the server. Useless."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Sessions solve the 'remember me' problem — but they have a cost. Every single request requires a Redis lookup. Flipkart gets millions of requests per second. That's millions of Redis hits per second just to verify 'is this session still valid?'. At massive scale — across mobile apps, microservices, third-party integrations — sessions become a bottleneck. There's a smarter way: what if the server didn't need to look anything up at all? That's exactly what JWT-based Token Authentication solves."
+            }
+          ]
+        }
       },
+      {
+        id: 3,
+        title: "Token Based Authentication",
+        level: "freshers",
+        topics: [
+          "What is JWT and How JWT works?",
+          "Access Token vs Refresh Token",
+          "Storing Tokens (Cookie vs LocalStorage)",
+          "Token Expiry & Renewal"
+        ],
+        topicDetails: {
+          "What is JWT and How JWT works?": [
+            {
+              type: "paragraph",
+              text: "Flipkart gets millions of requests per second. With session-based auth, every single one needs a Redis lookup — 'Is this session ID valid? Who does it belong to?' That's millions of database hits per second just for authentication. Add the mobile app, seller portal, delivery agent app — all hammering the same Redis instance. It becomes a bottleneck. There had to be a smarter way."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if the server didn't need to look anything up at all? What if the token itself carried everything the server needs to know?"
+            },
+            {
+              type: "heading",
+              text: "What is JWT?"
+            },
+            {
+              type: "paragraph",
+              text: "JWT stands for JSON Web Token. Instead of storing your session on the server and giving you just an ID — JWT packs your actual user information into the token itself and hands it to you at login. You carry it. Every request, you send it. The server reads it, verifies it, and responds. Zero database lookup required."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of it like a government-issued Aadhaar card. When you check into a hotel — the receptionist doesn't call a government office to verify you exist. All the info is right there on the card. They just check if it looks genuine. JWT works the same way — all the user data is inside the token, and the server just verifies it's authentic."
+            },
+            {
+              type: "heading",
+              text: "How JWT Works — The Full Flow"
+            },
+            {
+              type: "step",
+              title: "Ram logs in with email and password",
+              desc: "Flipkart verifies credentials. Authentication successful. ✅"
+            },
+            {
+              type: "step",
+              title: "Server creates a JWT and signs it",
+              desc: "Flipkart packs Ram's user info — userId, email, role — into a token and signs it with a secret key only the server knows. This signature is what makes the token tamper-proof."
+            },
+            {
+              type: "code",
+              code: "const token = jwt.sign(\n  { userId: 1, role: 'buyer' },\n  process.env.JWT_SECRET,\n  { expiresIn: '15m' }\n)"
+            },
+            {
+              type: "step",
+              title: "Server sends the token to Ram's browser",
+              desc: "The JWT is returned in the login response. Ram's app stores it in memory."
+            },
+            {
+              type: "step",
+              title: "Ram clicks 'My Orders'",
+              desc: "App attaches the JWT to the Authorization header and sends the request to the server."
+            },
+            {
+              type: "code",
+              code: "GET /my-orders\nAuthorization: Bearer eyJhbGci...SflKxw"
+            },
+            {
+              type: "step",
+              title: "Server verifies the token",
+              desc: "Flipkart checks the signature to confirm nobody tampered with it, checks the expiry timestamp, and reads the payload — userId and role. All in one step. No database hit."
+            },
+            {
+              type: "step",
+              title: "Response sent",
+              desc: "Server knows it's Ram, knows his role, returns his orders. All without touching a database. ✅"
+            },
+            {
+              type: "heading",
+              text: "What Does a JWT Actually Look Like?"
+            },
+            {
+              type: "paragraph",
+              text: "A JWT is a long string with exactly three parts separated by dots — Header, Payload, and Signature. The header says which algorithm was used. The payload holds the actual user data like userId, role, and expiry. The signature is a cryptographic seal — if anyone changes even one character in the payload, the signature breaks and the server rejects it instantly."
+            },
+            {
+              type: "code",
+              code: "// Header . Payload . Signature\neyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9.SflKxw"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The payload is NOT encrypted — anyone can base64-decode and read it. Never store passwords, bank details, or sensitive data in a JWT payload."
+            },
+            {
+              type: "success-callout",
+              text: "✅ JWT is stateless — the token carries the user data, the server just verifies. No session store. No Redis. No DB lookup. One secret key is all Flipkart needs to verify millions of tokens per second across every server and service."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But JWT tokens can't last forever — a stolen token valid for 30 days is a disaster. Make it too short and users are re-logging in every 15 minutes. There's a smart solution: two tokens working together — an Access Token and a Refresh Token. Each with a very different job."
+            }
+          ],
+
+          "Access Token vs Refresh Token": [
+            {
+              type: "paragraph",
+              text: "Access tokens expire in 15 minutes — that's intentional. A short window limits damage if stolen. But nobody wants to re-enter their password every 15 minutes on Flipkart. At the same time, a 30-day access token is a nightmare — stolen once, the attacker has month-long access. This feels like an unsolvable tradeoff. Flipkart solves it with two tokens working together."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Flipkart keep you logged in for days — without making a stolen token dangerous?"
+            },
+            {
+              type: "heading",
+              text: "Two Tokens — Two Jobs"
+            },
+            {
+              type: "paragraph",
+              text: "The Access Token is short-lived — 15 minutes. It's sent with every API request. If stolen, the attacker only has a 15-minute window. The Refresh Token is long-lived — 7 days. It's never sent to APIs. Its only job is to get a new access token when the old one expires. It lives in an HttpOnly cookie so JavaScript can't touch it."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of it like a building access system. Your access card opens doors — but expires every 15 minutes. Your master key can generate a new access card instantly — but you keep it locked in a safe, not in your pocket. Two separate tools. Two separate risk levels."
+            },
+            {
+              type: "heading",
+              text: "The Full Flow — Login to Silent Refresh"
+            },
+            {
+              type: "step",
+              title: "Ram logs in",
+              desc: "Server issues both tokens at once. The access token goes to the app and is stored in memory. The refresh token is set as an HttpOnly cookie — the browser stores it automatically, JavaScript can't read it."
+            },
+            {
+              type: "step",
+              title: "Ram uses the app for 15 minutes",
+              desc: "Every API call sends the access token in the Authorization header. Server verifies it. No DB hit. Fast. ✅"
+            },
+            {
+              type: "step",
+              title: "Access token expires",
+              desc: "The next API call returns 401 Unauthorized. The access token's 15-minute window is up."
+            },
+            {
+              type: "step",
+              title: "App silently calls /refresh-token",
+              desc: "The app catches the 401 and automatically calls the refresh endpoint. The browser sends the HttpOnly refresh token cookie automatically — no JavaScript needed. Ram sees nothing."
+            },
+            {
+              type: "step",
+              title: "Server issues a new access token",
+              desc: "Server verifies the refresh token, and returns a fresh 15-minute access token. The app stores it in memory and retries the original request. Ram stays logged in. ✅"
+            },
+            {
+              type: "step",
+              title: "Refresh token expires — after 7 days",
+              desc: "The /refresh-token call itself returns 401. No more silent renewal. App redirects Ram to the login page. This is the intended security boundary."
+            },
+            {
+              type: "code",
+              code: "// Complete lifecycle:\nLogin → Access Token (15m) + Refresh Token (7d)\n  ↓ 15 min\n401 → silent refresh → new Access Token ✅\n  ↓ 7 days\n401 on /refresh-token → redirect to Login"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Short-lived access tokens limit damage if stolen. Long-lived refresh tokens keep users logged in without re-entering passwords. Silent refresh happens invisibly. Ram stays logged in for 7 days — with 15-minute security windows throughout."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Two tokens — but where exactly do they live in the browser? This isn't a preference question — it's a security decision. Storing tokens in the wrong place is one of the most common and catastrophic mistakes in web development. LocalStorage vs Cookies — the wrong choice exposes every user's token to attackers."
+            }
+          ],
+
+          "Storing Tokens (Cookie vs LocalStorage)": [
+            {
+              type: "paragraph",
+              text: "You have a JWT. You need to store it somewhere in the browser so it can be sent with every request. Two obvious options — LocalStorage and Cookies. Most developers reach for LocalStorage first. It's simple, it's easy, it works. It has also been responsible for some of the worst token theft incidents in web security history."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ LocalStorage and Cookies both store data in the browser — what makes one a security disaster and the other the right choice for tokens?"
+            },
+            {
+              type: "heading",
+              text: "Option 1 — LocalStorage"
+            },
+            {
+              type: "paragraph",
+              text: "LocalStorage is easy to use — store the token on login, read it on every request, attach it to the Authorization header manually. Sounds fine. The problem: any JavaScript running on the page can read LocalStorage. Including malicious scripts injected through XSS attacks."
+            },
+            {
+              type: "error-callout",
+              title: "XSS + LocalStorage = every user's token stolen:",
+              list: [
+                "Attacker finds any XSS vulnerability on Flipkart — even in a product review field",
+                "Injects a script that reads localStorage.getItem('accessToken') and sends it to attacker's server",
+                "Every user who loads that page silently leaks their token",
+                "Attacker has valid JWTs for thousands of users — full account access instantly"
+              ],
+              footer: "XSS is one of the most common vulnerabilities on the web. LocalStorage makes it catastrophic."
+            },
+            {
+              type: "heading",
+              text: "Option 2 — HttpOnly Cookie"
+            },
+            {
+              type: "paragraph",
+              text: "An HttpOnly cookie is set by the server — not by JavaScript. The browser stores it and sends it automatically with every matching request. The critical difference: JavaScript cannot read it. Not your code. Not injected malicious code. Not anyone's code. It's completely invisible to the JavaScript layer."
+            },
+            {
+              type: "code",
+              code: "res.cookie('refreshToken', token, {\n  httpOnly: true,\n  secure: true,\n  sameSite: 'Strict'\n})"
+            },
+            {
+              type: "heading",
+              text: "The Recommended Pattern for Production"
+            },
+            {
+              type: "paragraph",
+              text: "Store the access token in memory — a JavaScript variable or React state. It's never persisted anywhere, so XSS has nothing to steal. It gets lost on page refresh, but that's fine — the app silently fetches a new one using the refresh token. Store the refresh token in an HttpOnly cookie. JavaScript can't read it, it survives page refreshes, and the browser sends it automatically."
+            },
+            {
+              type: "code",
+              code: "// LocalStorage  → ❌ JS can read it → XSS steals it\n// HttpOnly Cookie → ✅ JS cannot read it → XSS blind"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Access token in memory — nothing for XSS to steal. Refresh token in HttpOnly cookie — invisible to JavaScript entirely. This combination gives Flipkart both airtight security and seamless user experience."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Tokens are stored safely — but they don't last forever. Access tokens expire in 15 minutes. Refresh tokens expire in 7 days. What exactly happens at expiry? How does the app silently renew without interrupting Ram mid-checkout? That's the final piece — Token Expiry and Renewal."
+            }
+          ],
+
+          "Token Expiry & Renewal": [
+            {
+              type: "paragraph",
+              text: "Ram is in the middle of checkout on Flipkart. He's been browsing for 20 minutes. His access token silently expired 5 minutes ago. He clicks 'Place Order'. If Flipkart handles this wrong — he gets logged out mid-transaction. Cart cleared. Order lost. Terrible experience. But if tokens never expire — a stolen token means lifetime access for an attacker. Expiry and renewal is how Flipkart balances both."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Access token expires mid-session. How does Flipkart silently renew it without Ram ever knowing — or losing his checkout?"
+            },
+            {
+              type: "heading",
+              text: "What Happens When the Access Token Expires"
+            },
+            {
+              type: "step",
+              title: "Ram's access token hits expiry",
+              desc: "The exp timestamp inside the JWT payload is now in the past. The token is dead."
+            },
+            {
+              type: "step",
+              title: "Ram clicks 'Place Order'",
+              desc: "App sends the API request with the expired token in the Authorization header."
+            },
+            {
+              type: "step",
+              title: "Server rejects it with 401",
+              desc: "jwt.verify() detects the expiry — returns 401 Unauthorized instantly."
+            },
+            {
+              type: "step",
+              title: "App catches the 401 silently",
+              desc: "An Axios interceptor catches every 401 response globally — before it ever reaches any component. Instead of showing an error or logging Ram out, it triggers a silent refresh behind the scenes."
+            },
+            {
+              type: "step",
+              title: "App calls /refresh-token",
+              desc: "The refresh token HttpOnly cookie is automatically attached by the browser. Server verifies it and returns a brand new access token."
+            },
+            {
+              type: "step",
+              title: "Original request is retried",
+              desc: "The interceptor takes the new access token, attaches it to the original 'Place Order' request, and resends it — successfully. Ram sees his order placed. He noticed nothing. ✅"
+            },
+            {
+              type: "code",
+              code: "// Interceptor catches 401 → refresh → retry:\naxios.interceptors.response.use(\n  res => res,\n  async err => {\n    if (err.response.status === 401) {\n      const { data } = await axios.post('/refresh-token')\n      err.config.headers['Authorization'] = `Bearer ${data.accessToken}`\n      return axios(err.config)  // retry original request ✅\n    }\n  }\n)"
+            },
+            {
+              type: "heading",
+              text: "When the Refresh Token Also Expires"
+            },
+            {
+              type: "step",
+              title: "Refresh token expires after 7 days",
+              desc: "The /refresh-token endpoint itself returns 401. The refresh token's exp timestamp is also in the past — nothing can save it."
+            },
+            {
+              type: "step",
+              title: "No more silent renewal possible",
+              desc: "The interceptor catches the 401 from /refresh-token — recognizes it's not a regular API call — and stops retrying."
+            },
+            {
+              type: "step",
+              title: "App redirects Ram to login",
+              desc: "Ram sees the login page. He enters credentials. Server issues a fresh access token and refresh token pair. The full cycle starts again."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Access token expires every 15 minutes — stolen tokens are short-lived. Silent refresh keeps Ram logged in for 7 days without a single re-login prompt. After 7 days — fresh login, fresh tokens. Maximum security. Zero friction. That's the complete JWT lifecycle in production."
+            }
+          ],
+        }
+      },
+      {
+        id: 4,
+        title: "Authorization",          // ✅ new module
+        level: "freshers",
+        topics: [
+          "What is Authorization?",
+          "Role Based Access Control (RBAC)",
+          "Protecting Routes (Public vs Private)",
+          "Authorization Header & Middleware"
+        ],
+        topicDetails: {
+          "What is Authorization?": [
+            {
+              type: "paragraph",
+              text: "Ram just logged into Flipkart. Authentication passed — Flipkart knows it's him. But now Ram types flipkart.com/seller/dashboard in the browser. He's a buyer. Not a seller. Yet he's logged in. So why does Flipkart still block him? Logging in was supposed to be the gate — why is there another one?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Flipkart already knows who Ram is. So why does it still block certain pages and actions even after login?"
+            },
+            {
+              type: "heading",
+              text: "Authentication vs Authorization — Two Completely Different Questions"
+            },
+            {
+              type: "paragraph",
+              text: "Authentication asks — Who are you? Authorization asks — What are you allowed to do? These are two separate checks. Passing authentication does not mean you pass authorization. You need both — and they happen in order."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Back to the office building. The security guard checked your ID at the entrance — that's Authentication. You're inside now. But you try to walk into the CEO's private office. A different lock stops you — your ID doesn't grant that access. That second check is Authorization."
+            },
+            {
+              type: "heading",
+              text: "How Authorization Plays Out on Flipkart"
+            },
+            {
+              type: "step",
+              title: "Ram logs in as a buyer",
+              desc: "Authentication done. Flipkart issues a JWT with Ram's role embedded."
+            },
+            {
+              type: "code",
+              code: "// Ram's JWT payload:\n{\n  userId: 1,\n  email: 'ram@gmail.com',\n  role: 'buyer'  // ← this is what Authorization checks\n}"
+            },
+            {
+              type: "step",
+              title: "Ram tries to open the Seller Dashboard",
+              desc: "He types flipkart.com/seller/dashboard — his JWT is sent with the request."
+            },
+            {
+              type: "step",
+              title: "Server checks his role",
+              desc: "JWT decoded. Role is 'buyer'. Seller Dashboard requires role 'seller'. Mismatch."
+            },
+            {
+              type: "code",
+              code: "// Authorization check on server:\nconst decoded = jwt.verify(token, SECRET)\n// decoded.role → 'buyer'\n\nif (decoded.role !== 'seller') {\n  return res.status(403).json({ error: 'Access Denied' }) // ❌\n}"
+            },
+            {
+              type: "step",
+              title: "403 Forbidden — not 401",
+              desc: "401 means not authenticated. 403 means authenticated but not authorized. Ram is logged in — just not allowed here."
+            },
+            {
+              type: "heading",
+              text: "Flipkart Has Multiple Roles — Each With Different Permissions"
+            },
+            {
+              type: "code",
+              code: "buyer:\n  ✅ View own orders\n  ✅ Add to cart, checkout\n  ❌ Manage listings\n  ❌ Ban users\n\nseller:\n  ✅ Manage own listings\n  ✅ View own sales data\n  ❌ Access other sellers' data\n  ❌ Ban users\n\ndelivery_agent:\n  ✅ Update delivery status\n  ❌ View order details beyond delivery info\n  ❌ Access any dashboard\n\nadmin:\n  ✅ Access everything\n  ✅ Ban users, manage all orders\n  ✅ View any account"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Authentication = Flipkart confirms you are Ram. Authorization = Flipkart checks what Ram is allowed to do. Both checks happen. Both are necessary. One without the other is incomplete — and dangerous."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ So roles exist — buyer, seller, admin, delivery agent. But how does Flipkart actually manage and enforce these roles systematically across every route and every action? That's the job of Role Based Access Control — RBAC."
+            }
+          ],
+
+          "Role Based Access Control (RBAC)": [
+            {
+              type: "paragraph",
+              text: "Flipkart has millions of users. Buyers, sellers, delivery agents, admins, support staff. Each needs different access to different parts of the system. Checking roles manually in every single route handler — if user.role === 'admin', if user.role === 'seller' — scattered across thousands of files would be unmaintainable chaos. There's a systematic way to handle this: RBAC."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Flipkart enforce different permissions for different roles across every route — without duplicating checks everywhere?"
+            },
+            {
+              type: "heading",
+              text: "What is RBAC?"
+            },
+            {
+              type: "paragraph",
+              text: "Role Based Access Control is a pattern where permissions are tied to roles — not to individual users. You don't give Ram access to the seller dashboard. You give the 'seller' role access to the seller dashboard. Ram gets access only when his role is 'seller'. Change the role, change the access. Clean, scalable, maintainable."
+            },
+            {
+              type: "code",
+              code: "// Without RBAC — messy, scattered, error-prone:\napp.get('/seller/dashboard', (req, res) => {\n  if (req.user.role !== 'seller') return res.status(403).send('Denied')\n  // ...\n})\n\napp.get('/seller/products', (req, res) => {\n  if (req.user.role !== 'seller') return res.status(403).send('Denied')\n  // ...\n})\n// Repeated everywhere. One missed check = security hole. ❌"
+            },
+            {
+              type: "heading",
+              text: "RBAC Done Right — Reusable Middleware"
+            },
+            {
+              type: "step",
+              title: "Define a reusable role-checking middleware",
+              desc: "One function. Takes allowed roles. Returns a middleware. Used everywhere."
+            },
+            {
+              type: "code",
+              code: "// authorizeRoles.js:\nconst authorizeRoles = (...allowedRoles) => {\n  return (req, res, next) => {\n    const userRole = req.user.role  // from decoded JWT\n\n    if (!allowedRoles.includes(userRole)) {\n      return res.status(403).json({ error: 'Access Denied' }) // ❌\n    }\n\n    next() // ✅ role matches — continue\n  }\n}"
+            },
+            {
+              type: "step",
+              title: "Apply it to routes — clean and explicit",
+              desc: "Each route declares exactly which roles can access it."
+            },
+            {
+              type: "code",
+              code: "// Routes with RBAC:\napp.get('/seller/dashboard',\n  authenticateToken,          // Step 1: is this user logged in?\n  authorizeRoles('seller'),   // Step 2: do they have the right role?\n  sellerDashboardController\n)\n\napp.get('/admin/users',\n  authenticateToken,\n  authorizeRoles('admin'),\n  adminUsersController\n)\n\napp.get('/orders/update-status',\n  authenticateToken,\n  authorizeRoles('delivery_agent', 'admin'), // multiple roles allowed\n  updateStatusController\n)"
+            },
+            {
+              type: "step",
+              title: "Ram (buyer) hits /seller/dashboard",
+              desc: "authenticateToken passes — he's logged in. authorizeRoles('seller') runs — his role is 'buyer'. 403 returned. ❌"
+            },
+            {
+              type: "step",
+              title: "Priya (seller) hits /seller/dashboard",
+              desc: "authenticateToken passes. authorizeRoles('seller') passes — her role matches. Request continues. ✅"
+            },
+            {
+              type: "info-callout",
+              text: "💡 With RBAC middleware, every route is self-documenting. Looking at any route, you instantly know: who needs to be logged in, and what role they need. One middleware handles all the enforcement. No duplication. No missed checks."
+            },
+            {
+              type: "success-callout",
+              text: "✅ RBAC separates authentication from authorization cleanly. Roles are defined once. Middleware enforces them everywhere. Adding a new role or changing permissions is a one-line change — not a hunt through thousands of files."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Roles are enforced on the backend. But what about the frontend? Some routes on Flipkart should be accessible without login — homepage, product listings. Others require login — checkout, orders. Some require specific roles — seller dashboard. How does Flipkart protect frontend routes from being accessed by the wrong users? That's Public vs Private route protection."
+            }
+          ],
+
+          "Protecting Routes (Public vs Private)": [
+            {
+              type: "paragraph",
+              text: "Flipkart's homepage loads for anyone — no login needed. But try to visit /checkout or /my-orders without logging in — Flipkart redirects you to login instantly. And even if you're logged in as a buyer — /seller/dashboard sends you away. Three types of access. Three types of route protection. All working silently, every time."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Flipkart decide which pages anyone can see, which need login, and which need a specific role — and enforce it consistently on both frontend and backend?"
+            },
+            {
+              type: "heading",
+              text: "Three Types of Routes on Flipkart"
+            },
+            {
+              type: "code",
+              code: "Public Routes:\n  /home, /products, /search, /product/:id\n  → Anyone can access. No token needed.\n\nPrivate Routes:\n  /checkout, /my-orders, /wishlist, /profile\n  → Must be logged in. Any valid role.\n\nRole-Protected Routes:\n  /seller/dashboard, /admin/users, /delivery/status\n  → Must be logged in AND have the correct role."
+            },
+            {
+              type: "heading",
+              text: "Backend Route Protection — Middleware Stack"
+            },
+            {
+              type: "code",
+              code: "// Public — no middleware:\napp.get('/products', productController)\n\n// Private — must be authenticated:\napp.get('/my-orders',\n  authenticateToken,   // ← blocks if no valid JWT\n  myOrdersController\n)\n\n// Role-protected — must be authenticated + correct role:\napp.get('/seller/dashboard',\n  authenticateToken,\n  authorizeRoles('seller'),  // ← blocks wrong roles\n  sellerDashboardController\n)"
+            },
+            {
+              type: "heading",
+              text: "Frontend Route Protection — React"
+            },
+            {
+              type: "paragraph",
+              text: "Backend protection is the real security. But on the frontend, Flipkart also prevents users from even seeing pages they shouldn't — avoiding unnecessary API calls and broken UI states."
+            },
+            {
+              type: "code",
+              code: "// PrivateRoute — redirect to login if not authenticated:\nconst PrivateRoute = ({ children }) => {\n  const { isLoggedIn } = useAuth()\n  return isLoggedIn ? children : <Navigate to='/login' />\n}\n\n// RoleRoute — redirect if wrong role:\nconst RoleRoute = ({ children, allowedRole }) => {\n  const { user } = useAuth()\n  return user?.role === allowedRole\n    ? children\n    : <Navigate to='/unauthorized' />\n}\n\n// Usage in React Router:\n<Route path='/my-orders'\n  element={\n    <PrivateRoute>\n      <MyOrders />\n    </PrivateRoute>\n  }\n/>\n\n<Route path='/seller/dashboard'\n  element={\n    <RoleRoute allowedRole='seller'>\n      <SellerDashboard />\n    </RoleRoute>\n  }\n/>"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Frontend route protection is UX — not security. A user can disable JavaScript, modify React state, or call your APIs directly. Frontend checks just improve experience. The real enforcement must always happen on the backend. Never trust the frontend alone."
+            },
+            {
+              type: "step",
+              title: "Ram (buyer) visits /seller/dashboard",
+              desc: "Frontend RoleRoute checks his role — 'buyer' ≠ 'seller' → redirected to /unauthorized instantly. Never even loads the page."
+            },
+            {
+              type: "step",
+              title: "Ram tries to call /seller/dashboard API directly",
+              desc: "Even bypassing the frontend — backend authorizeRoles('seller') middleware runs → 403 Forbidden. ❌"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Public routes open to all. Private routes gated by authentication. Role routes gated by role. Both frontend and backend enforce this — frontend for UX, backend for actual security. Two layers. No gaps."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Routes are protected — but how does the backend actually receive and verify the user's identity on every request? The token needs to travel from the frontend to the backend in a standard way — and the backend needs a single consistent place to check it before any route handler runs. That's the Authorization Header and Middleware pattern."
+            }
+          ],
+
+          "Authorization Header & Middleware": [
+            {
+              type: "paragraph",
+              text: "Every protected route on Flipkart needs to know: who is making this request? Is their token valid? What is their role? This check happens before the route handler runs — on every single protected request. If this check is scattered across individual route handlers, one missed check is a security hole. Flipkart centralizes this in one place: the Authorization Header and a middleware that reads it."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does the backend reliably receive the JWT on every request — and verify it once before any route logic runs?"
+            },
+            {
+              type: "heading",
+              text: "The Authorization Header — How JWT Travels"
+            },
+            {
+              type: "paragraph",
+              text: "When Ram makes any authenticated request, his app attaches the JWT to the Authorization header using the Bearer scheme. This is the industry standard — not a cookie, not a query param, not a request body."
+            },
+            {
+              type: "code",
+              code: "// Every authenticated request from frontend:\nGET /my-orders\nAuthorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9.SflKxw...\n\n// 'Bearer' = standard prefix that says 'I am presenting a token'\n// Everything after 'Bearer ' is the actual JWT"
+            },
+            {
+              type: "code",
+              code: "// Axios — attaching token to every request automatically:\naxios.interceptors.request.use(config => {\n  const token = getAccessToken()  // from memory\n  if (token) {\n    config.headers['Authorization'] = `Bearer ${token}`\n  }\n  return config\n})\n// Set once. Works for every API call. No repetition."
+            },
+            {
+              type: "heading",
+              text: "The authenticateToken Middleware — One Check for Everything"
+            },
+            {
+              type: "paragraph",
+              text: "On the backend, a single middleware function intercepts every protected request, extracts the JWT from the Authorization header, verifies it, and attaches the decoded user to the request object."
+            },
+            {
+              type: "code",
+              code: "// authenticateToken.js — runs before any protected route handler:\nconst authenticateToken = (req, res, next) => {\n\n  // Step 1: Extract token from header\n  const authHeader = req.headers['authorization']\n  const token = authHeader && authHeader.split(' ')[1]\n  // 'Bearer eyJ...' → split → ['Bearer', 'eyJ...']\n\n  // Step 2: Token missing\n  if (!token) {\n    return res.status(401).json({ error: 'No token provided' }) // ❌\n  }\n\n  // Step 3: Verify token\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET)\n    req.user = decoded  // { userId: 1, email: '...', role: 'buyer' }\n    next()  // ✅ token valid — continue to route handler\n\n  } catch (err) {\n    return res.status(401).json({ error: 'Invalid or expired token' }) // ❌\n  }\n}"
+            },
+            {
+              type: "heading",
+              text: "The Full Middleware Chain in Action"
+            },
+            {
+              type: "code",
+              code: "// Protected route — full chain:\napp.get('/my-orders',\n  authenticateToken,        // 1. Is token valid? Who is this?\n  myOrdersController        // 2. Fetch and return their orders\n)\n\napp.get('/seller/dashboard',\n  authenticateToken,        // 1. Is token valid? Who is this?\n  authorizeRoles('seller'), // 2. Do they have seller role?\n  sellerDashboardController // 3. Return seller data\n)\n\n// authenticateToken sets req.user\n// authorizeRoles reads req.user.role\n// Route handler uses req.user.userId to fetch the right data"
+            },
+            {
+              type: "step",
+              title: "Request arrives at /my-orders",
+              desc: "authenticateToken runs — extracts JWT from Authorization header, verifies signature, sets req.user. ✅"
+            },
+            {
+              type: "step",
+              title: "Route handler runs",
+              desc: "Reads req.user.userId — fetches only Ram's orders. Not everyone's. Not a random user's."
+            },
+            {
+              type: "code",
+              code: "// myOrdersController:\nconst myOrdersController = async (req, res) => {\n  const orders = await Order.find({ userId: req.user.userId })\n  // req.user set by authenticateToken middleware\n  // Ram only sees Ram's orders ✅\n  res.json(orders)\n}"
+            },
+            {
+              type: "success-callout",
+              text: "✅ JWT travels in the Authorization header — industry standard. One middleware extracts, verifies, and decodes it. req.user is set once and available to every route handler and role middleware downstream. Authentication and authorization work together as a clean, centralized pipeline."
+            }
+          ]
+        }
+      },
+
+
 
 
 
@@ -68,7 +1101,6 @@ export const roadmapData = [
           "Implicit Flow (deprecated - why?)",
           "Client Credentials Flow",
           "Google OAuth in Node.js (Passport.js)",
-          "GitHub OAuth in Node.js",
           "Passport.js strategies"
         ]
       },
@@ -81,7 +1113,8 @@ export const roadmapData = [
           "HTTPS & Secure Cookies",
           "HttpOnly & SameSite Cookie flags",
           "CSRF Attack & Prevention",
-          "CORS in Authentication context",
+          "SQL Injection",
+          "XSS Attack & Prevention",
           "Brute Force Protection (rate limiting login)",
           "Account Lockout mechanism",
           "Input validation & Sanitization"
@@ -187,13 +1220,239 @@ export const roadmapData = [
         title: "Basics (Foundation)",
         level: "freshers",
         topics: [
-          "What is Caching?",
-          "Why Caching matters (Speed, Cost, Scale)",
+          "What is Caching and why is it needed?",
           "Cache Hit vs Cache Miss",
           "Cache Hit Ratio",
           "Where Cache Lives (Browser, Server, DB, CDN)",
-          "Why Netflix needs Caching (streaming at scale)"
-        ]
+        ],
+        topicDetails: {
+          "What is Caching and why is it needed?": [
+            {
+              type: "paragraph",
+              text: "You open Netflix. You click on Stranger Things. Season 1, Episode 1 starts playing in under 2 seconds. Now think about what just happened — Netflix has 230 million users. Thousands of them are clicking Stranger Things at this exact moment. Every single click needs the show title, description, thumbnail, cast, ratings, episode list. If Netflix fetched all of that from its main database every single time — the database would collapse in minutes."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Netflix respond in 2 seconds to millions of users — all asking for the same data?"
+            },
+            {
+              type: "heading",
+              text: "The Problem With Hitting the Database Every Time"
+            },
+            {
+              type: "error-callout",
+              title: "Without caching, every click on Netflix means:",
+              list: [
+                "A full trip to the database — halfway across the world",
+                "Database handles millions of identical requests simultaneously",
+                "Each query takes 200-500ms — feels slow and laggy",
+                "Database gets overloaded and starts failing under peak traffic"
+              ],
+              footer: "Friday night. Everyone opens Netflix. Database gets hit with 10 million requests. It dies. Netflix goes down."
+            },
+            {
+              type: "heading",
+              text: "What is Caching?"
+            },
+            {
+              type: "paragraph",
+              text: "Caching means storing a copy of frequently used data in a fast, temporary storage — so the next time someone asks for it, you don't go all the way to the database. You grab it from the cache instead. Fast. Cheap. No database stress."
+            },
+            {
+              type: "step",
+              title: "First user clicks Stranger Things",
+              desc: "Netflix fetches all the show data from the database — title, description, cast, episodes, thumbnails. Takes ~300ms."
+            },
+            {
+              type: "step",
+              title: "Netflix stores it in cache",
+              desc: "That same data is now saved in a super-fast cache (Redis). Right next to the server. Ready to serve instantly."
+            },
+            {
+              type: "step",
+              title: "Second user clicks Stranger Things",
+              desc: "Netflix checks cache first. Data is already there. Returns it in under 5ms. No database trip needed."
+            },
+            {
+              type: "step",
+              title: "10,000 users click Stranger Things",
+              desc: "All 10,000 get served from cache. Database is not touched even once. Netflix stays fast and alive."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Same data. Same response. 300ms becomes 5ms. Database load drops from 10 million hits to almost zero. That's caching."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But how does Netflix know if the data in cache is fresh or stale? What if the cache has it but it's outdated? What if it doesn't have it at all? Those two situations have names — Cache Hit and Cache Miss. Let's understand them."
+            }
+          ],
+
+          "Cache Hit vs Cache Miss": [
+            {
+              type: "paragraph",
+              text: "You open Netflix and search 'Stranger Things'. Netflix goes to check the cache. Two things can happen — either the data is sitting right there waiting for you, or it's not there at all and Netflix has to go fetch it. These two moments have names."
+            },
+            {
+              type: "heading",
+              text: "Cache Hit — The Data is Already There"
+            },
+            {
+              type: "paragraph",
+              text: "A Cache Hit happens when Netflix checks the cache and finds exactly what it needs. No database trip. No waiting. Just instant data."
+            },
+            {
+              type: "step",
+              title: "You search 'Stranger Things'",
+              desc: "Netflix looks in the cache for Stranger Things data."
+            },
+            {
+              type: "step",
+              title: "Cache has it",
+              desc: "Someone searched for it before. It's already stored. Netflix grabs it instantly."
+            },
+            {
+              type: "code",
+              code: "cache.get('stranger_things')\n→ ✅ HIT — data found\n→ Return in 5ms"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cache Hit = fast, cheap, database never involved. This is what Netflix optimises for."
+            },
+            {
+              type: "heading",
+              text: "Cache Miss — The Data is Not There"
+            },
+            {
+              type: "paragraph",
+              text: "A Cache Miss happens when Netflix checks the cache and finds nothing. Now it has no choice — it goes to the database, fetches the data, stores it in cache for next time, and then responds to you."
+            },
+            {
+              type: "step",
+              title: "You search for a brand new show just added today",
+              desc: "Netflix checks cache. Nobody has searched for this yet. Cache is empty."
+            },
+            {
+              type: "step",
+              title: "Cache Miss — go to database",
+              desc: "Netflix hits the main database. Fetches all show data. Takes ~300ms."
+            },
+            {
+              type: "step",
+              title: "Store in cache for next time",
+              desc: "Netflix saves the data in cache. Next person who searches gets a Cache Hit."
+            },
+            {
+              type: "code",
+              code: "cache.get('new_show_xyz')\n→ ❌ MISS — not found\n→ Query database (~300ms)\n→ cache.set('new_show_xyz', data)\n→ Return data"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Cache Miss is expensive — database trip, slower response, more server load. Netflix's goal is to keep misses as rare as possible. But how do you measure that? That's where Cache Hit Ratio comes in."
+            }
+          ],
+
+          "Cache Hit Ratio": [
+            {
+              type: "paragraph",
+              text: "Netflix's engineering team is doing a performance review. Someone asks — 'How effective is our cache? Are users mostly getting Cache Hits or Cache Misses?' You can't just guess. You need a number. That number is the Cache Hit Ratio."
+            },
+            {
+              type: "heading",
+              text: "What is Cache Hit Ratio?"
+            },
+            {
+              type: "paragraph",
+              text: "Cache Hit Ratio is simply the percentage of requests that were served from cache — out of all requests that came in."
+            },
+            {
+              type: "code",
+              code: "Cache Hit Ratio = (Cache Hits / Total Requests) × 100\n\nExample:\n1000 requests came in\n920 served from cache (Hits)\n80 went to database (Misses)\n\nHit Ratio = (920 / 1000) × 100 = 92%"
+            },
+            {
+              type: "paragraph",
+              text: "Netflix targets a Cache Hit Ratio above 95% for popular content like Stranger Things, Wednesday, Money Heist. That means for every 100 users clicking a popular show, 95+ are served from cache and less than 5 ever touch the database."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Higher Hit Ratio = faster Netflix, less database load, lower infrastructure cost. A drop from 95% to 80% during Friday night peak means millions of extra database queries — and a possible outage."
+            },
+            {
+              type: "error-callout",
+              title: "A low Cache Hit Ratio on Netflix means:",
+              list: [
+                "More users hitting the database directly",
+                "Database slows down under load",
+                "Show pages take longer to load",
+                "Buffering and lag spike during peak hours"
+              ],
+              footer: "Netflix monitors hit ratio in real time. A sudden drop triggers an immediate alert."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Cache Hit Ratio tells you how well your cache is performing — but it doesn't tell you where the cache actually lives. Is it in the browser? On Netflix's server? In the database layer? Near you geographically? Cache can live in multiple places — and each one serves a different purpose."
+            }
+          ],
+
+          "Where Cache Lives (Browser, Server, DB, CDN)": [
+            {
+              type: "paragraph",
+              text: "You've opened Netflix on your laptop. You watched Stranger Things yesterday. Today you open it again — and the thumbnail loads before the page even fully renders. How? Netflix didn't fetch that from a server. It was already sitting on your laptop. Cache isn't just one place — it lives everywhere."
+            },
+            {
+              type: "heading",
+              text: "1 — Browser Cache (On Your Device)"
+            },
+            {
+              type: "paragraph",
+              text: "When you visit Netflix, your browser saves static files — thumbnails, CSS, JavaScript, logos — directly on your device. Next visit, your browser loads them locally without sending any request to Netflix's servers."
+            },
+            {
+              type: "code",
+              code: "You visit netflix.com\n→ Browser loads logo from local cache\n→ No request to Netflix servers\n→ Page loads instantly ✅"
+            },
+            {
+              type: "heading",
+              text: "2 — Server Cache (On Netflix's Backend)"
+            },
+            {
+              type: "paragraph",
+              text: "Netflix uses Redis — an in-memory cache — sitting right next to its backend servers. Show metadata, user preferences, trending lists — all stored in Redis. When your request hits Netflix's server, it checks Redis first before touching the database."
+            },
+            {
+              type: "code",
+              code: "Request → Netflix Server\n→ Check Redis cache\n→ ✅ HIT: return in 5ms\n→ ❌ MISS: query DB → store in Redis → return"
+            },
+            {
+              type: "heading",
+              text: "3 — Database Cache (Inside the DB Layer)"
+            },
+            {
+              type: "paragraph",
+              text: "Even the database itself has a built-in cache. Frequently run queries get their results cached inside the DB engine. Netflix's database doesn't re-run the same complex query a million times — if the result is cached, it returns it directly."
+            },
+            {
+              type: "heading",
+              text: "4 — CDN Cache (Close to You, Geographically)"
+            },
+            {
+              type: "paragraph",
+              text: "This is the big one for Netflix. Video files are massive. Streaming Stranger Things from a server in the US to a user in Mumbai would be painfully slow. So Netflix caches the actual video content on CDN servers placed physically close to you — in Mumbai, Bangalore, Delhi. You stream from the nearest CDN, not from a server in America."
+            },
+            {
+              type: "code",
+              code: "You in Mumbai → Request Episode 1\n→ CDN server in Mumbai has it cached\n→ Streams from 10ms away ✅\n\n(Without CDN → streams from US → 200ms latency → buffering 😭)"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Browser cache handles static files. Server cache (Redis) handles metadata. DB cache handles repeated queries. CDN cache handles video streaming close to you. Netflix uses all four layers together — that's why it feels instant everywhere in the world."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Now we know where cache lives. But how does Netflix actually read data into the cache? Does it load everything upfront? Or only when someone asks for it? There are two strategies — and each works differently."
+            }
+          ]
+        }
       },
 
       {
@@ -203,8 +1462,115 @@ export const roadmapData = [
         topics: [
           "Cache-Aside (Lazy Loading)",
           "Read-Through Cache",
-          "When to use which strategy"
-        ]
+        ],
+        topicDetails: {
+          "Cache-Aside (Lazy Loading)": [
+            {
+              type: "paragraph",
+              text: "Netflix just launched a brand new original series — 'Delhi Files'. Nobody has watched it yet. Nobody has searched for it. The cache is completely empty for this show. Now the first user in India searches for it. What does Netflix do?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Should Netflix have pre-loaded every new show into cache? Or should it only cache things when someone actually asks for them?"
+            },
+            {
+              type: "heading",
+              text: "Cache-Aside — Load It Only When Needed"
+            },
+            {
+              type: "paragraph",
+              text: "Cache-Aside means the application itself manages the cache. It always checks cache first. If data isn't there — it fetches from the database, stores it in cache, and then returns it. Next time someone asks — it's already in cache."
+            },
+            {
+              type: "step",
+              title: "User searches 'Delhi Files'",
+              desc: "Application checks Redis cache first."
+            },
+            {
+              type: "step",
+              title: "Cache Miss — not there yet",
+              desc: "Nobody has searched this before. Cache has nothing."
+            },
+            {
+              type: "step",
+              title: "Fetch from database",
+              desc: "Application queries the database for all Delhi Files metadata — title, cast, episodes, thumbnails."
+            },
+            {
+              type: "step",
+              title: "Store in cache",
+              desc: "Application saves the result in Redis. TTL set to 1 hour."
+            },
+            {
+              type: "step",
+              title: "Return data to user",
+              desc: "First user gets the data. Every user after that gets a Cache Hit — served in 5ms."
+            },
+            {
+              type: "code",
+              code: "data = cache.get('delhi_files')\n\nif not data:\n  data = db.query('SELECT * FROM shows WHERE title=delhi_files')\n  cache.set('delhi_files', data, ttl=3600)\n\nreturn data"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cache only fills up with data people actually request. No wasted memory pre-loading shows nobody watches. Netflix uses this for long-tail content — older shows, regional titles, niche content."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Cache-Aside has one weakness — the very first user always takes the slow path. Cache Miss → DB → slow response. What if you want cache to be populated automatically, without the application having to manage it manually? That's Read-Through Cache."
+            }
+          ],
+
+          "Read-Through Cache": [
+            {
+              type: "paragraph",
+              text: "In Cache-Aside, the application itself checks cache, then database, then stores in cache. The application is doing all the work. What if Netflix had so many services and teams that they couldn't trust every developer to correctly write that cache-check-then-db logic every time? What if the cache layer could just handle it automatically?"
+            },
+            {
+              type: "heading",
+              text: "Let the Cache Handle It"
+            },
+            {
+              type: "paragraph",
+              text: "In Read-Through Cache, the application only ever talks to the cache — never directly to the database. If the cache has the data, it returns it. If not, the cache itself goes to the database, fetches the data, stores it, and returns it. The application doesn't need to know or care."
+            },
+            {
+              type: "step",
+              title: "User opens Wednesday on Netflix",
+              desc: "Application asks cache: 'Give me Wednesday show data.'"
+            },
+            {
+              type: "step",
+              title: "Cache checks itself",
+              desc: "Cache Hit → returns data instantly. ✅"
+            },
+            {
+              type: "step",
+              title: "Or — Cache Miss",
+              desc: "Cache doesn't have it. Cache itself goes to the database — not the application."
+            },
+            {
+              type: "step",
+              title: "Cache fetches, stores, returns",
+              desc: "Cache gets the data from DB, saves it internally, returns it to the application."
+            },
+            {
+              type: "code",
+              code: "// Application code — simple and clean\ndata = cache.get('wednesday')\nreturn data\n\n// Cache handles everything internally:\n// Miss → fetch from DB → store → return"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Cache-Aside: App manages the cache logic. Read-Through: Cache manages itself. Netflix uses Read-Through for its core content metadata layer — show titles, descriptions, ratings — where consistency matters and the team wants one single place managing cache population."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cleaner application code. Cache is always the single source. No developer accidentally forgets to write to cache. The cache layer takes full responsibility."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Both strategies are about reading data. But what about writing? When a Netflix editor updates Stranger Things' description, adds a new episode, or changes the thumbnail — how does that update reach the cache? There are three ways to write — and each comes with different trade-offs."
+            }
+          ]
+        }
       },
 
       {
@@ -215,8 +1581,176 @@ export const roadmapData = [
           "Write-Through Cache",
           "Write-Behind (Write-Back) Cache",
           "Write-Around Cache",
-          "Pros & Cons of each"
-        ]
+        ],
+        topicDetails: {
+          "Write-Through Cache": [
+            {
+              type: "paragraph",
+              text: "Netflix's content team just updated the description of Stranger Things Season 5. New episode titles added. Thumbnail changed. This update needs to go into the database. But the cache still has the old data. If someone opens the show right now, they'll see the outdated description."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How do you make sure the cache and database always stay in sync when data changes?"
+            },
+            {
+              type: "heading",
+              text: "Write to Cache and Database at the Same Time"
+            },
+            {
+              type: "paragraph",
+              text: "Write-Through Cache means every time data is written, it's written to the cache AND the database simultaneously — in the same operation. Both are always in sync. No stale data."
+            },
+            {
+              type: "step",
+              title: "Editor updates Stranger Things description",
+              desc: "The update request hits Netflix's backend."
+            },
+            {
+              type: "step",
+              title: "Write to cache first",
+              desc: "New description is saved in Redis immediately."
+            },
+            {
+              type: "step",
+              title: "Write to database",
+              desc: "Same update is written to the main database in the same operation."
+            },
+            {
+              type: "step",
+              title: "User opens Stranger Things",
+              desc: "Cache has the latest data. User sees the updated description instantly. ✅"
+            },
+            {
+              type: "code",
+              code: "cache.set('stranger_things', newData)\ndb.update('stranger_things', newData)\n// Both updated. Always in sync."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cache and database are always consistent. No user ever sees stale data. Netflix uses this for critical data — show metadata, episode lists, content ratings."
+            },
+            {
+              type: "error-callout",
+              title: "Trade-off:",
+              list: [
+                "Every single write hits both cache and database",
+                "Writes are slower — two operations every time",
+                "If data is written but never read, you wasted a cache write"
+              ],
+              footer: "Write-Through is ideal when reads are frequent and data must always be fresh."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Write-Through writes to database immediately — every time. What if Netflix has thousands of small updates happening per second — user watch history, pause positions, ratings? Writing all of them instantly to the database is expensive. What if you could batch them up and write later?"
+            }
+          ],
+
+          "Write-Behind (Write-Back) Cache": [
+            {
+              type: "paragraph",
+              text: "You're watching Stranger Things on Netflix. Every 30 seconds, Netflix saves your watch progress — which episode, which minute, which second. That's thousands of tiny writes per second across 230 million users. If every single progress update hit the database instantly — the database would be hammered non-stop."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if Netflix wrote to cache immediately but delayed the database write — batching them up and saving in bulk?"
+            },
+            {
+              type: "heading",
+              text: "Write Fast Now — Sync to Database Later"
+            },
+            {
+              type: "paragraph",
+              text: "Write-Behind Cache writes data to cache immediately and returns success to the user — but the database write happens later, asynchronously, in the background. Netflix confirms your progress is saved instantly. The actual DB write happens in a batch a few seconds later."
+            },
+            {
+              type: "step",
+              title: "You pause at 24:13 in Episode 3",
+              desc: "Netflix writes your progress to Redis cache immediately. Done in 2ms."
+            },
+            {
+              type: "step",
+              title: "Returns success instantly",
+              desc: "Netflix tells your app — progress saved. You didn't wait for any database write."
+            },
+            {
+              type: "step",
+              title: "Background job batches writes",
+              desc: "Every few seconds, a background process collects all progress updates from cache and writes them to the database in one bulk operation."
+            },
+            {
+              type: "code",
+              code: "// Immediate:\ncache.set('user_123_progress', { ep: 3, time: '24:13' })\nreturn 'saved' ✅\n\n// Background (few seconds later):\ndb.bulkUpdate(cache.getPendingWrites())"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Database load drops massively. Writes feel instant to the user. Netflix uses this for watch history, continue watching, pause positions — high-frequency writes where slight delay in DB sync is perfectly acceptable."
+            },
+            {
+              type: "error-callout",
+              title: "The risk:",
+              list: [
+                "Cache crashes before background sync runs",
+                "Those unsaved writes are lost forever",
+                "User's progress from the last few seconds disappears"
+              ],
+              footer: "Netflix accepts this small risk for watch progress — losing 5 seconds of position data is annoying, not catastrophic."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Write-Through and Write-Behind both write to cache. But what about data that changes so often that caching it would cause more confusion than help — like real-time view counts or live ratings? Sometimes it's better to skip the cache on writes entirely."
+            }
+          ],
+
+          "Write-Around Cache": [
+            {
+              type: "paragraph",
+              text: "Every second, millions of Netflix users are watching shows. The view count for Stranger Things is updating thousands of times per second. If Netflix wrote every view count update to cache — the cache would be flooded with rapidly changing numbers, each one becoming stale almost instantly. Caching it is pointless."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if some data changes so frequently that writing it to cache is just a waste — and you're better off skipping the cache entirely on writes?"
+            },
+            {
+              type: "heading",
+              text: "Skip the Cache — Write Directly to Database"
+            },
+            {
+              type: "paragraph",
+              text: "Write-Around Cache bypasses the cache on writes completely. Data goes straight to the database. The cache is only populated later — when someone actually reads that data (Cache Miss → fetch from DB → store in cache)."
+            },
+            {
+              type: "step",
+              title: "View count updates every second",
+              desc: "Netflix writes the new count directly to the database. Cache is not touched."
+            },
+            {
+              type: "step",
+              title: "User opens Stranger Things page",
+              desc: "Netflix checks cache. No view count there (or it's stale)."
+            },
+            {
+              type: "step",
+              title: "Fetch from database",
+              desc: "Gets the latest count from DB. Stores it in cache for a short TTL — say 60 seconds."
+            },
+            {
+              type: "step",
+              title: "Next user within 60 seconds",
+              desc: "Cache Hit — served the count from 60 seconds ago. Close enough. ✅"
+            },
+            {
+              type: "code",
+              code: "// Write — skips cache entirely:\ndb.update('stranger_things_views', newCount)\n\n// Read — normal cache-aside:\ndata = cache.get('stranger_things_views')\nif not data:\n  data = db.query(...)\n  cache.set('stranger_things_views', data, ttl=60)"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cache isn't polluted with data that changes every second. Database handles high-frequency writes. Cache serves reads that are slightly delayed — which is perfectly fine for view counts. Nobody cares if the count shows 10.2M vs 10.3M."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ All three write strategies assume cache has unlimited memory. But Redis has limits. What happens when the cache is full? How does Netflix decide which data to keep and which to throw out? That's Cache Invalidation — TTL, LRU, LFU and more."
+            }
+          ]
+        }
       },
 
       {
@@ -229,7 +1763,225 @@ export const roadmapData = [
           "LFU (Least Frequently Used)",
           "FIFO (First In First Out)",
           "Manual & Event-Driven Invalidation"
-        ]
+        ],
+        topicDetails: {
+          "TTL (Time to Live)": [
+            {
+              type: "paragraph",
+              text: "Netflix cached Stranger Things metadata — description, cast, episode list. That data sits in Redis. It will sit there forever — unless Netflix tells it when to expire. Three months later, a new episode drops. The cache still has the old episode list. Users see wrong data. Nobody knows why."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Netflix make sure cached data doesn't live forever and become stale?"
+            },
+            {
+              type: "heading",
+              text: "Give Every Cached Item an Expiry Time"
+            },
+            {
+              type: "paragraph",
+              text: "TTL — Time to Live — is a timer you attach to every cached item. When the timer runs out, the item is automatically deleted from cache. Next request is a Cache Miss, fresh data is fetched from database, cached again with a new TTL. Clean cycle."
+            },
+            {
+              type: "code",
+              code: "cache.set('stranger_things', data, ttl=3600)\n// This data lives for 3600 seconds (1 hour)\n// After 1 hour — automatically deleted\n// Next request → Cache Miss → fresh DB fetch"
+            },
+            {
+              type: "paragraph",
+              text: "Netflix sets different TTLs based on how often data changes."
+            },
+            {
+              type: "code",
+              code: "Show metadata (title, cast)  → TTL: 24 hours\nEpisode list                 → TTL: 1 hour\nTrending shows list          → TTL: 5 minutes\nReal-time view counts        → TTL: 60 seconds"
+            },
+            {
+              type: "success-callout",
+              text: "✅ TTL is the simplest cache invalidation strategy. Set it and forget it. Data auto-expires. No manual cleanup. Netflix uses TTL on almost every cached item as the baseline."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ TTL handles expiry over time — but what about when Redis runs out of memory right now? Netflix has 10,000 shows cached. Cache is full. A new show needs to be added. Something has to be removed to make space. Which one? That's where eviction policies come in — LRU, LFU, FIFO."
+            }
+          ],
+
+          "LRU (Least Recently Used)": [
+            {
+              type: "paragraph",
+              text: "Netflix's Redis cache is full. 10,000 shows are cached. A new show just dropped — 'Scam 2024'. It needs to be added to cache. Something has to go. How does Redis decide which show to evict? It looks at one thing — which show was accessed the least recently."
+            },
+            {
+              type: "heading",
+              text: "Remove What Nobody Has Touched Lately"
+            },
+            {
+              type: "paragraph",
+              text: "LRU — Least Recently Used — evicts whichever item hasn't been accessed for the longest time. The logic is simple: if nobody has opened that show's cache entry in a long time, they probably won't any time soon. So it's the safest thing to remove."
+            },
+            {
+              type: "code",
+              code: "Cache is full. Need space for 'Scam 2024'.\n\nLast accessed times:\n'Stranger Things'  → 2 minutes ago\n'Wednesday'        → 5 minutes ago\n'Taj Mahal 1989'   → 47 days ago  ← LRU\n\nEvict: 'Taj Mahal 1989' ✅\nAdd: 'Scam 2024' ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Taj Mahal 1989 — an old regional show — hasn't been clicked in 47 days. It's the least recently used. It gets evicted. Scam 2024 takes its spot. If someone does search for Taj Mahal 1989 tomorrow, it's a Cache Miss — Netflix fetches it from DB and caches it again."
+            },
+            {
+              type: "success-callout",
+              text: "✅ LRU is Netflix's most commonly used eviction policy. It keeps popular, recently trending content in cache and naturally pushes out old, untouched content. Cache stays relevant automatically."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ LRU looks at recency — when was it last accessed? But what about a show that was opened once last night and never again vs a show that's been opened 50,000 times total but not in the last hour? LRU would keep the one opened last night and evict the more popular one. Is recency always the best measure?"
+            }
+          ],
+
+          "LFU (Least Frequently Used)": [
+            {
+              type: "paragraph",
+              text: "Cache is full again. LRU would evict based on last access time. But consider this — 'Squid Game' hasn't been clicked in the last 2 hours. 'Some random documentary' was clicked once, 10 minutes ago. LRU evicts Squid Game because it's older. But Squid Game has been accessed 2 million times this week. That's a terrible eviction."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if instead of recency, we tracked how many times each item has been accessed — and removed the least popular one?"
+            },
+            {
+              type: "heading",
+              text: "Remove What Nobody Actually Watches"
+            },
+            {
+              type: "paragraph",
+              text: "LFU — Least Frequently Used — tracks access count for every cached item. When eviction is needed, it removes the item with the lowest total access count. Not the oldest — the least watched."
+            },
+            {
+              type: "code",
+              code: "Cache is full. Need space.\n\nAccess counts:\n'Squid Game'          → 2,000,000 hits\n'Wednesday'           → 1,800,000 hits\n'Random Documentary'  → 3 hits  ← LFU\n\nEvict: 'Random Documentary' ✅\nKeep: Squid Game, Wednesday"
+            },
+            {
+              type: "paragraph",
+              text: "The documentary was cached but barely anyone opened it. 3 hits total. It's the least valuable item in cache. It goes. Squid Game — with 2 million hits — absolutely stays, even if it wasn't accessed in the last hour."
+            },
+            {
+              type: "success-callout",
+              text: "✅ LFU keeps genuinely popular content in cache regardless of recency. Netflix uses LFU for evergreen content — shows that have consistent long-term demand like Friends, Breaking Bad, Money Heist."
+            },
+            {
+              type: "info-callout",
+              text: "💡 LRU vs LFU: LRU = keep what was opened recently. LFU = keep what has been opened most. Netflix combines both signals in practice — recent AND popular content stays. Rarely watched AND old content gets evicted first."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ LFU needs to track access counts for every cached item — that's extra memory and computation. For simpler systems that just need to evict in order, there's FIFO — the most basic approach of all."
+            }
+          ],
+
+          "FIFO (First In First Out)": [
+            {
+              type: "paragraph",
+              text: "Imagine Netflix's cache as a queue. Shows enter from the back and leave from the front. The show that entered the cache first — leaves first. Doesn't matter if it's popular. Doesn't matter when it was last accessed. First in, first out. Like a line at a movie ticket counter."
+            },
+            {
+              type: "heading",
+              text: "Simple Queue — Oldest Entry Leaves First"
+            },
+            {
+              type: "paragraph",
+              text: "FIFO evicts items in the exact order they were added to cache. No access tracking. No popularity score. No recency check. Pure order of entry."
+            },
+            {
+              type: "code",
+              code: "Cache entry order:\n1. 'Money Heist'    → added first\n2. 'Dark'           → added second\n3. 'Squid Game'     → added third\n\nCache full. Need space.\nFIFO evicts: 'Money Heist' (entered first) ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Money Heist gets evicted — even if 500,000 people are watching it right now — just because it was cached first. FIFO doesn't care about that."
+            },
+            {
+              type: "error-callout",
+              title: "Why Netflix doesn't use FIFO for show content:",
+              list: [
+                "Doesn't consider popularity — evicts blockbusters as easily as flops",
+                "Doesn't consider recency — might evict trending content",
+                "Results in constant Cache Misses for popular old shows"
+              ],
+              footer: "FIFO is too naive for Netflix's content cache. LRU and LFU are smarter choices."
+            },
+            {
+              type: "info-callout",
+              text: "💡 FIFO works well for simpler use cases — like caching the last N API responses in order, or managing a fixed-size request log. Not ideal where popularity or recency matters."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ TTL, LRU, LFU, FIFO — all these strategies evict based on time or usage patterns. But what about immediate invalidation? When Netflix releases a new season RIGHT NOW and needs every cached copy of that show wiped instantly — no waiting for TTL, no waiting for eviction. That's Manual and Event-Driven invalidation."
+            }
+          ],
+
+          "Manual & Event-Driven Invalidation": [
+            {
+              type: "paragraph",
+              text: "It's 12:00 AM. Netflix just dropped all 8 episodes of Stranger Things Season 5 simultaneously worldwide. Every user opening the show needs to see the new season immediately. But the cache has the old season data — cached with a 24 hour TTL. That TTL won't expire for another 18 hours. 18 hours of users seeing wrong episode counts. That's unacceptable."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Netflix wipe specific cache entries instantly — the moment something important changes — without waiting for TTL or eviction policies?"
+            },
+            {
+              type: "heading",
+              text: "Manual Invalidation — Wipe It Right Now"
+            },
+            {
+              type: "paragraph",
+              text: "Manual invalidation means explicitly deleting a cache entry the moment you know the data has changed. No waiting. The next request will be a Cache Miss — fetching fresh data from the database and caching it again."
+            },
+            {
+              type: "step",
+              title: "Netflix content team publishes Season 5",
+              desc: "New episodes are uploaded. Database is updated with new episode list."
+            },
+            {
+              type: "step",
+              title: "Manually delete the cache entry",
+              desc: "Engineering triggers an immediate cache delete for the Stranger Things entry."
+            },
+            {
+              type: "code",
+              code: "cache.delete('stranger_things')\n// Cache entry wiped instantly ✅"
+            },
+            {
+              type: "step",
+              title: "First user opens Stranger Things",
+              desc: "Cache Miss. Netflix fetches fresh data from DB — now includes Season 5. Cached again."
+            },
+            {
+              type: "step",
+              title: "All users after that",
+              desc: "Cache Hit — Season 5 data. Everyone sees the new season immediately. ✅"
+            },
+            {
+              type: "heading",
+              text: "Event-Driven Invalidation — Automate It"
+            },
+            {
+              type: "paragraph",
+              text: "Manual invalidation still requires someone to remember to delete the cache. Netflix automates this with event-driven invalidation — whenever the database is updated, it automatically fires an event that triggers cache deletion. No human needed."
+            },
+            {
+              type: "code",
+              code: "// Database update triggers an event:\ndb.update('stranger_things', newData)\n→ fires event: 'show_updated'\n\n// Cache listener catches it:\non('show_updated', (showId) => {\n  cache.delete(showId) // Auto-invalidated ✅\n})"
+            },
+            {
+              type: "paragraph",
+              text: "The moment any show data changes in the database — the event fires, the cache is cleared, fresh data is ready on the next request. No developer has to remember to do it. No stale data ever sits in cache after an update."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Netflix uses event-driven invalidation for all content updates — new episodes, changed thumbnails, updated descriptions, removed titles. The cache stays perfectly in sync with the database automatically — the moment something changes."
+            },
+            {
+              type: "info-callout",
+              text: "🎯 Full picture — TTL handles natural expiry over time. LRU/LFU/FIFO handle eviction when memory is full. Manual invalidation handles urgent one-off clears. Event-driven handles automatic real-time sync. Netflix uses all four together — that's how the cache always stays fresh at scale."
+            }
+          ]
+        }
       },
 
       {
@@ -366,14 +2118,26 @@ export const roadmapData = [
           "What is WebSocket?",
           "HTTP vs WebSocket",
           "Why HTTP is not enough for Real-Time",
-          "Request-Response vs Full-Duplex",
-          "WebSocket Handshake (Upgrade request)",
           "ws:// vs wss://"
         ]
       },
-
       {
         id: 2,
+        title: "Core Concepts & Characteristics",
+        level: "freshers",
+        topics: [
+          "Handshake",
+          "Persistent Connection",
+          "Full Duplex Communication",
+          "Event Based Architecture",
+          "Stateful Connection",
+          "Low Latency",
+          "Connection Management Mechanisms",
+          "Reconnection Handling"
+        ]
+      },
+      {
+        id: 3,
         title: "WebSocket Lifecycle",
         level: "freshers",
         topics: [
@@ -386,7 +2150,7 @@ export const roadmapData = [
       },
 
       {
-        id: 3,
+        id: 4,
         title: "WebSockets in Node.js",
         level: "freshers",
         topics: [
@@ -399,7 +2163,7 @@ export const roadmapData = [
       },
 
       {
-        id: 4,
+        id: 5,
         title: "Socket.IO",
         level: "intermediate",
         topics: [
@@ -414,7 +2178,7 @@ export const roadmapData = [
       },
 
       {
-        id: 5,
+        id: 6,
         title: "Real-Time Data Sync",
         level: "intermediate",
         topics: [
@@ -427,7 +2191,7 @@ export const roadmapData = [
       },
 
       {
-        id: 6,
+        id: 7,
         title: "Scaling WebSocket Servers",
         level: "intermediate",
         topics: [
@@ -440,7 +2204,7 @@ export const roadmapData = [
       },
 
       {
-        id: 7,
+        id: 8,
         title: "Performance & Optimization",
         level: "experienced",
         topics: [
@@ -454,7 +2218,7 @@ export const roadmapData = [
       },
 
       {
-        id: 8,
+        id: 9,
         title: "Security in WebSockets",
         level: "experienced",
         topics: [
@@ -468,7 +2232,7 @@ export const roadmapData = [
       },
 
       {
-        id: 9,
+        id: 10,
         title: "Production Architecture",
         level: "experienced",
         topics: [
@@ -495,11 +2259,206 @@ export const roadmapData = [
         title: "Basics (Foundation)",
         level: "freshers",
         topics: [
-          "What is Load Balancing?",
-          "Why Load Balancers are needed",
-          "Problems without Load Balancer (single server overload)",
+          "What is Load Balancer and Why do we need it?",
           "High Availability (HA) basics"
-        ]
+        ],
+        topicDetails: {
+          "What is Load Balancer and Why do we need it?": [
+            {
+              type: "paragraph",
+              text: "It's 31st December. You open Booking.com to find a hotel in Goa for New Year's Eve. So did 20 lakh other people — all at the exact same time. Everyone is searching hotels, filtering by price, checking room photos. What do you think happens to Booking.com's server?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What actually happens when 20 lakh people hit the same server at the same time?"
+            },
+            {
+              type: "heading",
+              text: "The Problem — One Server Can't Handle Everything"
+            },
+            {
+              type: "error-callout",
+              title: "Imagine Booking.com had only ONE server — then:",
+              list: [
+                "20 lakh requests land on that one poor server",
+                "It slows down... starts lagging... then completely crashes",
+                "Nobody can search hotels, view rooms, or make payments",
+                "Booking.com loses crores of rupees in just minutes"
+              ],
+              footer: "This is called Server Overload — and it's a very real, very expensive problem."
+            },
+            {
+              type: "heading",
+              text: "What is a Load Balancer?"
+            },
+            {
+              type: "paragraph",
+              text: "Booking.com has thousands of hotels to show, rooms to filter, prices to compare — all happening at once for millions of users. To handle this, they don't rely on one server. They have many servers running the same job, and a Load Balancer sitting in front of them — deciding which server gets which request, so no one server drowns while others sit idle."
+            },
+            {
+              type: "info-callout",
+              text: "🍔 Think of it like a busy McDonald's on a Sunday. Instead of 500 people queueing at one counter, the manager opens 10 counters and sends each customer to whichever one is free. The manager = Load Balancer."
+            },
+            {
+              type: "heading",
+              text: "How Does a Load Balancer Work in Booking.com?"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You search 'Hotels in Goa'",
+              desc: "You type your destination and dates and hit Search."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Your request hits the Load Balancer first",
+              desc: "Your request doesn't go directly to any server. It lands on the Load Balancer first — every single time."
+            },
+            {
+              type: "code",
+              code: "Your Request → Load Balancer → Server A / Server B / Server C"
+            },
+            {
+              type: "step",
+              title: "Step 3 — Load Balancer picks the least busy server",
+              desc: "It checks all servers in real time:\n\nServer A → 900 requests\nServer B → 850 requests\nServer C → 200 requests  ← least busy\n\nIt sends your request to Server C."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Server C handles your request and responds",
+              desc: "Server C fetches hotels in Goa from the database and sends results back to you. You see the list in milliseconds."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Even on New Year's Eve with 20 lakh users, Booking.com stays fast and smooth. No crash. No spinning loader. Just results."
+            },
+            {
+              type: "heading",
+              text: "Booking.com Has Separate Load Balancers for Each Job"
+            },
+            {
+              type: "paragraph",
+              text: "Booking.com doesn't use one Load Balancer for everything. It separates traffic by what the user is doing — searching, booking, or paying."
+            },
+            {
+              type: "code",
+              code: "Search Hotels   →  Search Load Balancer   →  Search Servers\nView Rooms      →  Rooms Load Balancer    →  Room Servers\nMake Payment    →  Payment Load Balancer  →  Payment Servers"
+            },
+            {
+              type: "paragraph",
+              text: "This way, if the search traffic spikes like crazy, it doesn't affect your payment at all. Each lane is independent."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But wait — what if the Load Balancer itself goes down? Or what if Server B crashes mid-request? Who handles that? That's where High Availability comes in!"
+            }
+          ],
+
+          "High Availability (HA) basics": [
+            {
+              type: "paragraph",
+              text: "You found the perfect hotel in Goa on Booking.com. ₹12,000 for New Year's Eve. You click 'Pay Now', enter your card details, and hit Confirm. At that exact moment — the payment server crashes. What happens to your ₹12,000? What happens to your booking?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Money gone but no booking? Or does Booking.com just... silently handle it?"
+            },
+            {
+              type: "heading",
+              text: "Servers Do Crash. It's Not If, It's When."
+            },
+            {
+              type: "error-callout",
+              title: "If Booking.com had no backup plan:",
+              list: [
+                "Payment fails right in the middle of a transaction",
+                "Money deducted — hotel not booked",
+                "You see a random error screen",
+                "You call support. They have no idea what happened."
+              ],
+              footer: "1 minute of downtime on Booking.com = thousands of lost bookings + crores in losses."
+            },
+            {
+              type: "heading",
+              text: "So What is High Availability?"
+            },
+            {
+              type: "paragraph",
+              text: "High Availability simply means — even if something breaks inside your system, the user never feels it. The app keeps running. No error. No downtime. Business as usual."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Like a highway with 4 lanes. One lane blocked? Traffic moves to the other 3. The highway never shuts down. That's exactly what HA does for servers."
+            },
+            {
+              type: "heading",
+              text: "How Does Booking.com Stay Up Even When a Server Crashes?"
+            },
+            {
+              type: "paragraph",
+              text: "They never rely on just one server. Booking.com runs the same payment system on multiple servers at the same time. Server A is live. Server B is live. Server C is on standby — always ready."
+            },
+            {
+              type: "code",
+              code: "Payment Server A ✅  ← active\nPayment Server B ✅  ← active\nPayment Server C ✅  ← ready as backup"
+            },
+            {
+              type: "paragraph",
+              text: "Now — the Load Balancer keeps pinging each server every few seconds. Just asking one simple question — 'Hey, are you alive?'"
+            },
+            {
+              type: "code",
+              code: "Every 5 seconds:\n→ Ping Server A ... 200 OK ✅\n→ Ping Server B ... 200 OK ✅\n→ Ping Server C ... ❌ No response\n   Server C marked DOWN. Removed from pool."
+            },
+            {
+              type: "paragraph",
+              text: "The moment a server stops responding — it's out. And all new traffic automatically shifts to the healthy ones. No human involvement. No delay. The user never sees a thing."
+            },
+            {
+              type: "step",
+              title: "You click Pay Now",
+              desc: "Your ₹12,000 payment request goes to Payment Server A."
+            },
+            {
+              type: "step",
+              title: "Server A crashes mid-request",
+              desc: "Memory overload, bug, hardware failure — Server A goes completely dark."
+            },
+            {
+              type: "step",
+              title: "System detects it within seconds",
+              desc: "Load Balancer pinged Server A. No response. Marked it DOWN immediately."
+            },
+            {
+              type: "code",
+              code: "GET /health → Server A → ❌ Timeout\nServer A = DOWN. Rerouting to Server B..."
+            },
+            {
+              type: "step",
+              title: "Your payment lands on Server B",
+              desc: "Server B picks it up. Payment goes through. Booking confirmed. ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ You never saw an error. You never even knew Server A crashed. That's High Availability doing its job — silently, automatically, every single time."
+            },
+            {
+              type: "heading",
+              text: "The Full Picture"
+            },
+            {
+              type: "code",
+              code: "Your Request\n       ↓\n  Load Balancer\n  (splits traffic smartly)\n       ↓\n┌─────────────────────────────┐\n│ Server A │ Server B │ Server C │\n└─────────────────────────────┘\n       ↓\n Ping every 5s → any server dead?\n → Traffic shifts automatically"
+            },
+            {
+              type: "success-callout",
+              text: "🎯 Load Balancer handles the traffic. High Availability handles the failures. Together — Booking.com stays alive no matter what."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But here's a question — when 20 lakh users hit Booking.com together, how does the Load Balancer decide which server gets which request? Does it just go one by one? Does it check who's least busy? There are actual algorithms behind this decision — and that's exactly what's next."
+            }
+          ]
+        }
       },
 
       {
@@ -513,7 +2472,198 @@ export const roadmapData = [
           "Least Response Time",
           "IP Hash",
 
-        ]
+        ],
+        topicDetails: {
+          "Round Robin": [
+            {
+              type: "paragraph",
+              text: "New Year's Eve. 20 lakh users on Booking.com — all searching, filtering, comparing hotels at the same time. Requests are flying in every millisecond. The Load Balancer has 3 servers ready. So — who gets which request?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Does it pick randomly? Does it check which server is free? Or does it just go one by one?"
+            },
+            {
+              type: "heading",
+              text: "The Simplest Approach — Just Take Turns"
+            },
+            {
+              type: "paragraph",
+              text: "Round Robin does exactly that. No overthinking. No checking server load. Just — next in line, you're up. Request 1 goes to Server A. Request 2 to Server B. Request 3 to Server C. Request 4 — back to Server A. Keeps rotating forever."
+            },
+            {
+              type: "code",
+              code: "Request 1 → Server A\nRequest 2 → Server B\nRequest 3 → Server C\nRequest 4 → Server A\nRequest 5 → Server B\n... and so on"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Simple. Fast. No extra logic needed. Works great when all servers are identical and requests are roughly equal in size."
+            },
+            {
+              type: "heading",
+              text: "Where it Works on Booking.com"
+            },
+            {
+              type: "paragraph",
+              text: "When users are just browsing — searching hotels, scrolling through listings — every request is light and similar. Round Robin handles this perfectly. Each server gets an equal share. No server sits idle. No server drowns."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But here's the catch — what if Booking.com's servers are NOT identical? Server A has 16GB RAM. Server B has 4GB RAM. Round Robin still sends them equal requests. Server B is now struggling while Server A is barely working. That's unfair — and it causes slowdowns. So what do we do?"
+            }
+          ],
+
+          "Weighted Round Robin": [
+            {
+              type: "paragraph",
+              text: "Booking.com just upgraded Server A — 16GB RAM, faster CPU, can handle 3x more load. Server B is the old one — 4GB RAM, slower. If Round Robin sends them equal requests, Server B will choke while Server A sits half-empty. That's a waste — and a problem."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if we could tell the Load Balancer — hey, Server A is stronger, send it more requests?"
+            },
+            {
+              type: "heading",
+              text: "Same Rotation — But Not Equal Turns"
+            },
+            {
+              type: "paragraph",
+              text: "Weighted Round Robin is Round Robin with a twist — you assign a weight to each server based on how powerful it is. Higher weight = more requests. Lower weight = fewer requests. The rotation still happens, but stronger servers get more turns."
+            },
+            {
+              type: "code",
+              code: "Server A → Weight 3  (powerful)\nServer B → Weight 1  (older)\n\nRequest 1 → Server A\nRequest 2 → Server A\nRequest 3 → Server A\nRequest 4 → Server B\nRequest 5 → Server A\n... repeat"
+            },
+            {
+              type: "paragraph",
+              text: "Server A gets 3 requests for every 1 that goes to Server B. Both servers stay healthy. Neither one is overwhelmed. You're using your infrastructure smartly."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Booking.com uses this when they have a mix of new and old servers. The powerful ones carry more load. The older ones handle what they can. Nothing goes to waste."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But weights are set manually — based on what you think each server can handle. The Load Balancer doesn't actually check if Server A is currently busy or free. It just follows the weights blindly. What if Server A is already handling 900 heavy requests and Server B is completely free? Weighted Round Robin won't care. It'll still send to A. So what's the smarter way?"
+            }
+          ],
+
+          "Least Connections": [
+            {
+              type: "paragraph",
+              text: "It's peak time on Booking.com. Server A is handling 900 active connections — users in the middle of booking, filling payment details, waiting for confirmation. Server B just finished a bunch of requests and is sitting at 200 connections. A new user hits search. Where should the Load Balancer send them?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Does it matter which server is currently less busy? What if we just sent it to whoever has the least work right now?"
+            },
+            {
+              type: "heading",
+              text: "Stop Rotating — Start Observing"
+            },
+            {
+              type: "paragraph",
+              text: "Least Connections does exactly that. Instead of blindly rotating, the Load Balancer looks at each server in real time — how many active connections does it currently have? — and sends the new request to whoever has the least."
+            },
+            {
+              type: "code",
+              code: "Server A → 900 active connections\nServer B → 200 active connections  ← least\nServer C → 650 active connections\n\nNew request → Server B ✅"
+            },
+            {
+              type: "paragraph",
+              text: "No fixed turns. No preset weights. Just — who's least busy right now? That's where the next request goes."
+            },
+            {
+              type: "success-callout",
+              text: "✅ This works brilliantly for Booking.com's payment and booking flows — where some requests take 2 seconds and some take 20 seconds. Least Connections naturally balances the load without any manual configuration."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Least Connections counts how many requests a server has — but what if Server B has 200 connections that are all slow and heavy, while Server C has 650 connections that are all nearly done? Connections alone don't tell the full story. What if we also measured how fast each server is actually responding?"
+            }
+          ],
+
+          "Least Response Time": [
+            {
+              type: "paragraph",
+              text: "Two servers. Server A has 400 active connections but is responding in 50ms — fast and healthy. Server B has 200 connections but is taking 800ms to respond — something's wrong, maybe it's overloaded or degraded. Least Connections would pick Server B because it has fewer connections. But Server B is clearly struggling."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if the Load Balancer actually measured response speed — and picked the server that's both least busy AND fastest?"
+            },
+            {
+              type: "heading",
+              text: "Pick the Fastest, Not Just the Emptiest"
+            },
+            {
+              type: "paragraph",
+              text: "Least Response Time combines two signals — active connections AND how fast the server is currently responding. The server with the best combination of low connections and fast response time wins the next request."
+            },
+            {
+              type: "code",
+              code: "Server A → 400 connections | 50ms response  ✅ winner\nServer B → 200 connections | 800ms response\nServer C → 650 connections | 120ms response\n\nNew request → Server A ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Even though Server A has more connections, it's clearly healthier and faster. Booking.com's users get a snappier experience because every request goes to the server that can handle it the quickest right now."
+            },
+            {
+              type: "success-callout",
+              text: "✅ This is one of the smartest algorithms. It's self-aware — it notices when a server is slowing down and automatically routes away from it, without any human touching anything."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But all of these algorithms — Round Robin, Weighted, Least Connections, Least Response Time — they all treat every user as a stranger. Every request starts fresh. Now imagine you're halfway through booking on Booking.com and suddenly your next request goes to a different server — one that has no idea who you are, what you selected, what's in your cart. What happens then?"
+            }
+          ],
+
+          "IP Hash": [
+            {
+              type: "paragraph",
+              text: "You're on Booking.com. You searched hotels in Goa, filtered by pool + breakfast, shortlisted 3 options — all stored on Server A. Now you click on the second hotel to see room details. The Load Balancer sends this new request to Server B. Server B has no idea who you are. No search history. No filters. Your session is gone."
+            },
+            {
+              type: "error-callout",
+              title: "Without sticking to the same server:",
+              list: [
+                "Your selected filters disappear",
+                "Cart gets wiped mid-booking",
+                "Login session breaks — you're suddenly logged out",
+                "Payment flow breaks halfway through"
+              ],
+              footer: "This is called Session Loss — and it's a terrible user experience."
+            },
+            {
+              type: "heading",
+              text: "Same User — Always Same Server"
+            },
+            {
+              type: "paragraph",
+              text: "IP Hash solves this by making sure the same user always goes to the same server. It takes your IP address, runs a simple calculation on it, and always maps that IP to the same server — every single time, for the entire session."
+            },
+            {
+              type: "code",
+              code: "Your IP: 103.45.12.88\n→ Hash(103.45.12.88) = 2\n→ Server index 2 = Server C\n\nEvery request from you → Server C ✅\nAlways. Until your session ends."
+            },
+            {
+              type: "paragraph",
+              text: "Server C already knows you. It has your search, your filters, your login, your cart. Every click you make — compare rooms, select dates, enter card details — all of it stays on Server C. Smooth from start to finish."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Booking.com uses this for checkout and payment flows — where losing session mid-way would be a disaster. IP Hash ensures you stick to one server for the entire journey."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Now you know all 5 algorithms. Round Robin for equal servers. Weighted for unequal servers. Least Connections for real-time load. Least Response Time for speed-aware routing. IP Hash for sticky sessions. Each one built for a different problem."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But IP Hash introduces a new question — if a user is always pinned to Server C, and Server C crashes mid-session, what happens? The system needs to know Server C is dead and handle the switch gracefully. That brings us to State Management — Stateless vs Stateful systems, and Sticky Sessions. Up next."
+            }
+          ]
+        }
       },
 
       {
@@ -523,7 +2673,115 @@ export const roadmapData = [
         topics: [
           "Stateless vs Stateful systems",
           "Sticky Sessions (Session Affinity)"
-        ]
+        ],
+        topicDetails: {
+          "Stateless vs Stateful systems": [
+            {
+              type: "paragraph",
+              text: "You're on Booking.com. You log in, search hotels in Goa, apply filters — pool, breakfast included, under ₹8,000. You click on a hotel. Behind the scenes, your request goes to Server A. Now you click 'View Rooms'. This request lands on Server B. Server B has absolutely no memory of who you are or what you just did."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Does the server remember you between requests? Or does it treat every click like you're a brand new stranger?"
+            },
+            {
+              type: "heading",
+              text: "Stateless — Every Request Stands Alone"
+            },
+            {
+              type: "paragraph",
+              text: "A Stateless server has no memory. Every request that comes in must carry all the information needed to process it — who you are, what you want, your login token, everything. The server reads it, responds, and immediately forgets you ever existed."
+            },
+            {
+              type: "code",
+              code: "Request → Server A\n{\n  token: \"user_abc_jwt\",\n  action: \"search\",\n  city: \"Goa\"\n}\n→ Server A responds. Forgets you. Done."
+            },
+            {
+              type: "paragraph",
+              text: "Next request goes to Server B? No problem. Server B reads the same token, understands who you are, handles it. It doesn't need to remember you — because you brought everything it needs."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Stateless is beautiful for Load Balancing — any server can handle any request. No server is tied to any user. Scale up, scale down, swap servers freely."
+            },
+            {
+              type: "heading",
+              text: "Stateful — The Server Remembers You"
+            },
+            {
+              type: "paragraph",
+              text: "A Stateful server stores your session data in its own memory. It remembers your login, your cart, your filters — everything. But here's the catch — only that one server knows about you. If your next request goes to a different server, it has zero idea who you are."
+            },
+            {
+              type: "code",
+              code: "Request 1 → Server A\nServer A stores: { user: 'ram', cart: ['Hotel Goa'] }\n\nRequest 2 → Server B\nServer B: ❌ Who is ram? I have no data."
+            },
+            {
+              type: "error-callout",
+              title: "Stateful servers cause real problems when:",
+              list: [
+                "Load Balancer routes your next request to a different server",
+                "Your server crashes mid-session",
+                "You're in the middle of checkout and suddenly logged out",
+                "Scaling up adds new servers — but they have no idea about existing users"
+              ],
+              footer: "This is exactly why most modern systems prefer Stateless — but Stateful still has its place."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ So if Stateful is so problematic, why does Booking.com still use it for certain flows like payments? Because some things genuinely need session memory — and that's where Sticky Sessions come in."
+            }
+          ],
+
+          "Sticky Sessions (Session Affinity)": [
+            {
+              type: "paragraph",
+              text: "You're at the final step on Booking.com — payment page. You've entered your card details. The system is processing. At this exact moment, the Load Balancer sends your next request to a different server. That server has no memory of your payment flow. The transaction breaks. ₹12,000 gone. Booking lost."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if we could tell the Load Balancer — once a user lands on a server, keep them there for the entire session?"
+            },
+            {
+              type: "heading",
+              text: "Sticky Sessions — Stay With the Same Server"
+            },
+            {
+              type: "paragraph",
+              text: "Sticky Sessions means the Load Balancer remembers which server you started with — and keeps sending all your requests to that same server for the entire session. You're 'stuck' to your server. On purpose."
+            },
+            {
+              type: "paragraph",
+              text: "How does it remember? It gives you a cookie the moment you first connect. Every request you make after that carries this cookie. The Load Balancer reads it and routes you to your assigned server — every single time."
+            },
+            {
+              type: "code",
+              code: "First Request:\nYou → Load Balancer → Server B\nLoad Balancer sets: SERVERID=B (cookie)\n\nAll future requests:\nYou → Load Balancer reads cookie → Server B ✅\nAlways Server B. Until session ends."
+            },
+            {
+              type: "paragraph",
+              text: "Server B already has your payment state, your booking details, your session. Every click from here — confirm room, enter card, hit pay — all goes to Server B. No data loss. No broken flow."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Booking.com uses Sticky Sessions specifically for checkout and payment — where losing session mid-way would be catastrophic. Start on Server B, finish on Server B."
+            },
+            {
+              type: "error-callout",
+              title: "But Sticky Sessions come with trade-offs:",
+              list: [
+                "If Server B crashes, your entire session is lost — cookie is useless now",
+                "Server B might get overloaded while Server A and C sit idle",
+                "Hard to scale — new servers don't get existing sticky users"
+              ],
+              footer: "Use it only where truly needed — like payment flows. For everything else, go Stateless."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Both Stateless and Sticky Sessions assume the servers are alive and healthy. But what if Server B — the one your entire payment session is stuck to — suddenly goes down? Who notices? How fast? What happens next? That's exactly what Health Checks and Failover handle."
+            }
+          ]
+        }
       },
 
       {
@@ -534,7 +2792,154 @@ export const roadmapData = [
           "Active health checks",
           "Passive health checks",
           "Failover handling"
-        ]
+        ],
+        topicDetails: {
+          "Active health checks": [
+            {
+              type: "paragraph",
+              text: "Booking.com has 5 payment servers running. Everything looks fine on the dashboard. But Server C — quietly, without any warning — starts running out of memory. It's not fully dead yet. It's just... stuck. Not responding. Users are hitting it. Requests are going in. Nothing is coming back."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does the Load Balancer know Server C is sick — before even more users get routed to it?"
+            },
+            {
+              type: "heading",
+              text: "Don't Wait for a Crash — Go Check"
+            },
+            {
+              type: "paragraph",
+              text: "Active Health Checks means the Load Balancer doesn't wait for something to go wrong. It proactively pings every server at regular intervals — every few seconds — asking one simple question: 'Are you alive and working?'"
+            },
+            {
+              type: "code",
+              code: "Every 5 seconds:\nGET /health → Server A → 200 OK ✅\nGET /health → Server B → 200 OK ✅\nGET /health → Server C → ❌ Timeout\n\nServer C marked as DOWN.\nRemoved from pool immediately."
+            },
+            {
+              type: "paragraph",
+              text: "Server C didn't fully crash. But it stopped responding to health pings. That's enough. The Load Balancer pulls it out of rotation right away — no more users get sent there."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Active checks catch problems early — before users feel them. The server is removed silently. Traffic shifts to healthy servers. Nobody on Booking.com notices anything."
+            },
+            {
+              type: "paragraph",
+              text: "And it's not just a basic ping. Booking.com's health check endpoint actually verifies the full system is working — can the server reach the database? Can it process a payment? Is response time acceptable?"
+            },
+            {
+              type: "code",
+              code: "GET /health\n→ DB connection: ✅\n→ Payment gateway: ✅\n→ Response time: 45ms ✅\n→ Status: 200 OK — All good"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Active checks go out and ask servers 'are you okay?' — great for catching problems early. But what about failures that happen mid-request — while a user is literally in the middle of a booking? The ping hasn't gone out yet. The next one is 5 seconds away. What catches that?"
+            }
+          ],
+
+          "Passive health checks": [
+            {
+              type: "paragraph",
+              text: "A user clicks Confirm Booking on Booking.com. The request goes to Server D. Server D accepts it — but then returns a 500 error. Something broke mid-request. The next active health check ping is 4 seconds away. That's 4 seconds of more users still being sent to a broken server."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if the Load Balancer could detect a sick server just by watching real traffic — without sending any pings at all?"
+            },
+            {
+              type: "heading",
+              text: "Watch Real Requests — Not Test Pings"
+            },
+            {
+              type: "paragraph",
+              text: "Passive Health Checks don't send any pings. Instead, the Load Balancer silently watches every real request going through. If a server starts throwing errors — 500s, timeouts, failed responses — it notices the pattern and acts."
+            },
+            {
+              type: "code",
+              code: "Request 1 → Server D → 500 Error ❌\nRequest 2 → Server D → 500 Error ❌\nRequest 3 → Server D → Timeout  ❌\n\n3 failures in a row.\nServer D marked as DOWN. Removed from pool."
+            },
+            {
+              type: "paragraph",
+              text: "No test ping needed. The real traffic itself revealed the problem. The Load Balancer catches it mid-flight and pulls Server D out before more users are affected."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Passive checks are instant — they react to real failures as they happen, not on a timer. Booking.com uses both active and passive together. Active catches slow degradation early. Passive catches sudden mid-request failures immediately."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Active = scheduled doctor checkup. Passive = ambulance that shows up the moment something goes wrong. You need both."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Both active and passive checks detect that a server is down. But what actually happens next? Traffic needs to go somewhere. The booking in progress needs to complete. Someone needs to take over — automatically, instantly. That's Failover."
+            }
+          ],
+
+          "Failover handling": [
+            {
+              type: "paragraph",
+              text: "Server A just went down. Active check confirmed it. Passive check caught errors mid-request. The Load Balancer knows. Now — what happens to the users whose requests were in progress on Server A? What happens to the user who just hit Pay Now?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Does the booking just fail? Does money get stuck? Or does the system handle it automatically without the user ever knowing?"
+            },
+            {
+              type: "heading",
+              text: "Automatic Switch — No Human Needed"
+            },
+            {
+              type: "paragraph",
+              text: "Failover is the system's automatic response to a server going down. The moment Server A is marked as DOWN, the Load Balancer stops sending it traffic and immediately reroutes everything to the remaining healthy servers."
+            },
+            {
+              type: "step",
+              title: "You hit Pay Now on Booking.com",
+              desc: "Your ₹12,000 payment request is routed to Server A — currently the least busy server."
+            },
+            {
+              type: "step",
+              title: "Server A crashes mid-request",
+              desc: "Memory spike, hardware failure, a bad deploy — Server A goes completely dark."
+            },
+            {
+              type: "step",
+              title: "Health check detects the failure",
+              desc: "Active ping times out. Passive check sees the error. Server A is immediately marked DOWN and pulled from the pool."
+            },
+            {
+              type: "code",
+              code: "GET /health → Server A → ❌ Timeout\nPassive: 3 consecutive 500 errors\nServer A = DOWN. Removed from pool.\nRerouting traffic to Server B and Server C..."
+            },
+            {
+              type: "step",
+              title: "Your request is rerouted to Server B",
+              desc: "Server B picks up your payment request. Processes it. Booking confirmed. ✅"
+            },
+            {
+              type: "step",
+              title: "Server A recovers",
+              desc: "After Server A restarts and passes health checks again, it's quietly added back to the pool. Normal rotation resumes."
+            },
+            {
+              type: "code",
+              code: "GET /health → Server A → 200 OK ✅\nServer A back online.\nAdded back to pool. Traffic resumes."
+            },
+            {
+              type: "success-callout",
+              text: "✅ You never saw an error. Your payment went through. Your Goa hotel is booked for New Year's Eve. Server A crashed and recovered — and you had absolutely no idea."
+            },
+            {
+              type: "info-callout",
+              text: "💡 This is the full loop — Active checks catch slow degradation. Passive checks catch mid-request failures. Failover handles the switch. Together, they make Booking.com feel like it never goes down — even when servers do."
+            },
+            {
+              type: "success-callout",
+              text: "🎯 You've now covered everything — Load Balancer, HA, all 5 algorithms, State Management, and Health Checks & Failover. You now understand how Booking.com handles 20 lakh users, survives crashes, manages sessions, and keeps your New Year's Eve booking safe — all without you ever feeling a thing."
+            }
+          ]
+        }
       },
 
       {
@@ -634,12 +3039,187 @@ export const roadmapData = [
         title: "Basics (Foundation)",
         level: "freshers",
         topics: [
-          "What are Streams?",
-          "Why Streams are needed",
-          "Problems without Streams (memory overload with large files)",
+
+          "What are Streams and why do we need it?",
           "Buffer vs Stream",
-          "Event-driven architecture basics"
-        ]
+          "Event-driven architecture",
+        ],
+        topicDetails: {
+          "What are Streams and why do we need it?": [
+            {
+              type: "paragraph",
+              text: "You're on Hotstar. You click play on a 2-hour IPL match. The video starts in 2 seconds. But the full match file is 8GB. Hotstar didn't download all 8GB before playing. You're watching byte 1 while byte 50,000,000 is still being fetched. That's a Stream — and without it, modern video platforms simply couldn't exist."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What would actually happen if Hotstar tried to load the entire match file into memory before playing it?"
+            },
+            {
+              type: "heading",
+              text: "What Happens Without Streams"
+            },
+            {
+              type: "paragraph",
+              text: "Without streams, Hotstar's server would have to read the entire 8GB match file into RAM first, then send it to you. Multiply that by 10 million concurrent viewers during an IPL final — each needing 8GB in RAM simultaneously. That's 80,000 TB of RAM just to serve one match. The server crashes in seconds. Every viewer gets a black screen."
+            },
+            {
+              type: "error-callout",
+              title: "Without Streams — what Hotstar's server would face:",
+              list: [
+                "Read entire 8GB file into RAM before sending even 1 byte",
+                "10 million viewers = 10 million × 8GB loaded simultaneously",
+                "Server RAM exhausted instantly — crashes for everyone",
+                "No video plays until the entire file is loaded — minutes of waiting"
+              ],
+              footer: "This is not hypothetical. This is exactly what happens when you use fs.readFile() on large files in Node.js."
+            },
+            {
+              type: "heading",
+              text: "What is a Stream?"
+            },
+            {
+              type: "paragraph",
+              text: "A Stream is a way to handle data piece by piece — called chunks — instead of loading everything at once. Hotstar reads a small chunk of the match file, sends it to your browser, reads the next chunk, sends that. Memory used at any point: just one chunk. Not 8GB. Just a few kilobytes at a time."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of it like a water pipeline. Water from a reservoir doesn't teleport into your tap all at once. It flows continuously through pipes — a little at a time. You get water the moment you open the tap. The reservoir doesn't need to empty into a bucket first. Streams work exactly the same way with data."
+            },
+            {
+              type: "heading",
+              text: "Streams vs No Streams — Side by Side"
+            },
+            {
+              type: "code",
+              code: "// ❌ Without Streams — fs.readFile:\n// Loads entire file into RAM first, then sends\nfs.readFile('ipl-match.mp4', (err, data) => {\n  res.end(data)  // 8GB sitting in RAM before 1 byte sent\n})\n\n// ✅ With Streams — fs.createReadStream:\n// Reads and sends chunk by chunk — RAM stays low\nfs.createReadStream('ipl-match.mp4').pipe(res)"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Streams let Hotstar serve millions of viewers simultaneously — using a fraction of the memory. Data flows as it's produced. Users see content instantly. Servers stay alive. That's why every high-scale platform — Hotstar, YouTube, Netflix — is built on streams."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Streams work because Node.js processes data in chunks. But what exactly is a chunk? And what was happening before streams existed — what is a Buffer? Understanding Buffer vs Stream is what makes the rest of this click."
+            }
+          ],
+
+          "Buffer vs Stream": [
+            {
+              type: "paragraph",
+              text: "Hotstar is sending you an IPL match. The data is travelling from their server to your browser over the network. But networks aren't perfectly smooth — sometimes data arrives faster than your player can render it, sometimes slower. There needs to be a temporary holding area that absorbs the fluctuation. That holding area is a Buffer."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If Streams send data chunk by chunk — where do those chunks sit while waiting to be processed?"
+            },
+            {
+              type: "heading",
+              text: "What is a Buffer?"
+            },
+            {
+              type: "paragraph",
+              text: "A Buffer is a temporary storage area in memory — a fixed-size chunk of raw binary data. Think of it as a waiting room. Data arrives from the network or file system, sits in the Buffer briefly, gets processed, and then the Buffer is cleared for the next batch. In Node.js, Buffer is a global class that holds raw bytes."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of watching Hotstar on a slow connection. You've seen that spinning loader — 'Buffering...'. That's literally the Buffer filling up. Hotstar is waiting for enough chunks to arrive and sit in the buffer before it can play the next few seconds smoothly. The buffer is absorbing the network inconsistency."
+            },
+            {
+              type: "heading",
+              text: "Buffer vs Stream — The Core Difference"
+            },
+            {
+              type: "paragraph",
+              text: "A Buffer holds ALL the data in memory at once — waiting until everything is ready before doing anything. A Stream processes data as it arrives — chunk by chunk — without waiting for the whole thing. For small data, Buffer is fine. For large files like match recordings, live streams, or file uploads — Buffer is a memory disaster."
+            },
+            {
+              type: "code",
+              code: "// Buffer approach — waits for ALL data:\nconst data = fs.readFileSync('match.mp4')\n// 8GB sitting in RAM. Nothing sent yet.\n\n// Stream approach — processes as it arrives:\nconst stream = fs.createReadStream('match.mp4')\nstream.on('data', chunk => {\n  // Process this chunk NOW. Move on. RAM stays low.\n})"
+            },
+            {
+              type: "heading",
+              text: "How Buffer and Stream Work Together"
+            },
+            {
+              type: "paragraph",
+              text: "Buffers and Streams aren't opposites — they work together. A Stream internally uses Buffers. As Hotstar's server reads the match file, each chunk it reads is temporarily a Buffer. The Stream moves those Buffers along one at a time — processes one, discards it, picks up the next. The Stream is the pipeline. The Buffer is what flows through it."
+            },
+            {
+              type: "code",
+              code: "// Each 'chunk' inside a stream IS a Buffer:\nfs.createReadStream('match.mp4').on('data', chunk => {\n  console.log(Buffer.isBuffer(chunk))  // → true\n  console.log(chunk.length)            // → 65536 (64KB at a time)\n})"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Buffer = temporary holding area for raw bytes. Stream = the pipeline that moves Buffers along chunk by chunk. Together they let Hotstar stream 8GB match files to millions of users — using only kilobytes of RAM at any moment."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Streams move data in chunks — but how does Node.js know when a chunk has arrived? How does it react without blocking? That's the foundation of how Node.js works — Event-driven architecture. Without understanding events, Stream code looks like magic."
+            }
+          ],
+
+          "Event-driven architecture": [
+            {
+              type: "paragraph",
+              text: "Hotstar's server is streaming a match to 10 million users simultaneously. It's also accepting new user logins, processing payments, handling chat messages — all at the same time. Node.js runs on a single thread. How does it manage all of this without everything waiting in a queue? The answer is Event-driven architecture — and it's the reason Node.js exists."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Node.js has only one thread. How does it handle millions of things happening at the same time without freezing?"
+            },
+            {
+              type: "heading",
+              text: "The Traditional Way — Blocking"
+            },
+            {
+              type: "paragraph",
+              text: "In a traditional blocking model, when Hotstar's server reads a file, it stops everything and waits. Read file — wait. File done — continue. Next request — wait again. With 10 million users, that means 10 million things all waiting in line. One slow file read blocks everyone behind it."
+            },
+            {
+              type: "error-callout",
+              title: "Blocking model on Hotstar's scale:",
+              list: [
+                "User 1 requests match stream — server starts reading file — blocks",
+                "User 2 arrives — server is busy — waits",
+                "User 3, 4, 5... all waiting in line",
+                "One slow disk read = everyone frozen"
+              ],
+              footer: "This is why traditional blocking servers need one thread per user — expensive, doesn't scale."
+            },
+            {
+              type: "heading",
+              text: "The Event-Driven Way — Non-Blocking"
+            },
+            {
+              type: "paragraph",
+              text: "Node.js never waits. Instead of blocking, it says: 'Start reading the file. When a chunk is ready, fire an event. I'll handle it then.' Meanwhile it goes and handles User 2, User 3, User 4. When the file chunk is ready — the event fires — Node.js handles it instantly. This is the Event Loop."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of a restaurant. A blocking waiter takes User 1's order, stands in the kitchen waiting for the food, brings it back, then goes to User 2. An event-driven waiter takes User 1's order, hands it to the kitchen, immediately goes to User 2, User 3, User 4. When kitchen rings the bell (event fires) — he picks up the food and delivers it. Same one person. 10x the tables served."
+            },
+            {
+              type: "heading",
+              text: "How This Connects to Streams"
+            },
+            {
+              type: "paragraph",
+              text: "Streams are built entirely on events. When Hotstar's server reads a chunk of the match file — it fires a 'data' event. When the file ends — 'end' event. When something goes wrong — 'error' event. Your code just listens for these events and reacts. Node.js handles the timing."
+            },
+            {
+              type: "code",
+              code: "const stream = fs.createReadStream('match.mp4')\n\nstream.on('data', chunk => {\n  // 🔔 event fired — chunk is ready\n  res.write(chunk)  // send to user\n})\n\nstream.on('end', () => {\n  // 🔔 event fired — file fully read\n  res.end()\n})\n\nstream.on('error', err => {\n  // 🔔 event fired — something went wrong\n  res.status(500).end()\n})"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Event-driven architecture = don't wait, just listen. Node.js starts a task, registers a listener, moves on. When the task completes — the event fires — the listener runs. This is why one Node.js server can stream matches to 10 million users simultaneously on a single thread."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Streams fire events — but what kind of stream fires what kind of event? Not all streams are the same. Hotstar's server reads a file (Readable), writes a response (Writable), and sometimes does both (Duplex). Each type has a different job — and that's exactly what Types of Streams covers next."
+            }
+          ]
+        }
       },
       {
         id: 2,
@@ -650,8 +3230,196 @@ export const roadmapData = [
           "Writable Streams",
           "Duplex Streams",
           "Transform Streams",
-          "PassThrough Streams"
-        ]
+        ],
+        topicDetails: {
+          "Readable Streams": [
+            {
+              type: "paragraph",
+              text: "Hotstar needs to read an 8GB IPL match file and send it to your browser. It can't load 8GB into RAM. It needs to read the file piece by piece — chunk by chunk — and push each chunk out as soon as it's ready. The stream that reads data and makes it available for consumption is a Readable Stream."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Who produces the data in a stream? Who's on the 'output' end pushing chunks out — the file system, the network, the database?"
+            },
+            {
+              type: "heading",
+              text: "What is a Readable Stream?"
+            },
+            {
+              type: "paragraph",
+              text: "A Readable Stream is a source of data. It produces data and makes it available to be consumed. You don't push data into it — you read data out of it. On Hotstar's server, the match file is the source. fs.createReadStream reads it chunk by chunk and fires 'data' events as each chunk becomes available."
+            },
+            {
+              type: "info-callout",
+              text: "💡 A Readable Stream is like a tap. Water (data) flows out of it. You don't put water in — you only take water out. The source (reservoir/file) is behind it. You just open the tap and consume what comes out."
+            },
+            {
+              type: "heading",
+              text: "Readable Stream in Action — Hotstar File Streaming"
+            },
+            {
+              type: "step",
+              title: "User clicks Play on Hotstar",
+              desc: "Server receives the request for the match file."
+            },
+            {
+              type: "step",
+              title: "Server creates a Readable Stream on the file",
+              desc: "fs.createReadStream opens the file and starts reading it in chunks — default 64KB per chunk."
+            },
+            {
+              type: "step",
+              title: "data event fires for each chunk",
+              desc: "Each 64KB chunk fires a 'data' event. Server sends that chunk to the user immediately."
+            },
+            {
+              type: "step",
+              title: "end event fires when file is fully read",
+              desc: "Stream signals completion. Server closes the response. User's player has received the full file — streamed chunk by chunk."
+            },
+            {
+              type: "code",
+              code: "const fs = require('fs')\n\nconst readable = fs.createReadStream('ipl-match.mp4')\n\nreadable.on('data', chunk => {\n  console.log(`Chunk received: ${chunk.length} bytes`)\n})\n\nreadable.on('end', () => {\n  console.log('File fully read ✅')\n})"
+            },
+            {
+              type: "paragraph",
+              text: "Real-world Readable Streams on Hotstar: fs.createReadStream for match files, HTTP request bodies (incoming upload streams), database query result streams for large datasets, live match score feeds from data providers."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Readable Stream = data source. It produces chunks, fires events, lets you consume data without loading everything into memory. Hotstar reads an 8GB file with kilobytes of RAM at any moment — because of Readable Streams."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Readable Streams produce data — but something has to receive it. When Hotstar reads the match file, where does each chunk go? To the user's browser — through a Writable Stream."
+            }
+          ],
+
+          "Writable Streams": [
+            {
+              type: "paragraph",
+              text: "Hotstar read a chunk of the match file using a Readable Stream. Now that chunk needs to go somewhere — to the user's browser, to a new file, to a database. The stream that receives data and does something with it is a Writable Stream. If Readable is the tap, Writable is the drain."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Every chunk that comes out of a Readable Stream has to go somewhere. What receives it, processes it, and decides what to do with it?"
+            },
+            {
+              type: "heading",
+              text: "What is a Writable Stream?"
+            },
+            {
+              type: "paragraph",
+              text: "A Writable Stream is a destination for data. You write chunks into it. It consumes them — sends to network, writes to file, stores in database. On Hotstar's server, the HTTP response object is a Writable Stream. Every chunk read from the match file gets written into the response — which sends it to the user's browser."
+            },
+            {
+              type: "info-callout",
+              text: "💡 A Writable Stream is like a drain. Water (data) flows into it. You don't take water out — you only pour water in. What happens to that water (where it goes) is the Writable Stream's job — file system, network, database."
+            },
+            {
+              type: "code",
+              code: "const fs = require('fs')\n\nconst writable = fs.createWriteStream('match-copy.mp4')\n\nwritable.write(chunk1)\nwritable.write(chunk2)\nwritable.end()  // signal: no more data coming\n\nwritable.on('finish', () => {\n  console.log('All chunks written ✅')\n})"
+            },
+            {
+              type: "heading",
+              text: "Readable + Writable Together — Hotstar's Core Flow"
+            },
+            {
+              type: "paragraph",
+              text: "Hotstar's actual streaming flow connects a Readable and Writable Stream together. The Readable reads the match file chunk by chunk. Each chunk gets written into the Writable HTTP response. The user's browser receives it in real time. This connection between Readable and Writable — that's what pipe() does, which comes up in Piping."
+            },
+            {
+              type: "code",
+              code: "// Hotstar streaming a match to a user:\nconst readable = fs.createReadStream('ipl-match.mp4')\nreadable.pipe(res)  // res is a Writable Stream\n// Readable feeds into Writable — chunk by chunk ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Writable Stream = data destination. It receives chunks and consumes them. The HTTP response, a new file, a database connection — all Writable Streams. Together with Readable Streams, they form the complete data pipeline."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Readable reads. Writable writes. But what if Hotstar needs a stream that does both — receives data AND sends data? Like a live chat server that both receives messages and broadcasts them. That's a Duplex Stream."
+            }
+          ],
+
+          "Duplex Streams": [
+            {
+              type: "paragraph",
+              text: "During a live IPL match on Hotstar, there's a live commentary chat — you send messages and receive other users' messages simultaneously. One connection. Data flowing in both directions at the same time. A Readable handles one direction. A Writable handles the other. But what handles both simultaneously? A Duplex Stream."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What kind of stream can both produce data AND consume data at the same time — independently in both directions?"
+            },
+            {
+              type: "heading",
+              text: "What is a Duplex Stream?"
+            },
+            {
+              type: "paragraph",
+              text: "A Duplex Stream is both Readable and Writable at the same time — independently. Data can flow in and data can flow out simultaneously, with no relationship between what goes in and what comes out. The most common real-world Duplex Stream is a TCP socket — the foundation of every network connection."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of a phone call. You speak (write data out) and listen (read data in) simultaneously. What you say has no direct relationship to what you hear — they're independent streams of audio flowing in opposite directions on the same connection. That's a Duplex Stream."
+            },
+            {
+              type: "code",
+              code: "const net = require('net')\n\n// TCP socket — a real Duplex Stream:\nconst socket = net.createConnection({ port: 3000 })\n\n// Writable side — send data:\nsocket.write('User joined match commentary')\n\n// Readable side — receive data:\nsocket.on('data', chunk => {\n  console.log('Received:', chunk.toString())\n})"
+            },
+            {
+              type: "paragraph",
+              text: "Duplex Streams on Hotstar: WebSocket connections for live chat during matches, TCP connections between Hotstar's microservices, network sockets for real-time score updates, peer-to-peer connections for low-latency streaming."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Duplex = Readable + Writable independently. Data flows both ways simultaneously. TCP sockets, WebSockets, network connections — all Duplex Streams. The two directions are completely independent — what goes in has nothing to do with what comes out."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Duplex has two independent directions. But what if the output IS dependent on the input — you read data, transform it, and output the modified version? Like Hotstar compressing a 1080p stream to 480p for users on slow connections. That's a Transform Stream."
+            }
+          ],
+
+          "Transform Streams": [
+            {
+              type: "paragraph",
+              text: "A user in a village opens Hotstar on 2G. Sending them the full 1080p match at 8GB would buffer forever. Hotstar's server needs to take the 1080p stream coming in, compress it down to 480p in real time, and send the smaller version out. Data goes in one end, gets modified, comes out the other end. That's a Transform Stream."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if you need to modify data as it flows through — compress it, encrypt it, convert it — without storing the whole thing first?"
+            },
+            {
+              type: "heading",
+              text: "What is a Transform Stream?"
+            },
+            {
+              type: "paragraph",
+              text: "A Transform Stream is a Duplex Stream where the output is directly derived from the input. Data comes in, gets transformed, goes out — chunk by chunk. Unlike Duplex where input and output are independent, in Transform they're connected. What you read out is a modified version of what you wrote in."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of a translation booth at a UN meeting. Speech goes in (English), gets transformed in real time, comes out the other side (Hindi). Same content, different form. Nobody stores the entire speech first — it's transformed as it flows. That's a Transform Stream."
+            },
+            {
+              type: "code",
+              code: "const zlib = require('zlib')\nconst fs = require('fs')\n\n// Transform Stream — compress match file as it streams:\nfs.createReadStream('match-1080p.mp4')  // data in\n  .pipe(zlib.createGzip())              // transform: compress\n  .pipe(fs.createWriteStream('match-480p.mp4.gz'))  // data out\n// Entire 8GB compressed chunk by chunk — minimal RAM ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Transform Streams Hotstar uses in production: zlib.createGzip() for compressing streams before sending, crypto.createCipher() for encrypting DRM-protected content, custom Transform streams for converting video formats on the fly, JSON parsing streams for large API responses."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Transform = data in → modify → data out. Input and output are linked. Compress, encrypt, convert, parse — all Transform Streams. Hotstar serves 480p to 2G users and 4K to fiber users from the same source file — using Transform Streams in real time."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Four types of streams — each with a specific job. But streams don't work in silence. They communicate through events — 'data', 'end', 'error', 'finish'. Missing even one event listener means missed chunks, silent failures, or memory leaks. Stream Events are what make streams actually controllable."
+            }
+          ]
+        }
       },
       {
         id: 3,
@@ -662,7 +3430,288 @@ export const roadmapData = [
           "read(), write(), push(), pipe()",
           "Stream lifecycle",
           "Flowing vs Paused mode"
-        ]
+        ],
+        topicDetails: {
+          "data, end, error, finish events": [
+            {
+              type: "paragraph",
+              text: "Hotstar's server is streaming a match. Chunks are flowing. But how does the server know when a chunk arrived? How does it know the file ended? How does it catch a network failure mid-stream without crashing? Streams don't return values — they communicate entirely through events. Miss an event, and the stream fails silently."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ A stream is running in the background asynchronously. How does your code know what's happening — chunk arrived, file done, something broke?"
+            },
+            {
+              type: "heading",
+              text: "The 4 Core Stream Events"
+            },
+            {
+              type: "heading",
+              text: "'data' — A chunk is ready"
+            },
+            {
+              type: "paragraph",
+              text: "Fires on Readable Streams every time a new chunk is available. This is where you process each piece — send it to the user, transform it, write it somewhere. Each chunk is a Buffer by default."
+            },
+            {
+              type: "code",
+              code: "stream.on('data', chunk => {\n  res.write(chunk)  // send this chunk to Hotstar user\n})"
+            },
+            {
+              type: "heading",
+              text: "'end' — No more data to read"
+            },
+            {
+              type: "paragraph",
+              text: "Fires on Readable Streams when all data has been consumed. The match file has been fully read. Time to close the response, log completion, or trigger the next step."
+            },
+            {
+              type: "code",
+              code: "stream.on('end', () => {\n  res.end()  // match fully streamed to user ✅\n})"
+            },
+            {
+              type: "heading",
+              text: "'finish' — All data has been written"
+            },
+            {
+              type: "paragraph",
+              text: "Fires on Writable Streams when all writes are complete and the stream is flushed. Different from 'end' — 'end' is for Readable (done reading), 'finish' is for Writable (done writing)."
+            },
+            {
+              type: "code",
+              code: "writable.on('finish', () => {\n  console.log('Match recording saved ✅')\n})"
+            },
+            {
+              type: "heading",
+              text: "'error' — Something went wrong"
+            },
+            {
+              type: "paragraph",
+              text: "Fires on any stream when an error occurs — file not found, network dropped, disk full. If you don't listen for 'error', Node.js throws an uncaught exception and crashes the entire server. Always handle errors on every stream."
+            },
+            {
+              type: "code",
+              code: "stream.on('error', err => {\n  console.error('Stream failed:', err.message)\n  res.status(500).end()  // send error to user\n})"
+            },
+            {
+              type: "error-callout",
+              title: "What happens if you skip the 'error' event:",
+              list: [
+                "File not found mid-stream → unhandled error thrown",
+                "Node.js crashes the entire process",
+                "All 10 million Hotstar users lose their stream simultaneously",
+                "Server needs manual restart"
+              ],
+              footer: "Always attach an error listener to every stream. No exceptions."
+            },
+            {
+              type: "success-callout",
+              text: "✅ data → chunk arrived, process it. end → reading done, close up. finish → writing done, confirm. error → something broke, handle it. Four events. Every stream uses them. Miss one — especially error — and the stream becomes a ticking time bomb."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Events tell you what happened. But how do you actually control the stream — manually read a chunk, push data in, or connect streams together? That's what read(), write(), push(), and pipe() do."
+            }
+          ],
+
+          "read(), write(), push(), pipe()": [
+            {
+              type: "paragraph",
+              text: "Events tell you when things happen on a stream. But you also need to actively control streams — manually pull a chunk, push data into a stream, write a chunk out, or connect two streams together. These four methods are the hands-on controls of every stream in Node.js."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How do you manually control what flows through a stream — read a specific chunk, write data in, push data out, or connect two streams together?"
+            },
+            {
+              type: "heading",
+              text: "read() — Manually pull a chunk from a Readable"
+            },
+            {
+              type: "paragraph",
+              text: "read() is used in paused mode — you explicitly ask for the next chunk instead of waiting for 'data' events to fire automatically. Gives you precise control over how fast you consume the stream."
+            },
+            {
+              type: "code",
+              code: "stream.on('readable', () => {\n  const chunk = stream.read()  // manually pull one chunk\n  if (chunk) res.write(chunk)\n})"
+            },
+            {
+              type: "heading",
+              text: "write() — Push a chunk into a Writable"
+            },
+            {
+              type: "paragraph",
+              text: "write() sends a chunk of data into a Writable Stream. Hotstar uses this to write each video chunk into the HTTP response as it arrives from the file stream."
+            },
+            {
+              type: "code",
+              code: "res.write(chunk)      // send chunk to user's browser\nfile.write(chunk)     // write chunk to disk"
+            },
+            {
+              type: "heading",
+              text: "push() — Feed data into a custom Readable"
+            },
+            {
+              type: "paragraph",
+              text: "push() is used when building custom Readable Streams. You push chunks in from your own data source — a database, an API, generated data. push(null) signals the stream is done."
+            },
+            {
+              type: "code",
+              code: "const { Readable } = require('stream')\nconst liveScores = new Readable({ read() {} })\n\nliveScores.push('CSK: 45/2')   // push live score chunk\nliveScores.push('MI: 67/3')\nliveScores.push(null)           // stream ended"
+            },
+            {
+              type: "heading",
+              text: "pipe() — Connect Readable directly to Writable"
+            },
+            {
+              type: "paragraph",
+              text: "pipe() is the most important method. It connects a Readable Stream to a Writable Stream — automatically taking each chunk from the Readable and writing it into the Writable. No manual event handling needed. Hotstar uses this to connect the file read stream directly to the HTTP response."
+            },
+            {
+              type: "code",
+              code: "// Without pipe — manual and verbose:\nreadable.on('data', chunk => writable.write(chunk))\nreadable.on('end', () => writable.end())\n\n// With pipe — one line:\nreadable.pipe(writable)  // ✅ same result, automatic"
+            },
+            {
+              type: "success-callout",
+              text: "✅ read() pulls chunks manually. write() sends chunks into a Writable. push() feeds custom Readable Streams. pipe() connects them all automatically. pipe() alone handles 90% of real streaming use cases — including Hotstar's entire video delivery pipeline."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ These methods work differently depending on the stream's current state. A stream isn't always ready to be read from or written to — it moves through different states during its lifetime. Understanding the Stream lifecycle tells you exactly when each method is safe to call."
+            }
+          ],
+
+          "Stream lifecycle": [
+            {
+              type: "paragraph",
+              text: "A Hotstar stream doesn't just exist and run forever. It's created, it starts flowing, it might pause, it resumes, it ends, it might error and close. Every stream goes through a lifecycle — specific states from birth to completion. Understanding this prevents writing to a closed stream, reading from an unready stream, or missing data because you attached a listener too late."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What states does a stream pass through — and what can go wrong if you interact with it at the wrong state?"
+            },
+            {
+              type: "heading",
+              text: "Readable Stream Lifecycle"
+            },
+            {
+              type: "step",
+              title: "Created — stream exists but hasn't started",
+              desc: "fs.createReadStream() called. File handle opened. No data flowing yet. Listeners not attached yet."
+            },
+            {
+              type: "step",
+              title: "Flowing — data events firing",
+              desc: "Once a 'data' listener is attached or .resume() is called, stream enters flowing mode. Chunks fire automatically as fast as the source produces them."
+            },
+            {
+              type: "step",
+              title: "Paused — data stopped temporarily",
+              desc: "stream.pause() called or the consumer is too slow. Data production stops. Chunks wait in internal buffer. Will resume when .resume() is called or pipe() manages it automatically."
+            },
+            {
+              type: "step",
+              title: "Ended — all data consumed",
+              desc: "push(null) was called internally. 'end' event fires. No more data will ever come from this stream. Stream is done."
+            },
+            {
+              type: "step",
+              title: "Closed/Destroyed — stream cleaned up",
+              desc: "'close' event fires. File handles released. Memory freed. Stream cannot be used again."
+            },
+            {
+              type: "heading",
+              text: "Writable Stream Lifecycle"
+            },
+            {
+              type: "step",
+              title: "Created — ready to receive data",
+              desc: "fs.createWriteStream() or res object ready. write() can be called."
+            },
+            {
+              type: "step",
+              title: "Writing — chunks being processed",
+              desc: "write() calls accepted. Internally buffered and flushed to destination — disk, network, etc."
+            },
+            {
+              type: "step",
+              title: "Ending — writable.end() called",
+              desc: "No more write() calls allowed. Remaining buffered data is flushed out."
+            },
+            {
+              type: "step",
+              title: "Finished — all data written",
+              desc: "'finish' event fires. All chunks are on disk or sent over network. Stream done."
+            },
+            {
+              type: "code",
+              code: "// Lifecycle visible in code:\nconst stream = fs.createReadStream('match.mp4')\n// State: Created\n\nstream.on('data', chunk => { /* State: Flowing */ })\nstream.on('end', () => { /* State: Ended */ })\nstream.on('close', () => { /* State: Closed */ })"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Created → Flowing → Paused → Resumed → Ended → Closed. Every stream follows this path. Knowing where a stream is in its lifecycle tells you exactly what you can do with it — and prevents silent data loss or crashes from calling methods at the wrong time."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The lifecycle moves between Flowing and Paused states — and this isn't just internal behavior. It directly controls how fast data moves through your pipeline. If Hotstar's stream flows too fast for a slow user's connection, the server could run out of memory. Flowing vs Paused mode is how streams handle this exact problem."
+            }
+          ],
+
+          "Flowing vs Paused mode": [
+            {
+              type: "paragraph",
+              text: "A Hotstar user on a fast fiber connection can receive 100MB/s. A user on 2G can receive maybe 0.5MB/s. The match file reads at the same speed for both. If Hotstar keeps reading and pushing chunks at full speed for the 2G user — the chunks pile up in memory faster than they can be sent. Eventually the server runs out of RAM. Flowing vs Paused mode is how streams prevent this."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What happens when a Readable Stream produces data faster than the Writable Stream can consume it? Who pumps the brakes?"
+            },
+            {
+              type: "heading",
+              text: "Flowing Mode"
+            },
+            {
+              type: "paragraph",
+              text: "In Flowing mode, the stream reads data as fast as possible and fires 'data' events continuously. No waiting. No pausing. Data rushes through. This happens automatically as soon as you attach a 'data' listener or call .resume(). Great for fast consumers. Dangerous for slow ones."
+            },
+            {
+              type: "code",
+              code: "// Flowing mode — triggered by attaching 'data' listener:\nstream.on('data', chunk => {\n  res.write(chunk)  // if res is slow, chunks pile up in memory\n})\n// Stream flows at full speed — no backpressure control"
+            },
+            {
+              type: "heading",
+              text: "Paused Mode"
+            },
+            {
+              type: "paragraph",
+              text: "In Paused mode, the stream does nothing until you explicitly call read(). Data waits. No 'data' events fire automatically. You control the pace — read a chunk, process it, read the next. This is the default state before any listener is attached."
+            },
+            {
+              type: "code",
+              code: "// Paused mode — manual control:\nstream.on('readable', () => {\n  const chunk = stream.read()  // pull only when ready\n  if (chunk) slowWriter.write(chunk)\n})"
+            },
+            {
+              type: "heading",
+              text: "Backpressure — The Real Problem pipe() Solves"
+            },
+            {
+              type: "paragraph",
+              text: "When a Readable produces faster than a Writable consumes — chunks pile up in memory. This is called backpressure. pipe() handles this automatically — when the Writable's buffer is full, pipe() pauses the Readable. When the buffer drains, pipe() resumes it. No manual work needed. This is why pipe() is the standard for production streaming."
+            },
+            {
+              type: "code",
+              code: "// pipe() manages flowing/paused automatically:\nfs.createReadStream('match.mp4').pipe(res)\n// If res (2G user) is slow → stream auto-pauses ✅\n// When res drains → stream auto-resumes ✅\n// RAM stays controlled regardless of user speed ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Flowing = data rushes out automatically. Paused = you control the pace manually. pipe() switches between them intelligently — pausing when the consumer is slow, resuming when it catches up. This backpressure management is why Hotstar can serve 2G users and fiber users from the same stream without running out of memory."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ pipe() manages backpressure automatically — and it's also how you connect multiple streams together into a pipeline. Read a file, compress it, encrypt it, send it — all in one chain. That's Piping and Chaining, coming up next."
+            }
+          ]
+        }
       },
       {
         id: 4,

@@ -88,18 +88,18 @@ export function Header() {
                       onClick={() => setDropdownOpen(false)}
                     ></div>
                     <div className="absolute right-0 mt-2 w-56 bg-bg-surface rounded-md shadow-md border border-border-subtle py-1 z-50 animate-in fade-in zoom-in-95">
-                      <div className="px-2 py-1.5 border-b border-border-subtle mb-1">
+                      <div className="px-2 py-1.5  border-border-subtle mb-1">
                         <p className="text-sm font-medium text-text-main truncate px-1">{user.name}</p>
                         <p className="text-xs text-text-muted truncate px-1">{user.email}</p>
                       </div>
-                      <div className="px-1">
+                      {/* <div className="px-1">
                         <button className="w-full text-left px-2 py-1.5 text-sm text-text-muted hover:bg-border-subtle hover:text-text-main rounded-sm flex items-center transition-colors">
                           Profile
                         </button>
                         <button className="w-full text-left px-2 py-1.5 text-sm text-text-muted hover:bg-border-subtle hover:text-text-main rounded-sm flex items-center transition-colors">
                           Settings
                         </button>
-                      </div>
+                      </div> */}
                       <div className="border-t border-border-subtle mt-1 px-1 pt-1">
                         <button
                           onClick={() => {

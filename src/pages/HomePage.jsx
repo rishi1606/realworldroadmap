@@ -20,7 +20,6 @@ export function HomePage() {
         const enhancedData = data.map(rm => ({
           ...rm,
           type: "featured",
-          tags: ["System Design", "Architecture"],
         }));
 
         setRoadmaps(enhancedData);

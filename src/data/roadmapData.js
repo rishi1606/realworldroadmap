@@ -12,7 +12,8 @@ export const roadmapData = [
     id: "authentication-nodejs",
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png",
     title: "How Flipkart Authenticates Millions of Users",
-    description: "Complete guide to mastering Authentication in Node.js from basics to production systems",
+    description: "Master authentication from scratch — covering password hashing with bcrypt, JWT access & refresh tokens, session management with cookies, and secure login flows used by platforms like Flipkart at scale.",
+    tags: ["JWT", "Session", "Cookies", "OAuth"],
     nodes: [
 
       {
@@ -1212,7 +1213,8 @@ export const roadmapData = [
     id: "caching-netflix",
     image: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png",
     title: "How Netflix Caches Content for 200M+ Users",
-    description: "Complete guide to mastering Caching from basics to production-grade distributed systems",
+    description: "Understand how Netflix serves 230M+ users without melting its database — from in-memory caching with Redis, cache-aside & read-through strategies, CDN edge caching, to cache invalidation patterns used in production.",
+    tags: ["Redis", "CDN", "Cache Invalidation"],
     nodes: [
 
       {
@@ -2107,7 +2109,8 @@ export const roadmapData = [
     id: "websockets-gaming",
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
     title: "How Gaming Apps Use WebSockets",
-    description: "WebSockets",
+    description: "Learn how multiplayer games achieve real-time communication — covering WebSocket handshake, persistent connections, full-duplex messaging, Socket.IO rooms, and scaling WebSocket servers for thousands of concurrent players.",
+    tags: ["WebSocket", "Socket.IO", "Real-Time"],
     nodes: [
 
       {
@@ -2251,7 +2254,8 @@ export const roadmapData = [
     id: "loadbalancer-booking",
     image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Icon_2022.svg",
     title: "How Booking.com Handles Millions of Users",
-    description: "Complete guide to mastering load balancing from basics to production systems",
+    description: "Explore how Booking.com handles massive traffic spikes — from round-robin & least-connections algorithms, NGINX reverse proxy setup, health checks, sticky sessions, to auto-scaling load balancers in cloud environments.",
+    tags: ["NGINX", "Load Balancer", "Reverse Proxy"],
     nodes: [
 
       {
@@ -3032,7 +3036,8 @@ export const roadmapData = [
     id: "streams-nodejs",
     image: "https://static.vecteezy.com/system/resources/previews/056/505/637/non_2x/jiohotstar-app-icon-on-transparent-background-free-png.png",
     title: "How Jio Hotstar Streams Live matches",
-    description: "Complete guide to mastering Node.js Streams from basics to production systems",
+    description: "Understand how Jio Hotstar streams live cricket to millions — covering Node.js Readable & Writable streams, backpressure handling, piping, Transform streams, and HLS-based adaptive bitrate streaming for video delivery.",
+    tags: ["Streams", "Buffers", "HLS"],
     nodes: [
       {
         id: 1,
@@ -3798,6 +3803,239 @@ export const roadmapData = [
           "Streams in AWS S3 uploads/downloads"
         ]
       }
+    ]
+  },
+  {
+    id: "rate-limiting-razorpay",
+    image: "https://upload.wikimedia.org/wikipedia/commons/8/89/Razorpay_logo.svg",
+    title: "Understand Rate Limiting through Razorpay",
+    description: "Learn how Razorpay protects its payment APIs — from fixed & sliding window algorithms, token bucket rate limiting, Redis-based distributed counters, to DDoS protection and customer-tier throttling in production.",
+    tags: ["Rate Limiting", "Redis", "DDoS"],
+    nodes: [
+
+      // FRESHERS - Node.js Implementation
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "What is Rate Limiting?",
+          "Why Rate Limiting is needed?",
+          "Without Rate Limiting — What goes wrong?",
+          "Where is Rate Limiting applied?",
+          "Client-side vs Server-side Rate Limiting"
+        ]
+      },
+
+      {
+        id: 2,
+        title: "Core Concepts & Algorithms",
+        level: "freshers",
+        topics: [
+          "Fixed Window Algorithm",
+          "Sliding Window Algorithm",
+          "Token Bucket Algorithm",
+          "Leaky Bucket Algorithm",
+        ]
+      },
+
+      {
+        id: 3,
+        title: "Rate Limiting in Node.js",
+        level: "freshers",
+        topics: [
+          "express-rate-limit setup",
+          "Limiting by IP Address",
+          "Limiting by User ID",
+          "Custom Rate Limit Rules",
+          "Returning 429 Too Many Requests",
+          "Rate Limit Headers (X-RateLimit-*)"
+        ]
+      },
+
+      {
+        id: 4,
+        title: "Rate Limiting with Redis",
+        level: "freshers",
+        topics: [
+          "Why Redis for Rate Limiting?",
+          "Storing counters in Redis",
+          "TTL based expiry in Redis",
+          "rate-limiter-flexible library",
+          "Distributed Rate Limiting basics"
+        ]
+      },
+
+      // INTERMEDIATE - System Design
+      {
+        id: 5,
+        title: "Designing Rate Limiters",
+        level: "intermediate",
+        topics: [
+          "Rate Limiting at API Gateway level",
+          "Per User vs Per IP vs Per Endpoint",
+          "Global vs Local Rate Limiting",
+          "Soft Limit vs Hard Limit",
+          "Burst Allowance & Throttling"
+        ]
+      },
+
+      {
+        id: 6,
+        title: "Rate Limiting in Distributed Systems",
+        level: "intermediate",
+        topics: [
+          "Why single server rate limiting fails at scale",
+          "Centralized vs Decentralized Rate Limiting",
+          "Redis Cluster for Rate Limiting",
+          "Race Conditions in distributed counters",
+          "Lua scripts in Redis for atomicity"
+        ]
+      },
+
+
+      // ADVANCED - Production Architecture
+      {
+        id: 7,
+        title: "Rate Limiting at Scale",
+        level: "experienced",
+        topics: [
+          "Rate Limiting at Load Balancer (NGINX, HAProxy)",
+          "Rate Limiting at CDN level (Cloudflare)",
+          "AWS API Gateway throttling",
+          "Kong API Gateway rate limiting plugin",
+          "Rate Limiting with Service Mesh (Istio)"
+        ]
+      },
+
+      {
+        id: 8,
+        title: "Security & DDoS Protection",
+        level: "experienced",
+        topics: [
+          "Rate Limiting vs DDoS Protection",
+          "Bot Detection & Rate Limiting",
+          "IP Reputation based limiting",
+          "Adaptive Rate Limiting",
+          "Rate Limiting + WAF (Web Application Firewall)"
+        ]
+      },
+
+      {
+        id: 9,
+        title: "Production Best Practices",
+        level: "experienced",
+        topics: [
+          "Monitoring Rate Limit breaches (Prometheus, Grafana)",
+          "Alerting on suspicious traffic spikes",
+          "Rate Limit Bypass prevention",
+          "Multi-region Rate Limiting",
+          "Customer-tier based Rate Limiting (Free vs Pro vs Enterprise)"
+        ]
+      }
+
+    ]
+  },
+  {
+    id: "nodejs-internals-uber",
+    image: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
+    title: "Understand How Node.js Works through Uber",
+    description: "Discover why Uber chose Node.js — deep dive into the event loop, call stack, microtask queue, async/await internals, libuv thread pool, non-blocking I/O, and how Node.js handles thousands of concurrent ride requests.",
+    tags: ["Event Loop", "libuv", "V8 Engine"],
+    nodes: [
+
+      // FRESHERS - Core Internals
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "What is Node.js?",
+          "Why Uber chose Node.js?",
+          "How Node.js is different from Browser JS",
+          "Single Threaded vs Multi Threaded",
+          "What makes Node.js fast?"
+        ]
+      },
+
+      {
+        id: 2,
+        title: "Event Loop",
+        level: "freshers",
+        topics: [
+          "What is the Event Loop?",
+          "Call Stack",
+          "Web APIs / Node APIs",
+          "Callback Queue (Task Queue)",
+          "Microtask Queue (Promises)",
+        ]
+      },
+
+      {
+        id: 3,
+        title: "Async Programming",
+        level: "freshers",
+        topics: [
+          "Synchronous vs Asynchronous",
+          "Callbacks",
+          "Promises",
+          "Async / Await",
+          "Callback Hell & how to avoid it",
+        ]
+      },
+
+      {
+        id: 4,
+        title: "Non-Blocking I/O & libuv",
+        level: "freshers",
+        topics: [
+          "What is Blocking vs Non-Blocking I/O?",
+          "What is libuv?",
+          "Thread Pool in libuv",
+          "How Node.js handles file & network operations",
+        ]
+      },
+
+      // INTERMEDIATE - System Design
+      {
+        id: 5,
+        title: "Worker Threads & Child Processes",
+        level: "intermediate",
+        topics: [
+          "Why Node.js needs Worker Threads",
+          "worker_threads module",
+          "Child Processes (spawn, fork, exec)",
+          "CPU Intensive tasks in Node.js",
+        ]
+      },
+
+      {
+        id: 6,
+        title: "Cluster Module",
+        level: "intermediate",
+        topics: [
+          "What is Clustering?",
+          "cluster module in Node.js",
+          "Master & Worker processes",
+          "Load balancing across CPU cores"
+        ]
+      },
+
+      {
+        id: 7,
+        title: "Memory Management",
+        level: "intermediate",
+        topics: [
+          "V8 Engine & Heap Memory",
+          "Garbage Collection in Node.js",
+          "Memory Leaks — causes & detection",
+          "Buffer & Memory allocation"
+        ]
+      },
+
+      // ADVANCED - Production Architecture
+
+
     ]
   }
 ];

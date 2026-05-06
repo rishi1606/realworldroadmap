@@ -4,7 +4,7 @@ import { RatingBadge } from './RatingBadge';
 
 export function RoadmapCard({ item }) {
   const destUrl = `/roadmap/${encodeURIComponent(item.slug || item.title)}`;
-  const topicCount = item.nodes?.reduce((acc, node) => acc + (node.topics?.length || 0), 0) || 0;
+  const topicCount = item.nodes?.filter(n => (n.level || n._level || 'freshers') === 'freshers').reduce((acc, node) => acc + (node.topics?.length || 0), 0) || 0;
 
   const fallbackDesc = item.slug?.includes('flipkart')
     ? "Understand exactly how Flipkart securely handles authentication, session management, and JWTs at scale."
@@ -44,22 +44,12 @@ export function RoadmapCard({ item }) {
       </div>
 
       <div className="flex items-center justify-between p-6 pt-0 mt-auto border-t border-border-subtle pt-4">
-        <div className="flex gap-2">
-          {item.tags?.slice(0, 2).map(tag => (
-            <span key={tag} className="inline-flex items-center rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 text-text-main bg-gray-50/50">
+        <div className="flex gap-2 flex-wrap">
+          {item.tags?.slice(0, 3).map(tag => (
+            <span key={tag} className="inline-flex items-center rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold transition-colors text-text-main bg-gray-50/50">
               {tag}
             </span>
           ))}
-          {(!item.tags || item.tags.length === 0) && (
-            <>
-              <span className="inline-flex items-center rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-gray-50/50">
-                System Design
-              </span>
-              <span className="inline-flex items-center rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-gray-50/50">
-                Architecture
-              </span>
-            </>
-          )}
         </div>
         <div className="flex items-center gap-1.5 text-[#71717A] text-[12px] font-semibold">
           <svg className="w-4 h-4 opacity-70" fill="none" viewBox="0 0 24 24" stroke="currentColor">

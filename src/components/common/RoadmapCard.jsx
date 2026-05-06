@@ -5,41 +5,47 @@ import { RatingBadge } from './RatingBadge';
 export function RoadmapCard({ item }) {
   const destUrl = `/roadmap/${encodeURIComponent(item.slug || item.title)}`;
   const topicCount = item.nodes?.reduce((acc, node) => acc + (node.topics?.length || 0), 0) || 0;
-  
-  const fallbackDesc = item.slug?.includes('flipkart') 
+
+  const fallbackDesc = item.slug?.includes('flipkart')
     ? "Understand exactly how Flipkart securely handles authentication, session management, and JWTs at scale."
     : "A comprehensive, step-by-step technical guide to understanding this architecture.";
-  
-  const logo = item.logo || (item.slug?.includes('flipkart') 
-    ? "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png" 
-    : "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png");
+
+  const logo = item.image || item.logo || "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/google-color-icon.png";
 
   return (
-    <Link 
-      to={destUrl} 
+    <Link
+      to={destUrl}
       className="rounded-xl border border-border-subtle bg-bg-surface text-gray-950 shadow-sm hover:shadow-md transition-all group col-span-1 flex flex-col h-full"
     >
       <div className="flex flex-col space-y-1.5 p-6 pb-4">
         <div className="flex items-center gap-3 mb-1">
-           <img src={logo} alt={`${item.title} logo`} className="w-8 h-8 object-contain shrink-0" />
-           <h3 className="font-semibold leading-none tracking-tight text-[18px] group-hover:text-blue-600 text-text-main transition-colors">
-             {item.title}
-           </h3>
+          <div className="w-9 h-9 rounded-full border border-[#d4d4d8] bg-white flex items-center justify-center shrink-0 overflow-hidden">
+            <img src={logo} alt={`${item.title} logo`} className="w-5 h-5 object-contain" />
+          </div>
+          <h3 className="font-semibold leading-none tracking-tight text-[18px] group-hover:text-blue-600 text-text-main transition-colors">
+            {item.title}
+          </h3>
         </div>
         <div className="flex items-center mt-1 pt-1">
-          <RatingBadge roadmapId={item._id} className="!p-0" readonly={true} />
+          <RatingBadge
+            roadmapId={item._id}
+            className="!p-0"
+            readonly={true}
+            initialAvgRating={item.averageRating}
+            initialTotalRatings={item.totalRatings}
+          />
         </div>
       </div>
-      
+
       <div className="p-6 pt-0 flex-1">
         <p className="text-sm text-[#71717A] leading-relaxed line-clamp-3">
           {item.description || fallbackDesc}
         </p>
       </div>
-      
+
       <div className="flex items-center justify-between p-6 pt-0 mt-auto border-t border-border-subtle pt-4">
         <div className="flex gap-2">
-          {item.tags?.slice(0,2).map(tag => (
+          {item.tags?.slice(0, 2).map(tag => (
             <span key={tag} className="inline-flex items-center rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-gray-950 focus:ring-offset-2 text-text-main bg-gray-50/50">
               {tag}
             </span>

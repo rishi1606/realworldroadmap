@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { FiCheck, FiMail, FiBookmark, FiBell, FiDownload, FiShare2, FiUser, FiMap, FiFolder, FiZap } from 'react-icons/fi';
+import React, { useState, useEffect, useMemo } from 'react';
+import { FiCheck, FiMail, FiBookmark, FiBell, FiDownload, FiShare2, FiUser, FiMap, FiFolder, FiZap, FiLock } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { bookmarkAPI } from '../../api/client';
@@ -9,10 +9,20 @@ import { RatingBadge } from '../common/RatingBadge';
 import { ShareModal } from '../common/ShareModal';
 import { Button } from '../common/Button';
 
+// ─── Levels are now assigned directly in roadmapData.js ─────────────
+
+const LEVEL_CHIPS = [
+  { key: 'all', label: 'All', dotColor: 'bg-slate-400' },
+  { key: 'freshers', label: 'Freshers', dotColor: 'bg-emerald-500' },
+  { key: 'intermediate', label: 'Intermediate', dotColor: 'bg-blue-500', isLocked: true },
+  { key: 'experienced', label: 'Experienced', dotColor: 'bg-purple-500', isLocked: true },
+];
+
 export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, progress = {} }) {
   const { user, requireAuth } = useAuth();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [activeLevel, setActiveLevel] = useState('all');
 
   useEffect(() => {
     const checkBookmark = async () => {
@@ -44,9 +54,36 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
     }
   };
 
+  // Use level from data (default to freshers if not present)
+  const nodesWithLevels = useMemo(() => {
+    if (!data) return [];
+    return data.map(node => ({ ...node, _level: node.level || 'freshers' }));
+  }, [data]);
+
+
+  // Filter based on selected chip
+  const filteredNodes = useMemo(() => {
+    if (activeLevel === 'all') return nodesWithLevels;
+    return nodesWithLevels.filter(n => n._level === activeLevel);
+  }, [nodesWithLevels, activeLevel]);
+
+  // Counts per level
+  const levelCounts = useMemo(() => {
+    const counts = { all: nodesWithLevels.length, freshers: 0, intermediate: 0, experienced: 0 };
+    nodesWithLevels.forEach(n => { counts[n._level]++; });
+    return counts;
+  }, [nodesWithLevels]);
+
   const TOPIC_HEIGHT = 42;
   const GAP = 10;
   const SVG_WIDTH = 40;
+
+  // Level badge styling
+  const getLevelBadge = (level) => {
+    if (level === 'freshers') return { cls: 'bg-emerald-100 text-emerald-700 border-emerald-200', label: 'Freshers' };
+    if (level === 'intermediate') return { cls: 'bg-blue-100 text-blue-700 border-blue-200', label: 'Intermediate' };
+    return { cls: 'bg-purple-100 text-purple-700 border-purple-200', label: 'Experienced' };
+  };
 
   return (
     <div className="w-full md:w-[50%] md:h-full md:overflow-y-auto border-b md:border-b-0 md:border-r border-border-subtle relative z-20 bg-bg-base custom-scrollbar">
@@ -91,7 +128,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
           <RatingBadge roadmapId={roadmap?._id} />
 
           {/* Tabs */}
-          <div className="flex items-center justify-between border-b border-border-subtle pb-0 text-[15px] mb-4">
+          <div className="flex items-center justify-between border-b border-border-subtle pb-0 text-[15px]">
             <div className="flex gap-6">
               <span className="flex items-center gap-2 font-bold text-text-main border-b-2 border-text-main pb-2 cursor-pointer">
                 <FiMap className="w-4 h-4" /> Roadmap
@@ -104,13 +141,49 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
 
         </div>
 
-        {/* Branching Roadmap Graph (Alternating Spine) */}
+        {/* ─── Difficulty Filter Chips ──────────────────────────────────── */}
+        <div className="w-full flex items-center gap-2 flex-wrap mb-3">
+          {LEVEL_CHIPS.map(chip => {
+            const isActive = activeLevel === chip.key;
+            return (
+              <button
+                key={chip.key}
+                onClick={() => {
+                  if (chip.key !== activeLevel) {
+                    const newNodes = chip.key === 'all'
+                      ? nodesWithLevels
+                      : nodesWithLevels.filter(n => n._level === chip.key);
+                    const firstNode = newNodes[0] || null;
+                    onSelectNode(firstNode);
+                    onSelectTopic(firstNode?.topics?.[0] || null);
+                  }
+                  setActiveLevel(chip.key);
+                }}
+                className={`inline-flex items-center gap-1.5 rounded-md border px-2.5 py-0.5 text-[11px] font-semibold transition-all cursor-pointer ${isActive
+                  ? 'border-border-subtle bg-bg-surface text-text-main shadow-sm'
+                  : 'border-border-subtle bg-bg-surface text-text-muted hover:text-text-main'
+                  }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${chip.dotColor}`} />
+                {chip.label}
+                {chip.isLocked && <FiLock className="w-2.5 h-2.5 text-text-muted/70 ml-0.5" />}
+                <span className="text-text-muted ml-0.5">{levelCounts[chip.key]}</span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* ─── Branching Roadmap Graph ──────────────────────────────────── */}
         <div className="flex flex-col items-center relative w-full px-4 max-w-4xl mx-auto py-2">
 
-          {/* Continuous Central Spine Line */}
+          {filteredNodes.length === 0 && (
+            <div className="flex flex-col items-center justify-center py-16 text-text-muted animate-fadeIn">
+              <p className="text-[15px] font-semibold">No topics at this level</p>
+              <p className="text-[13px] mt-1">Try selecting a different difficulty</p>
+            </div>
+          )}
 
-
-          {data.map((node, index) => {
+          {filteredNodes.map((node, index) => {
             const isSelected = selectedNode?._id === node._id;
             const isEven = index % 2 === 0;
             const containerHeight = node.topics.length * TOPIC_HEIGHT + (node.topics.length - 1) * GAP;
@@ -120,6 +193,8 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             const firstStatus = hasTopics ? (user ? (progress[node.topics[0]._id] || 'pending') : 'none') : null;
             const allSame = hasTopics && node.topics.every(t => (user ? (progress[t._id] || 'pending') : 'none') === firstStatus);
             const allDone = allSame && firstStatus === 'done';
+
+            const badge = getLevelBadge(node._level);
 
             let nodeBaseStyle = 'border-border-subtle text-text-main hover:border-gray-400 bg-bg-surface';
             if (allSame) {
@@ -149,17 +224,27 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
                 {/* Horizontally scrolling container */}
                 <div className={`flex items-center justify-center w-full overflow-x-auto custom-scrollbar py-3 ${isEven ? 'flex-row' : 'flex-row-reverse'}`}>
 
-                  {/* Main Node */}
-                  <div
-                    onClick={() => onSelectNode(node)}
-                    className={`bg-bg-surface border-2 rounded-lg px-5 py-3 w-[200px] shrink-0 text-center shadow-sm relative font-bold text-[14px] cursor-pointer transition-all ${nodeStyles}`}
-                  >
-                    <span>{node.title}</span>
-                    {allDone && (
-                      <div className={`absolute ${isEven ? '-right-3' : '-left-3'} top-1/2 -translate-y-1/2 rounded-full w-6 h-6 flex items-center justify-center bg-bg-surface text-green-600 z-20`}>
-                        <FiCheck className="w-4 h-4" strokeWidth={3} />
+                  {/* Main Node + Level Badge */}
+                  <div className="flex flex-col items-center shrink-0 gap-1">
+                    <div
+                      onClick={() => onSelectNode(node)}
+                      className={`bg-bg-surface border-2 rounded-lg px-5 py-3 w-[200px] text-center shadow-sm relative font-bold text-[14px] cursor-pointer transition-all flex flex-col items-center justify-center ${nodeStyles}`}
+                    >
+                      <div className="flex items-center justify-center gap-1.5 w-full">
+                        <span className="line-clamp-2">{node.title}</span>
+                        {(node._level === 'intermediate' || node._level === 'experienced') && (
+                          <FiLock className="w-3.5 h-3.5 text-text-muted/70 shrink-0" />
+                        )}
                       </div>
-                    )}
+                      {allDone && (
+                        <div className={`absolute ${isEven ? '-right-3' : '-left-3'} top-1/2 -translate-y-1/2 rounded-full w-6 h-6 flex items-center justify-center bg-bg-surface text-green-600 z-20`}>
+                          <FiCheck className="w-4 h-4" strokeWidth={3} />
+                        </div>
+                      )}
+                    </div>
+                    <span className={`text-[9px] font-bold px-2 py-0.5 rounded-full border ${badge.cls}`}>
+                      {badge.label}
+                    </span>
                   </div>
 
                   {/* SVG Dotted Curves */}
@@ -172,11 +257,11 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
                           : `M ${SVG_WIDTH} ${startY} C ${SVG_WIDTH / 2} ${startY}, ${SVG_WIDTH / 2} ${endY}, 0 ${endY}`;
 
                         const tStat = user ? (progress[topic._id] || 'pending') : 'none';
-                        let strokeColor = '#cbd5e1'; // gray-300 (none)
-                        if (tStat === 'pending') strokeColor = '#facc15'; // yellow-400
-                        else if (tStat === 'done') strokeColor = '#22c55e'; // green-500
-                        else if (tStat === 'in-progress') strokeColor = '#60a5fa'; // blue-400
-                        else if (tStat === 'skip') strokeColor = '#d1d5db'; // gray-300
+                        let strokeColor = '#cbd5e1';
+                        if (tStat === 'pending') strokeColor = '#facc15';
+                        else if (tStat === 'done') strokeColor = '#22c55e';
+                        else if (tStat === 'in-progress') strokeColor = '#60a5fa';
+                        else if (tStat === 'skip') strokeColor = '#d1d5db';
 
                         return <path key={i} d={path} fill="none" stroke={strokeColor} strokeWidth="2.5" strokeDasharray="4 4" />
                       })}

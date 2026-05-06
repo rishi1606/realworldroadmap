@@ -5,9 +5,13 @@ import { reviewAPI } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 
-export function RatingBadge({ roadmapId, className = "mb-6", readonly = false }) {
+export function RatingBadge({ roadmapId, className = "mb-6", readonly = false, initialAvgRating, initialTotalRatings }) {
   const { user, requireAuth } = useAuth();
-  const [stats, setStats] = useState({ avgRating: 0, totalRatings: 0, hasRated: false });
+  const [stats, setStats] = useState({
+    avgRating: initialAvgRating || 0,
+    totalRatings: initialTotalRatings || 0,
+    hasRated: false
+  });
   const [showModal, setShowModal] = useState(false);
   const [rating, setRating] = useState(0);
   const [hoverRating, setHoverRating] = useState(0);
@@ -37,6 +41,8 @@ export function RatingBadge({ roadmapId, className = "mb-6", readonly = false })
   };
 
   useEffect(() => {
+    // Skip fetch if we already have pre-fetched data and component is readonly
+    if (readonly && (initialAvgRating !== undefined || initialTotalRatings !== undefined)) return;
     fetchReviews();
   }, [roadmapId, user]);
 

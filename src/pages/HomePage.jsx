@@ -21,9 +21,6 @@ export function HomePage() {
           ...rm,
           type: "featured",
           tags: ["System Design", "Architecture"],
-          logo: rm.slug.includes('flipkart')
-            ? "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png"
-            : "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png"
         }));
 
         setRoadmaps(enhancedData);

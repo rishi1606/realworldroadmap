@@ -38,4 +38,8 @@ export const bookmarkAPI = {
   toggleBookmark: (roadmapId) => apiClient.post(`/bookmarks/${roadmapId}`)
 };
 
+export const notifyAPI = {
+  subscribe: (email, roadmapId, level) => apiClient.post('/notify', { email, roadmapId, level }),
+};
+
 export default apiClient;

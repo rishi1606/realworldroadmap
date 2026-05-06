@@ -6,6 +6,8 @@ import { GoogleLogin } from '@react-oauth/google';
 import { SkeletonLoader } from "../common/SkeletonLoader";
 import { Button } from "../common/Button";
 import { Select } from "../common/Select";
+import { notifyAPI } from "../../api/client";
+import toast from "react-hot-toast";
 import {
   FiLayers,
   FiX,
@@ -171,6 +173,74 @@ function RenderBlock({ block, index }) {
   return renderer ? renderer({ block, index }) : null;
 }
 
+// ─── Locked Overlay with Email Subscription ─────────────────────────────────
+
+function LockedOverlay({ roadmapId, nodeLevel }) {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+
+  const handleNotify = async () => {
+    if (!email.trim()) {
+      return toast.error("Please enter your email address");
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return toast.error("Please enter a valid email address");
+    }
+
+    setLoading(true);
+    try {
+      const { data } = await notifyAPI.subscribe(email, roadmapId, nodeLevel);
+      toast.success(data.message || "Subscribed successfully!");
+      setSubscribed(true);
+    } catch (error) {
+      const msg = error.response?.data?.message || "Something went wrong. Please try again.";
+      toast.error(msg);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-auto bg-bg-surface/20">
+      <div className="bg-bg-surface p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-border-subtle flex flex-col items-center text-center max-w-md mx-4">
+        <FiLock className="w-10 h-10 text-gray-500 mb-4" />
+        <h3 className="text-[20px] font-bold text-text-main mb-2">Premium Content</h3>
+        <p className="text-text-muted mb-6 text-[14px]">
+          This module covers advanced engineering concepts and is currently locked.
+        </p>
+
+        {subscribed ? (
+          <div className="w-full bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-green-700 text-[14px] font-semibold flex items-center gap-2 justify-center">
+            <FiCheck className="w-4 h-4" />
+            You're subscribed! We'll notify you.
+          </div>
+        ) : (
+          <>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleNotify()}
+              placeholder="Enter your email for updates"
+              className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-bg-base text-text-main text-[14px] font-medium placeholder:text-text-muted/60 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all mb-3"
+            />
+            <Button
+              onClick={handleNotify}
+              disabled={loading}
+              className="px-8 py-3 w-full text-[15px] font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+            >
+              {loading ? "Subscribing..." : "Notify Me"}
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 // ─── Main Component ──────────────────────────────────────────────────────────
 
 export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, progress = {}, setProgress }) {
@@ -212,13 +282,24 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   };
 
   const currentStatus = progress[selectedTopic._id] || "pending";
+  const unlockedNodes = roadmap?.nodes?.filter(node => {
+    const level = node?._level || node?.level || 'freshers';
+    return level === 'freshers'; // only count free/unlocked
+  }) || [];
 
-  const totalTopics = roadmap?.nodes?.reduce((acc, node) => acc + (node.topics?.length || 0), 0) || 0;
+  const totalTopics = unlockedNodes.reduce(
+    (acc, node) => acc + (node.topics?.length || 0),
+    0
+  );
+
   const progressValues = Object.values(progress);
+
   const doneCount = progressValues.filter(s => s === 'done').length;
   const inProgressCount = progressValues.filter(s => s === 'in-progress').length;
   const skipCount = progressValues.filter(s => s === 'skip').length;
   const pendingCount = Math.max(0, totalTopics - (doneCount + inProgressCount + skipCount));
+  const nodeLevel = selectedNode?._level || selectedNode?.level || 'freshers';
+  const isLocked = nodeLevel === 'intermediate' || nodeLevel === 'experienced';
 
 
 
@@ -227,97 +308,105 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
       id="roadmap-content"
       className="w-full md:w-[50%] md:h-full md:overflow-y-auto bg-bg-surface relative flex flex-col custom-scrollbar"
     >
-      <div className="w-full relative">
-        <div className="flex justify-between p-4 border-b border-border-subtle items-center flex-wrap gap-4">
-          <div className="flex gap-2">
+      {isLocked && (
+        <LockedOverlay roadmapId={roadmap?._id} nodeLevel={nodeLevel} />
+      )}
+
+      <div className={isLocked ? "opacity-30 blur-md pointer-events-none select-none transition-all duration-300 flex-1 flex flex-col" : "transition-all duration-300 flex-1 flex flex-col"}>
+        <div className="w-full relative">
+          <div className="flex justify-between p-4 border-b border-border-subtle items-center flex-wrap gap-4">
+            <div className="flex gap-2">
+            </div>
+
+            <div className="flex items-center gap-4">
+              {/* Progress Stats */}
+              {user && (
+                <div className="flex items-center gap-2">
+                  <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                    <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
+                    <span className="hidden lg:inline">Done</span>
+                    <span className="text-text-muted ml-0.5">{doneCount}</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                    <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+                    <span className="hidden lg:inline">In Progress</span>
+                    <span className="text-text-muted ml-0.5">{inProgressCount}</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                    <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
+                    <span className="hidden lg:inline">Skipped</span>
+                    <span className="text-text-muted ml-0.5">{skipCount}</span>
+                  </div>
+                  <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
+                    <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                    <span className="hidden lg:inline">Pending</span>
+                    <span className="text-text-muted ml-0.5">{pendingCount}</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Status Dropdown */}
+              <div className="relative">
+                {(!user || isLocked) && (
+                  <div
+                    className="absolute inset-0 z-10 cursor-pointer"
+                    onClick={() => !user ? setShowLoginModal(true) : null}
+                    title={isLocked ? "This topic is locked" : ""}
+                  />
+                )}
+                <Select
+                  value={currentStatus}
+                  onChange={handleStatusChange}
+                  disabled={isLocked}
+                  options={[
+                    { value: 'pending', label: 'Pending' },
+                    { value: 'in-progress', label: 'In Progress' },
+                    { value: 'skip', label: 'Skip' },
+                    { value: 'done', label: 'Done' }
+                  ]}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            {/* Progress Stats */}
-            {user && (
-              <div className="flex items-center gap-2">
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500"></span>
-                  <span className="hidden lg:inline">Done</span>
-                  <span className="text-text-muted ml-0.5">{doneCount}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                  <span className="hidden lg:inline">In Progress</span>
-                  <span className="text-text-muted ml-0.5">{inProgressCount}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
-                  <span className="w-1.5 h-1.5 rounded-full bg-gray-400"></span>
-                  <span className="hidden lg:inline">Skipped</span>
-                  <span className="text-text-muted ml-0.5">{skipCount}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-border-subtle px-2.5 py-0.5 text-[11px] font-semibold text-text-main bg-bg-surface">
-                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
-                  <span className="hidden lg:inline">Pending</span>
-                  <span className="text-text-muted ml-0.5">{pendingCount}</span>
-                </div>
+
+
+          <div className="p-8 md:p-12 w-full flex-1 flex flex-col">
+            <h1 className="text-3xl font-extrabold text-text-main mb-4 tracking-tight">
+              {selectedTopic.title || selectedNode.title}
+            </h1>
+
+            <p className="text-text-muted text-[15px] leading-relaxed mb-8 font-medium">
+              {selectedNode.title}
+            </p>
+
+            {topicBlocks.length > 0 && (
+              <div className="mt-4 mb-10">
+                {topicBlocks.map((block, index) => (
+                  <RenderBlock key={index} block={block} index={index} />
+                ))}
               </div>
             )}
 
-            {/* Status Dropdown */}
-            <div className="relative">
-              {!user && (
-                <div
-                  className="absolute inset-0 z-10 cursor-pointer"
-                  onClick={() => setShowLoginModal(true)}
-                />
-              )}
-              <Select
-                value={currentStatus}
-                onChange={handleStatusChange}
-                options={[
-                  { value: 'pending', label: 'Pending' },
-                  { value: 'in-progress', label: 'In Progress' },
-                  { value: 'skip', label: 'Skip' },
-                  { value: 'done', label: 'Done' }
-                ]}
-              />
-            </div>
+            {nextTopic && onSelectTopic && (
+              <div className="mt-12 flex justify-end">
+                <button
+                  onClick={() => onSelectTopic(nextTopic)}
+                  className="group flex items-center gap-3 bg-bg-surface border border-border-subtle hover:border-border-subtle text-text-main px-6 py-3 rounded-lg font-bold transition-all cursor-pointer shadow-sm hover:shadow"
+                >
+                  <div className="flex flex-col items-end">
+                    <span className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
+                      Next Topic
+                    </span>
+                    <span>{nextTopic.title}</span>
+                  </div>
+                  <div className="w-8 h-8 rounded-full bg-bg-base flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                    <FiChevronDown className="w-5 h-5 transform -rotate-90 text-text-muted" />
+                  </div>
+                </button>
+              </div>
+            )}
           </div>
-        </div>
-
-
-
-        <div className="p-8 md:p-12 w-full">
-          <h1 className="text-3xl font-extrabold text-text-main mb-4 tracking-tight">
-            {selectedTopic.title || selectedNode.title}
-          </h1>
-
-          <p className="text-text-muted text-[15px] leading-relaxed mb-8 font-medium">
-            {selectedNode.title}
-          </p>
-
-          {topicBlocks.length > 0 && (
-            <div className="mt-4 mb-10">
-              {topicBlocks.map((block, index) => (
-                <RenderBlock key={index} block={block} index={index} />
-              ))}
-            </div>
-          )}
-
-          {nextTopic && onSelectTopic && (
-            <div className="mt-12 flex justify-end">
-              <button
-                onClick={() => onSelectTopic(nextTopic)}
-                className="group flex items-center gap-3 bg-bg-surface border border-border-subtle hover:border-border-subtle text-text-main px-6 py-3 rounded-lg font-bold transition-all cursor-pointer shadow-sm hover:shadow"
-              >
-                <div className="flex flex-col items-end">
-                  <span className="text-xs text-text-muted font-semibold uppercase tracking-wider mb-0.5">
-                    Next Topic
-                  </span>
-                  <span>{nextTopic.title}</span>
-                </div>
-                <div className="w-8 h-8 rounded-full bg-bg-base flex items-center justify-center group-hover:translate-x-1 transition-transform">
-                  <FiChevronDown className="w-5 h-5 transform -rotate-90 text-text-muted" />
-                </div>
-              </button>
-            </div>
-          )}
 
           {/* {faqs.length > 0 && (
             <div className="mt-16 mb-8">
@@ -332,7 +421,6 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
             </div>
           )} */}
         </div>
-
       </div>
     </div>
   );

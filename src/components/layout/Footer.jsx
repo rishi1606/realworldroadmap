@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Logo } from '../common/Logo';
 
 export function Footer() {
@@ -31,9 +32,9 @@ export function Footer() {
         </div>
         
         <div className="flex items-center gap-4 text-sm font-medium text-[#71717A]">
-          <a href="#" className="hover:text-text-main transition-colors">Terms</a>
-          <a href="#" className="hover:text-text-main transition-colors">Privacy</a>
-          <a href="#" className="hover:text-text-main transition-colors">Contact</a>
+          <Link to="/terms" className="hover:text-text-main transition-colors">Terms</Link>
+          <Link to="/privacy-policy" className="hover:text-text-main transition-colors">Privacy</Link>
+          <Link to="/contact" className="hover:text-text-main transition-colors">Contact</Link>
         </div>
       </div>
     </footer>

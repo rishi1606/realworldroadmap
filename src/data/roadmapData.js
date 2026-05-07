@@ -2109,8 +2109,7 @@ export const roadmapData = [
     id: "websockets-gaming",
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
     title: "How Gaming Apps Use WebSockets",
-    description: "Learn how multiplayer games achieve real-time communication — covering WebSocket handshake, persistent connections, full-duplex messaging, Socket.IO rooms, and scaling WebSocket servers for thousands of concurrent players.",
-    tags: ["WebSocket", "Socket.IO", "Real-Time"],
+    description: "WebSockets",
     nodes: [
 
       {
@@ -2122,7 +2121,256 @@ export const roadmapData = [
           "HTTP vs WebSocket",
           "Why HTTP is not enough for Real-Time",
           "ws:// vs wss://"
-        ]
+        ],
+        topicDetails: {
+          "What is WebSocket?": [
+            {
+              type: "paragraph",
+              text: "You're playing BGMI. You and your squad just landed at Pochinki. Your teammate spots an enemy behind the house — and instantly, without any delay, that info appears on your screen. No refresh button. No loading spinner. It just... shows up in real-time. That's not magic — that's WebSocket working behind the scenes."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does your teammate's movement show up on YOUR screen instantly — without you asking for it?"
+            },
+            {
+              type: "heading",
+              text: "A Direct, Always-Open Line Between You and the Server"
+            },
+            {
+              type: "paragraph",
+              text: "WebSocket is a communication protocol — just like HTTP — but with one massive difference. When you open a WebSocket connection, it stays open. It doesn't close after one request-response like HTTP does. Think of it like a phone call. Once the call connects, both sides can talk whenever they want, as many times as they want, without hanging up and redialing every single time."
+            },
+            {
+              type: "info-callout",
+              text: "📞 HTTP = sending a letter. You write it, post it, wait for a reply, then write another letter. WebSocket = a phone call. Once connected, both sides can talk freely, instantly, without delay."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — How WebSocket Works in a BGMI Match"
+            },
+            {
+              type: "paragraph",
+              text: "Let's trace the entire flow of what happens from the moment you tap 'Start Match' to the moment you get a kill — and see exactly where WebSocket is doing its thing."
+            },
+            {
+              type: "step",
+              title: "Step 1 — You tap 'Start Match'",
+              desc: "Your phone opens a WebSocket connection to the BGMI game server. This connection stays open for the ENTIRE match — 30 minutes straight. No disconnecting and reconnecting."
+            },
+            {
+              type: "step",
+              title: "Step 2 — You land at Pochinki",
+              desc: "Your phone sends your landing coordinates to the server: { action: 'land', x: 120, y: 450 }. The server instantly pushes this to all 99 other players so they can see where you landed."
+            },
+            {
+              type: "step",
+              title: "Step 3 — You pick up an M416",
+              desc: "Your phone sends: { action: 'pickup', item: 'M416' }. Server updates your inventory. Your teammates see you picked up a weapon — all in real-time."
+            },
+            {
+              type: "step",
+              title: "Step 4 — An enemy runs behind a building",
+              desc: "The ENEMY's phone sent their movement to the server. The server pushes that movement data TO YOUR PHONE — without you asking. You see the enemy move on your screen instantly."
+            },
+            {
+              type: "step",
+              title: "Step 5 — You fire and get a kill",
+              desc: "Your phone sends: { action: 'shoot', weapon: 'M416', direction: 'north' }. Server calculates the hit. Server pushes kill notification to everyone: 'Player_42 eliminated Player_87 with M416'. All 98 remaining players see it."
+            },
+            {
+              type: "code",
+              code: "The entire flow on ONE WebSocket connection:\n\nYour Phone ←————— OPEN CONNECTION ——————→ BGMI Server\n   │                                           │\n   ├─ SEND: { land at Pochinki }               │\n   │                     Server PUSHES to 99 ──→│\n   ├─ SEND: { pickup M416 }                    │\n   │                     Server PUSHES to squad→│\n   │←── RECEIVE: { enemy at x:200, y:300 } ────┤\n   ├─ SEND: { shoot, direction: north }         │\n   │←── RECEIVE: { kill confirmed! } ──────────┤\n   │                     Server PUSHES to all ──→│\n   │                                           │\n   └─────── Connection stays OPEN ─────────────┘\n\nAll of this happens on a SINGLE connection.\nNo reopening. No re-asking. Just continuous flow."
+            },
+            {
+              type: "paragraph",
+              text: "Notice the key difference — your phone sends data whenever YOU do something (move, shoot, pickup). But the server ALSO sends data to your phone whenever ANYONE ELSE does something — without you asking. That two-way, instant communication is what makes WebSocket special. HTTP can never do this — the server can only respond when you ask."
+            },
+            {
+              type: "success-callout",
+              text: "✅ WebSocket gives you a persistent, two-way, real-time connection between client and server. Both sides can send data at any time without waiting. That's why BGMI feels instant — because it IS instant."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But wait — we already have HTTP, right? Every website uses it. Why can't BGMI just use normal HTTP requests? What's so wrong with HTTP that we needed a whole new protocol? Let's compare them head-to-head."
+            }
+          ],
+
+          "HTTP vs WebSocket": [
+            {
+              type: "paragraph",
+              text: "Imagine BGMI used normal HTTP instead of WebSocket. You shoot an enemy. Your phone sends an HTTP request to the server — 'Hey, I just fired a bullet.' The server responds — 'OK, bullet registered.' Connection closed. Now you want to know if the bullet hit? Send ANOTHER request. Want to know if the enemy is still alive? ANOTHER request. Want the updated scoreboard? ANOTHER request. Every single piece of information = a brand new connection."
+            },
+            {
+              type: "error-callout",
+              title: "If BGMI used HTTP for real-time gameplay:",
+              list: [
+                "Every move, every bullet, every footstep = a new HTTP request",
+                "Each request opens a new connection, sends data, gets a response, then closes",
+                "100 players × 30 actions per second = 3,000 HTTP requests every second",
+                "Massive overhead. Massive latency. Unplayable lag."
+              ],
+              footer: "HTTP was designed for loading web pages — not for real-time combat with 100 players."
+            },
+            {
+              type: "heading",
+              text: "The Same Gunfight — HTTP vs WebSocket"
+            },
+            {
+              type: "paragraph",
+              text: "Let's play out the exact same 1v1 gunfight scenario using both protocols. You'll feel the difference immediately."
+            },
+            {
+              type: "step",
+              title: "HTTP — You spot an enemy",
+              desc: "Your phone sends HTTP request #1: 'Where are enemies?' → Server responds with positions → Connection closed. Took ~150ms. By the time you got the response, the enemy already moved."
+            },
+            {
+              type: "step",
+              title: "HTTP — You fire a bullet",
+              desc: "Your phone sends HTTP request #2: 'I fired at position X' → Server responds: 'Shot registered' → Connection closed. Another ~150ms. You don't even know if it hit yet."
+            },
+            {
+              type: "step",
+              title: "HTTP — Did the bullet hit?",
+              desc: "Your phone sends HTTP request #3: 'Did my shot hit?' → Server responds: 'Yes, 27 damage' → Connection closed. Another ~150ms. Total time for ONE gunfight action: ~450ms of pure overhead."
+            },
+            {
+              type: "step",
+              title: "WebSocket — The same fight, but instant",
+              desc: "Your phone SENDS: 'I fired' → Server PUSHES back: 'Hit! 27 damage' → Server PUSHES enemy's new position → All on the SAME open connection. Total time: ~5ms. You see the hit marker instantly."
+            },
+            {
+              type: "code",
+              code: "HTTP (Request-Response):\nYou ask  → Server replies → Connection CLOSED  (150ms)\nYou ask  → Server replies → Connection CLOSED  (150ms)\nYou ask  → Server replies → Connection CLOSED  (150ms)\n(Every single time — open, send, receive, close)\n\nWebSocket (Persistent Connection):\nYou connect → Connection stays OPEN\nYou send anytime → Server sends anytime\nBoth talk freely → No reopening needed\n(One connection — unlimited messages — ~5ms per message)"
+            },
+            {
+              type: "paragraph",
+              text: "With HTTP, the server can NEVER send you data on its own. It can only respond when you ask. So if your enemy moves behind you in BGMI — the server knows, but it can't tell you unless you ask first. That 200ms delay of asking again and again? In a gunfight, you're already dead."
+            },
+            {
+              type: "paragraph",
+              text: "With WebSocket, the server pushes data the moment something happens. Enemy moved? Server tells you immediately. Zone shrinking? Server tells everyone at once. No asking. No delay."
+            },
+            {
+              type: "code",
+              code: "Feature            │ HTTP              │ WebSocket\n───────────────────┼───────────────────┼──────────────────\nConnection         │ Opens & closes     │ Stays open\nDirection          │ Client asks only   │ Both sides talk\nLatency            │ High (~150ms/req)  │ Ultra low (~5ms)\nOverhead           │ Headers every time │ Tiny frames\nServer can push?   │ ❌ Never           │ ✅ Anytime\nBest for           │ Web pages, APIs    │ Gaming, chat, live"
+            },
+            {
+              type: "success-callout",
+              text: "✅ HTTP = great for loading a webpage. WebSocket = essential for real-time apps like BGMI where every millisecond counts. Different tools for different jobs."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ OK so HTTP is slow for real-time — but couldn't we hack it? What if we just keep sending HTTP requests super fast — like every 100ms? Wouldn't that feel real-time? Let's see why that approach fails badly."
+            }
+          ],
+
+          "Why HTTP is not enough for Real-Time": [
+            {
+              type: "paragraph",
+              text: "Some developers think — why not just use HTTP but send requests really fast? Like, every 100 milliseconds, ask the server 'Hey, anything new?' This approach is called HTTP Polling. And yes, people have tried it. Here's what happens when you try to run a BGMI-like game on HTTP Polling."
+            },
+            {
+              type: "heading",
+              text: "Approach 1 — HTTP Polling (Ask Again and Again)"
+            },
+            {
+              type: "code",
+              code: "Every 100ms your phone asks:\n→ 'Any updates?'  Server: 'Nope.'\n→ 'Any updates?'  Server: 'Nope.'\n→ 'Any updates?'  Server: 'Yes — enemy moved!'\n→ 'Any updates?'  Server: 'Nope.'\n→ 'Any updates?'  Server: 'Nope.'\n\n90% of requests return nothing.\nBut each one still opens a connection, sends headers, waits for response."
+            },
+            {
+              type: "paragraph",
+              text: "You're wasting bandwidth, battery, and server resources asking the same question thousands of times when nothing has changed. Now multiply this by 100 players in one match. That's 1,000 useless requests per second hitting the server — just for one match. BGMI runs millions of matches simultaneously."
+            },
+            {
+              type: "heading",
+              text: "Approach 2 — Long Polling (Ask and Wait)"
+            },
+            {
+              type: "paragraph",
+              text: "A slightly better hack. Instead of asking every 100ms, your phone sends one request and the server holds it open — doesn't respond until there's actually something new. When it finally responds, your phone immediately sends another request. It's better than regular polling, but still not great."
+            },
+            {
+              type: "error-callout",
+              title: "Why Long Polling still fails for BGMI:",
+              list: [
+                "Server holds thousands of open HTTP connections — eats memory",
+                "Still has overhead of HTTP headers on every reconnection",
+                "One-directional — server can only respond, never initiate",
+                "Reconnection gap — between response and next request, you miss data",
+                "At BGMI scale (100 players, 30 updates/sec), it collapses"
+              ],
+              footer: "Long polling is a clever hack — but it's still duct tape on a system not designed for real-time."
+            },
+            {
+              type: "heading",
+              text: "Why WebSocket Wins"
+            },
+            {
+              type: "paragraph",
+              text: "WebSocket doesn't poll. It doesn't ask repeatedly. It opens ONE connection and keeps it alive. Both sides — your phone and the server — can send messages at any time. No wasted requests. No empty responses. No reconnection gaps. Just a clean, direct, always-open pipe."
+            },
+            {
+              type: "code",
+              code: "HTTP Polling for 100 players:\n→ 100 × 10 requests/sec = 1,000 connections/sec\n→ Each with full HTTP headers (~800 bytes)\n→ Total overhead: ~800 KB/sec of pure waste\n\nWebSocket for 100 players:\n→ 100 persistent connections (already open)\n→ Each message: ~20 bytes (tiny frame)\n→ Total overhead: almost zero"
+            },
+            {
+              type: "success-callout",
+              text: "✅ WebSocket was literally invented because HTTP couldn't handle real-time. Gaming, live chat, stock tickers, collaborative editing — anything where data flows constantly in both directions — WebSocket is the answer."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ So we know WebSocket is the right choice. But when you see a WebSocket URL, it looks different — ws://something or wss://something. What's the difference? And why does it matter for security in BGMI?"
+            }
+          ],
+
+          "ws:// vs wss://": [
+            {
+              type: "paragraph",
+              text: "When you connect to a website, you see http:// or https:// in the URL. WebSocket has its own versions — ws:// and wss://. They work exactly the same way as their HTTP counterparts. ws:// is unencrypted. wss:// is encrypted with TLS/SSL — just like HTTPS."
+            },
+            {
+              type: "heading",
+              text: "ws:// — Open, Unprotected Connection"
+            },
+            {
+              type: "paragraph",
+              text: "With ws://, your data travels as plain text. Anyone sitting between your phone and the BGMI server — like someone on the same Wi-Fi — could theoretically read or modify the data. Imagine playing BGMI on a café Wi-Fi and someone intercepts your position data and feeds it to their squad. That's a nightmare."
+            },
+            {
+              type: "code",
+              code: "ws://game.bgmi.com/match\n→ Data sent in plain text\n→ Anyone on the network can sniff it\n→ Position, health, ammo — all visible"
+            },
+            {
+              type: "heading",
+              text: "wss:// — Encrypted, Secure Connection"
+            },
+            {
+              type: "paragraph",
+              text: "wss:// wraps the WebSocket connection inside TLS encryption — the same security layer that protects your bank transactions online. Every message between your phone and the server is encrypted. Even if someone intercepts it, they see gibberish — not your coordinates."
+            },
+            {
+              type: "code",
+              code: "wss://game.bgmi.com/match\n→ Data encrypted with TLS\n→ Interceptor sees: 'x#4k!@mZ9...' (gibberish)\n→ Your position, health, actions — all protected"
+            },
+            {
+              type: "info-callout",
+              text: "🔒 Think of ws:// as sending a postcard — anyone can read it. wss:// is a sealed, locked envelope — only the recipient can open it."
+            },
+            {
+              type: "code",
+              code: "Protocol   │ Encrypted?  │ Port  │ Use Case\n───────────┼─────────────┼───────┼─────────────────\nws://      │ No          │ 80    │ Local dev, testing\nwss://     │ Yes (TLS)   │ 443   │ Production apps"
+            },
+            {
+              type: "success-callout",
+              text: "✅ BGMI and every production game uses wss:// — always encrypted. No serious game sends player data unprotected. In fact, most browsers now block ws:// on HTTPS pages entirely."
+            },
+            {
+              type: "info-callout",
+              text: "🎯 Quick summary — WebSocket is the protocol. ws:// is the insecure version. wss:// is the secure version. Always use wss:// in production. Now that you understand what WebSocket is and why it exists — let's dive into HOW it actually works. The handshake, persistent connections, full duplex — the core mechanics."
+            }
+          ]
+        }
       },
       {
         id: 2,
@@ -2137,7 +2385,491 @@ export const roadmapData = [
           "Low Latency",
           "Connection Management Mechanisms",
           "Reconnection Handling"
-        ]
+        ],
+        topicDetails: {
+          "Handshake": [
+            {
+              type: "paragraph",
+              text: "You open BGMI, tap 'Start Match', and within seconds you're in the lobby with 99 other players. But before any game data starts flowing — before you see the plane, before the map loads — something happens behind the scenes. Your phone and the BGMI server do a quick handshake. It's like a secret greeting that upgrades your connection from regular HTTP to a WebSocket connection."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Why does WebSocket start with HTTP? Can't it just connect directly?"
+            },
+            {
+              type: "heading",
+              text: "The WebSocket Handshake — How the Connection Starts"
+            },
+            {
+              type: "paragraph",
+              text: "WebSocket doesn't just open a raw connection out of nowhere. It starts as a normal HTTP request — but with a special header that says 'Hey server, I want to upgrade this to a WebSocket connection.' If the server agrees, it responds with '101 Switching Protocols' — and from that moment on, both sides are on a WebSocket connection. No more HTTP. This upgrade approach is used because every device, browser, and firewall in the world already understands HTTP — so starting with HTTP guarantees the initial request gets through."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — BGMI Handshake Flow"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You tap 'Start Match' in BGMI",
+              desc: "Your phone creates a new WebSocket object internally. But it doesn't directly open a WebSocket. Instead, it sends a regular HTTP GET request to the BGMI server — with two special headers: 'Upgrade: websocket' and a unique 'Sec-WebSocket-Key'."
+            },
+            {
+              type: "code",
+              code: "Your phone sends this HTTP request:\n\nGET /match HTTP/1.1\nHost: game.bgmi.com\nUpgrade: websocket          ← 'I want WebSocket, not HTTP'\nConnection: Upgrade         ← 'Please upgrade this connection'\nSec-WebSocket-Key: dGhlIHN  ← A unique key (base64 encoded)\nSec-WebSocket-Version: 13   ← WebSocket protocol version"
+            },
+            {
+              type: "step",
+              title: "Step 2 — BGMI server receives the request",
+              desc: "The server reads the Upgrade header. It checks — do I support WebSocket? Is this key valid? Is this player allowed to connect? If everything checks out, the server agrees to upgrade."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server responds with '101 Switching Protocols'",
+              desc: "This is the critical moment. The server doesn't respond with a normal 200 OK. It responds with status 101 — meaning 'I'm switching from HTTP to WebSocket right now.' It also sends back a computed 'Sec-WebSocket-Accept' key that proves it received YOUR specific key."
+            },
+            {
+              type: "code",
+              code: "Server responds:\n\nHTTP/1.1 101 Switching Protocols  ← 'Agreed! Upgrading now'\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: s3pPLM    ← Server's proof (computed from your key)"
+            },
+            {
+              type: "step",
+              title: "Step 4 — Connection upgraded. WebSocket is LIVE.",
+              desc: "From this moment on, the connection is no longer HTTP. It's a full WebSocket connection. Both sides can now send messages freely, in both directions, without any HTTP overhead. Your phone starts sending your player data and the server starts pushing match data to you."
+            },
+            {
+              type: "code",
+              code: "Complete handshake flow:\n\nYour Phone                              BGMI Server\n    │                                        │\n    ├── HTTP GET /match ────────────────────→ │\n    │   (Upgrade: websocket)                 │\n    │   (Sec-WebSocket-Key: abc123)          │\n    │                                        │\n    │ ←─────────── 101 Switching Protocols ──┤\n    │              (Sec-WebSocket-Accept)     │\n    │                                        │\n    │ ══════ WebSocket Connection OPEN ══════ │\n    │                                        │\n    ├── { action: 'join', player: 42 } ────→ │\n    │ ←── { match_id: 4521, map: 'Erangel' } │\n    │                                        │\n    └── Game data flows freely both ways ────┘"
+            },
+            {
+              type: "info-callout",
+              text: "🤝 Think of the handshake like entering a VIP club. You walk up to the door (HTTP request), show your VIP pass (Upgrade header), the bouncer verifies it and stamps your hand (101 + Accept key), and now you're inside a different world — direct WebSocket communication. The door (HTTP) got you in, but once inside, you're in the VIP zone (WebSocket)."
+            },
+            {
+              type: "success-callout",
+              text: "✅ The handshake happens only ONCE — when you first connect to the BGMI match. After that, the connection stays open for the entire game. No more handshakes. No more HTTP. Just pure, fast WebSocket communication."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The handshake upgrades the connection — but what keeps it alive for the next 30 minutes of gameplay? That's the Persistent Connection — and it's the core reason WebSocket feels instant."
+            }
+          ],
+
+          "Persistent Connection": [
+            {
+              type: "paragraph",
+              text: "Once the handshake is done and you're in the BGMI match, the WebSocket connection doesn't close. It stays open — for the ENTIRE duration of the match. 30 minutes of non-stop communication on a single connection. No reconnecting. No re-handshaking. Just one continuous pipe between your phone and the server."
+            },
+            {
+              type: "heading",
+              text: "One Connection, Unlimited Messages"
+            },
+            {
+              type: "paragraph",
+              text: "In HTTP, every interaction is a separate connection — open, send, receive, close, repeat. In WebSocket, you open the connection once and it persists. Your phone sends thousands of messages (your movements, shots, pickups) and the server sends thousands back (enemy positions, zone updates, airdrops) — all through that single connection."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — One Connection, Entire BGMI Match"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Handshake completes (0:00)",
+              desc: "WebSocket connection is established. This single connection will now stay alive for the entire 30-minute match. Your phone and the server are permanently linked."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Lobby phase (0:00 - 1:00)",
+              desc: "Your phone sends: 'I'm ready.' Server sends: 'Waiting for 100 players... 78/100... 99/100... Match starting!' All through the SAME connection that just opened."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Plane + Landing (1:00 - 3:00)",
+              desc: "Server pushes plane path to all 100 players. You tap to jump — your phone sends your jump coordinates. Server pushes your landing position to others. Hundreds of messages already — still the SAME connection."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Mid-game combat (3:00 - 25:00)",
+              desc: "You move, loot, shoot, throw grenades, heal. Each action = a message sent. Enemy positions, zone shrinks, kill feeds, airdrop alerts — all pushed by the server. By now, 30,000+ messages have flowed through this ONE connection."
+            },
+            {
+              type: "step",
+              title: "Step 5 — Final circle + Chicken Dinner (25:00 - 30:00)",
+              desc: "Intense combat. Messages flying every few milliseconds. You get the final kill. Server pushes: 'Winner Winner Chicken Dinner!' Match stats arrive. Connection STILL open — same one from Step 1."
+            },
+            {
+              type: "step",
+              title: "Step 6 — Match ends. Connection closes.",
+              desc: "Only NOW does the WebSocket connection close — after 30 minutes and 50,000+ messages. One connection handled the entire match."
+            },
+            {
+              type: "code",
+              code: "HTTP approach (if BGMI used it):\nOpen connection → Send position → Close\nOpen connection → Send shot fired → Close\nOpen connection → Send grenade thrown → Close\n(50,000 actions = 50,000 connections = server on fire 🔥)\n\nWebSocket approach (what BGMI actually uses):\nOpen connection once → stays open for 30 minutes\nSend position ✅\nSend shot fired ✅\nSend grenade thrown ✅\n... 50,000 more messages ...\n(50,000 actions = 0 new connections = smooth gameplay)"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Persistent connection = connect once, communicate forever. That's why BGMI feels smooth and instant. No connection setup overhead on every action. One pipe. Unlimited messages. 30 minutes straight."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But a persistent connection alone isn't enough. What if only YOUR phone could send data and the server had to wait until you asked? That's one-way. BGMI needs BOTH sides talking at the same time — that's Full Duplex."
+            }
+          ],
+
+          "Full Duplex Communication": [
+            {
+              type: "paragraph",
+              text: "You're running across Erangel. At the exact same moment — you're sending your position to the server AND the server is sending you an enemy's position. Both directions, at the same time. Neither side has to wait for the other to finish. That's full duplex communication."
+            },
+            {
+              type: "heading",
+              text: "Both Sides Talk Simultaneously"
+            },
+            {
+              type: "paragraph",
+              text: "HTTP is half-duplex — you send a request, then you wait for the server to respond. One direction at a time. Like a walkie-talkie — you press the button, talk, release, then wait. WebSocket is full-duplex — like a phone call. Both people can talk at the same time. No turn-taking."
+            },
+            {
+              type: "code",
+              code: "Half-Duplex (HTTP — like a walkie-talkie):\nYou: 'I moved to position X'  → wait...\nServer: 'OK, noted.'          → wait...\nYou: 'I fired a bullet'       → wait...\nServer: 'OK, hit registered.' → wait...\n(One talks, the other listens. Alternating.)\n\nFull-Duplex (WebSocket — like a phone call):\nYou:    'I moved to X'          ←→  Server: 'Zone is shrinking'\nYou:    'I fired a bullet'      ←→  Server: 'Enemy at position Y'\nYou:    'I picked up a scope'   ←→  Server: 'Airdrop incoming'\n(Both talking at the same time. No waiting.)"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — A Squad Fight in Full Duplex"
+            },
+            {
+              type: "paragraph",
+              text: "Imagine you're in a squad fight near Military Base. Here's what's happening on the WebSocket connection in a single second — your phone is sending AND receiving data at the EXACT same time:"
+            },
+            {
+              type: "step",
+              title: "At 00:00.000 — You move right to take cover",
+              desc: "YOUR PHONE SENDS → { action: 'move', direction: 'right' }. At the EXACT same instant, SERVER PUSHES → { event: 'enemy_spotted', position: { x: 340, y: 220 } }. Both messages travel simultaneously on the same connection."
+            },
+            {
+              type: "step",
+              title: "At 00:00.050 — You fire your M416",
+              desc: "YOUR PHONE SENDS → { action: 'shoot', weapon: 'M416' }. At the EXACT same instant, SERVER PUSHES → { event: 'teammate_knocked', player: 'squad_mate_3' }. You're shooting while learning your teammate got knocked — both at once."
+            },
+            {
+              type: "step",
+              title: "At 00:00.100 — You throw a smoke grenade",
+              desc: "YOUR PHONE SENDS → { action: 'grenade', type: 'smoke' }. At the EXACT same instant, SERVER PUSHES → { event: 'zone_shrinking', timeLeft: 45 }. You're throwing smoke while the zone update arrives — no delay, no waiting."
+            },
+            {
+              type: "code",
+              code: "What happens in 1 second of a BGMI squad fight:\n\nYOUR PHONE (sending)          ←→  SERVER (pushing)\n─────────────────────────────────────────────────\n{ move: right }               ←→  { enemy at x:340 }\n{ shoot: M416 }               ←→  { teammate knocked }\n{ grenade: smoke }            ←→  { zone shrinking }\n{ move: crouch }              ←→  { kill feed update }\n{ heal: medkit }              ←→  { airdrop incoming }\n\nAll 10 messages — 5 sent, 5 received — in ONE second.\nAll on the SAME connection. All SIMULTANEOUSLY."
+            },
+            {
+              type: "paragraph",
+              text: "In BGMI, this is critical. While you're sending your actions, the server is simultaneously pushing updates from 99 other players to your screen. If it had to wait for you to finish sending before it could push enemy positions — you'd be playing with constant delays. Full duplex eliminates that problem entirely."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Full duplex = both sides send and receive at the same time, over the same connection. It's what makes BGMI feel like everyone is in the same world, moving in real-time."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ WebSocket can send and receive simultaneously — but how does each side know what type of message it received? A position update? A gunshot? A zone change? That's where Event-Based Architecture comes in."
+            }
+          ],
+
+          "Event Based Architecture": [
+            {
+              type: "paragraph",
+              text: "The BGMI server is constantly sending your phone different types of data — player positions, gunshot sounds, zone updates, kill notifications, airdrop locations. All of this comes through the same WebSocket connection. So how does your phone know what to DO with each message? It uses events."
+            },
+            {
+              type: "heading",
+              text: "Every Message Has a Label — That's an Event"
+            },
+            {
+              type: "paragraph",
+              text: "Instead of sending raw data and hoping the client figures it out, WebSocket communication is organized into events. Each message is tagged with an event name — like 'player_moved', 'shot_fired', 'zone_update'. The client has listeners set up for each event, and when a specific event arrives, the matching listener runs the right code."
+            },
+            {
+              type: "code",
+              code: "Server sends different events:\n→ { event: 'player_moved', data: { id: 42, x: 300, y: 150 } }\n→ { event: 'shot_fired', data: { id: 42, weapon: 'M416' } }\n→ { event: 'zone_update', data: { center: [400, 400], radius: 500 } }\n→ { event: 'airdrop', data: { x: 600, y: 200 } }\n\nClient has listeners for each:\nsocket.on('player_moved', updatePlayerPosition)\nsocket.on('shot_fired', playGunSound)\nsocket.on('zone_update', drawNewZone)\nsocket.on('airdrop', showAirdropOnMap)"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — How an Airdrop Event Flows Through the System"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Server decides to drop an airdrop",
+              desc: "The game clock hits 10 minutes. The server's game logic triggers an airdrop. It picks a random location on the map — x: 600, y: 200 — and creates an event message with the name 'airdrop'."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server broadcasts the 'airdrop' event to all 100 players",
+              desc: "Server sends: { event: 'airdrop', data: { x: 600, y: 200, contents: ['AWM', 'Ghillie Suit'] } }. Notice — the message has a clear event name: 'airdrop'. This label is everything."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Your phone receives the raw message",
+              desc: "Your BGMI client receives the data on the WebSocket. It parses the JSON. It reads the event name: 'airdrop'. Now it knows EXACTLY which listener to trigger — not the zone listener, not the kill feed listener — the airdrop listener."
+            },
+            {
+              type: "step",
+              title: "Step 4 — The 'airdrop' listener fires automatically",
+              desc: "Your client has socket.on('airdrop', showAirdropOnMap) registered. This function runs — it draws the airdrop icon on your minimap, plays the plane flyby sound, and shows the smoke trail animation. All from one event."
+            },
+            {
+              type: "step",
+              title: "Step 5 — Other events keep flowing independently",
+              desc: "While the airdrop animation plays, your client ALSO receives 'player_moved' events, 'zone_update' events, 'shot_fired' events — all at the same time. Each one triggers its own separate listener. Nothing blocks anything else. Clean separation."
+            },
+            {
+              type: "paragraph",
+              text: "When the server sends a 'zone_update' event, only the zone-drawing code runs. When it sends 'shot_fired', only the gunshot sound plays. Each event triggers exactly the right action. No confusion. No giant if-else chains checking what type of message it is. Clean, organized, scalable."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Event-based architecture keeps WebSocket communication organized and clean. Each event = one specific action. Your BGMI client knows exactly what to do with every message because each one is clearly labeled."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Events help organize messages — but there's something deeper happening. The server remembers who you are throughout the match. It knows your health, your position, your inventory. That's not how HTTP works — HTTP forgets you after every request. WebSocket maintains state. That's a Stateful Connection."
+            }
+          ],
+
+          "Stateful Connection": [
+            {
+              type: "paragraph",
+              text: "In HTTP, the server has amnesia. Every request is brand new — the server doesn't remember who you are, what you did last time, or what page you were on. You have to re-identify yourself every single time (that's why cookies and tokens exist). WebSocket is completely different — once you're connected, the server remembers everything about you for the entire session."
+            },
+            {
+              type: "heading",
+              text: "The Server Knows You — The Whole Time"
+            },
+            {
+              type: "paragraph",
+              text: "When you join a BGMI match, the server creates a state object for you. It tracks your player ID, your position on the map, your health (100 HP), your equipped weapons, your inventory, your kill count. This state stays alive for the entire duration of the WebSocket connection. The server doesn't need to re-authenticate you or re-fetch your data on every message."
+            },
+            {
+              type: "code",
+              code: "When you connect to a BGMI match, server creates:\n{\n  playerId: 'player_42',\n  position: { x: 0, y: 0 },\n  health: 100,\n  weapons: ['M416', 'AWM'],\n  kills: 0,\n  alive: true\n}\n\nThis state STAYS in memory for the entire match.\nEvery message you send updates this state.\nEvery message the server sends uses this state."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — How Your State Changes During a Match"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You land and pick up an M416",
+              desc: "You send: { action: 'pickup', item: 'M416' }. Server updates your state: weapons becomes ['M416']. No database call. No re-authentication. Just an in-memory update — instant."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Enemy shoots you. You take 27 damage.",
+              desc: "Server receives hit calculation. Updates your state: health drops from 100 to 73. Server pushes to YOUR phone: { event: 'damage', hp: 73 }. Your health bar drops on screen."
+            },
+            {
+              type: "step",
+              title: "Step 3 — You use a medkit. Health restored.",
+              desc: "You send: { action: 'heal', item: 'medkit' }. Server updates state: health goes from 73 back to 100. Medkit removed from inventory. All in-memory. All instant."
+            },
+            {
+              type: "step",
+              title: "Step 4 — You get a kill.",
+              desc: "Server confirms your bullet hit. Updates state: kills becomes 1. Enemy's state: alive becomes false. Server broadcasts kill feed to all 100 players. Your state object now reflects the kill."
+            },
+            {
+              type: "code",
+              code: "Your state after 15 minutes of gameplay:\n{\n  playerId: 'player_42',\n  position: { x: 450, y: 320 },   ← updated 10,000+ times\n  health: 100,                     ← went 100→73→100\n  weapons: ['M416', 'AWM'],        ← picked up 2 weapons\n  kills: 3,                        ← got 3 eliminations\n  alive: true                      ← still in the game\n}\n\nAll of this is tracked in SERVER MEMORY.\nNo database lookups. No cookies. No re-auth.\nThe WebSocket connection IS the session."
+            },
+            {
+              type: "paragraph",
+              text: "Compare this to HTTP — if BGMI used HTTP, the server would forget you after every single request. You'd need to send your player ID, re-authenticate with a token, and the server would have to look up your state from a database — on EVERY action. That's thousands of database queries per second per player. Impossible at scale."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Stateful connection = the server maintains your entire game state in memory as long as the WebSocket is open. That's why BGMI never asks you to re-login mid-match or loses track of your health."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ State tracking and events are great — but none of it matters if the data is slow. In a gunfight, even 200ms of delay means you lose. How does WebSocket achieve near-zero delay? That's Low Latency."
+            }
+          ],
+
+          "Low Latency": [
+            {
+              type: "paragraph",
+              text: "In BGMI, the difference between 20ms and 200ms latency is the difference between getting the kill and getting killed. When you peek around a corner and see an enemy, you need that information NOW — not 200ms later. WebSocket is built for this kind of speed."
+            },
+            {
+              type: "heading",
+              text: "Why WebSocket Is So Fast"
+            },
+            {
+              type: "paragraph",
+              text: "Three things make WebSocket latency incredibly low compared to HTTP. First — no connection setup overhead. The connection is already open, so there's no TCP handshake or TLS negotiation on every message. Second — tiny frame headers. HTTP sends 500-800 bytes of headers with every request. A WebSocket frame header is just 2-14 bytes. Third — no request-response cycle. The server pushes data the instant it's available — no waiting for the client to ask."
+            },
+            {
+              type: "code",
+              code: "HTTP request overhead per message:\n→ TCP handshake: ~50ms\n→ TLS negotiation: ~100ms\n→ HTTP headers: ~800 bytes\n→ Total per message: ~150ms + 800 bytes\n\nWebSocket message overhead:\n→ Connection already open: 0ms\n→ Frame header: 2-14 bytes\n→ Total per message: ~1-5ms + 14 bytes\n\nIn a BGMI gunfight — 150ms vs 5ms.\nThat's 30x faster."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — The Same Peek Fight, Two Different Latencies"
+            },
+            {
+              type: "paragraph",
+              text: "You and an enemy both peek around a corner at the exact same time. Both fire. Who wins? The one with lower latency. Here's the timeline:"
+            },
+            {
+              type: "step",
+              title: "Player A — 20ms ping (good Wi-Fi, nearby server)",
+              desc: "At 0ms: Player A peeks and fires. At 5ms: message reaches server. At 10ms: server calculates hit, sends damage to Player B. At 20ms: Player A sees hit marker on screen. Total round-trip: 20ms."
+            },
+            {
+              type: "step",
+              title: "Player B — 150ms ping (mobile data, far server)",
+              desc: "At 0ms: Player B peeks and fires at the SAME time. At 75ms: message reaches server. But by 10ms, Player A's shot already registered. Server already dealt damage to Player B. At 150ms: Player B finally sees the hit marker — but they're already knocked."
+            },
+            {
+              type: "step",
+              title: "Result — Player A wins, every single time",
+              desc: "Player A's shot registered 65ms before Player B's shot even reached the server. In a game where both players have the same skill, the one with 20ms ping ALWAYS beats the one with 150ms ping. That's why low latency matters so much."
+            },
+            {
+              type: "code",
+              code: "Timeline of the same peek fight:\n\n0ms     ─ Both players peek and fire\n5ms     ─ Player A's shot reaches server     ← WebSocket, 20ms ping\n10ms    ─ Server registers A's hit on B\n20ms    ─ Player A sees hit marker ✅\n75ms    ─ Player B's shot reaches server     ← too late\n80ms    ─ Server: 'B is already knocked'\n150ms   ─ Player B sees 'YOU WERE KNOCKED'\n\nPlayer A won because their data arrived 70ms sooner.\nThat's the power of low latency."
+            },
+            {
+              type: "paragraph",
+              text: "That ping number you see in the top-right corner of your BGMI screen — 20ms, 50ms, 100ms — that's the round-trip time of your WebSocket connection. Lower ping = data reaches the server and comes back faster = smoother gameplay. Players with 20ms ping have a genuine advantage over players with 150ms ping."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Low latency is not a feature of WebSocket — it's the entire point. Every design decision in the protocol — persistent connection, tiny headers, no request-response cycle — exists to make communication as fast as possible."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ A low-latency connection is great — but what about managing 100 of them at the same time? The BGMI server handles 100 players per match, thousands of matches running simultaneously. How does it manage all these connections? That's Connection Management."
+            }
+          ],
+
+          "Connection Management Mechanisms": [
+            {
+              type: "paragraph",
+              text: "A single BGMI match has 100 players. Each player has one WebSocket connection. The BGMI server runs thousands of matches at the same time. That's potentially hundreds of thousands of simultaneous WebSocket connections on their servers. Managing this many connections — tracking who's connected, routing messages to the right players, cleaning up dead connections — is a serious engineering challenge."
+            },
+            {
+              type: "heading",
+              text: "How the Server Tracks Every Player"
+            },
+            {
+              type: "paragraph",
+              text: "The server maintains a connection pool — essentially a list of all active WebSocket connections. Each connection is tagged with metadata: player ID, match ID, connection time, last activity timestamp. When a message needs to go to a specific player, the server looks up their connection in the pool and sends it directly."
+            },
+            {
+              type: "code",
+              code: "Server's connection pool for Match #4521:\n\nconnections = {\n  'player_01': { socket: ws1, health: 100, alive: true },\n  'player_02': { socket: ws2, health: 75, alive: true },\n  'player_03': { socket: ws3, health: 0, alive: false },\n  ...\n  'player_100': { socket: ws100, health: 100, alive: true }\n}\n\nBroadcast zone update → loop through all, send to each\nSend kill notification → find killer + victim, send to both\nPlayer disconnects → remove from pool, notify others"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — How the Server Routes a Kill"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Player_42 fires at Player_87",
+              desc: "Server receives: { action: 'shoot', from: 'player_42', direction: 'north' }. Server uses Player_42's position from the connection pool to calculate bullet trajectory."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server checks all nearby players",
+              desc: "Server loops through the connection pool. Finds Player_87 is in the bullet's path. Calculates damage: 27 HP. Updates Player_87's state in the pool: health drops from 100 to 0. alive = false."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server sends targeted messages",
+              desc: "To Player_42's socket: { event: 'kill_confirmed', victim: 'Player_87' }. To Player_87's socket: { event: 'you_died', killer: 'Player_42', weapon: 'M416' }. To Player_42's squad: { event: 'teammate_got_kill' }."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Server broadcasts to everyone",
+              desc: "To ALL 100 connections: { event: 'kill_feed', killer: 'Player_42', victim: 'Player_87', weapon: 'M416' }. Everyone sees the kill in the top-right feed. Different messages to different targets — all managed by the connection pool."
+            },
+            {
+              type: "paragraph",
+              text: "Connection management also handles grouping. In BGMI squad mode, the server groups 4 players together. Messages meant for your squad — like voice chat data or pings — only go to those 4 connections, not all 100. This is similar to Socket.IO's 'rooms' concept."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Connection management is the backbone of any WebSocket server. Without it, the server wouldn't know who to send data to, which connections are alive, or which match a player belongs to."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Managing connections is one thing — but what happens when a connection drops? Your Wi-Fi glitches, your network switches from 4G to Wi-Fi, or you walk through a dead zone. The connection breaks. What does BGMI do? That's Reconnection Handling."
+            }
+          ],
+
+          "Reconnection Handling": [
+            {
+              type: "paragraph",
+              text: "You're in the final circle in BGMI — 5 players left. Suddenly your Wi-Fi disconnects for 3 seconds. When it comes back, you expect to be right back in the match — same position, same health, same weapons. And most of the time, you are. That's not luck — that's reconnection handling doing its job."
+            },
+            {
+              type: "heading",
+              text: "What Happens When Your Connection Drops"
+            },
+            {
+              type: "paragraph",
+              text: "When a WebSocket connection breaks, the server doesn't immediately delete your state. It knows network interruptions happen all the time — especially on mobile. So it keeps your player state alive for a grace period (say 60-90 seconds) and waits for you to reconnect. If you come back within that window, you're back in the game as if nothing happened."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — Your Wi-Fi Dies in the Final Circle"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Your Wi-Fi disconnects (15:42:00)",
+              desc: "Your phone's WebSocket connection breaks. The onclose event fires on your client. Your phone immediately knows it lost connection."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server detects the drop (15:42:01)",
+              desc: "Server notices Player_42's connection is gone. But it does NOT delete your state. Instead, it starts a 90-second grace timer. Your player character stands still in the game. Other players see 'Player_42: connection unstable'."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Client starts reconnection attempts (15:42:01)",
+              desc: "Your phone automatically starts trying to reconnect using exponential backoff: wait 1 second → try → fail. Wait 2 seconds → try → fail. Wait 4 seconds → try..."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Wi-Fi comes back. Reconnection succeeds! (15:42:04)",
+              desc: "After 4 seconds, your Wi-Fi reconnects. Your phone establishes a NEW WebSocket connection to the server. It sends your player token to re-authenticate: 'Hey, I'm Player_42, I was in Match #4521.'"
+            },
+            {
+              type: "step",
+              title: "Step 5 — Server recognizes you and syncs state (15:42:04)",
+              desc: "Server checks: Is Player_42's grace timer still active? Yes — only 4 seconds passed. Server links the new WebSocket connection to your preserved state. Sends full game state sync: current position, health, inventory, zone location, alive players."
+            },
+            {
+              type: "step",
+              title: "Step 6 — You're back in the match (15:42:05)",
+              desc: "Your screen updates with the current game state. You're exactly where you were — same health, same weapons, same position. The zone moved while you were gone — that's now reflected. You continue playing as if nothing happened."
+            },
+            {
+              type: "code",
+              code: "Complete reconnection timeline:\n\n15:42:00  ─ Wi-Fi dies. WebSocket connection breaks.\n15:42:01  ─ Server: 'Player_42 dropped. Grace: 90s'\n15:42:01  ─ Client: Attempt 1 → wait 1s → try → FAIL\n15:42:03  ─ Client: Attempt 2 → wait 2s → try → FAIL\n15:42:04  ─ Wi-Fi reconnects!\n15:42:04  ─ Client: Attempt 3 → try → SUCCESS ✅\n15:42:04  ─ Client sends: { token: 'abc', matchId: 4521 }\n15:42:04  ─ Server: 'Welcome back! Here's your state:'\n15:42:05  ─ Full state sync complete. Game resumes.\n\nTotal downtime: ~5 seconds.\nYou missed nothing. You lost nothing."
+            },
+            {
+              type: "paragraph",
+              text: "But what if you DON'T reconnect within the grace period? If 90 seconds pass and you're still offline — the server removes your state, marks you as disconnected, and your character is eliminated from the match. That's why BGMI sometimes shows 'connection timeout' when your network is out for too long."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Good reconnection handling is why BGMI doesn't kick you out instantly when your network hiccups. The server gives you a window to come back, preserves your state, and syncs everything when you reconnect."
+            },
+            {
+              type: "info-callout",
+              text: "🎯 Full picture of WebSocket core concepts — Handshake opens the door. Persistent Connection keeps it open. Full Duplex lets both sides talk freely. Events organize the conversation. Stateful Connection remembers everything. Low Latency makes it instant. Connection Management tracks everyone. Reconnection Handling recovers from failures. Together — this is how BGMI runs a seamless real-time experience for 100 players."
+            }
+          ]
+        }
       },
       {
         id: 3,
@@ -2149,7 +2881,352 @@ export const roadmapData = [
           "Ping / Pong (Heartbeat)",
           "Connection Close & Codes",
           "WebSocket Events (onopen, onmessage, onerror, onclose)"
-        ]
+        ],
+        topicDetails: {
+          "Connection Establishment": [
+            {
+              type: "paragraph",
+              text: "You tap 'Start Match' in BGMI. Behind the scenes, your phone goes through a precise sequence to establish a WebSocket connection with the game server. It's not random — it follows a strict order. Understand this order and you understand how every real-time connection in the world starts."
+            },
+            {
+              type: "heading",
+              text: "The Three-Step Connection Process"
+            },
+            {
+              type: "paragraph",
+              text: "First, a TCP connection is established between your phone and the server — this is the raw network link. Second, if using wss://, a TLS handshake encrypts the connection. Third, the WebSocket upgrade handshake happens — the HTTP request with the Upgrade header that we covered earlier. Only after all three steps succeed does the WebSocket connection become active."
+            },
+            {
+              type: "code",
+              code: "Step 1 — TCP Handshake (network level):\nYour Phone → SYN → Server\nServer → SYN-ACK → Your Phone\nYour Phone → ACK → Server\n✅ Raw connection established\n\nStep 2 — TLS Handshake (security level):\nYour Phone ←→ Server exchange certificates\n✅ Encrypted tunnel established\n\nStep 3 — WebSocket Upgrade (application level):\nYour Phone → HTTP GET with 'Upgrade: websocket'\nServer → 101 Switching Protocols\n✅ WebSocket connection is now LIVE\n\nTotal time: ~50-150ms (you never notice it)"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — What Happens When You Tap 'Start Match'"
+            },
+            {
+              type: "paragraph",
+              text: "Let's trace the exact timeline from the moment you tap 'Start Match' in BGMI to the moment your WebSocket is live and game data starts flowing:"
+            },
+            {
+              type: "step",
+              title: "Step 1 — TCP Handshake (0ms - 30ms)",
+              desc: "Your phone sends a SYN packet to the BGMI server. The server replies with SYN-ACK. Your phone confirms with ACK. This is the raw network link — like dialing a phone number and hearing it ring. No data has been exchanged yet, just a basic 'can we talk?' confirmation."
+            },
+            {
+              type: "step",
+              title: "Step 2 — TLS Handshake (30ms - 80ms)",
+              desc: "Now your phone and the server negotiate encryption. They exchange certificates, agree on an encryption algorithm, and create session keys. After this, every byte flowing between them is encrypted. This is why BGMI uses wss:// — so no one on your Wi-Fi can sniff your game data."
+            },
+            {
+              type: "step",
+              title: "Step 3 — WebSocket Upgrade Request (80ms - 100ms)",
+              desc: "Your phone sends an HTTP GET request with the special headers: 'Upgrade: websocket' and 'Sec-WebSocket-Key'. This tells the server: 'I don't want regular HTTP. I want a persistent WebSocket connection for real-time gaming.'"
+            },
+            {
+              type: "step",
+              title: "Step 4 — Server Sends 101 Switching Protocols (100ms - 120ms)",
+              desc: "The BGMI server validates your request. Is this player authenticated? Is there room in a match? If yes — it responds with HTTP 101, confirming the upgrade. From this exact millisecond, the connection is no longer HTTP. It's WebSocket."
+            },
+            {
+              type: "step",
+              title: "Step 5 — WebSocket is LIVE. Game data starts flowing (120ms+)",
+              desc: "Your phone sends: { type: 'join', playerId: 42 }. Server responds: { type: 'welcome', matchId: 4521, map: 'Erangel', players: 98 }. The lobby appears. Players load in. The plane route generates. All on this single WebSocket connection."
+            },
+            {
+              type: "code",
+              code: "Complete timeline:\n\n  0ms  ─── You tap 'Start Match'\n 30ms  ─── TCP handshake complete (raw link)\n 80ms  ─── TLS handshake complete (encrypted)\n100ms  ─── HTTP Upgrade request sent\n120ms  ─── 101 Switching Protocols received\n120ms  ─── WebSocket is LIVE ✅\n121ms  ─── First game message sent\n130ms  ─── Server responds with match data\n   ⋮   ─── 30 minutes of real-time gameplay\n 30min ─── Match ends. Connection closes.\n\nThe entire setup took ~120ms.\nYou didn't feel a thing."
+            },
+            {
+              type: "paragraph",
+              text: "This entire process happens in under 150 milliseconds. By the time the BGMI loading screen finishes, your WebSocket connection is already established and ready to send game data. The connection stays open until the match ends or something breaks it."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Connection establishment is the entry point of the WebSocket lifecycle. TCP → TLS → Upgrade. Three steps, done once, and you're connected for the entire match."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The connection is established — now what? You need to actually send and receive game data through it. How does that work?"
+            }
+          ],
+
+          "Sending & Receiving Messages": [
+            {
+              type: "paragraph",
+              text: "Once the WebSocket connection is established, both your phone and the BGMI server can send messages freely. There's no 'request-response' pattern here. Either side can send a message at any moment — and the other side receives it instantly. Messages are sent as small data packets called frames."
+            },
+            {
+              type: "heading",
+              text: "How Messages Flow in a BGMI Match"
+            },
+            {
+              type: "paragraph",
+              text: "Every action you take — moving, shooting, crouching, opening a door — gets packed into a small message and sent to the server. The server processes it, updates the game state, and broadcasts relevant updates to other players. All of this happens in milliseconds, continuously, for the entire match."
+            },
+            {
+              type: "code",
+              code: "You move forward:\nYour phone SENDS → { type: 'move', dir: 'north', speed: 5 }\nServer RECEIVES → updates your position in game state\nServer SENDS to others → { player: 42, pos: { x: 150, y: 300 } }\n\nEnemy fires at you:\nEnemy phone SENDS → { type: 'shoot', target: 42, weapon: 'AKM' }\nServer RECEIVES → calculates if bullet hits\nServer SENDS to you → { type: 'damage', hp: -27, from: 'AKM' }\nYour screen shows: health drops from 100 to 73"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — Tracing a Single Bullet"
+            },
+            {
+              type: "paragraph",
+              text: "Let's follow one bullet from the moment you pull the trigger to the moment the enemy sees their health drop — and count every WebSocket message involved:"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You fire your AKM (0ms)",
+              desc: "You tap the fire button. Your BGMI client creates a message: { type: 'shoot', weapon: 'AKM', direction: { x: 0.7, y: 0.3 }, position: { x: 450, y: 320 } }. This message is packed into a WebSocket frame — total size: about 60 bytes. Your phone sends it."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server receives the shot (5ms)",
+              desc: "The BGMI server receives your frame in ~5ms. It unpacks the message. Now it needs to figure out — did this bullet hit anyone? It checks the positions of all nearby players from its in-memory state."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server calculates the hit (6ms)",
+              desc: "Server finds Player_87 is at position { x: 460, y: 325 } — directly in the bullet's path. It calculates damage: AKM deals 27 HP. Player_87's health drops from 100 to 73 in the server state."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Server sends MULTIPLE messages (7ms)",
+              desc: "Server sends to YOU: { type: 'hit_marker', damage: 27 } — you see the hit marker. Server sends to Player_87: { type: 'damage', hp: 73, from: 'AKM' } — their health bar drops. Server sends to ALL: { type: 'gunshot_sound', position: { x: 450, y: 320 } } — nearby players hear the shot."
+            },
+            {
+              type: "step",
+              title: "Step 5 — Everyone's screen updates (10-20ms)",
+              desc: "YOU see: hit marker animation ✅. Player_87 sees: health drops, screen flashes red, damage direction indicator ✅. Nearby players hear: gunshot sound from your direction ✅. All from ONE trigger pull. All within 20ms."
+            },
+            {
+              type: "code",
+              code: "One bullet = 4+ WebSocket messages:\n\nMessage 1: You → Server    │ 'I fired my AKM'        │ ~60 bytes\nMessage 2: Server → You     │ 'Hit! 27 damage'        │ ~30 bytes\nMessage 3: Server → Victim  │ 'You took 27 damage'    │ ~40 bytes\nMessage 4: Server → Nearby  │ 'Gunshot at x:450'      │ ~35 bytes\n\nTotal data for one bullet: ~165 bytes\nTotal time: ~10-20ms\n\nIn a 30-min match with 100 players:\n→ ~200,000 messages\n→ ~10 MB of total data\n→ All on persistent WebSocket connections"
+            },
+            {
+              type: "paragraph",
+              text: "Messages in WebSocket are lightweight. Unlike HTTP where every request carries 500+ bytes of headers, a WebSocket message frame has just 2-14 bytes of overhead. The actual game data (position, action) might be another 20-50 bytes. So each message is tiny — which is why thousands of them can flow per second without lag."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Sending and receiving messages is the core of WebSocket communication. Both sides send whenever they want. Messages are tiny. Delivery is instant. That's the heartbeat of every real-time application."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Messages flow constantly during the match — but what if the connection is open but nobody is sending anything? How does the server know if you're still there or if your phone silently disconnected? That's where Ping/Pong comes in."
+            }
+          ],
+
+          "Ping / Pong (Heartbeat)": [
+            {
+              type: "paragraph",
+              text: "You're hiding in a building in BGMI, not moving, not shooting — just camping. Your phone hasn't sent any game data to the server in 2 minutes. The server starts wondering — is this player still connected? Or did their network die silently? Without a way to check, the server would keep the connection open forever — wasting resources on a player who might be long gone."
+            },
+            {
+              type: "heading",
+              text: "The Heartbeat — Are You Still Alive?"
+            },
+            {
+              type: "paragraph",
+              text: "Ping/Pong is WebSocket's built-in heartbeat mechanism. The server periodically sends a tiny Ping frame to your phone. Your phone automatically responds with a Pong frame. If the server sends a Ping and gets no Pong back within a timeout — it knows your connection is dead and closes it."
+            },
+            {
+              type: "code",
+              code: "Every 30 seconds:\nServer → PING → Your Phone\nYour Phone → PONG → Server\n✅ Connection confirmed alive\n\nServer → PING → Your Phone\n... 10 seconds pass ... no PONG\n... 20 seconds pass ... no PONG\n❌ Connection assumed dead. Server closes it."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — Camping in a Building, Heartbeat Keeps You Alive"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You're camping. No game data is being sent. (15:20:00)",
+              desc: "You're prone inside a building in Pochinki, not moving, not shooting. Your phone hasn't sent any game action to the server in 90 seconds. From the server's perspective — silence. Is this player camping or did their phone die?"
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server sends a Ping (15:20:30)",
+              desc: "The server's heartbeat timer fires every 30 seconds. It sends a tiny Ping frame (just 2 bytes) to your phone: 'Hey, are you still there?' This is invisible to you — it's a protocol-level control frame, not a game message."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Your phone automatically responds with Pong (15:20:30)",
+              desc: "Your phone's WebSocket layer (not your game code — the protocol itself) instantly sends back a Pong frame. This is automatic. You don't write code for this. The browser/client handles it. Server receives the Pong: 'Player_42 is still alive. Connection healthy.'"
+            },
+            {
+              type: "step",
+              title: "Step 4 — 30 seconds later, another Ping (15:21:00)",
+              desc: "Server sends another Ping. Your phone sends another Pong. Connection confirmed alive again. This cycle repeats every 30 seconds for the entire match — even when you're AFK or camping."
+            },
+            {
+              type: "step",
+              title: "Step 5 — But what if your Wi-Fi secretly died? (15:21:30)",
+              desc: "Server sends a Ping... but this time, no Pong comes back. Server waits 10 seconds — nothing. Waits 20 seconds — still nothing. Server concludes: 'Player_42's connection is dead.' It closes the connection and starts the reconnection grace timer."
+            },
+            {
+              type: "code",
+              code: "Healthy heartbeat (you're camping but connected):\n\n15:20:00 ─ You stop moving (camping)\n15:20:30 ─ Server → PING → Phone → PONG → Server  ✅ alive\n15:21:00 ─ Server → PING → Phone → PONG → Server  ✅ alive\n15:21:30 ─ Server → PING → Phone → PONG → Server  ✅ alive\n(You can camp for hours — heartbeat keeps the connection valid)\n\nDead connection (Wi-Fi silently died):\n\n15:21:30 ─ Wi-Fi dies silently (you don't know yet)\n15:22:00 ─ Server → PING → ... no PONG ... ⏳\n15:22:10 ─ Still no PONG ... ⏳\n15:22:20 ─ TIMEOUT! Server closes connection ❌\n15:22:20 ─ Server starts 90s grace timer for reconnection"
+            },
+            {
+              type: "paragraph",
+              text: "This happens silently in the background. You never see it. The Ping and Pong frames are tiny — just 2 bytes of control data. They don't carry game data. They exist purely to verify the connection is still alive. Without them, dead connections would pile up and eventually crash the server."
+            },
+            {
+              type: "info-callout",
+              text: "💓 Think of Ping/Pong like a doctor checking your pulse. The heart beats (Pong responds) — patient is alive. No heartbeat? Something is wrong. Take action."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Ping/Pong ensures dead connections are detected and cleaned up quickly. In BGMI, this means the server never wastes resources on disconnected players — and can notify the squad that their teammate dropped."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Ping/Pong detects dead connections — but what about intentional disconnections? When the match ends, or a player quits, the connection needs to close cleanly. How does that work?"
+            }
+          ],
+
+          "Connection Close & Codes": [
+            {
+              type: "paragraph",
+              text: "The BGMI match is over. You got that Chicken Dinner. Now the game needs to close the WebSocket connection cleanly — not just cut the wire, but tell the server why it's closing. WebSocket has a proper closing handshake with status codes, so both sides know exactly what happened."
+            },
+            {
+              type: "heading",
+              text: "The Clean Shutdown — Close Frame"
+            },
+            {
+              type: "paragraph",
+              text: "When either side wants to close the connection, it sends a special Close frame with a status code and optionally a reason message. The other side responds with its own Close frame — and only then is the connection fully terminated. It's a graceful goodbye, not a sudden hang-up."
+            },
+            {
+              type: "code",
+              code: "Match ends — clean close:\nClient → Close Frame (1000, 'Match complete') → Server\nServer → Close Frame (1000, 'Goodbye') → Client\n✅ Both sides agree. Connection closed gracefully.\n\nPlayer quits mid-match:\nClient → Close Frame (1001, 'Player quit') → Server\nServer → updates game state → removes player\nServer → Close Frame (1001, 'Acknowledged') → Client\n✅ Server knows the player intentionally left."
+            },
+            {
+              type: "heading",
+              text: "Common WebSocket Close Codes"
+            },
+            {
+              type: "code",
+              code: "Code  │ Meaning              │ BGMI Example\n──────┼──────────────────────┼───────────────────────────\n1000  │ Normal closure       │ Match ended normally\n1001  │ Going away           │ Player quit the app\n1002  │ Protocol error       │ Corrupted game data received\n1003  │ Unsupported data     │ Server got invalid message format\n1006  │ Abnormal closure     │ Network died (no close frame sent)\n1008  │ Policy violation     │ Player caught cheating, kicked\n1011  │ Server error         │ BGMI server crashed\n1012  │ Service restart      │ Server maintenance/update"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — Three Ways a BGMI Connection Closes"
+            },
+            {
+              type: "paragraph",
+              text: "Different situations produce different close codes. Here are three real scenarios — and exactly how the close handshake plays out in each:"
+            },
+            {
+              type: "step",
+              title: "Scenario 1 — Chicken Dinner! Match ends normally (Code 1000)",
+              desc: "You get the final kill. Server calculates: match over. Server sends you final stats (kills, damage, rank). Then server sends Close Frame with code 1000 and reason 'Match complete'. Your phone sends Close Frame back with 1000. Connection terminated gracefully. Your BGMI client shows the results screen."
+            },
+            {
+              type: "step",
+              title: "Scenario 2 — You rage quit mid-match (Code 1001)",
+              desc: "You're tilted. You force-close the BGMI app. Your phone sends Close Frame with code 1001 ('Going away'). Server receives it. Server updates game state: Player_42 left the match. Server removes your connection from the pool. Server broadcasts to other players: 'Player_42 has left the match.' Your squad sees you disconnected."
+            },
+            {
+              type: "step",
+              title: "Scenario 3 — Cheater detected and kicked (Code 1008)",
+              desc: "Server's anti-cheat detects suspicious behavior — impossible headshot accuracy. Server sends Close Frame with code 1008 ('Policy violation') and reason 'Anti-cheat: abnormal behavior detected.' Server forcefully closes the connection. The cheater sees: 'You have been banned.' No reconnection allowed."
+            },
+            {
+              type: "step",
+              title: "Scenario 4 — Your network dies silently (Code 1006)",
+              desc: "Your phone enters a dead zone. Connection breaks WITHOUT a Close Frame — your phone couldn't send one because the network is gone. Server eventually detects the dead connection via missing Pong heartbeat. Server closes with code 1006 ('Abnormal closure'). This is the ONLY code where no Close Frame was exchanged — because the network died before anyone could say goodbye."
+            },
+            {
+              type: "code",
+              code: "How the client uses close codes to decide what to do:\n\nonclose = (event) => {\n  switch (event.code) {\n    case 1000:  // Normal close\n      showResultsScreen();     // Match ended. Show stats.\n      break;\n    case 1001:  // Player quit\n      showMainMenu();          // Back to lobby.\n      break;\n    case 1006:  // Network died\n      attemptReconnect();      // Try to get back in!\n      break;\n    case 1008:  // Kicked/banned\n      showBanNotice();         // You're banned. No retry.\n      break;\n    case 1011:  // Server crashed\n      showServerError();       // 'Server down. Try later.'\n      break;\n  }\n}"
+            },
+            {
+              type: "paragraph",
+              text: "Code 1006 is special — it means the connection broke without a proper Close frame. This is what happens when your network dies suddenly. The server detects it through the missing Pong (heartbeat) and closes the connection from its side. The client never got to say goodbye."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Close codes give both sides clarity on WHY the connection ended. Was it normal? Did someone quit? Did the server crash? This information helps the client decide whether to reconnect, show an error, or move to the results screen."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ We've covered individual parts of the lifecycle — connection, messages, heartbeats, closing. But in code, how do you actually LISTEN for all of these? That's where WebSocket Events come in — the actual JavaScript API."
+            }
+          ],
+
+          "WebSocket Events (onopen, onmessage, onerror, onclose)": [
+            {
+              type: "paragraph",
+              text: "Everything we've discussed — establishing the connection, sending messages, detecting errors, handling close — all of it maps to four JavaScript events. These are the hooks you use in code to react to each stage of the WebSocket lifecycle. If you understand these four events, you can build any real-time application."
+            },
+            {
+              type: "heading",
+              text: "The Four WebSocket Events"
+            },
+            {
+              type: "code",
+              code: "const socket = new WebSocket('wss://game.bgmi.com/match');\n\n// 1. onopen — Connection established successfully\nsocket.onopen = () => {\n  console.log('Connected to BGMI match server!');\n  socket.send(JSON.stringify({ type: 'join', playerId: 42 }));\n};\n\n// 2. onmessage — Server sent us data\nsocket.onmessage = (event) => {\n  const data = JSON.parse(event.data);\n  if (data.type === 'player_moved') updateMap(data);\n  if (data.type === 'zone_update') drawZone(data);\n  if (data.type === 'damage') reduceHealth(data.hp);\n};\n\n// 3. onerror — Something went wrong\nsocket.onerror = (error) => {\n  console.log('Connection error!', error);\n  showErrorToast('Connection issue detected');\n};\n\n// 4. onclose — Connection ended\nsocket.onclose = (event) => {\n  console.log('Disconnected:', event.code, event.reason);\n  if (event.code !== 1000) {\n    attemptReconnect(); // abnormal close — try reconnecting\n  }\n};"
+            },
+            {
+              type: "paragraph",
+              text: "That's the entire lifecycle in code. onopen fires once when the connection is established — this is where you send your initial data (join the match). onmessage fires every time the server sends data — this is where all game updates are processed. onerror fires when something goes wrong — network issues, invalid data, server problems. onclose fires when the connection ends — with the close code telling you why."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — A Complete BGMI Match Through 4 Events"
+            },
+            {
+              type: "paragraph",
+              text: "Let's trace an entire BGMI match from start to finish — and see exactly which WebSocket event fires at each stage:"
+            },
+            {
+              type: "step",
+              title: "Step 1 — onopen fires (Match starts)",
+              desc: "You tap 'Start Match'. TCP handshake → TLS → Upgrade → 101 → WebSocket is live. The onopen callback fires ONCE. Your code inside onopen sends: { type: 'join', playerId: 42 }. Server responds with match data. You're in the lobby."
+            },
+            {
+              type: "step",
+              title: "Step 2 — onmessage fires (Plane, landing, looting)",
+              desc: "Server sends plane route → onmessage fires. You land → server pushes nearby player positions → onmessage fires again. You pick up a gun → server confirms → onmessage. Every single update from the server triggers onmessage. In the first 5 minutes alone, onmessage fires hundreds of times."
+            },
+            {
+              type: "step",
+              title: "Step 3 — onmessage fires (Combat, kills, zone)",
+              desc: "Enemy moves → onmessage → update their position on your map. You get shot → onmessage → reduce your health bar. Zone shrinks → onmessage → redraw the blue circle. Kill feed updates → onmessage → show who eliminated who. This is the HEART of the match — onmessage handles everything."
+            },
+            {
+              type: "step",
+              title: "Step 4 — onerror fires (Network glitch)",
+              desc: "At minute 20, your Wi-Fi stutters for a moment. The WebSocket detects the issue. onerror fires with error details. Your code shows a small toast: 'Connection unstable.' The connection recovers on its own this time — no disconnect. onerror warned you, but the match continues."
+            },
+            {
+              type: "step",
+              title: "Step 5 — onmessage fires (Chicken Dinner!)",
+              desc: "You get the final kill! Server sends: { type: 'match_over', rank: 1, kills: 8 }. onmessage fires one last time. Your code shows the Chicken Dinner screen with your stats."
+            },
+            {
+              type: "step",
+              title: "Step 6 — onclose fires (Connection ends)",
+              desc: "Server sends Close Frame with code 1000. Your phone responds with Close Frame. Connection is terminated. onclose fires with event.code = 1000 and event.reason = 'Match complete'. Your code checks: code is 1000 → normal end → show results screen. No reconnection needed."
+            },
+            {
+              type: "code",
+              code: "Complete event timeline of a BGMI match:\n\n00:00  ─ onopen    → 'Connected! Sending join request...'    [fires 1 time]\n00:01  ─ onmessage → 'Plane route received'                  \n00:02  ─ onmessage → 'Landing zone data'                     \n00:03  ─ onmessage → 'Nearby player positions'               \n  ⋮    ─ onmessage → (enemy positions, zone, kills, loot...) [fires ~50,000 times]\n20:00  ─ onerror   → 'Network glitch detected'               [fires 0-3 times]\n29:58  ─ onmessage → 'Final kill! Match over! Rank: #1'      \n30:00  ─ onclose   → 'Connection closed. Code: 1000'         [fires 1 time]\n\nSummary:\n  onopen    → fires ONCE at the start\n  onmessage → fires THOUSANDS of times (all game data)\n  onerror   → fires RARELY (only on problems)\n  onclose   → fires ONCE at the end"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Four events — that's all you need. onopen to start, onmessage for all communication, onerror for problems, onclose for the end. Master these four and you can build chat apps, live dashboards, multiplayer games — anything real-time."
+            },
+            {
+              type: "info-callout",
+              text: "🎯 Full WebSocket Lifecycle — Establish connection (TCP → TLS → Upgrade) → Send and receive messages (tiny frames, both directions) → Ping/Pong heartbeats keep it alive → Close gracefully with status codes → Four JS events (onopen, onmessage, onerror, onclose) let you hook into every stage. This is the complete journey of a WebSocket connection — from birth to death."
+            }
+          ]
+        }
       },
 
       {
@@ -2162,7 +3239,314 @@ export const roadmapData = [
           "Broadcasting messages to all clients",
           "Handling multiple clients",
           "Socket.IO basics vs raw ws"
-        ]
+        ],
+        topicDetails: {
+          "ws library setup": [
+            {
+              type: "paragraph",
+              text: "Time to get your hands dirty. You know what WebSocket is, how it works, and why BGMI uses it. Now let's build one. In Node.js, the most popular library for raw WebSocket implementation is called 'ws'. It's lightweight, fast, and gives you direct control over WebSocket connections — no magic, no abstractions."
+            },
+            {
+              type: "heading",
+              text: "Installing and Setting Up ws"
+            },
+            {
+              type: "paragraph",
+              text: "Setting up ws takes exactly two steps — install the package and create a server. That's it. No complex configuration. No boilerplate. You can have a working WebSocket server in under 10 lines of code."
+            },
+            {
+              type: "code",
+              code: "// Step 1 — Install the ws library\nnpm install ws\n\n// Step 2 — Create a basic WebSocket server\nconst WebSocket = require('ws');\n\nconst server = new WebSocket.Server({ port: 8080 });\n\nserver.on('connection', (socket) => {\n  console.log('A player connected!');\n\n  socket.on('message', (data) => {\n    console.log('Received:', data.toString());\n  });\n\n  socket.send('Welcome to the BGMI match server!');\n});\n\nconsole.log('WebSocket server running on ws://localhost:8080');"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — From Zero to Working WebSocket Server"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Create a new project folder",
+              desc: "Open your terminal. Create a folder: mkdir bgmi-server. Navigate into it: cd bgmi-server. Initialize Node.js: npm init -y. This creates package.json — your project is ready."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Install the ws library",
+              desc: "Run: npm install ws. This downloads the ws package — a tiny, fast WebSocket library with zero dependencies. Your node_modules folder now has everything you need."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Create server.js and paste the code above",
+              desc: "Create a file called server.js. Paste the WebSocket server code. The key line is: new WebSocket.Server({ port: 8080 }) — this starts a WebSocket server on port 8080, ready to accept connections."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Run the server",
+              desc: "Run: node server.js. You see: 'WebSocket server running on ws://localhost:8080'. Your server is now LIVE — waiting for players to connect."
+            },
+            {
+              type: "step",
+              title: "Step 5 — Test it from a browser",
+              desc: "Open your browser console (F12 → Console). Type: const ws = new WebSocket('ws://localhost:8080'). Instantly, your server logs: 'A player connected!' and sends back: 'Welcome to the BGMI match server!'. You just made your first WebSocket connection."
+            },
+            {
+              type: "code",
+              code: "Testing in browser console:\n\n> const ws = new WebSocket('ws://localhost:8080')\n> ws.onmessage = (e) => console.log(e.data)\n  → 'Welcome to the BGMI match server!'\n\n> ws.send('Hello from player!')\n  → Server logs: 'Received: Hello from player!'\n\nYour first real-time, two-way communication. Done in 5 minutes."
+            },
+            {
+              type: "paragraph",
+              text: "That's a fully working WebSocket server. When a player (client) connects, the server logs it, listens for messages from that player, and sends a welcome message. This is the foundation of every real-time server — whether it's a chat app, a stock ticker, or a BGMI match server."
+            },
+            {
+              type: "success-callout",
+              text: "✅ The ws library gives you raw WebSocket power in Node.js. No overhead. No opinions. Just pure WebSocket — exactly what you need to understand how real-time communication works under the hood."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The setup is done — but this server only handles one connection passively. How do we build a proper game server that creates a match, accepts players, and manages game state? That's Creating a WebSocket Server properly."
+            }
+          ],
+
+          "Creating a WebSocket Server": [
+            {
+              type: "paragraph",
+              text: "A real BGMI-style game server doesn't just accept connections — it manages matches. When 100 players connect, the server needs to group them into a match, track each player's state, process their actions, and push updates to everyone. Let's build a simplified version of this."
+            },
+            {
+              type: "heading",
+              text: "A BGMI-Style Match Server"
+            },
+            {
+              type: "code",
+              code: "const WebSocket = require('ws');\nconst server = new WebSocket.Server({ port: 8080 });\n\n// Game state — tracks all players in the match\nconst players = new Map();\n\nserver.on('connection', (socket) => {\n  // Generate a unique player ID\n  const playerId = 'player_' + Math.random().toString(36).substr(2, 5);\n\n  // Initialize player state\n  players.set(playerId, {\n    socket: socket,\n    position: { x: 0, y: 0 },\n    health: 100,\n    alive: true\n  });\n\n  console.log(`${playerId} joined! Total players: ${players.size}`);\n\n  // Send player their ID\n  socket.send(JSON.stringify({\n    type: 'welcome',\n    playerId: playerId,\n    totalPlayers: players.size\n  }));\n\n  // Handle incoming messages from this player\n  socket.on('message', (raw) => {\n    const data = JSON.parse(raw);\n\n    if (data.type === 'move') {\n      // Update player position in game state\n      const player = players.get(playerId);\n      player.position = data.position;\n    }\n  });\n\n  // Handle disconnection\n  socket.on('close', () => {\n    players.delete(playerId);\n    console.log(`${playerId} left. Remaining: ${players.size}`);\n  });\n});"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — 3 Players Join Your Match Server"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Player 1 connects",
+              desc: "A WebSocket connection arrives. Server generates ID: 'player_a3f2k'. Creates state: { position: {0,0}, health: 100, alive: true }. Stores it in the players Map. Sends welcome message with their ID. Server logs: 'player_a3f2k joined! Total players: 1'."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Player 2 connects",
+              desc: "Another connection arrives. Server generates ID: 'player_b7x9m'. Creates state. Adds to the Map. Now players.size = 2. Server logs: 'player_b7x9m joined! Total players: 2'. Both players have independent WebSocket connections, tracked separately."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Player 1 sends a move message",
+              desc: "Player 1's socket receives: { type: 'move', position: { x: 120, y: 450 } }. Server parses it, finds type === 'move', looks up player_a3f2k in the Map, updates their position from {0,0} to {120, 450}. State updated in memory — no database needed."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Player 3 connects, then Player 2 disconnects",
+              desc: "Player 3 joins (total: 3). Then Player 2's socket fires 'close' event — maybe they quit. Server runs: players.delete('player_b7x9m'). Their state is gone. Cleaned up. Server logs: 'player_b7x9m left. Remaining: 2'."
+            },
+            {
+              type: "code",
+              code: "Server's players Map over time:\n\n0s   → Map: { }                              (empty)\n1s   → Map: { player_a3f2k: { hp:100 } }     (1 player)\n2s   → Map: { player_a3f2k, player_b7x9m }   (2 players)\n3s   → player_a3f2k moves to { x:120, y:450 } (state updated)\n5s   → player_c1q8n joins                     (3 players)\n6s   → player_b7x9m disconnects               (2 players)\n6s   → Map: { player_a3f2k, player_c1q8n }    (cleaned up)"
+            },
+            {
+              type: "paragraph",
+              text: "This server does three things every real game server does — accepts players and assigns them IDs, maintains their game state in memory, and handles their messages (like movement). When a player disconnects, their state is cleaned up. This is the skeleton that BGMI and every multiplayer game builds on."
+            },
+            {
+              type: "success-callout",
+              text: "✅ A WebSocket server is just a regular Node.js server that maintains persistent connections and state for each client. The pattern is always the same — accept connection, track state, process messages, handle disconnect."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ This server tracks players — but when one player moves, the others don't know about it. We need to send that player's movement to EVERY other player in the match. That's broadcasting."
+            }
+          ],
+
+          "Broadcasting messages to all clients": [
+            {
+              type: "paragraph",
+              text: "When you move in BGMI, all 99 other players need to see you move. When the zone shrinks, all 100 players need to get that update at the same time. This is called broadcasting — sending one message to every connected client. It's the most common pattern in any multiplayer game."
+            },
+            {
+              type: "heading",
+              text: "Sending Updates to Every Player"
+            },
+            {
+              type: "code",
+              code: "// Broadcast function — sends a message to ALL connected players\nfunction broadcast(data) {\n  const message = JSON.stringify(data);\n\n  server.clients.forEach((client) => {\n    if (client.readyState === WebSocket.OPEN) {\n      client.send(message);\n    }\n  });\n}\n\n// Usage — zone update goes to everyone:\nbroadcast({\n  type: 'zone_update',\n  center: { x: 400, y: 400 },\n  radius: 300,\n  timeLeft: 60\n});\n// All 100 players receive this at the same time ✅"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — Zone Shrinks, All 100 Players Get Notified"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Server's game timer triggers zone shrink",
+              desc: "The server's match clock hits the 10-minute mark. Game logic calculates the new zone: center moves to { x: 400, y: 400 }, radius shrinks to 300m. Server creates the zone_update message."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server calls broadcast(zoneData)",
+              desc: "The broadcast function kicks in. It JSON.stringify's the zone data. Then it loops through server.clients — that's ALL connected WebSocket connections. For each client, it checks: is the readyState OPEN? If yes — send the message."
+            },
+            {
+              type: "step",
+              title: "Step 3 — All 100 players receive the zone update simultaneously",
+              desc: "Player 1 receives it → redraws blue zone on map. Player 2 receives it → redraws blue zone. Player 100 receives it → redraws blue zone. Everyone sees the SAME zone, at the SAME time. This is broadcasting."
+            },
+            {
+              type: "paragraph",
+              text: "But sometimes you don't want to send to EVERYONE. When you move, the server should tell everyone EXCEPT you — because you already know you moved. This is called broadcasting to others."
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — You Move, 99 Others See It"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You send a move message to the server",
+              desc: "Your phone sends: { type: 'move', position: { x: 120, y: 450 } }. Server receives it. Updates your position in the players Map."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server calls broadcastToOthers(yourSocket, moveData)",
+              desc: "Server loops through ALL clients. For each one, it checks: is this client the same socket as yours? If YES — skip (you already know you moved). If NO — send the position update."
+            },
+            {
+              type: "step",
+              title: "Step 3 — 99 players see you move, you don't get your own movement echoed back",
+              desc: "All 99 other players receive: { type: 'player_moved', playerId: 'player_42', position: { x: 120, y: 450 } }. Their screens update your character's position. You see nothing extra — your client already moved you locally."
+            },
+            {
+              type: "code",
+              code: "// Broadcast to everyone EXCEPT the sender\nfunction broadcastToOthers(senderSocket, data) {\n  const message = JSON.stringify(data);\n\n  server.clients.forEach((client) => {\n    if (client !== senderSocket && client.readyState === WebSocket.OPEN) {\n      client.send(message);\n    }\n  });\n}\n\n// When a player moves — tell everyone else:\nsocket.on('message', (raw) => {\n  const data = JSON.parse(raw);\n  if (data.type === 'move') {\n    broadcastToOthers(socket, {\n      type: 'player_moved',\n      playerId: playerId,\n      position: data.position\n    });\n  }\n});"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Broadcasting is the backbone of multiplayer games. broadcast() sends to all players (zone updates, match events). broadcastToOthers() sends to everyone except the sender (player movements, actions). Two functions — and you can power an entire game."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Broadcasting to everyone works — but what about squad mode? In BGMI, your squad voice chat should only go to your 4 teammates, not all 100 players. How do we handle multiple groups of clients? That's handling multiple clients."
+            }
+          ],
+
+          "Handling multiple clients": [
+            {
+              type: "paragraph",
+              text: "A BGMI match isn't just 100 isolated players — it's 25 squads of 4 players each. Some messages should go to your squad only (voice chat, pings). Some should go to nearby players only (footstep sounds). Some go to everyone (zone updates). Managing these different groups of clients is what separates a toy WebSocket server from a real game server."
+            },
+            {
+              type: "heading",
+              text: "Grouping Players Into Rooms"
+            },
+            {
+              type: "code",
+              code: "// Room/squad management\nconst squads = new Map();\n\n// When a player connects, assign them to a squad\nserver.on('connection', (socket) => {\n  const playerId = generateId();\n  const squadId = assignToSquad(playerId); // 'squad_01', 'squad_02', etc.\n\n  // Add player to their squad room\n  if (!squads.has(squadId)) {\n    squads.set(squadId, new Set());\n  }\n  squads.get(squadId).add(socket);\n\n  // Send message to squad only:\n  function sendToSquad(squadId, data) {\n    const message = JSON.stringify(data);\n    squads.get(squadId).forEach((memberSocket) => {\n      if (memberSocket.readyState === WebSocket.OPEN) {\n        memberSocket.send(message);\n      }\n    });\n  }\n\n  // Player pings a location — only squad sees it\n  socket.on('message', (raw) => {\n    const data = JSON.parse(raw);\n    if (data.type === 'ping_location') {\n      sendToSquad(squadId, {\n        type: 'teammate_ping',\n        playerId: playerId,\n        location: data.location\n      });\n    }\n  });\n});"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — You Ping a Location, Only Your Squad Sees It"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Match starts. 100 players organized into 25 squads.",
+              desc: "Server creates 25 entries in the squads Map. Squad_01 has 4 sockets: [Player_1, Player_2, Player_3, Player_4]. Squad_02 has 4 sockets. And so on. Each player's socket is stored ONLY in their squad's Set."
+            },
+            {
+              type: "step",
+              title: "Step 2 — You (Player_2 in Squad_01) ping a location on the map",
+              desc: "You tap the map and mark an enemy location. Your phone sends: { type: 'ping_location', location: { x: 450, y: 320 } }. Server receives the message from your socket."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server calls sendToSquad('squad_01', pingData)",
+              desc: "Server looks up 'squad_01' in the squads Map. Gets the Set of 4 sockets. Loops through ONLY these 4 sockets — not all 100. Sends the ping data to Player_1, Player_2 (you), Player_3, and Player_4."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Only your 3 teammates see the ping marker",
+              desc: "Player_1 sees ping on their minimap ✅. Player_3 sees ping on their minimap ✅. Player_4 sees ping on their minimap ✅. The other 96 players? They received NOTHING. They don't even know you pinged. That's targeted messaging."
+            },
+            {
+              type: "code",
+              code: "Server's squads Map:\n\nsquads = {\n  'squad_01': Set { socket_1, socket_2, socket_3, socket_4 },\n  'squad_02': Set { socket_5, socket_6, socket_7, socket_8 },\n  ...\n  'squad_25': Set { socket_97, socket_98, socket_99, socket_100 }\n}\n\nYou ping a location (you're in squad_01):\n→ sendToSquad('squad_01', pingData)\n→ Only 4 sockets get the message\n→ 96 other sockets? Untouched.\n\nZone update? → broadcast() → all 100 sockets\nSquad ping?  → sendToSquad() → only 4 sockets\nNearby sound? → sendToNearby() → only ~10 sockets"
+            },
+            {
+              type: "paragraph",
+              text: "The key idea is simple — maintain a Map of groups (squads, rooms, channels) and put each client's socket into the right group. When you need to send a message, look up the group and loop through its members. This is exactly what Socket.IO's 'rooms' feature automates — but here you're seeing the raw logic behind it."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Handling multiple clients = organize sockets into groups, then target your messages. Squad-only messages, nearby-player messages, global broadcasts — all use the same pattern: find the group, loop through sockets, send."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Building all this grouping, broadcasting, and room logic from scratch with raw ws works — but it's a LOT of boilerplate. What if there was a library that gives you rooms, broadcasting, auto-reconnection, and event handling out of the box? That's Socket.IO. Let's compare."
+            }
+          ],
+
+          "Socket.IO basics vs raw ws": [
+            {
+              type: "paragraph",
+              text: "You've been building everything with the raw ws library — manual broadcasting, manual rooms, manual reconnection logic. It works, but it's a lot of code for common patterns. Socket.IO is a higher-level library built on top of WebSocket that gives you all of these features out of the box. The question is — when do you use which?"
+            },
+            {
+              type: "heading",
+              text: "The Same Feature — Two Approaches"
+            },
+            {
+              type: "code",
+              code: "// RAW ws — Broadcasting to a room (manual):\nconst squads = new Map();\nfunction sendToSquad(squadId, data) {\n  const msg = JSON.stringify(data);\n  squads.get(squadId).forEach(s => {\n    if (s.readyState === WebSocket.OPEN) s.send(msg);\n  });\n}\n\n// SOCKET.IO — Broadcasting to a room (built-in):\nio.to('squad_01').emit('teammate_ping', { location: { x: 100, y: 200 } });\n// One line. Done. ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Socket.IO gives you rooms, namespaces, auto-reconnection, acknowledgements (confirm message received), and even a fallback to HTTP long-polling if WebSocket fails. All the stuff you'd have to build yourself with raw ws — Socket.IO hands it to you."
+            },
+            {
+              type: "code",
+              code: "Feature                  │ raw ws          │ Socket.IO\n─────────────────────────┼─────────────────┼──────────────\nRooms / Groups           │ Build yourself  │ Built-in\nAuto-reconnection        │ Build yourself  │ Built-in\nEvent names              │ Build yourself  │ Built-in\nBroadcasting             │ Manual loop     │ One-liner\nFallback (if WS fails)   │ None            │ HTTP long-poll\nBinary data support      │ Yes             │ Yes\nAcknowledgements         │ Build yourself  │ Built-in\nOverhead / Size          │ Tiny            │ Larger\nRaw performance          │ Faster          │ Slightly slower\nLearning curve           │ Lower level     │ Higher level"
+            },
+            {
+              type: "heading",
+              text: "Step-by-Step — Choosing Between ws and Socket.IO for a BGMI-Style Game"
+            },
+            {
+              type: "step",
+              title: "Scenario 1 — You're building a learning project to understand WebSocket",
+              desc: "Use raw ws. You'll build broadcast(), sendToSquad(), reconnection logic all by hand. It's more code, but you'll understand every single byte flowing through the wire. This is how you truly learn the protocol."
+            },
+            {
+              type: "step",
+              title: "Scenario 2 — You're building a production chat app with rooms",
+              desc: "Use Socket.IO. You need rooms (group chats), auto-reconnection (users on flaky mobile networks), broadcasting (send to a room with one line). Socket.IO gives you all of this out of the box. You'd spend weeks building it with raw ws."
+            },
+            {
+              type: "step",
+              title: "Scenario 3 — You're building a high-performance game server (100 players, 60 updates/sec)",
+              desc: "Use raw ws. When you need maximum performance and minimum overhead — every byte matters. Socket.IO adds a protocol layer on top of WebSocket (event names, packet IDs, etc.) that adds a few bytes to every message. At 100 players × 60 updates/second = 6,000 messages/sec — those extra bytes add up."
+            },
+            {
+              type: "step",
+              title: "Scenario 4 — You need to support old browsers or corporate firewalls that block WebSocket",
+              desc: "Use Socket.IO. It automatically falls back to HTTP long-polling if WebSocket is blocked. Raw ws has no fallback — if WebSocket doesn't work, your app is dead. Socket.IO handles this transparently."
+            },
+            {
+              type: "code",
+              code: "Quick decision guide:\n\n'I want to learn WebSocket deeply'        → raw ws ✅\n'I need rooms and broadcasting quickly'    → Socket.IO ✅\n'I need maximum raw performance'           → raw ws ✅\n'I need auto-reconnection out of the box'  → Socket.IO ✅\n'I'm building a game with 60fps updates'   → raw ws ✅\n'I'm building a chat app in a weekend'     → Socket.IO ✅\n'I need fallback for old browsers'         → Socket.IO ✅\n'I want to understand the protocol itself' → raw ws ✅"
+            },
+            {
+              type: "info-callout",
+              text: "🎮 Think of it this way — raw ws is like building a car engine from scratch. You understand every part. Socket.IO is like buying a car. You can drive immediately. For learning, use ws. For production apps, Socket.IO saves you weeks of work."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Use raw ws when you need maximum performance, minimum overhead, or want to learn how WebSocket works at the lowest level. Use Socket.IO when you're building production apps and want rooms, reconnection, and broadcasting without reinventing the wheel."
+            },
+            {
+              type: "info-callout",
+              text: "🎯 You now know WebSocket from ground zero — what it is, how it compares to HTTP, the full protocol lifecycle, and how to build a real server in Node.js. The foundation is solid. Next up — Socket.IO deep dive, where you'll learn rooms, namespaces, and scaling WebSocket to millions of concurrent connections."
+            }
+          ]
+        }
       },
 
       {

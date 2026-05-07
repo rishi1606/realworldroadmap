@@ -1,12 +1,3 @@
-import checkout from "../assets/images/Checkout image.png"
-import login from "../assets/images/Login.png"
-import hacker from "../assets/images/hacker.jpeg"
-import salt from "../assets/images/salt.png"
-import hashing from "../assets/images/Hashing.png"
-import rehash from "../assets/images/rehash.jpeg"
-import JWT from "../assets/images/jwt.png"
-import access from "../assets/images/access.png"
-import rotation from "../assets/images/rotation.png"
 export const roadmapData = [
   {
     id: "authentication-nodejs",
@@ -31,7 +22,6 @@ export const roadmapData = [
               type: "paragraph",
               text: "You spend 10 minutes on Flipkart. Found the perfect iPhone. Added to cart. Hit Buy Now. And suddenly — Flipkart stops you. Wants you to log in first. You've seen this a hundred times. But have you ever stopped to think — why right at checkout? Why not when you were just browsing?"
             },
-            { type: "image", src: checkout, alt: "Flipkart checkout page asking user to login" },
             {
               type: "curious-callout",
               text: "❓ Why does Flipkart let you browse freely but stops you the moment you try to buy something?"
@@ -100,7 +90,6 @@ export const roadmapData = [
               title: "Server responds",
               desc: "✅ Password matches → Login successful. You're in.\n❌ Password wrong → Access denied. 'Invalid credentials.'"
             },
-            { type: "image", src: login, alt: "Flipkart login page" },
             {
               type: "warning-callout",
               text: "⚠️ Wait — we just said Flipkart checks your password from the database. Does Flipkart really store your password like this?\n\npassword: 'ram123'\n\nIf someone hacks Flipkart's database — every user's password is exposed in plain text. That's a nightmare. So how does Flipkart actually store passwords safely? That's coming up."
@@ -3657,6 +3646,7 @@ export const roadmapData = [
               text: "Imagine it's New Year's Eve and you're desperately searching for a hotel in Goa on Booking.com. Now imagine 20 lakh other people doing the exact same thing — same app, same moment, same panic. Any normal system would collapse under that pressure. But Booking.com handles it smoothly, every single time. The secret behind that? Load Balancing."
             },
 
+
             // 🔴 PROBLEM
             {
               type: "heading",
@@ -3677,6 +3667,7 @@ export const roadmapData = [
               ],
               footer: "This is called Server Overload — a very real, very expensive problem."
             },
+            { type: "image", src: "traffic.png" },
 
             // 💡 SOLUTION INTRO
             {
@@ -3721,6 +3712,7 @@ export const roadmapData = [
               title: "Step 4 — Server C responds with your results",
               desc: "Server C fetches hotels in Goa and sends results back to you — in milliseconds. You don't feel a thing."
             },
+            { type: "image", src: "load-balancer.png" },
             {
               type: "success-callout",
               text: "✅ 20 lakh users. New Year's Eve. Peak traffic. Booking.com stays fast, smooth, and crash-free. That's Load Balancing doing its job."
@@ -3779,6 +3771,7 @@ export const roadmapData = [
               ],
               footer: "1 minute of downtime on Booking.com = thousands of lost bookings + crores in losses."
             },
+            { type: "image", src: "HA-problem.png" },
 
             // 💡 SOLUTION INTRO
             {
@@ -3803,10 +3796,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "They never rely on just one server. Booking.com runs the same payment system on multiple servers simultaneously. If one dies, the others are already running and ready to take over — instantly."
             },
-            {
-              type: "code",
-              code: "Payment Server A ✅  ← active\nPayment Server B ✅  ← active\nPayment Server C ✅  ← standby, always ready"
-            },
+            { type: "image", src: "paymentserver.png" },
             {
               type: "paragraph",
               text: "But how does the system know when a server dies? It doesn't wait for a human to notice. The Load Balancer pings every server every few seconds — asking one simple question: 'Hey, are you alive?'"

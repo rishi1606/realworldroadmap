@@ -372,16 +372,16 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
 
 
           <div className="p-8 md:p-12 w-full flex-1 flex flex-col">
-            <h1 className="text-3xl font-extrabold text-text-main mb-4 tracking-tight">
+            <h1 className="text-3xl font-extrabold text-text-main mb-2 tracking-tight">
               {selectedTopic.title || selectedNode.title}
             </h1>
 
-            <p className="text-text-muted text-[15px] leading-relaxed mb-8 font-medium">
+            <p className="text-text-muted text-[15px] leading-relaxed mb-6 font-medium">
               {selectedNode.title}
             </p>
 
             {topicBlocks.length > 0 && (
-              <div className="mt-4 mb-10">
+              <div className="mb-10">
                 {topicBlocks.map((block, index) => (
                   <RenderBlock key={index} block={block} index={index} />
                 ))}

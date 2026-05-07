@@ -3839,6 +3839,7 @@ export const roadmapData = [
               title: "Step 4 — Your payment lands on Server B",
               desc: "Server B picks up right where Server A left off. Payment goes through. Booking confirmed. ✅"
             },
+            { type: "image", src: "paymentsuccess.jpeg" },
             {
               type: "success-callout",
               text: "✅ You never saw an error. You never even knew Server A crashed. Your booking was confirmed. Your ₹12,000 is safe. That's High Availability — working silently in the background, every single time."
@@ -3910,6 +3911,7 @@ export const roadmapData = [
               type: "heading",
               text: "How It Works on Booking.com — Step by Step"
             },
+
             {
               type: "step",
               title: "Step 1 — 3 users search hotels at the same second",
@@ -3918,18 +3920,14 @@ export const roadmapData = [
             {
               type: "step",
               title: "Step 2 — Load Balancer doesn't think. It just rotates.",
-              desc: "It doesn't check which server is free. It doesn't check speed. It simply follows the order — Server A, then B, then C. Ravi goes to Server A. Priya goes to Server B. Ankit goes to Server C."
+              desc: "It doesn't check which server is free. It doesn't check speed. It simply follows the order — Server A, then B, then C."
             },
             {
               type: "step",
-              title: "Step 3 — 3 more users come in. Cycle repeats.",
-              desc: "Sneha, Mohit, and Divya search next. Load Balancer starts from Server A again — no matter what. Sneha to Server A. Mohit to Server B. Divya to Server C. Same order. Every time."
-            },
-            {
-              type: "step",
-              title: "Step 4 — Every server gets equal work",
-              desc: "By the end, all three servers handled exactly the same number of requests. No server sat idle. No server got overloaded. Simple and fair — as long as every request is roughly the same size."
-            },
+              title: "Step 3 — Every server gets one request. Equal. Done.",
+              desc: "Ravi goes to Server A. Priya goes to Server B. Ankit goes to Server C. All three servers handled exactly one request each. No server sat idle. No server got overloaded. Simple and fair."
+            }
+            ,
             {
               type: "success-callout",
               text: "✅ Simple. Fast. No extra logic needed. Works perfectly when all servers are identical and requests are roughly the same size — like users just browsing and searching hotels."
@@ -3961,26 +3959,28 @@ export const roadmapData = [
               type: "heading",
               text: "How It Works on Booking.com — Step by Step"
             },
+
             {
               type: "step",
-              title: "Step 1 — 4 users search hotels at the same time",
-              desc: "Ravi, Priya, Ankit, and Sneha all hit Search simultaneously on New Year's Eve. Four requests land on the Load Balancer at once."
+              title: "Step 1 — 2 users search hotels at the same time",
+              desc: "Ravi and Priya both hit Search together. Their requests reach the Load Balancer at the same moment."
             },
             {
               type: "step",
               title: "Step 2 — Load Balancer reads server weights",
-              desc: "Before sending anything, it checks the weights. Server A has weight 3 — it can take 3 requests this cycle. Server B has weight 1 — it gets just 1. Total cycle = 4 requests."
+              desc: "Server A has weight 3 — it can handle more requests. Server B has weight 1 — it handles fewer requests each cycle."
             },
             {
               type: "step",
-              title: "Step 3 — Requests go based on weight, not turn",
-              desc: "Ravi, Priya, and Ankit — all three go to Server A one after another. Server A is powerful, it handles them easily. Sneha goes to Server B — just one request, well within its limit."
+              title: "Step 3 — Requests go based on server capacity",
+              desc: "Ravi's request goes to Server A. Priya's request also goes to Server A because it has higher weight and more capacity."
             },
             {
               type: "step",
-              title: "Step 4 — Cycle repeats. Always fair. Never random.",
-              desc: "Next 4 users come in — same pattern. Server A takes 3, Server B takes 1. Each server only gets what it can handle. No server crashes. No server sits idle."
-            },
+              title: "Step 4 — Pattern continues automatically",
+              desc: "As more users arrive, Server A keeps receiving more requests while Server B gets fewer. Traffic stays balanced based on server power."
+            }
+            ,
             {
               type: "success-callout",
               text: "✅ Booking.com uses this when they have a mix of new and old servers. The powerful ones carry more load. The older ones handle what they can. Nothing goes to waste."

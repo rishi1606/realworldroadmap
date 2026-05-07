@@ -2118,6 +2118,10 @@ export const roadmapData = [
               text: "You're playing BGMI. You and your squad just landed at Pochinki. Your teammate spots an enemy behind the house — and instantly, without any delay, that info appears on your screen. No refresh button. No loading spinner. It just... shows up in real-time. That's not magic — that's WebSocket working behind the scenes."
             },
             {
+              type: "image",
+              src: "websocket_1.png"
+            },
+            {
               type: "curious-callout",
               text: "❓ How does your teammate's movement show up on YOUR screen instantly — without you asking for it?"
             },

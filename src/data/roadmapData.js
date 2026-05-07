@@ -2245,8 +2245,16 @@ export const roadmapData = [
               text: "With WebSocket, the server pushes data the moment something happens. Enemy moved? Server tells you immediately. Zone shrinking? Server tells everyone at once. No asking. No delay."
             },
             {
-              type: "code",
-              code: "Feature            │ HTTP              │ WebSocket\n───────────────────┼───────────────────┼──────────────────\nConnection         │ Opens & closes     │ Stays open\nDirection          │ Client asks only   │ Both sides talk\nLatency            │ High (~150ms/req)  │ Ultra low (~5ms)\nOverhead           │ Headers every time │ Tiny frames\nServer can push?   │ ❌ Never           │ ✅ Anytime\nBest for           │ Web pages, APIs    │ Gaming, chat, live"
+              type: "table",
+              headers: ["Feature", "HTTP", "WebSocket"],
+              rows: [
+                ["Connection", "Opens & closes", "Stays open"],
+                ["Direction", "Client asks only", "Both sides talk"],
+                ["Latency", "High (~150ms/req)", "Ultra low (~5ms)"],
+                ["Overhead", "Headers every time", "Tiny frames"],
+                ["Server can push?", "❌ Never", "✅ Anytime"],
+                ["Best for", "Web pages, APIs", "Gaming, chat, live"]
+              ]
             },
             {
               type: "success-callout",

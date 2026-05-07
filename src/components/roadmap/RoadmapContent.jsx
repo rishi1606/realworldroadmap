@@ -58,13 +58,13 @@ const blockRenderers = {
   table: ({ block, index }) => (
     <div
       key={index}
-      className="overflow-x-auto mb-6 rounded-lg border border-border-subtle shadow-sm"
+      className="overflow-x-auto mb-8 rounded-xl border border-border-subtle shadow-sm bg-bg-surface overflow-hidden"
     >
-      <table className="w-full text-[14px]">
+      <table className="w-full text-[14px] border-collapse">
         <thead>
-          <tr className="bg-bg-subtle border-b border-border-subtle">
+          <tr className="bg-bg-subtle/50">
             {block.headers?.map((header, i) => (
-              <th key={i} className="text-left px-4 py-3 font-bold text-text-main">
+              <th key={i} className="text-left px-5 py-4 font-bold text-text-main uppercase tracking-wider text-[11px] border-b border-border-subtle">
                 {header}
               </th>
             ))}
@@ -74,13 +74,13 @@ const blockRenderers = {
           {block.rows?.map((row, rowIndex) => (
             <tr
               key={rowIndex}
-              className={rowIndex % 2 === 0 ? "bg-bg-surface" : "bg-bg-subtle"}
+              className="group hover:bg-bg-subtle/30 transition-colors"
             >
               {row.map((cell, cellIndex) => (
                 <td
                   key={cellIndex}
-                  className={`px-4 py-3 text-text-muted leading-relaxed border-t border-border-subtle ${cellIndex === 0 ? "font-bold text-text-main" : ""
-                    }`}
+                  className={`px-5 py-4 text-text-muted leading-relaxed border-b border-border-subtle ${rowIndex === block.rows.length - 1 ? "border-b-0" : ""
+                    } ${cellIndex === 0 ? "font-bold text-text-main" : ""}`}
                 >
                   {cell}
                 </td>

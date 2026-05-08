@@ -1504,6 +1504,7 @@ export const roadmapData = [
               type: "code",
               code: "data = cache.get('delhi_files')\n\nif not data:\n  data = db.query('SELECT * FROM shows WHERE title=delhi_files')\n  cache.set('delhi_files', data, ttl=3600)\n\nreturn data"
             },
+            { type: "image", src: "cacheaside.jpeg" },
             {
               type: "success-callout",
               text: "✅ Cache only fills up with data people actually request. No wasted memory pre-loading shows nobody watches. Netflix uses this for long-tail content — older shows, regional titles, niche content."
@@ -1558,7 +1559,9 @@ export const roadmapData = [
             {
               type: "success-callout",
               text: "✅ Cleaner application code. Cache is always the single source. No developer accidentally forgets to write to cache. The cache layer takes full responsibility."
-            },
+            }
+            ,
+            { type: "image", src: "read.jpeg" },
             {
               type: "warning-callout",
               text: "⚠️ Both strategies are about reading data. But what about writing? When a Netflix editor updates Stranger Things' description, adds a new episode, or changes the thumbnail — how does that update reach the cache? There are three ways to write — and each comes with different trade-offs."
@@ -1618,6 +1621,8 @@ export const roadmapData = [
               type: "code",
               code: "cache.set('stranger_things', newData)\ndb.update('stranger_things', newData)\n// Both updated. Always in sync."
             },
+
+            { type: "image", src: "write.jpeg" },
             {
               type: "success-callout",
               text: "✅ Cache and database are always consistent. No user ever sees stale data. Netflix uses this for critical data — show metadata, episode lists, content ratings."
@@ -1673,7 +1678,8 @@ export const roadmapData = [
             {
               type: "code",
               code: "// Immediate:\ncache.set('user_123_progress', { ep: 3, time: '24:13' })\nreturn 'saved' ✅\n\n// Background (few seconds later):\ndb.bulkUpdate(cache.getPendingWrites())"
-            },
+            }
+            , { type: "image", src: "writeback.jpeg" },
             {
               type: "success-callout",
               text: "✅ Database load drops massively. Writes feel instant to the user. Netflix uses this for watch history, continue watching, pause positions — high-frequency writes where slight delay in DB sync is perfectly acceptable."
@@ -1784,6 +1790,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "Netflix sets different TTLs based on how often data changes."
             },
+            { type: "image", src: "TTL.png" },
             {
               type: "code",
               code: "Show metadata (title, cast)  → TTL: 24 hours\nEpisode list                 → TTL: 1 hour\nTrending shows list          → TTL: 5 minutes\nReal-time view counts        → TTL: 60 seconds"
@@ -1853,7 +1860,9 @@ export const roadmapData = [
             {
               type: "paragraph",
               text: "The documentary was cached but barely anyone opened it. 3 hits total. It's the least valuable item in cache. It goes. Squid Game — with 2 million hits — absolutely stays, even if it wasn't accessed in the last hour."
-            },
+            }
+            ,
+            { type: "image", src: "LFU.jpeg" },
             {
               type: "success-callout",
               text: "✅ LFU keeps genuinely popular content in cache regardless of recency. Netflix uses LFU for evergreen content — shows that have consistent long-term demand like Friends, Breaking Bad, Money Heist."
@@ -1889,6 +1898,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "Money Heist gets evicted — even if 500,000 people are watching it right now — just because it was cached first. FIFO doesn't care about that."
             },
+            { type: "image", src: "FIFO.png" },
             {
               type: "error-callout",
               title: "Why Netflix doesn't use FIFO for show content:",

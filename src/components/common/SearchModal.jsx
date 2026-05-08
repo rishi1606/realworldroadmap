@@ -143,7 +143,7 @@ export function SearchModal({ isOpen, onClose }) {
                   {results.topics.map(topic => (
                     <button
                       key={topic._id}
-                      onClick={() => navigateTo(`/roadmap/${topic.slug}`)}
+                      onClick={() => navigateTo(`/roadmap/${topic.roadmapSlug}?topic=${topic.slug}`)}
                       className="w-full text-left flex items-center px-3 py-2.5 text-[14px] text-text-main hover:bg-[#F4F4F5] rounded-md transition-colors group"
                     >
                       <FiArrowRight className="w-[15px] h-[15px] mr-3 text-[#A1A1AA]" />

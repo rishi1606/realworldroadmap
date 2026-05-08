@@ -59,15 +59,6 @@ export function HomePage() {
             <strong className="text-text-main">TechPaths</strong> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
           </p>
 
-          <div className="flex items-center gap-4 mt-10">
-            <button className="h-11 px-8 inline-flex items-center justify-center rounded-md bg-text-main text-sm font-medium text-[#FAFAFA] hover:bg-text-main/90 transition-colors shadow cursor-pointer">
-              Get Started
-            </button>
-            <button className="h-11 px-8 inline-flex items-center justify-center rounded-md border border-[#E4E4E7] bg-bg-surface text-sm font-medium text-text-main hover:bg-[#F4F4F5] transition-colors shadow-sm cursor-pointer">
-              Browse Paths
-            </button>
-          </div>
-
         </div>
       </div>
 

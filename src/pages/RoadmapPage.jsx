@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { RoadmapSidebar } from '../components/roadmap/RoadmapSidebar';
 import { RoadmapContent } from '../components/roadmap/RoadmapContent';
@@ -9,6 +9,7 @@ import { useAuth } from '../context/AuthContext';
 
 export function RoadmapPage() {
   const { title } = useParams();
+  const location = useLocation();
   const { user } = useAuth();
   
   const [activeRoadmap, setActiveRoadmap] = useState(null);
@@ -21,27 +22,53 @@ export function RoadmapPage() {
     const fetchRoadmap = async () => {
       try {
         setLoading(true);
-        // The title parameter is actually the full title from HomePage link.
-        // We need to fetch all roadmaps to match the title, or fetch by slug if we change the URL structure.
-        // Let's fetch all roadmaps first to find the correct slug, then fetch that roadmap.
         const { data: allRoadmaps } = await axios.get('http://localhost:5000/api/roadmaps');
         
-        let targetSlug = allRoadmaps[0]?.slug; // Fallback to first
+        let targetSlug = allRoadmaps[0]?.slug;
         
         if (title) {
           const decodedTitle = decodeURIComponent(title);
-          // Match by title (legacy) OR by slug (new)
           const found = allRoadmaps.find(r => r.title === decodedTitle || r.slug === decodedTitle);
           if (found) targetSlug = found.slug;
         }
 
         if (targetSlug) {
           const { data: roadmap } = await axios.get(`http://localhost:5000/api/roadmaps/${targetSlug}`, {
-            withCredentials: true // Important to send cookies for the backend lock check
+            withCredentials: true
           });
           setActiveRoadmap(roadmap);
           
-          if (roadmap.nodes && roadmap.nodes.length > 0) {
+          // Handle topic selection from query param
+          const queryParams = new URLSearchParams(location.search);
+          const topicSlug = queryParams.get('topic');
+          
+          let foundTopic = null;
+          let foundNode = null;
+
+          if (topicSlug && roadmap.nodes) {
+            for (const node of roadmap.nodes) {
+              const topic = node.topics?.find(t => t.slug === topicSlug);
+              if (topic) {
+                foundTopic = topic;
+                foundNode = node;
+                break;
+              }
+            }
+          }
+
+          if (foundNode && foundTopic) {
+            setSelectedNode(foundNode);
+            setSelectedTopic(foundTopic);
+            
+            // Scroll to content
+            setTimeout(() => {
+              const contentEl = document.getElementById('roadmap-content');
+              if (contentEl) {
+                const y = contentEl.getBoundingClientRect().top + window.scrollY - 80;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+              }
+            }, 100);
+          } else if (roadmap.nodes && roadmap.nodes.length > 0) {
             setSelectedNode(roadmap.nodes[0]);
             setSelectedTopic(roadmap.nodes[0].topics?.[0] || null);
           }
@@ -66,7 +93,7 @@ export function RoadmapPage() {
     };
 
     fetchRoadmap();
-  }, [title, user]);
+  }, [title, user, location.search]);
 
   const handleSelectNode = (node) => {
     setSelectedNode(node);

@@ -2362,8 +2362,12 @@ export const roadmapData = [
               text: "🔒 Think of ws:// as sending a postcard — anyone can read it. wss:// is a sealed, locked envelope — only the recipient can open it."
             },
             {
-              type: "code",
-              code: "Protocol   │ Encrypted?  │ Port  │ Use Case\n───────────┼─────────────┼───────┼─────────────────\nws://      │ No          │ 80    │ Local dev, testing\nwss://     │ Yes (TLS)   │ 443   │ Production apps"
+              type: "table",
+              headers: ["Protocol", "Encrypted?", "Port", "Use Case"],
+              rows: [
+                ["ws://", "No", "80", "Local dev, testing"],
+                ["wss://", "Yes (TLS)", "443", "Production apps"]
+              ]
             },
             {
               type: "success-callout",

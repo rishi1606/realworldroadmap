@@ -2101,7 +2101,14 @@ export const roadmapData = [
     id: "websockets-gaming",
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
     title: "How Gaming Apps Use WebSockets",
-    description: "WebSockets",
+    description:
+      "Learn how BGMI delivers ultra-fast real-time multiplayer battles using WebSockets — from live player movement syncing, low-latency gunfight updates, team voice coordination, matchmaking systems, event broadcasting, and scalable game servers handling millions of concurrent players.",
+    tags: [
+      "WebSockets",
+      "Real-Time Communication",
+      "Low Latency",
+      "Socket.IO",
+    ],
     nodes: [
 
       {

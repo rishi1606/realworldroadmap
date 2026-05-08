@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -17,6 +18,7 @@ import {
   FiXCircle,
   FiCopy,
   FiCheck,
+  FiBell,
 } from "react-icons/fi";
 
 // ─── Block Renderers ────────────────────────────────────────────────────────
@@ -203,13 +205,15 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
     }
   };
 
-  return (
-    <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-auto bg-bg-surface/20">
-      <div className="bg-bg-surface p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-border-subtle flex flex-col items-center text-center max-w-md mx-4">
-        <FiLock className="w-10 h-10 text-gray-500 mb-4" />
-        <h3 className="text-[20px] font-bold text-text-main mb-2">Premium Content</h3>
-        <p className="text-text-muted mb-6 text-[14px]">
-          This module covers advanced engineering concepts and is currently locked.
+  const modalContent = (
+    <div className="fixed inset-0 z-[10000] flex flex-col items-center justify-center pointer-events-auto bg-black/40 backdrop-blur-md font-sans">
+      <div className="bg-bg-surface p-8 rounded-2xl shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-border-subtle flex flex-col items-center text-center max-w-[400px] mx-4 animate-in fade-in zoom-in-95 duration-200 relative">
+        <div className="w-12 h-12 bg-[#F4F4F5] rounded-full flex items-center justify-center mb-4">
+          <FiLock className="w-6 h-6 text-text-muted" />
+        </div>
+        <h3 className="text-[22px] font-bold text-text-main mb-2">Get Notified</h3>
+        <p className="text-text-muted mb-8 text-[14px] px-2 leading-relaxed">
+          Enter your email to be the first to know when the advanced modules are released.
         </p>
 
         {subscribed ? (
@@ -218,27 +222,36 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
             You're subscribed! We'll notify you.
           </div>
         ) : (
-          <>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              onKeyDown={(e) => e.key === "Enter" && handleNotify()}
-              placeholder="Enter your email for updates"
-              className="w-full px-4 py-3 rounded-lg border border-border-subtle bg-bg-base text-text-main text-[14px] font-medium placeholder:text-text-muted/60 focus:outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition-all mb-3"
-            />
-            <Button
+          <div className="w-full flex flex-col gap-4">
+            <div className="flex flex-col gap-1.5 text-left w-full">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleNotify()}
+                placeholder="your@email.com"
+                className="flex h-10 w-full rounded-md border border-border-subtle bg-bg-base px-3 py-2 text-sm text-text-main ring-offset-bg-surface placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
+              />
+            </div>
+            <button
               onClick={handleNotify}
               disabled={loading}
-              className="px-8 py-3 w-full text-[15px] font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md rounded-lg transition-all disabled:opacity-60 disabled:cursor-not-allowed"
+              className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-11 px-4 py-2 w-full shadow-sm"
             >
-              {loading ? "Subscribing..." : "Notify Me"}
-            </Button>
-          </>
+              {loading ? "Subscribing..." : (
+                <>
+                  <FiBell className="w-4 h-4" />
+                  Notify Me
+                </>
+              )}
+            </button>
+          </div>
         )}
       </div>
     </div>
   );
+
+  return createPortal(modalContent, document.body);
 }
 
 // ─── Main Component ──────────────────────────────────────────────────────────

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import {
   FiCheck, FiBookmark, FiBell, FiShare2, FiMap, FiFolder,
   FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode,
@@ -79,73 +80,81 @@ function ComingSoonSection({ intermNodes, expNodes, roadmapId, user }) {
     );
   };
 
-  return (
-    <>
-      <div className="w-full rounded-xl border border-slate-200 bg-white p-5 mt-6 shadow-sm flex flex-col gap-5">
-        <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full">
-          {renderLevel('intermediate', intermNodes)}
-          {renderLevel('experienced', expNodes)}
-        </div>
+  const modalContent = (
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/40 backdrop-blur-md font-sans">
+      <div className="bg-bg-surface rounded-xl shadow-xl w-full max-w-md p-8 relative animate-in fade-in zoom-in-95 duration-200 border border-border-subtle">
+        <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-text-muted hover:text-text-main transition-colors">
+          <FiX className="w-5 h-5" />
+        </button>
+        <div className="flex flex-col items-center text-center">
+          <div className="w-12 h-12 rounded-full bg-[#F4F4F5] flex items-center justify-center mb-4">
+            <FiLock className="w-6 h-6 text-text-muted" />
+          </div>
+          <h3 className="text-[22px] font-bold text-text-main mb-2">Get Notified</h3>
+          <p className="text-[14px] text-text-muted mb-8 px-2 leading-relaxed">
+            Enter your email to be the first to know when the advanced modules are released.
+          </p>
 
-        <div className="border-t border-dashed border-slate-200 pt-5 flex justify-center">
           {subscribed ? (
             <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
-              <FiCheck className="w-5 h-5" /> All set! You will be notified.
+              <FiCheck className="w-5 h-5" /> You're on the list!
             </div>
           ) : (
-            <button
-              onClick={() => setShowModal(true)}
-              className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white border-2 border-dashed border-slate-300 text-slate-700 text-[14px] font-bold transition-colors cursor-pointer hover:bg-slate-50"
-            >
-              <FiBell className="w-4 h-4" />
-              Notify Me for Upcoming Levels
-            </button>
+            <div className="w-full flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5 text-left w-full">
+                <input
+                  autoFocus
+                  type="email"
+                  value={email}
+                  onChange={e => setEmail(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleNotify()}
+                  placeholder="your@email.com"
+                  className="flex h-10 w-full rounded-md border border-border-subtle bg-bg-base px-3 py-2 text-sm text-text-main ring-offset-bg-surface placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
+                />
+              </div>
+              <button
+                onClick={handleNotify}
+                disabled={loading}
+                className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-11 px-4 py-2 w-full shadow-sm"
+              >
+                {loading ? "Subscribing..." : (
+                  <>
+                    <FiBell className="w-4 h-4" />
+                    Notify Me
+                  </>
+                )}
+              </button>
+            </div>
           )}
         </div>
       </div>
+    </div>
+  );
 
-      {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 relative animate-fadeIn">
-            <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer">
-              <FiX className="w-5 h-5" />
-            </button>
-            <div className="flex flex-col items-center text-center mt-2">
-              <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
-                <FiLock className="w-6 h-6 text-slate-600" />
-              </div>
-              <h3 className="text-[18px] font-bold text-text-main mb-2">Get Notified</h3>
-              <p className="text-[14px] text-text-muted mb-6 leading-relaxed">
-                Enter your email to be the first to know when the advanced modules are released.
-              </p>
-              
-              {subscribed ? (
-                <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
-                  <FiCheck className="w-5 h-5" /> You're on the list!
-                </div>
-              ) : (
-                <div className="w-full flex flex-col gap-3">
-                  <input
-                    autoFocus type="email" value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && handleNotify()}
-                    placeholder="your@email.com"
-                    className="w-full px-4 py-3 rounded-lg border border-slate-200 bg-slate-50 text-[14px] text-text-main placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand focus:bg-white transition-all"
-                  />
-                  <button
-                    onClick={handleNotify} disabled={loading}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-lg bg-[#0f172a] hover:bg-[#1e293b] text-white text-[14px] font-semibold transition-colors cursor-pointer disabled:opacity-60"
-                  >
-                    <FiBell className="w-4 h-4" />
-                    {loading ? 'Subscribing...' : 'Notify Me'}
-                  </button>
-                </div>
-              )}
-            </div>
+  return (
+    <div className="w-full rounded-xl border border-slate-200 bg-white p-5 mt-6 shadow-sm flex flex-col gap-5">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full">
+        {renderLevel('intermediate', intermNodes)}
+        {renderLevel('experienced', expNodes)}
+      </div>
+
+      <div className="border-t border-dashed border-slate-200 pt-5 flex justify-center">
+        {subscribed ? (
+          <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
+            <FiCheck className="w-5 h-5" /> All set! You will be notified.
           </div>
-        </div>
-      )}
-    </>
+        ) : (
+          <button
+            onClick={() => setShowModal(true)}
+            className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white border-2 border-dashed border-slate-300 text-slate-700 text-[14px] font-bold transition-colors cursor-pointer hover:bg-slate-50"
+          >
+            <FiBell className="w-4 h-4" />
+            Notify Me for Upcoming Levels
+          </button>
+        )}
+      </div>
+      {showModal && createPortal(modalContent, document.body)}
+    </div>
   );
 }
 

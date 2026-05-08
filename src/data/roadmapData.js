@@ -1241,6 +1241,7 @@ export const roadmapData = [
               ],
               footer: "Friday night. Everyone opens Netflix. Database gets hit with 10 million requests. It dies. Netflix goes down."
             },
+            { type: "image", src: "cacheproblem.jpeg" },
             {
               type: "heading",
               text: "What is Caching?"
@@ -1310,6 +1311,7 @@ export const roadmapData = [
               type: "success-callout",
               text: "✅ Cache Hit = fast, cheap, database never involved. This is what Netflix optimises for."
             },
+            { type: "image", src: "hit.jpeg" },
             {
               type: "heading",
               text: "Cache Miss — The Data is Not There"
@@ -1333,6 +1335,7 @@ export const roadmapData = [
               title: "Store in cache for next time",
               desc: "Netflix saves the data in cache. Next person who searches gets a Cache Hit."
             },
+            { type: "image", src: "cachemiss.jpeg" },
             {
               type: "code",
               code: "cache.get('new_show_xyz')\n→ ❌ MISS — not found\n→ Query database (~300ms)\n→ cache.set('new_show_xyz', data)\n→ Return data"

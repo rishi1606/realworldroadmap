@@ -26,11 +26,7 @@ export const roadmapAPI = {
 
 export const progressAPI = {
   getForRoadmap: (roadmapId) => apiClient.get(`/progress/${roadmapId}`),
-  updateTopic: (roadmapId, topicId, status) => apiClient.put('/progress/update', {
-    roadmapId,
-    topicId,
-    status
-  }),
+  updateTopic: (roadmapId, topicId, status) => apiClient.post(`/progress/${roadmapId}/${topicId}`, { status }),
 };
 
 export const reviewAPI = {

@@ -269,7 +269,17 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   const nodeLevel = selectedNode?._level || selectedNode?.level || 'freshers';
   const isLocked = nodeLevel === 'intermediate' || nodeLevel === 'experienced';
 
-  const totalTopics = roadmap?.nodes?.filter(n => (n.level || 'freshers') === 'freshers').reduce((acc, n) => acc + n.topics.length, 0) || 0;
+  // Accurate progress calculations matching Next.js logic
+  const unlockedNodes = roadmap?.nodes?.filter(node => {
+    const level = node?._level || node?.level || 'freshers';
+    return level === 'freshers';
+  }) || [];
+
+  const totalTopics = unlockedNodes.reduce(
+    (acc, node) => acc + (node.topics?.length || 0),
+    0
+  );
+
   const progressValues = Object.values(progress);
   const doneCount = progressValues.filter(s => s === 'done').length;
   const inProgressCount = progressValues.filter(s => s === 'in-progress').length;
@@ -294,6 +304,16 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
                   <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
                   <span className="hidden lg:inline">Doing</span>
                   <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : inProgressCount}</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700 bg-slate-50">
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
+                  <span className="hidden lg:inline">Skipped</span>
+                  <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : skipCount}</span>
+                </div>
+                <div className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700 bg-slate-50">
+                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+                  <span className="hidden lg:inline">Pending</span>
+                  <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : pendingCount}</span>
                 </div>
               </div>
             )}

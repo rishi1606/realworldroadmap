@@ -101,6 +101,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
   const [activeLevel, setActiveLevel] = useState('all');
   const [shareUrl, setShareUrl] = useState('');
   const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 100);
@@ -108,14 +109,34 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
     return () => clearTimeout(timer);
   }, []);
 
-  // Fetch subscription status
+  // Fetch subscription & bookmark status
   useEffect(() => {
     if (user && roadmap?._id) {
+      // Check Notify status
       notifyAPI.check(user.email, roadmap._id, 'all')
         .then(res => setIsSubscribed(res.data.isSubscribed))
         .catch(() => {});
+
+      // Check Bookmark status
+      bookmarkAPI.getBookmarks()
+        .then(res => {
+          const isMarked = res.data.some(b => b._id === roadmap._id || b === roadmap._id);
+          setIsBookmarked(isMarked);
+        })
+        .catch(() => {});
     }
   }, [user, roadmap?._id]);
+
+  const handleBookmarkToggle = async () => {
+    if (!requireAuth()) return;
+    try {
+      const { data } = await bookmarkAPI.toggleBookmark(roadmap._id);
+      setIsBookmarked(data.isBookmarked);
+      toast.success(data.isBookmarked ? 'Bookmark added' : 'Bookmark removed');
+    } catch { 
+      toast.error('Failed to update bookmark'); 
+    }
+  };
 
   const nodesWithLevels = useMemo(() =>
     (data || []).map(n => ({ ...n, _level: n.level || 'freshers' })), [data]);
@@ -184,7 +205,18 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             ← All Roadmaps
           </Link>
           <div className="flex items-center gap-2">
-            <button onClick={() => setIsShareOpen(true)} className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors">
+            <button 
+              onClick={handleBookmarkToggle} 
+              className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-colors ${
+                isBookmarked ? 'bg-blue-50 border-blue-200 text-blue-600' : 'border-slate-200 text-slate-500 hover:bg-slate-50'
+              }`}
+            >
+              <FiBookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
+            </button>
+            <button 
+              onClick={() => setIsShareOpen(true)} 
+              className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors"
+            >
               <FiShare2 className="w-4 h-4" />
             </button>
           </div>

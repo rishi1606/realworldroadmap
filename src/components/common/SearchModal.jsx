@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { searchAPI } from '../../api/client';
+import { FiSearch, FiX, FiFileText, FiArrowRight } from 'react-icons/fi';
 
 export function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState('');

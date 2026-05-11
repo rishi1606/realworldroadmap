@@ -4,7 +4,6 @@ import axios from 'axios';
 import { RoadmapSidebar } from '../components/roadmap/RoadmapSidebar';
 import { RoadmapContent } from '../components/roadmap/RoadmapContent';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
-
 import { useAuth } from '../context/AuthContext';
 
 export function RoadmapPage() {
@@ -12,20 +11,32 @@ export function RoadmapPage() {
   const location = useLocation();
   const { user } = useAuth();
   
+  const [mounted, setMounted] = useState(false);
   const [activeRoadmap, setActiveRoadmap] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [loading, setLoading] = useState(true);
   const [progress, setProgress] = useState({});
+  const [isProgressLoading, setIsProgressLoading] = useState(false);
 
   useEffect(() => {
+    // Artificial delay to ensure navigation transition is finished
+    const timer = setTimeout(() => {
+      setMounted(true);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     const fetchRoadmap = async () => {
       try {
         setLoading(true);
+        // First fetch all to find the slug if title is used as ID in URL
         const { data: allRoadmaps } = await axios.get('http://localhost:5000/api/roadmaps');
         
         let targetSlug = allRoadmaps[0]?.slug;
-        
         if (title) {
           const decodedTitle = decodeURIComponent(title);
           const found = allRoadmaps.find(r => r.title === decodedTitle || r.slug === decodedTitle);
@@ -38,7 +49,7 @@ export function RoadmapPage() {
           });
           setActiveRoadmap(roadmap);
           
-          // Handle topic selection from query param
+          // Initial selection logic
           const queryParams = new URLSearchParams(location.search);
           const topicSlug = queryParams.get('topic');
           
@@ -60,7 +71,6 @@ export function RoadmapPage() {
             setSelectedNode(foundNode);
             setSelectedTopic(foundTopic);
             
-            // Scroll to content
             setTimeout(() => {
               const contentEl = document.getElementById('roadmap-content');
               if (contentEl) {
@@ -75,11 +85,14 @@ export function RoadmapPage() {
 
           // Fetch progress if logged in
           if (user) {
+            setIsProgressLoading(true);
             try {
               const { data: userProgress } = await axios.get(`http://localhost:5000/api/progress/${roadmap._id}`, { withCredentials: true });
               setProgress(userProgress);
             } catch (err) {
               console.error("Failed to fetch progress", err);
+            } finally {
+              setIsProgressLoading(false);
             }
           } else {
             setProgress({});
@@ -93,11 +106,11 @@ export function RoadmapPage() {
     };
 
     fetchRoadmap();
-  }, [title, user, location.search]);
+  }, [title, user, location.search, mounted]);
 
   const handleSelectNode = (node) => {
     setSelectedNode(node);
-    setSelectedTopic(node?.topics?.[0] || null); // Reset topic to first on node change
+    setSelectedTopic(node?.topics?.[0] || null);
     if (window.innerWidth < 768) {
       setTimeout(() => {
         const contentEl = document.getElementById('roadmap-content');
@@ -109,12 +122,11 @@ export function RoadmapPage() {
     }
   };
 
-  if (loading) {
+  if (loading || !mounted) {
     return (
-      <div className="w-full bg-bg-base text-text-main font-sans flex justify-center border-t border-border-subtle">
+      <div className="w-full bg-white text-slate-900 font-sans flex justify-center border-t border-slate-200">
         <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:h-[calc(100vh-4rem)] md:overflow-hidden">
-          {/* Sidebar Skeleton */}
-          <div className="w-full md:w-[50%] p-12 md:overflow-y-auto border-r border-border-subtle flex flex-col items-center">
+          <div className="w-full md:w-[50%] p-12 md:overflow-y-auto border-r border-slate-200 flex flex-col items-center">
             <div className="w-full max-w-[400px]">
               <SkeletonLoader type="card" />
               <div className="mt-8">
@@ -122,7 +134,6 @@ export function RoadmapPage() {
               </div>
             </div>
           </div>
-          {/* Content Skeleton */}
           <div className="w-full md:w-[50%] p-12 md:overflow-y-auto">
             <SkeletonLoader type="content" />
           </div>
@@ -133,7 +144,7 @@ export function RoadmapPage() {
 
   if (!activeRoadmap) {
     return (
-      <div className="w-full flex justify-center py-20 text-text-muted">
+      <div className="w-full flex justify-center py-20 text-slate-500">
         <div className="text-center">
           <h2 className="text-2xl font-bold mb-2">Roadmap not found</h2>
           <p>The requested roadmap could not be loaded.</p>
@@ -143,7 +154,7 @@ export function RoadmapPage() {
   }
 
   return (
-    <div className="w-full bg-bg-base text-text-main font-sans flex justify-center border-t border-border-subtle overflow-hidden">
+    <div className="w-full bg-white text-slate-900 font-sans flex justify-center border-t border-slate-200 overflow-hidden">
       <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:h-[calc(100vh-65px)] md:overflow-hidden">
         <RoadmapSidebar
           roadmap={activeRoadmap}
@@ -153,6 +164,7 @@ export function RoadmapPage() {
           selectedTopic={selectedTopic}
           onSelectTopic={setSelectedTopic}
           progress={progress}
+          isProgressLoading={isProgressLoading}
         />
         <RoadmapContent
           roadmap={activeRoadmap}
@@ -161,6 +173,7 @@ export function RoadmapPage() {
           onSelectTopic={setSelectedTopic}
           progress={progress}
           setProgress={setProgress}
+          isProgressLoading={isProgressLoading}
         />
       </div>
     </div>

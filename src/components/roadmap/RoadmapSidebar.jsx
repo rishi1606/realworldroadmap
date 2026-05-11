@@ -1,14 +1,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import {
   FiCheck, FiBookmark, FiBell, FiShare2, FiMap, FiFolder,
   FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode,
   FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX
 } from 'react-icons/fi';
-
-// Cycle of different icons for each node
-const NODE_ICONS = [FiSettings, FiLayers, FiZap, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox];
-import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { bookmarkAPI, notifyAPI } from '../../api/client';
 import toast from 'react-hot-toast';
@@ -16,86 +13,45 @@ import { RatingBadge } from '../common/RatingBadge';
 import { ShareModal } from '../common/ShareModal';
 import { Button } from '../common/Button';
 
-// ─── Coming Soon Section ───────────────────────────────────────────────────────
-function ComingSoonSection({ intermNodes, expNodes, roadmapId, user }) {
+const NODE_ICONS = [FiSettings, FiLayers, FiZap, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox];
+
+// ─── Notify Modal Component ───────────────────────────────────────────────────
+function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscribed }) {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-
-  useEffect(() => {
-    if (user?.email) {
-      notifyAPI.check(user.email)
-        .then(({ data }) => {
-          if (data.isSubscribed) setSubscribed(true);
-        })
-        .catch(() => {});
-    }
-  }, [user]);
 
   const handleNotify = async () => {
-    if (!email.trim()) return toast.error('Please enter your email');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast.error('Invalid email');
+    const emailToUse = email || user?.email;
+    if (!emailToUse?.trim()) return toast.error('Please enter your email');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) return toast.error('Invalid email');
     setLoading(true);
     try {
-      const { data } = await notifyAPI.subscribe(email, roadmapId, 'all');
-      toast.success(data.message || 'Subscribed!');
-      setSubscribed(true);
-      setTimeout(() => setShowModal(false), 2000);
+      await notifyAPI.subscribe(emailToUse, roadmapId, 'all');
+      onSubscribed();
+      setTimeout(() => onClose(), 1000);
     } catch (e) {
       toast.error(e.response?.data?.message || 'Something went wrong.');
     } finally { setLoading(false); }
   };
 
-  const renderLevel = (levelKey, nodes) => {
-    if (!nodes || nodes.length === 0) return null;
-    const isInter = levelKey === 'intermediate';
-    const levelNum = isInter ? 2 : 3;
-    const theme = isInter
-      ? { bg: 'bg-blue-50/80', iconBg: 'bg-blue-100', icon: 'text-blue-600', title: 'text-blue-900', dot: 'bg-blue-400', bullet: 'text-slate-700' }
-      : { bg: 'bg-purple-50/80', iconBg: 'bg-purple-100', icon: 'text-purple-600', title: 'text-purple-900', dot: 'bg-purple-400', bullet: 'text-slate-700' };
+  if (!isOpen) return null;
 
-    const cardTitle = nodes.length === 1 ? `Level ${levelNum}: ${nodes[0].title}` : `Level ${levelNum}: Coming Soon`;
-
-    return (
-      <div className={`w-full rounded-lg ${theme.bg} p-5 flex flex-col`}>
-        <div className="flex items-start justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className={`w-7 h-7 rounded-full ${theme.iconBg} flex items-center justify-center shrink-0`}>
-              <FiZap className={`w-3.5 h-3.5 ${theme.icon}`} />
-            </div>
-            <span className={`text-[13px] font-bold ${theme.title} leading-tight`}>{cardTitle}</span>
-          </div>
-          <FiLock className={`w-4 h-4 ${theme.icon} shrink-0 mt-0.5`} />
-        </div>
-        <ul className="flex flex-col gap-1.5 ml-1 flex-1">
-          {nodes.map((n, i) => (
-            <li key={i} className="flex items-start gap-2">
-              <span className={`w-1.5 h-1.5 rounded-full ${theme.dot} shrink-0 mt-[7px]`} />
-              <span className={`text-[13px] font-medium ${theme.bullet} leading-snug`}>{n.title}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    );
-  };
-
-  const modalContent = (
+  return createPortal(
     <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/40 backdrop-blur-md font-sans">
-      <div className="bg-bg-surface rounded-xl shadow-xl w-full max-w-md p-8 relative animate-in fade-in zoom-in-95 duration-200 border border-border-subtle">
-        <button onClick={() => setShowModal(false)} className="absolute top-4 right-4 text-text-muted hover:text-text-main transition-colors">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-8 relative border border-slate-200">
+        <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
           <FiX className="w-5 h-5" />
         </button>
         <div className="flex flex-col items-center text-center">
-          <div className="w-12 h-12 rounded-full bg-[#F4F4F5] flex items-center justify-center mb-4">
-            <FiLock className="w-6 h-6 text-text-muted" />
+          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center mb-4">
+            <FiLock className="w-6 h-6 text-slate-500" />
           </div>
-          <h3 className="text-[22px] font-bold text-text-main mb-2">Get Notified</h3>
-          <p className="text-[14px] text-text-muted mb-8 px-2 leading-relaxed">
+          <h3 className="text-[22px] font-bold text-slate-900 mb-2">Get Notified</h3>
+          <p className="text-[14px] text-slate-500 mb-8 px-2 leading-relaxed">
             Enter your email to be the first to know when the advanced modules are released.
           </p>
 
-          {subscribed ? (
+          {isSubscribed ? (
             <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
               <FiCheck className="w-5 h-5" /> You're on the list!
             </div>
@@ -105,17 +61,17 @@ function ComingSoonSection({ intermNodes, expNodes, roadmapId, user }) {
                 <input
                   autoFocus
                   type="email"
-                  value={email}
+                  value={email || user?.email || ''}
                   onChange={e => setEmail(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleNotify()}
                   placeholder="your@email.com"
-                  className="flex h-10 w-full rounded-md border border-border-subtle bg-bg-base px-3 py-2 text-sm text-text-main ring-offset-bg-surface placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all"
+                  className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 transition-all"
                 />
               </div>
               <button
                 onClick={handleNotify}
                 disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-11 px-4 py-2 w-full shadow-sm"
+                className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors disabled:opacity-50 bg-slate-900 text-white hover:bg-slate-800 h-11 px-4 py-2 w-full shadow-sm"
               >
                 {loading ? "Subscribing..." : (
                   <>
@@ -128,47 +84,35 @@ function ComingSoonSection({ intermNodes, expNodes, roadmapId, user }) {
           )}
         </div>
       </div>
-    </div>
-  );
-
-  return (
-    <div className="w-full rounded-xl border border-slate-200 bg-white p-5 mt-6 shadow-sm flex flex-col gap-5">
-      <div className="grid grid-cols-1 xl:grid-cols-2 gap-4 w-full">
-        {renderLevel('intermediate', intermNodes)}
-        {renderLevel('experienced', expNodes)}
-      </div>
-
-      <div className="border-t border-dashed border-slate-200 pt-5 flex justify-center">
-        {subscribed ? (
-          <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
-            <FiCheck className="w-5 h-5" /> All set! You will be notified.
-          </div>
-        ) : (
-          <button
-            onClick={() => setShowModal(true)}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-white border-2 border-dashed border-slate-300 text-slate-700 text-[14px] font-bold transition-colors cursor-pointer hover:bg-slate-50"
-          >
-            <FiBell className="w-4 h-4" />
-            Notify Me for Upcoming Levels
-          </button>
-        )}
-      </div>
-      {showModal && createPortal(modalContent, document.body)}
-    </div>
+    </div>,
+    document.body
   );
 }
 
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
-export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, progress = {} }) {
+export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, progress = {}, isProgressLoading }) {
   const { user, requireAuth } = useAuth();
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [showNotify, setShowNotify] = useState(false);
   const [activeLevel, setActiveLevel] = useState('all');
+  const [isSubscribed, setIsSubscribed] = useState(false);
 
   useEffect(() => {
     if (!user || !roadmap?._id) return;
+    
+    // Check bookmark
     bookmarkAPI.getBookmarks()
-      .then(({ data }) => setIsBookmarked(data.some(b => b._id === roadmap._id || b === roadmap._id)))
+      .then(({ data }) => {
+        setIsBookmarked(data.some(b => b._id === roadmap._id || b === roadmap._id));
+      })
+      .catch(() => {});
+
+    // Check notification status
+    notifyAPI.check(user.email, roadmap._id, 'all')
+      .then(({ data }) => {
+        setIsSubscribed(data.isSubscribed);
+      })
       .catch(() => {});
   }, [roadmap, user]);
 
@@ -192,168 +136,225 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
   const showFreshers = activeLevel === 'all' || activeLevel === 'freshers';
   const showComingSoon = activeLevel === 'all' || activeLevel === 'comingSoon';
 
+  const handleNotifyClick = () => {
+    if (!requireAuth()) return;
+    setShowNotify(true);
+  };
+
+  const renderLevel = (levelKey, nodes) => {
+    if (!nodes || nodes.length === 0) return null;
+    const isInter = levelKey === 'intermediate';
+    const levelNum = isInter ? 2 : 3;
+    const theme = isInter
+      ? { bg: 'bg-blue-50/80', iconBg: 'bg-blue-100', icon: 'text-blue-600', title: 'text-blue-900', dot: 'bg-blue-400', bullet: 'text-slate-700' }
+      : { bg: 'bg-purple-50/80', iconBg: 'bg-purple-100', icon: 'text-purple-600', title: 'text-purple-900', dot: 'bg-purple-400', bullet: 'text-slate-700' };
+
+    const cardTitle = nodes.length === 1 ? `Level ${levelNum}: ${nodes[0].title}` : `Level ${levelNum}: Coming Soon`;
+
+    return (
+      <div className={`w-full rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col mb-6`}>
+        <div className="flex items-start justify-between mb-4">
+          <div className="flex items-center gap-3">
+            <div className={`w-9 h-9 rounded-lg ${theme.iconBg} flex items-center justify-center shrink-0 shadow-sm`}>
+              <FiZap className={`w-4 h-4 ${theme.icon}`} />
+            </div>
+            <div className="flex flex-col">
+              <span className={`text-[14px] font-extrabold ${theme.title} tracking-tight`}>{cardTitle}</span>
+              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Upcoming</span>
+            </div>
+          </div>
+          <div className={`w-8 h-8 rounded-full ${theme.iconBg} flex items-center justify-center shrink-0`}>
+            <FiLock className={`w-4 h-4 ${theme.icon}`} />
+          </div>
+        </div>
+        
+        <div className={`${theme.bg} rounded-lg p-4`}>
+          <ul className="flex flex-col gap-2.5">
+            {nodes.map((n, i) => (
+              <li key={i} className="flex items-start gap-3">
+                <div className={`w-1.5 h-1.5 rounded-full ${theme.dot} shrink-0 mt-[7px] shadow-sm`} />
+                <span className={`text-[13px] font-semibold ${theme.bullet} leading-snug`}>{n.title}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    );
+  };
+
   return (
-    <div className="w-full md:w-[50%] md:h-full md:overflow-y-auto border-b md:border-b-0 md:border-r border-border-subtle relative z-20 bg-bg-base custom-scrollbar">
+    <div className="w-full md:w-[50%] md:h-full md:overflow-y-auto border-b md:border-b-0 md:border-r border-slate-200 relative z-20 bg-white custom-scrollbar">
       <div className="p-6 md:p-8 pb-16 flex flex-col items-start">
 
-        {/* ── Top actions */}
         <div className="flex items-center justify-between mb-6 w-full">
-          <Link to="/" className="text-text-muted font-semibold text-[13px] hover:text-brand transition-colors">
+          <Link to="/" className="text-slate-500 font-semibold text-[13px] hover:text-blue-600 transition-colors">
             ← All Roadmaps
           </Link>
           <div className="flex items-center gap-2">
             <Button variant="outline" size="icon" onClick={handleBookmarkToggle}
-              className={`cursor-pointer !shadow-none ${isBookmarked ? 'text-brand border-brand/20 bg-brand/5' : 'text-text-muted'}`}>
+              className={`cursor-pointer !shadow-none ${isBookmarked ? 'text-blue-600 border-blue-100 bg-blue-50' : 'text-slate-500'}`}>
               <FiBookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
             </Button>
             <Button variant="outline" size="icon" onClick={() => setIsShareOpen(true)}
-              className="text-text-muted cursor-pointer !shadow-none">
+              className="text-slate-500 cursor-pointer !shadow-none">
               <FiShare2 className="w-4 h-4" />
             </Button>
           </div>
         </div>
 
-        {/* ── Title */}
-        <h1 className="text-[28px] md:text-[32px] font-extrabold text-text-main mb-2 tracking-tight leading-[1.15]">
+        <h1 className="text-[28px] md:text-[32px] font-extrabold text-slate-900 mb-2 tracking-tight leading-[1.15]">
           {roadmap?.title || 'Roadmap'}
         </h1>
-        <p className="text-text-muted text-[14px] mb-4 leading-relaxed font-medium">
+        <p className="text-slate-500 text-[14px] mb-4 leading-relaxed font-medium">
           {roadmap?.description || 'Step by step guide to mastering this topic'}
         </p>
 
         <RatingBadge roadmapId={roadmap?._id} />
 
-        {/* ── Tabs */}
-        <div className="flex gap-6 border-b border-border-subtle w-full mt-5 mb-5 text-[14px]">
-          <span className="flex items-center gap-2 font-bold text-text-main border-b-2 border-text-main pb-2 cursor-pointer">
-            <FiMap className="w-4 h-4" /> Roadmap
-          </span>
-          <span className="flex items-center gap-2 text-text-muted font-semibold pb-2 cursor-pointer hover:text-text-main transition-colors">
-            <FiFolder className="w-4 h-4" /> Projects
-          </span>
+        <div className="flex items-center justify-between border-b border-slate-200 w-full mt-5 mb-5">
+          <div className="flex gap-6 text-[14px]">
+            <span className="flex items-center gap-2 font-bold text-slate-900 border-b-2 border-slate-900 pb-2 cursor-pointer">
+              <FiMap className="w-4 h-4" /> Roadmap
+            </span>
+            <span className="flex items-center gap-2 text-slate-500 font-semibold pb-2 cursor-pointer hover:text-slate-900 transition-colors">
+              <FiFolder className="w-4 h-4" /> Projects
+            </span>
+          </div>
+
+          {!isSubscribed && (
+            <button
+              onClick={handleNotifyClick}
+              className="flex items-center gap-1.5 text-[12px] font-bold text-blue-600 hover:text-blue-700 transition-colors pb-2"
+            >
+              <FiBell className="w-3.5 h-3.5" />
+              Notify Me
+            </button>
+          )}
+          {isSubscribed && (
+            <div className="flex items-center gap-1 text-[12px] font-bold text-emerald-600 pb-2">
+              <FiCheck className="w-3.5 h-3.5" />
+              Notified
+            </div>
+          )}
         </div>
 
-        {/* ── Filter chips: Freshers (N) | Coming Soon (N) */}
         <div className="flex items-center gap-2 flex-wrap mb-5 w-full">
           {[
+            { key: 'all', label: 'All', count: nodesWithLevels.length, dot: 'bg-blue-500' },
             { key: 'freshers', label: 'Freshers', count: fresherNodes.length, dot: 'bg-emerald-500' },
             { key: 'comingSoon', label: 'Coming Soon', count: comingSoonCount, dot: 'bg-slate-400', locked: true },
           ].map(chip => {
-            const active = activeLevel === chip.key || (activeLevel === 'all');
+            const active = activeLevel === chip.key;
             return (
               <button key={chip.key}
                 onClick={() => {
-                  setActiveLevel(prev => prev === chip.key ? 'all' : chip.key);
+                  setActiveLevel(chip.key);
                   if (chip.key === 'freshers') {
                     const f = fresherNodes[0];
                     if (f) { onSelectNode(f); onSelectTopic(f.topics?.[0] || null); }
+                  } else if (chip.key === 'all' && fresherNodes[0]) {
+                    onSelectNode(fresherNodes[0]);
+                    onSelectTopic(fresherNodes[0].topics?.[0] || null);
                   }
                 }}
-                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-semibold transition-all cursor-pointer ${
-                  active ? 'border-slate-300 bg-white text-text-main shadow-sm' : 'border-border-subtle bg-bg-surface text-text-muted hover:text-text-main'
-                }`}
+                className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[12px] font-semibold transition-all cursor-pointer ${active ? 'border-slate-300 bg-white text-slate-900 shadow-sm' : 'border-slate-200 bg-slate-50 text-slate-500 hover:text-slate-900'
+                  }`}
               >
                 <span className={`w-1.5 h-1.5 rounded-full ${chip.dot}`} />
                 {chip.label}
                 {chip.locked && <FiLock className="w-2.5 h-2.5 opacity-50" />}
-                <span className="text-text-muted">({chip.count})</span>
+                <span className="text-slate-500">({chip.count})</span>
               </button>
             );
           })}
         </div>
 
-        {/* ── Numbered nodes with dotted vertical line */}
-        {showFreshers && (
-          <div className="w-full relative">
-            {fresherNodes.map((node, index) => {
-              const NodeIcon = NODE_ICONS[index % NODE_ICONS.length];
-              const isNodeSel = selectedNode?._id === node._id;
-              const doneCnt = node.topics.filter(t => user && progress[t._id] === 'done').length;
-              const total = node.topics.length;
-              const allDone = doneCnt === total && total > 0;
-              const isLast = index === fresherNodes.length - 1;
+        <div className="w-full relative mt-6">
+          <div className="flex flex-col gap-0 w-full relative">
+            {showFreshers && (
+              <div className="relative">
+                {fresherNodes.map((node, index) => {
+                  const isSelected = selectedNode?._id === node._id;
+                  const allDone = node.topics.every(t => progress[t?._id] === 'done');
+                  const isLast = index === fresherNodes.length - 1;
 
-              return (
-                <div key={node._id || index} className="relative flex w-full">
-
-                  {/* Left column: circle + dotted line */}
-                  <div className="flex flex-col items-center shrink-0 w-8 mr-3">
-                    {/* Circle number */}
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 text-[12px] font-black z-10 ${
-                      allDone ? 'bg-green-500 text-white' : 'bg-slate-200 text-slate-700'
-                    }`}>
-                      {allDone ? <FiCheck className="w-3.5 h-3.5" strokeWidth={3} /> : index + 1}
-                    </div>
-                    {/* Dotted line below (except last node) */}
-                    {!isLast && (
-                      <div className="flex-1 w-0 border-l-2 border-dashed border-slate-200 mt-1 mb-0" />
-                    )}
-                  </div>
-
-                  {/* Right column: header + topics in one bordered card */}
-                  <div className={`flex-1 min-w-0 pb-4`}>
-                    <div className={`rounded-lg border border-slate-200 bg-white ${isNodeSel ? 'shadow-sm' : ''}`}>
-                      {/* Node header row */}
-                      <div
-                        onClick={() => { onSelectNode(node); onSelectTopic(node.topics?.[0] || null); }}
-                        className="flex items-center gap-2 px-3 py-2.5 cursor-pointer"
-                      >
-                        <NodeIcon className={`w-4 h-4 shrink-0 ${isNodeSel ? 'text-slate-700' : 'text-slate-400'}`} />
-                        <span className="flex-1 text-[14px] font-bold text-text-main leading-snug">
-                          {node.title}
-                        </span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-700 border border-emerald-200 shrink-0">
-                          Freshers
-                        </span>
-                        <span className="text-[12px] font-semibold text-text-muted shrink-0 ml-1">
-                          {doneCnt} / {total}
-                        </span>
+                  return (
+                    <div key={node._id} className="relative z-10 flex w-full">
+                      <div className="flex flex-col items-center shrink-0 w-8 mr-4">
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-black z-10 shadow-sm ${
+                          allDone ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700'
+                        }`}>
+                          {allDone ? <FiCheck className="w-4 h-4" strokeWidth={3} /> : index + 1}
+                        </div>
+                        {!isLast && <div className="flex-1 w-[2px] bg-slate-200 my-1" />}
+                        {isLast && showComingSoon && <div className="h-10 w-[2px] bg-gradient-to-b from-slate-200 to-transparent my-1" />}
                       </div>
 
-                      {/* Topic rows */}
-                      <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5">
-                        {node.topics.map((topic, i) => {
-                          const isSel = selectedTopic?._id === topic._id;
-                          const status = user ? (progress[topic._id] || 'pending') : 'none';
-                          
-                          let circleClass = 'border-[1.5px] border-slate-300 bg-white';
-                          if (status === 'done') circleClass = 'bg-green-500 border-green-500 text-white';
-                          else if (status === 'in-progress') circleClass = 'bg-blue-500 border-blue-500 text-white';
-                          else if (status === 'skip') circleClass = 'bg-gray-400 border-gray-400 text-white';
-                          else if (status === 'pending') circleClass = 'bg-yellow-400 border-yellow-400 text-white';
-
-                          return (
-                            <div key={i}
-                              onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
-                              className={`flex items-center gap-3 px-2.5 py-2 rounded-md cursor-pointer transition-colors ${
-                                isSel ? 'bg-blue-50' : 'hover:bg-slate-50'
-                              }`}
-                            >
-                              <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 ${circleClass}`}>
-                                {status === 'done' && <FiCheck className="w-2.5 h-2.5" strokeWidth={4} />}
-                              </div>
-                              <span className={`flex-1 text-[13px] leading-snug ${
-                                isSel ? 'font-semibold text-text-main' : 'font-medium text-slate-600'
-                              }`}>
-                                {topic.title}
-                              </span>
+                      <div className={`flex-1 rounded-xl border transition-all overflow-hidden bg-white mb-6 ${
+                        isSelected ? 'border-blue-200 shadow-md ring-1 ring-blue-50' : 'border-slate-200 hover:border-slate-300'
+                      }`}>
+                          <div
+                            onClick={() => { onSelectNode(node); onSelectTopic(node.topics?.[0] || null); }}
+                            className="flex items-center gap-2 px-3 py-2.5 cursor-pointer"
+                          >
+                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+                              {React.createElement(NODE_ICONS[index % NODE_ICONS.length], { className: "w-4 h-4 text-slate-600" })}
                             </div>
-                          );
-                        })}
+                            <span className={`flex-1 text-[14px] font-bold tracking-tight ${isSelected ? 'text-blue-600' : 'text-slate-800'}`}>
+                              {node.title}
+                            </span>
+                          </div>
+
+                          <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5 bg-slate-50/30">
+                            {node.topics.map((topic, i) => {
+                              const isSel = selectedTopic?._id === topic._id;
+                              const status = user ? (progress[topic._id] || 'pending') : 'none';
+
+                              let circleClass = 'border-[1.5px] border-slate-300 bg-white';
+                              if (status === 'done') circleClass = 'bg-emerald-500 border-emerald-500 text-white';
+                              else if (status === 'in-progress') circleClass = 'bg-blue-500 border-blue-500 text-white';
+                              else if (status === 'skip') circleClass = 'bg-slate-400 border-slate-400 text-white';
+                              else if (status === 'pending') circleClass = 'bg-yellow-400 border-yellow-400 text-white';
+
+                              return (
+                                <div key={i}
+                                  onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
+                                  className={`flex items-center gap-3 px-2.5 py-2 rounded-md transition-colors relative ${isSel ? 'bg-blue-50' : 'hover:bg-white'} cursor-pointer`}
+                                >
+                                  <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 ${circleClass}`}>
+                                    {status === 'done' && <FiCheck className="w-2.5 h-2.5" strokeWidth={4} />}
+                                  </div>
+                                  <span className={`flex-1 text-[13px] leading-snug ${isSel ? 'font-semibold text-slate-900' : 'font-medium text-slate-600'}`}>
+                                    {topic.title}
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+                    );
+                })}
+              </div>
+            )}
+
+            {showComingSoon && (
+              <div className="relative z-10 pl-0">
+                {renderLevel('intermediate', intermNodes)}
+                {renderLevel('experienced', expNodes)}
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
-        {/* ── Coming Soon cards */}
-        {showComingSoon && (
-          <ComingSoonSection intermNodes={intermNodes} expNodes={expNodes} roadmapId={roadmap?._id} user={user} />
-        )}
-
+        <NotifyModal 
+          roadmapId={roadmap?._id} 
+          user={user} 
+          isOpen={showNotify} 
+          onClose={() => setShowNotify(false)} 
+          isSubscribed={isSubscribed}
+          onSubscribed={() => setIsSubscribed(true)}
+        />
       </div>
 
       <ShareModal isOpen={isShareOpen} onClose={() => setIsShareOpen(false)}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiBookmark, FiLayers } from 'react-icons/fi';
-import axios from 'axios';
+import { roadmapAPI } from '../api/client';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { RatingBadge } from '../components/common/RatingBadge';
 
@@ -14,7 +14,7 @@ export function HomePage() {
   useEffect(() => {
     const fetchRoadmaps = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/roadmaps');
+        const { data } = await roadmapAPI.getAll();
 
         // Add logos locally for UI aesthetics since they aren't in DB right now
         const enhancedData = data.map(rm => ({

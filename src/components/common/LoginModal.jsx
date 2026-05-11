@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
+import { authAPI } from '../../api/client';
 import { useAuth } from '../../context/AuthContext';
 import { FiX } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
@@ -45,12 +45,7 @@ export function LoginModal() {
     try {
       setLoading(true);
       setError('');
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
-      }, {
-        withCredentials: true
-      });
+      const res = await authAPI.login(email, password);
 
       login(res.data);
       setShowLoginModal(false);
@@ -67,7 +62,7 @@ export function LoginModal() {
     try {
       setLoading(true);
       setError('');
-      await axios.post('http://localhost:5000/api/auth/forgot-password', { email });
+      await authAPI.forgotPassword(email);
       setMode('otp');
       setSuccess('OTP sent to your email');
     } catch (err) {
@@ -82,7 +77,7 @@ export function LoginModal() {
     try {
       setLoading(true);
       setError('');
-      await axios.post('http://localhost:5000/api/auth/verify-otp', { email, otp });
+      await authAPI.verifyOTP(email, otp);
       setMode('reset');
       setSuccess('OTP verified. Set your new password.');
     } catch (err) {
@@ -100,11 +95,7 @@ export function LoginModal() {
     try {
       setLoading(true);
       setError('');
-      await axios.post('http://localhost:5000/api/auth/reset-password', { 
-        email, 
-        otp, 
-        password: newPassword 
-      });
+      await authAPI.resetPassword(email, otp, newPassword);
       setMode('login');
       setSuccess('Password reset successfully. Please login.');
       setPassword('');
@@ -119,11 +110,7 @@ export function LoginModal() {
     try {
       setLoading(true);
       setError('');
-      const res = await axios.post('http://localhost:5000/api/auth/google', {
-        credential: credentialResponse.credential,
-      }, {
-        withCredentials: true
-      });
+      const res = await authAPI.loginWithGoogle(credentialResponse.credential);
 
       login(res.data);
       setShowLoginModal(false);

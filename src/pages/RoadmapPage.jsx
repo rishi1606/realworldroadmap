@@ -5,6 +5,7 @@ import { RoadmapSidebar } from '../components/roadmap/RoadmapSidebar';
 import { RoadmapContent } from '../components/roadmap/RoadmapContent';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { useAuth } from '../context/AuthContext';
+import { roadmapAPI, progressAPI } from '../api/client';
 
 export function RoadmapPage() {
   const { title } = useParams();
@@ -34,7 +35,7 @@ export function RoadmapPage() {
       try {
         setLoading(true);
         // First fetch all to find the slug if title is used as ID in URL
-        const { data: allRoadmaps } = await axios.get('http://localhost:5000/api/roadmaps');
+        const { data: allRoadmaps } = await roadmapAPI.getAll();
         
         let targetSlug = allRoadmaps[0]?.slug;
         if (title) {
@@ -44,9 +45,7 @@ export function RoadmapPage() {
         }
 
         if (targetSlug) {
-          const { data: roadmap } = await axios.get(`http://localhost:5000/api/roadmaps/${targetSlug}`, {
-            withCredentials: true
-          });
+          const { data: roadmap } = await roadmapAPI.getBySlug(targetSlug);
           setActiveRoadmap(roadmap);
           
           // Initial selection logic
@@ -87,7 +86,7 @@ export function RoadmapPage() {
           if (user) {
             setIsProgressLoading(true);
             try {
-              const { data: userProgress } = await axios.get(`http://localhost:5000/api/progress/${roadmap._id}`, { withCredentials: true });
+              const { data: userProgress } = await progressAPI.getForRoadmap(roadmap._id);
               setProgress(userProgress);
             } catch (err) {
               console.error("Failed to fetch progress", err);

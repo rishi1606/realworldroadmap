@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import { authAPI } from '../api/client';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
@@ -19,9 +19,7 @@ export function AuthProvider({ children }) {
 
     const fetchUser = async () => {
       try {
-        const { data } = await axios.get('http://localhost:5000/api/auth/profile', {
-          withCredentials: true,
-        });
+        const { data } = await authAPI.checkAuth();
         setUser(data);
       } catch (error) {
         setUser(null);
@@ -41,7 +39,7 @@ export function AuthProvider({ children }) {
 
   const logout = async () => {
     try {
-      await axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true });
+      await authAPI.logout();
       setUser(null);
       localStorage.removeItem('isAuthenticated');
     } catch (error) {

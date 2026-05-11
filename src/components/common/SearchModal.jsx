@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
-import { FiSearch, FiFileText, FiX, FiArrowRight } from 'react-icons/fi';
-import axios from 'axios';
+import { searchAPI } from '../../api/client';
 
 export function SearchModal({ isOpen, onClose }) {
   const [query, setQuery] = useState('');
@@ -51,7 +50,7 @@ export function SearchModal({ isOpen, onClose }) {
     const delayDebounceFn = setTimeout(async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/search?q=${query}`);
+        const { data } = await searchAPI.query(query);
         setResults(data || { roadmaps: [], topics: [] });
       } catch (error) {
         console.error("Search failed:", error);

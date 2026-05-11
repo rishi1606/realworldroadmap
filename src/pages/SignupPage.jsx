@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { GoogleLogin } from '@react-oauth/google';
-import axios from 'axios';
+import { authAPI } from '../api/client';
 import { useAuth } from '../context/AuthContext';
 
 export function SignupPage() {
@@ -27,13 +27,7 @@ export function SignupPage() {
       setLoading(true);
       setError('');
       
-      const res = await axios.post('http://localhost:5000/api/auth/register', {
-        name,
-        email,
-        password,
-      }, {
-        withCredentials: true
-      });
+      const res = await authAPI.register(name, email, password);
 
       login(res.data);
       navigate('/');
@@ -50,11 +44,7 @@ export function SignupPage() {
       setLoading(true);
       setError('');
       
-      const res = await axios.post('http://localhost:5000/api/auth/google', {
-        credential: credentialResponse.credential,
-      }, {
-        withCredentials: true
-      });
+      const res = await authAPI.loginWithGoogle(credentialResponse.credential);
 
       login(res.data);
       navigate('/');

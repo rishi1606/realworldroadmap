@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { RatingBadge } from './RatingBadge';
 
 export function RoadmapCard({ item }) {
   const destUrl = `/roadmap/${encodeURIComponent(item.slug || item.title)}`;
@@ -25,15 +24,6 @@ export function RoadmapCard({ item }) {
           <h3 className="font-semibold leading-none tracking-tight text-[18px] group-hover:text-blue-600 text-text-main transition-colors">
             {item.title}
           </h3>
-        </div>
-        <div className="flex items-center mt-1 pt-1">
-          <RatingBadge
-            roadmapId={item._id}
-            className="!p-0"
-            readonly={true}
-            initialAvgRating={item.averageRating}
-            initialTotalRatings={item.totalRatings}
-          />
         </div>
       </div>
 

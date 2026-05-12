@@ -5,7 +5,7 @@ import { RoadmapSidebar } from '../components/roadmap/RoadmapSidebar';
 import { RoadmapContent } from '../components/roadmap/RoadmapContent';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { useAuth } from '../context/AuthContext';
-import { roadmapAPI, progressAPI } from '../api/client';
+import { roadmapAPI } from '../api/client';
 
 export function RoadmapPage() {
   const { title } = useParams();
@@ -17,8 +17,7 @@ export function RoadmapPage() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [progress, setProgress] = useState({});
-  const [isProgressLoading, setIsProgressLoading] = useState(false);
+
 
   useEffect(() => {
     // Artificial delay to ensure navigation transition is finished
@@ -82,20 +81,7 @@ export function RoadmapPage() {
             setSelectedTopic(roadmap.nodes[0].topics?.[0] || null);
           }
 
-          // Fetch progress if logged in
-          if (user) {
-            setIsProgressLoading(true);
-            try {
-              const { data: userProgress } = await progressAPI.getForRoadmap(roadmap._id);
-              setProgress(userProgress);
-            } catch (err) {
-              console.error("Failed to fetch progress", err);
-            } finally {
-              setIsProgressLoading(false);
-            }
-          } else {
-            setProgress({});
-          }
+
         }
       } catch (error) {
         console.error("Error fetching roadmap", error);
@@ -162,17 +148,12 @@ export function RoadmapPage() {
           onSelectNode={handleSelectNode}
           selectedTopic={selectedTopic}
           onSelectTopic={setSelectedTopic}
-          progress={progress}
-          isProgressLoading={isProgressLoading}
         />
         <RoadmapContent
           roadmap={activeRoadmap}
           selectedNode={selectedNode}
           selectedTopic={selectedTopic}
           onSelectTopic={setSelectedTopic}
-          progress={progress}
-          setProgress={setProgress}
-          isProgressLoading={isProgressLoading}
         />
       </div>
     </div>

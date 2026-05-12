@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { roadmapAPI, progressAPI } from '../../api/client';
+import { roadmapAPI } from '../../api/client';
 
 export const fetchRoadmaps = createAsyncThunk('roadmap/fetchAll', async () => {
   const response = await roadmapAPI.getAll();
@@ -11,20 +11,9 @@ export const fetchRoadmapBySlug = createAsyncThunk('roadmap/fetchBySlug', async 
   return response.data;
 });
 
-export const fetchUserProgress = createAsyncThunk('roadmap/fetchProgress', async (roadmapId) => {
-  const response = await progressAPI.getForRoadmap(roadmapId);
-  return response.data;
-});
-
-export const updateProgress = createAsyncThunk('roadmap/updateProgress', async ({ roadmapId, topicId, status }) => {
-  const response = await progressAPI.updateTopic(roadmapId, topicId, status);
-  return { topicId, status };
-});
-
 const initialState = {
   roadmaps: [],
   activeRoadmap: null,
-  progress: {},
   loading: false,
   error: null,
 };
@@ -35,10 +24,6 @@ const roadmapSlice = createSlice({
   reducers: {
     clearActiveRoadmap: (state) => {
       state.activeRoadmap = null;
-      state.progress = {};
-    },
-    clearProgress: (state) => {
-      state.progress = {};
     }
   },
   extraReducers: (builder) => {
@@ -58,17 +43,9 @@ const roadmapSlice = createSlice({
       .addCase(fetchRoadmapBySlug.fulfilled, (state, action) => {
         state.loading = false;
         state.activeRoadmap = action.payload;
-      })
-      // Fetch Progress
-      .addCase(fetchUserProgress.fulfilled, (state, action) => {
-        state.progress = action.payload;
-      })
-      // Update Progress
-      .addCase(updateProgress.fulfilled, (state, action) => {
-        state.progress[action.payload.topicId] = action.payload.status;
       });
   },
 });
 
-export const { clearActiveRoadmap, clearProgress } = roadmapSlice.actions;
+export const { clearActiveRoadmap } = roadmapSlice.actions;
 export default roadmapSlice.reducer;

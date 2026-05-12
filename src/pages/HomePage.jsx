@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { FiBookmark, FiLayers } from 'react-icons/fi';
+import { FiLayers } from 'react-icons/fi';
 import { roadmapAPI } from '../api/client';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
-import { RatingBadge } from '../components/common/RatingBadge';
 
 import { RoadmapCard } from '../components/common/RoadmapCard';
 
@@ -93,7 +92,6 @@ export function HomePage() {
                 className="bg-bg-surface border border-border-subtle rounded flex items-center justify-between p-4 hover:border-gray-400 hover:shadow-sm transition-all group"
               >
                 <span className="font-semibold text-[15px] text-text-main group-hover:text-blue-600 transition-colors">{item.title}</span>
-                <FiBookmark className="text-gray-300 group-hover:text-text-muted w-4 h-4 transition-colors" />
               </Link>
             );
           })}

@@ -25,26 +25,6 @@ export const roadmapAPI = {
   getBySlug: (slug) => apiClient.get(`/roadmaps/${slug}`),
 };
 
-export const progressAPI = {
-  getForRoadmap: (roadmapId) => apiClient.get(`/progress/${roadmapId}`),
-  updateTopic: (roadmapId, topicId, status) => apiClient.post(`/progress/${roadmapId}/${topicId}`, { status }),
-};
-
-export const reviewAPI = {
-  getReviews: (roadmapId) => apiClient.get(`/reviews/${roadmapId}`),
-  submitReview: (roadmapId, rating, comment) => apiClient.post(`/reviews/${roadmapId}`, { rating, comment }),
-};
-
-export const bookmarkAPI = {
-  getBookmarks: () => apiClient.get('/bookmarks'),
-  toggleBookmark: (roadmapId) => apiClient.post(`/bookmarks/${roadmapId}`)
-};
-
-export const notifyAPI = {
-  subscribe: (email, roadmapId, level) => apiClient.post('/notify', { email, roadmapId, level }),
-  check: (email, roadmapId, level) => apiClient.get('/notify/check', { params: { email, roadmapId, level } }),
-};
-
 export const searchAPI = {
   query: (q) => apiClient.get('/search', { params: { q } }),
 };

@@ -1,142 +1,26 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import {
-  FiCheck, FiBookmark, FiBell, FiShare2, FiMap, FiFolder,
-  FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode,
-  FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX
-} from 'react-icons/fi';
+import { FiShare2, FiMap, FiFolder, FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { bookmarkAPI, notifyAPI } from '../../api/client';
 import toast from 'react-hot-toast';
-import { RatingBadge } from '../common/RatingBadge';
 import { ShareModal } from '../common/ShareModal';
 
 const NODE_ICONS = [FiSettings, FiLayers, FiZap, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox];
 
-// ─── Notify Modal Component ───────────────────────────────────────────────────
-function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscribed }) {
-  const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => setMounted(true), []);
-
-  const handleNotify = async () => {
-    const emailToUse = email || user?.email;
-    if (!emailToUse?.trim()) return toast.error('Please enter your email');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) return toast.error('Invalid email');
-    setLoading(true);
-    try {
-      await notifyAPI.subscribe(emailToUse, roadmapId, 'all');
-      toast.success("Subscribed successfully!");
-      if (onSubscribed) onSubscribed();
-      setTimeout(() => onClose(), 1000);
-    } catch (e) {
-      toast.error(e.response?.data?.message || 'Something went wrong.');
-    } finally { setLoading(false); }
-  };
-
-  if (!isOpen || !mounted) return null;
-
-  return createPortal(
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/40 backdrop-blur-md font-sans">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-8 relative animate-in fade-in zoom-in-95 duration-200 border border-slate-200">
-        <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors">
-          <FiX className="w-5 h-5" />
-        </button>
-        <div className="flex flex-col items-center text-center">
-          <div className="w-12 h-12 rounded-full bg-slate-50 flex items-center justify-center mb-4">
-            <FiLock className="w-6 h-6 text-slate-400" />
-          </div>
-          <h3 className="text-[22px] font-bold text-slate-900 mb-2">Get Notified</h3>
-          <p className="text-[14px] text-slate-500 mb-8 px-2 leading-relaxed">
-            Enter your email to be the first to know when the advanced modules are released.
-          </p>
-
-          {isSubscribed ? (
-            <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
-              <FiCheck className="w-5 h-5" /> You're on the list!
-            </div>
-          ) : (
-            <div className="w-full flex flex-col gap-4">
-              <div className="flex flex-col gap-1.5 text-left w-full">
-                <input
-                  autoFocus
-                  type="email"
-                  value={email || user?.email || ''}
-                  onChange={e => setEmail(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && handleNotify()}
-                  placeholder="your@email.com"
-                  className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 outline-none transition-all"
-                />
-              </div>
-              <button
-                onClick={handleNotify}
-                disabled={loading}
-                className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors bg-slate-900 text-white hover:bg-slate-800 h-11 px-4 py-2 w-full shadow-sm disabled:opacity-50"
-              >
-                {loading ? "Subscribing..." : (
-                  <>
-                    <FiBell className="w-4 h-4" />
-                    Notify Me
-                  </>
-                )}
-              </button>
-            </div>
-          )}
-        </div>
-      </div>
-    </div>,
-    document.body
-  );
-}
-
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
-export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, progress = {}, isProgressLoading }) {
-  const { user, requireAuth } = useAuth();
+export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic }) {
+  const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
-  const [showNotify, setShowNotify] = useState(false);
   const [activeLevel, setActiveLevel] = useState('all');
   const [shareUrl, setShareUrl] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [isBookmarked, setIsBookmarked] = useState(false);
 
   useEffect(() => {
     const timer = setTimeout(() => setMounted(true), 100);
     setShareUrl(window.location.href);
     return () => clearTimeout(timer);
   }, []);
-
-  // Fetch subscription & bookmark status
-  useEffect(() => {
-    if (user && roadmap?._id) {
-      // Check Notify status
-      notifyAPI.check(user.email, roadmap._id, 'all')
-        .then(res => setIsSubscribed(res.data.isSubscribed))
-        .catch(() => {});
-
-      // Check Bookmark status
-      bookmarkAPI.getBookmarks()
-        .then(res => {
-          const isMarked = res.data.some(b => b._id === roadmap._id || b === roadmap._id);
-          setIsBookmarked(isMarked);
-        })
-        .catch(() => {});
-    }
-  }, [user, roadmap?._id]);
-
-  const handleBookmarkToggle = async () => {
-    if (!requireAuth()) return;
-    try {
-      const { data } = await bookmarkAPI.toggleBookmark(roadmap._id);
-      setIsBookmarked(data.isBookmarked);
-      toast.success(data.isBookmarked ? 'Bookmark added' : 'Bookmark removed');
-    } catch { 
-      toast.error('Failed to update bookmark'); 
-    }
-  };
 
   const nodesWithLevels = useMemo(() =>
     (data || []).map(n => ({ ...n, _level: n.level || 'freshers' })), [data]);
@@ -206,14 +90,6 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
           </Link>
           <div className="flex items-center gap-2">
             <button 
-              onClick={handleBookmarkToggle} 
-              className={`w-9 h-9 rounded-lg border flex items-center justify-center transition-colors ${
-                isBookmarked ? 'bg-blue-50 border-blue-200 text-blue-600' : 'border-slate-200 text-slate-500 hover:bg-slate-50'
-              }`}
-            >
-              <FiBookmark className={`w-4 h-4 ${isBookmarked ? 'fill-current' : ''}`} />
-            </button>
-            <button 
               onClick={() => setIsShareOpen(true)} 
               className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors"
             >
@@ -230,9 +106,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
           {roadmap?.description || 'Step by step guide to mastering this topic'}
         </p>
 
-        <RatingBadge roadmapId={roadmap?._id} />
-
-        {/* ── Tabs & Global Notify */}
+        {/* ── Tabs */}
         <div className="flex items-center justify-between border-b border-slate-200 w-full mt-5 mb-5">
           <div className="flex gap-6 text-[14px]">
             <span className="flex items-center gap-2 font-bold text-slate-900 border-b-2 border-slate-900 pb-2 cursor-pointer">
@@ -242,22 +116,6 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
               <FiFolder className="w-4 h-4" /> Projects
             </span>
           </div>
-
-          {!isSubscribed && (
-            <button
-              onClick={handleNotifyClick}
-              className="flex items-center gap-1.5 text-[12px] font-bold text-blue-600 hover:text-blue-700 transition-colors pb-2"
-            >
-              <FiBell className="w-3.5 h-3.5" />
-              Notify Me
-            </button>
-          )}
-          {isSubscribed && (
-            <div className="flex items-center gap-1 text-[12px] font-bold text-emerald-600 pb-2">
-              <FiCheck className="w-3.5 h-3.5" />
-              Notified
-            </div>
-          )}
         </div>
 
         {/* ── Filter chips */}
@@ -291,16 +149,13 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
               <div className="relative">
                 {fresherNodes.map((node, index) => {
                   const isSelected = selectedNode?._id === node._id;
-                  const allDone = node.topics.every(t => progress[t?._id] === 'done');
                   const isLast = index === fresherNodes.length - 1;
 
                   return (
                     <div key={node._id} className="relative z-10 flex w-full">
                       <div className="flex flex-col items-center shrink-0 w-8 mr-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-black z-10 shadow-sm ${
-                          allDone ? 'bg-emerald-500 text-white' : 'bg-slate-200 text-slate-700'
-                        }`}>
-                          {allDone ? <FiCheck className="w-4 h-4" strokeWidth={3} /> : index + 1}
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-black z-10 shadow-sm bg-slate-200 text-slate-700`}>
+                          {index + 1}
                         </div>
                         
                         {!isLast && <div className="flex-1 w-[2px] bg-slate-200 my-1" />}
@@ -325,21 +180,13 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
                           <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5 bg-slate-50/30">
                             {node.topics.map((topic, i) => {
                               const isSel = selectedTopic?._id === topic._id;
-                              const status = progress[topic._id] || 'pending';
-
-                              let circleClass = 'border-[1.5px] border-slate-300 bg-white';
-                              if (status === 'done') circleClass = 'bg-emerald-500 border-emerald-500 text-white';
-                              else if (status === 'in-progress') circleClass = 'bg-blue-500 border-blue-500 text-white';
-                              else if (status === 'skip') circleClass = 'bg-slate-400 border-slate-400 text-white';
-                              else if (status === 'pending') circleClass = 'bg-yellow-400 border-yellow-400 text-white';
 
                               return (
                                 <div key={i}
                                   onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
                                   className={`flex items-center gap-3 px-2.5 py-2 rounded-md transition-colors relative ${isSel ? 'bg-blue-50' : 'hover:bg-white'} cursor-pointer`}
                                 >
-                                  <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center shrink-0 ${circleClass}`}>
-                                    {status === 'done' && <FiCheck className="w-2.5 h-2.5" strokeWidth={4} />}
+                                  <div className={`w-1.5 h-1.5 rounded-full flex items-center justify-center shrink-0 border-[1.5px] border-slate-300 bg-white`}>
                                   </div>
                                   <span className={`flex-1 text-[13px] leading-snug ${isSel ? 'font-bold text-slate-900' : 'font-medium text-slate-600'}`}>
                                     {topic.title}
@@ -364,14 +211,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
           </div>
         </div>
 
-        <NotifyModal 
-          roadmapId={roadmap?._id} 
-          user={user} 
-          isOpen={showNotify} 
-          onClose={() => setShowNotify(false)} 
-          isSubscribed={isSubscribed}
-          onSubscribed={() => setIsSubscribed(true)}
-        />
+
 
       </div>
 

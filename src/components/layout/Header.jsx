@@ -27,16 +27,12 @@ export function Header() {
       <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 flex items-center justify-between">
 
         {/* Left Section */}
-        <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center gap-2 text-text-main">
-            <Logo className="h-[18px] w-[18px] mt-0.5" />
-            <span className="font-bold sm:inline-block hidden text-[15px]">r.</span>
-          </Link>
+        <div className="flex items-center gap-4 pt-1">
+          {/* <Link to="/" className="flex items-center gap-2 text-text-main">
+            <Logo className="h-28 w-auto" />
+          </Link> */}
 
           <nav className="hidden md:flex items-center gap-[18px] text-[14px] font-medium text-[#71717A]">
-            {user && (
-              <Link to="/bookmarks" className="transition-colors hover:text-text-main">Bookmarks</Link>
-            )}
           </nav>
         </div>
 

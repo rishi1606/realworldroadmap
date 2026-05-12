@@ -5,14 +5,10 @@ import { useAuth } from "../../context/AuthContext";
 import { SkeletonLoader } from "../common/SkeletonLoader";
 import { Button } from "../common/Button";
 import { Select } from "../common/Select";
-import { notifyAPI, progressAPI } from "../../api/client";
-import toast from "react-hot-toast";
 import {
   FiXCircle,
   FiCopy,
   FiCheck,
-  FiBell,
-  FiLock,
   FiChevronDown,
   FiChevronUp,
 } from "react-icons/fi";
@@ -168,74 +164,13 @@ function RenderBlock({ block, index }) {
   return renderer ? renderer({ block, index }) : null;
 }
 
-// ─── Locked Overlay Component ────────────────────────────────────────────────
 
-function LockedOverlay({ roadmapId, nodeLevel }) {
-  const [email, setEmail] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [subscribed, setSubscribed] = useState(false);
-
-  const handleNotify = async () => {
-    if (!email.trim()) return toast.error("Please enter your email");
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return toast.error("Invalid email");
-
-    setLoading(true);
-    try {
-      await notifyAPI.subscribe(email, roadmapId, nodeLevel);
-      toast.success("Subscribed!");
-      setSubscribed(true);
-    } catch (error) {
-      toast.error("Failed to subscribe");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return createPortal(
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/40 backdrop-blur-md">
-      <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-200 flex flex-col items-center text-center max-w-[400px] mx-4 animate-in fade-in zoom-in-95 duration-200">
-        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-4">
-          <FiLock className="w-6 h-6 text-slate-500" />
-        </div>
-        <h3 className="text-[22px] font-bold text-slate-900 mb-2">Get Notified</h3>
-        <p className="text-slate-500 mb-8 text-[14px] leading-relaxed">
-          Enter your email to be the first to know when the advanced modules are released.
-        </p>
-
-        {subscribed ? (
-          <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
-            <FiCheck className="w-4 h-4" /> Subscribed!
-          </div>
-        ) : (
-          <div className="w-full flex flex-col gap-4">
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 focus:ring-2 focus:ring-blue-500 outline-none transition-all"
-            />
-            <button
-              onClick={handleNotify}
-              disabled={loading}
-              className="w-full bg-slate-900 text-white rounded-md h-11 font-bold hover:bg-slate-800 transition-colors disabled:opacity-50"
-            >
-              {loading ? "Subscribing..." : "Notify Me"}
-            </button>
-          </div>
-        )}
-      </div>
-    </div>,
-    document.body
-  );
-}
 
 // ─── Main RoadmapContent Component ───────────────────────────────────────────
 
-export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, progress = {}, setProgress, isProgressLoading }) {
+export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic }) {
   const navigate = useNavigate();
-  const { user, setShowLoginModal } = useAuth();
+  const { user } = useAuth();
 
   if (!selectedNode || !selectedTopic) return null;
 
@@ -247,89 +182,10 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
 
   const topicBlocks = selectedTopic.contentBlocks || [];
 
-  const handleStatusChange = async (e) => {
-    if (!user) return setShowLoginModal(true);
-
-    const newStatus = e.target.value;
-    const oldStatus = progress[selectedTopic._id];
-
-    // Optimistic update
-    setProgress(prev => ({ ...prev, [selectedTopic._id]: newStatus }));
-
-    try {
-      await progressAPI.updateTopic(roadmap._id, selectedTopic._id, newStatus);
-      toast.success(`Updated to ${newStatus}`);
-    } catch (error) {
-      toast.error("Failed to update progress");
-      setProgress(prev => ({ ...prev, [selectedTopic._id]: oldStatus }));
-    }
-  };
-
-  const currentStatus = progress[selectedTopic._id] || "pending";
-  const nodeLevel = selectedNode?._level || selectedNode?.level || 'freshers';
-  const isLocked = nodeLevel === 'intermediate' || nodeLevel === 'experienced';
-
-  // Accurate progress calculations matching Next.js logic
-  const unlockedNodes = roadmap?.nodes?.filter(node => {
-    const level = node?._level || node?.level || 'freshers';
-    return level === 'freshers';
-  }) || [];
-
-  const totalTopics = unlockedNodes.reduce(
-    (acc, node) => acc + (node.topics?.length || 0),
-    0
-  );
-
-  const progressValues = Object.values(progress);
-  const doneCount = progressValues.filter(s => s === 'done').length;
-  const inProgressCount = progressValues.filter(s => s === 'in-progress').length;
-  const skipCount = progressValues.filter(s => s === 'skip').length;
-  const pendingCount = Math.max(0, totalTopics - (doneCount + inProgressCount + skipCount));
-
   return (
     <div id="roadmap-content" className="w-full md:w-[50%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
-      {isLocked && <LockedOverlay roadmapId={roadmap?._id} nodeLevel={nodeLevel} />}
-
-      <div className={isLocked ? "opacity-30 blur-md pointer-events-none transition-all duration-300 flex-1" : "transition-all duration-300 flex-1"}>
+      <div className="transition-all duration-300 flex-1">
         <div className="flex justify-between p-4 border-b border-slate-200 items-center flex-wrap gap-4 bg-white sticky top-0 z-10">
-          <div className="flex items-center gap-2">
-            {user && (
-              <div className="flex items-center gap-2">
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700 bg-slate-50">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                  <span className="hidden lg:inline">Done</span>
-                  <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : doneCount}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700 bg-slate-50">
-                  <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
-                  <span className="hidden lg:inline">Doing</span>
-                  <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : inProgressCount}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700 bg-slate-50">
-                  <span className="w-1.5 h-1.5 rounded-full bg-slate-400"></span>
-                  <span className="hidden lg:inline">Skipped</span>
-                  <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : skipCount}</span>
-                </div>
-                <div className="inline-flex items-center gap-1.5 rounded-md border border-slate-200 px-2.5 py-0.5 text-[11px] font-semibold text-slate-700 bg-slate-50">
-                  <span className="w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
-                  <span className="hidden lg:inline">Pending</span>
-                  <span className="text-slate-500 ml-0.5">{isProgressLoading ? '-' : pendingCount}</span>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <Select
-            value={currentStatus}
-            onChange={handleStatusChange}
-            disabled={isLocked}
-            options={[
-              { value: 'pending', label: 'Pending' },
-              { value: 'in-progress', label: 'In Progress' },
-              { value: 'skip', label: 'Skip' },
-              { value: 'done', label: 'Done' }
-            ]}
-          />
         </div>
 
         <div className="p-8 md:p-12 w-full flex-1">

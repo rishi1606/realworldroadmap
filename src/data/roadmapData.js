@@ -988,795 +988,797 @@ export const roadmapData = [
 
     ]
   },
-  // {
-  //   id: "caching-netflix",
-  //   image: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png",
-  //   title: "How Netflix Caches Content for 200M+ Users",
-  //   description: "Understand how Netflix serves 230M+ users without melting its database — from in-memory caching with Redis, cache-aside & read-through strategies, CDN edge caching, to cache invalidation patterns used in production.",
-  //   tags: ["Redis", "CDN", "Cache Invalidation"],
-  //   nodes: [
+  {
+    id: "caching-netflix",
+    image: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png",
+    title: "How Netflix Caches Content for 200M+ Users",
+    description: "Understand how Netflix serves 230M+ users without melting its database — from in-memory caching with Redis, cache-aside & read-through strategies, CDN edge caching, to cache invalidation patterns used in production.",
+    tags: ["Redis", "CDN", "Cache Invalidation"],
+    nodes: [
 
-  //     {
-  //       id: 1,
-  //       title: "Basics (Foundation)",
-  //       level: "freshers",
-  //       topics: [
-  //         "What is Caching and why is it needed?",
-  //         "Cache Hit vs Cache Miss",
-  //         "Cache Hit Ratio",
-  //         "Where Cache Lives (Browser, Server, DB, CDN)",
-  //       ],
-  //       topicDetails: {
-  //         "What is Caching and why is it needed?": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You open Netflix. You click on Stranger Things. Season 1, Episode 1 starts playing in under 2 seconds. Now think about what just happened — Netflix has 230 million users. Thousands of them are clicking Stranger Things at this exact moment. Every single click needs the show title, description, thumbnail, cast, ratings, episode list. If Netflix fetched all of that from its main database every single time — the database would collapse in minutes."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ How does Netflix respond in 2 seconds to millions of users — all asking for the same data?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "The Problem With Hitting the Database Every Time"
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "Without caching, every click on Netflix means:",
-  //             list: [
-  //               "A full trip to the database — halfway across the world",
-  //               "Database handles millions of identical requests simultaneously",
-  //               "Each query takes 200-500ms — feels slow and laggy",
-  //               "Database gets overloaded and starts failing under peak traffic"
-  //             ],
-  //             footer: "Friday night. Everyone opens Netflix. Database gets hit with 10 million requests. It dies. Netflix goes down."
-  //           },
-  //           { type: "image", src: "cacheproblem.jpeg" },
-  //           {
-  //             type: "heading",
-  //             text: "What is Caching?"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Caching means storing a copy of frequently used data in a fast, temporary storage — so the next time someone asks for it, you don't go all the way to the database. You grab it from the cache instead. Fast. Cheap. No database stress."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "First user clicks Stranger Things",
-  //             desc: "Netflix fetches all the show data from the database — title, description, cast, episodes, thumbnails. Takes ~300ms."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Netflix stores it in cache",
-  //             desc: "That same data is now saved in a super-fast cache (Redis). Right next to the server. Ready to serve instantly."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Second user clicks Stranger Things",
-  //             desc: "Netflix checks cache first. Data is already there. Returns it in under 5ms. No database trip needed."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "10,000 users click Stranger Things",
-  //             desc: "All 10,000 get served from cache. Database is not touched even once. Netflix stays fast and alive."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Same data. Same response. 300ms becomes 5ms. Database load drops from 10 million hits to almost zero. That's caching."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But how does Netflix know if the data in cache is fresh or stale? What if the cache has it but it's outdated? What if it doesn't have it at all? Those two situations have names — Cache Hit and Cache Miss. Let's understand them."
-  //           }
-  //         ],
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "What is Caching and why is it needed?",
+          "Cache Hit vs Cache Miss",
+          "Cache Hit Ratio",
+          "Where Cache Lives (Browser, Server, DB, CDN)",
+        ],
+        topicDetails: {
+          "What is Caching and why is it needed?": [
+            {
+              type: "paragraph",
+              text: "You open Netflix. You click on Stranger Things. Season 1, Episode 1 starts playing in under 2 seconds. Now think about what just happened — Netflix has 230 million users. Thousands of them are clicking Stranger Things at this exact moment. Every single click needs the show title, description, thumbnail, cast, ratings, episode list. If Netflix fetched all of that from its main database every single time — the database would collapse in minutes."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Netflix respond in 2 seconds to millions of users — all asking for the same data?"
+            },
+            {
+              type: "heading",
+              text: "The Problem With Hitting the Database Every Time"
+            },
+            {
+              type: "error-callout",
+              title: "Without caching, every click on Netflix means:",
+              list: [
+                "A full trip to the database — halfway across the world",
+                "Database handles millions of identical requests simultaneously",
+                "Each query takes 200-500ms — feels slow and laggy",
+                "Database gets overloaded and starts failing under peak traffic"
+              ],
+              footer: "Friday night. Everyone opens Netflix. Database gets hit with 10 million requests. It dies. Netflix goes down."
+            },
+            { type: "image", src: "cacheproblem.jpeg" },
+            {
+              type: "heading",
+              text: "What is Caching?"
+            },
+            {
+              type: "paragraph",
+              text: "Caching means storing a copy of frequently used data in a fast, temporary storage — so the next time someone asks for it, you don't go all the way to the database. You grab it from the cache instead. Fast. Cheap. No database stress."
+            },
+            {
+              type: "step",
+              title: "First user clicks Stranger Things",
+              desc: "Netflix fetches all the show data from the database — title, description, cast, episodes, thumbnails. Takes ~300ms."
+            },
+            {
+              type: "step",
+              title: "Netflix stores it in cache",
+              desc: "That same data is now saved in a super-fast cache (Redis). Right next to the server. Ready to serve instantly."
+            },
+            {
+              type: "step",
+              title: "Second user clicks Stranger Things",
+              desc: "Netflix checks cache first. Data is already there. Returns it in under 5ms. No database trip needed."
+            },
+            {
+              type: "step",
+              title: "10,000 users click Stranger Things",
+              desc: "All 10,000 get served from cache. Database is not touched even once. Netflix stays fast and alive."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Same data. Same response. 300ms becomes 5ms. Database load drops from 10 million hits to almost zero. That's caching."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But how does Netflix know if the data in cache is fresh or stale? What if the cache has it but it's outdated? What if it doesn't have it at all? Those two situations have names — Cache Hit and Cache Miss. Let's understand them."
+            }
+          ],
 
-  //         "Cache Hit vs Cache Miss": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You open Netflix and search 'Stranger Things'. Netflix goes to check the cache. Two things can happen — either the data is sitting right there waiting for you, or it's not there at all and Netflix has to go fetch it. These two moments have names."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Cache Hit — The Data is Already There"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "A Cache Hit happens when Netflix checks the cache and finds exactly what it needs. No database trip. No waiting. Just instant data."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "You search 'Stranger Things'",
-  //             desc: "Netflix looks in the cache for Stranger Things data."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Cache has it",
-  //             desc: "Someone searched for it before. It's already stored. Netflix grabs it instantly."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "cache.get('stranger_things')\n→ ✅ HIT — data found\n→ Return in 5ms"
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Cache Hit = fast, cheap, database never involved. This is what Netflix optimises for."
-  //           },
-  //           { type: "image", src: "hit.jpeg" },
-  //           {
-  //             type: "heading",
-  //             text: "Cache Miss — The Data is Not There"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "A Cache Miss happens when Netflix checks the cache and finds nothing. Now it has no choice — it goes to the database, fetches the data, stores it in cache for next time, and then responds to you."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "You search for a brand new show just added today",
-  //             desc: "Netflix checks cache. Nobody has searched for this yet. Cache is empty."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Cache Miss — go to database",
-  //             desc: "Netflix hits the main database. Fetches all show data. Takes ~300ms."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Store in cache for next time",
-  //             desc: "Netflix saves the data in cache. Next person who searches gets a Cache Hit."
-  //           },
-  //           { type: "image", src: "cachemiss.jpeg" },
-  //           {
-  //             type: "code",
-  //             code: "cache.get('new_show_xyz')\n→ ❌ MISS — not found\n→ Query database (~300ms)\n→ cache.set('new_show_xyz', data)\n→ Return data"
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Cache Miss is expensive — database trip, slower response, more server load. Netflix's goal is to keep misses as rare as possible. But how do you measure that? That's where Cache Hit Ratio comes in."
-  //           }
-  //         ],
+          "Cache Hit vs Cache Miss": [
+            {
+              type: "paragraph",
+              text: "You open Netflix and search 'Stranger Things'. Netflix goes to check the cache. Two things can happen — either the data is sitting right there waiting for you, or it's not there at all and Netflix has to go fetch it. These two moments have names."
+            },
+            {
+              type: "heading",
+              text: "Cache Hit — The Data is Already There"
+            },
+            {
+              type: "paragraph",
+              text: "A Cache Hit happens when Netflix checks the cache and finds exactly what it needs. No database trip. No waiting. Just instant data."
+            },
+            {
+              type: "step",
+              title: "You search 'Stranger Things'",
+              desc: "Netflix looks in the cache for Stranger Things data."
+            },
+            {
+              type: "step",
+              title: "Cache has it",
+              desc: "Someone searched for it before. It's already stored. Netflix grabs it instantly."
+            },
+            {
+              type: "code",
+              code: "cache.get('stranger_things')\n→ ✅ HIT — data found\n→ Return in 5ms"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cache Hit = fast, cheap, database never involved. This is what Netflix optimises for."
+            },
+            { type: "image", src: "hit.jpeg" },
+            {
+              type: "heading",
+              text: "Cache Miss — The Data is Not There"
+            },
+            {
+              type: "paragraph",
+              text: "A Cache Miss happens when Netflix checks the cache and finds nothing. Now it has no choice — it goes to the database, fetches the data, stores it in cache for next time, and then responds to you."
+            },
+            {
+              type: "step",
+              title: "You search for a brand new show just added today",
+              desc: "Netflix checks cache. Nobody has searched for this yet. Cache is empty."
+            },
+            {
+              type: "step",
+              title: "Cache Miss — go to database",
+              desc: "Netflix hits the main database. Fetches all show data. Takes ~300ms."
+            },
+            {
+              type: "step",
+              title: "Store in cache for next time",
+              desc: "Netflix saves the data in cache. Next person who searches gets a Cache Hit."
+            },
+            { type: "image", src: "cachemiss.jpeg" },
+            {
+              type: "code",
+              code: "cache.get('new_show_xyz')\n→ ❌ MISS — not found\n→ Query database (~300ms)\n→ cache.set('new_show_xyz', data)\n→ Return data"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Cache Miss is expensive — database trip, slower response, more server load. Netflix's goal is to keep misses as rare as possible. But how do you measure that? That's where Cache Hit Ratio comes in."
+            }
+          ],
 
-  //         "Cache Hit Ratio": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix's engineering team is doing a performance review. Someone asks — 'How effective is our cache? Are users mostly getting Cache Hits or Cache Misses?' You can't just guess. You need a number. That number is the Cache Hit Ratio."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "What is Cache Hit Ratio?"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Cache Hit Ratio is simply the percentage of requests that were served from cache — out of all requests that came in."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Cache Hit Ratio = (Cache Hits / Total Requests) × 100\n\nExample:\n1000 requests came in\n920 served from cache (Hits)\n80 went to database (Misses)\n\nHit Ratio = (920 / 1000) × 100 = 92%"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix targets a Cache Hit Ratio above 95% for popular content like Stranger Things, Wednesday, Money Heist. That means for every 100 users clicking a popular show, 95+ are served from cache and less than 5 ever touch the database."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "💡 Higher Hit Ratio = faster Netflix, less database load, lower infrastructure cost. A drop from 95% to 80% during Friday night peak means millions of extra database queries — and a possible outage."
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "A low Cache Hit Ratio on Netflix means:",
-  //             list: [
-  //               "More users hitting the database directly",
-  //               "Database slows down under load",
-  //               "Show pages take longer to load",
-  //               "Buffering and lag spike during peak hours"
-  //             ],
-  //             footer: "Netflix monitors hit ratio in real time. A sudden drop triggers an immediate alert."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Cache Hit Ratio tells you how well your cache is performing — but it doesn't tell you where the cache actually lives. Is it in the browser? On Netflix's server? In the database layer? Near you geographically? Cache can live in multiple places — and each one serves a different purpose."
-  //           }
-  //         ],
+          "Cache Hit Ratio": [
+            {
+              type: "paragraph",
+              text: "Netflix's engineering team is doing a performance review. Someone asks — 'How effective is our cache? Are users mostly getting Cache Hits or Cache Misses?' You can't just guess. You need a number. That number is the Cache Hit Ratio."
+            },
+            {
+              type: "heading",
+              text: "What is Cache Hit Ratio?"
+            },
+            {
+              type: "paragraph",
+              text: "Cache Hit Ratio is simply the percentage of requests that were served from cache — out of all requests that came in."
+            },
+            {
+              type: "code",
+              code: "Cache Hit Ratio = (Cache Hits / Total Requests) × 100\n\nExample:\n1000 requests came in\n920 served from cache (Hits)\n80 went to database (Misses)\n\nHit Ratio = (920 / 1000) × 100 = 92%"
+            },
+            {
+              type: "paragraph",
+              text: "Netflix targets a Cache Hit Ratio above 95% for popular content like Stranger Things, Wednesday, Money Heist. That means for every 100 users clicking a popular show, 95+ are served from cache and less than 5 ever touch the database."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Higher Hit Ratio = faster Netflix, less database load, lower infrastructure cost. A drop from 95% to 80% during Friday night peak means millions of extra database queries — and a possible outage."
+            },
+            {
+              type: "error-callout",
+              title: "A low Cache Hit Ratio on Netflix means:",
+              list: [
+                "More users hitting the database directly",
+                "Database slows down under load",
+                "Show pages take longer to load",
+                "Buffering and lag spike during peak hours"
+              ],
+              footer: "Netflix monitors hit ratio in real time. A sudden drop triggers an immediate alert."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Cache Hit Ratio tells you how well your cache is performing — but it doesn't tell you where the cache actually lives. Is it in the browser? On Netflix's server? In the database layer? Near you geographically? Cache can live in multiple places — and each one serves a different purpose."
+            }
+          ],
 
-  //         "Where Cache Lives (Browser, Server, DB, CDN)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You've opened Netflix on your laptop. You watched Stranger Things yesterday. Today you open it again — and the thumbnail loads before the page even fully renders. How? Netflix didn't fetch that from a server. It was already sitting on your laptop. Cache isn't just one place — it lives everywhere."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "1 — Browser Cache (On Your Device)"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "When you visit Netflix, your browser saves static files — thumbnails, CSS, JavaScript, logos — directly on your device. Next visit, your browser loads them locally without sending any request to Netflix's servers."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "You visit netflix.com\n→ Browser loads logo from local cache\n→ No request to Netflix servers\n→ Page loads instantly ✅"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "2 — Server Cache (On Netflix's Backend)"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix uses Redis — an in-memory cache — sitting right next to its backend servers. Show metadata, user preferences, trending lists — all stored in Redis. When your request hits Netflix's server, it checks Redis first before touching the database."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Request → Netflix Server\n→ Check Redis cache\n→ ✅ HIT: return in 5ms\n→ ❌ MISS: query DB → store in Redis → return"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "3 — Database Cache (Inside the DB Layer)"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Even the database itself has a built-in cache. Frequently run queries get their results cached inside the DB engine. Netflix's database doesn't re-run the same complex query a million times — if the result is cached, it returns it directly."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "4 — CDN Cache (Close to You, Geographically)"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "This is the big one for Netflix. Video files are massive. Streaming Stranger Things from a server in the US to a user in Mumbai would be painfully slow. So Netflix caches the actual video content on CDN servers placed physically close to you — in Mumbai, Bangalore, Delhi. You stream from the nearest CDN, not from a server in America."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "You in Mumbai → Request Episode 1\n→ CDN server in Mumbai has it cached\n→ Streams from 10ms away ✅\n\n(Without CDN → streams from US → 200ms latency → buffering 😭)"
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Browser cache handles static files. Server cache (Redis) handles metadata. DB cache handles repeated queries. CDN cache handles video streaming close to you. Netflix uses all four layers together — that's why it feels instant everywhere in the world."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Now we know where cache lives. But how does Netflix actually read data into the cache? Does it load everything upfront? Or only when someone asks for it? There are two strategies — and each works differently."
-  //           }
-  //         ]
-  //       }
-  //     },
+          "Where Cache Lives (Browser, Server, DB, CDN)": [
+            {
+              type: "paragraph",
+              text: "You've opened Netflix on your laptop. You watched Stranger Things yesterday. Today you open it again — and the thumbnail loads before the page even fully renders. How? Netflix didn't fetch that from a server. It was already sitting on your laptop. Cache isn't just one place — it lives everywhere."
+            },
+            {
+              type: "heading",
+              text: "1 — Browser Cache (On Your Device)"
+            },
+            {
+              type: "paragraph",
+              text: "When you visit Netflix, your browser saves static files — thumbnails, CSS, JavaScript, logos — directly on your device. Next visit, your browser loads them locally without sending any request to Netflix's servers."
+            },
+            {
+              type: "code",
+              code: "You visit netflix.com\n→ Browser loads logo from local cache\n→ No request to Netflix servers\n→ Page loads instantly ✅"
+            },
+            {
+              type: "heading",
+              text: "2 — Server Cache (On Netflix's Backend)"
+            },
+            {
+              type: "paragraph",
+              text: "Netflix uses Redis — an in-memory cache — sitting right next to its backend servers. Show metadata, user preferences, trending lists — all stored in Redis. When your request hits Netflix's server, it checks Redis first before touching the database."
+            },
+            {
+              type: "code",
+              code: "Request → Netflix Server\n→ Check Redis cache\n→ ✅ HIT: return in 5ms\n→ ❌ MISS: query DB → store in Redis → return"
+            },
+            {
+              type: "heading",
+              text: "3 — Database Cache (Inside the DB Layer)"
+            },
+            {
+              type: "paragraph",
+              text: "Even the database itself has a built-in cache. Frequently run queries get their results cached inside the DB engine. Netflix's database doesn't re-run the same complex query a million times — if the result is cached, it returns it directly."
+            },
+            {
+              type: "heading",
+              text: "4 — CDN Cache (Close to You, Geographically)"
+            },
+            {
+              type: "paragraph",
+              text: "This is the big one for Netflix. Video files are massive. Streaming Stranger Things from a server in the US to a user in Mumbai would be painfully slow. So Netflix caches the actual video content on CDN servers placed physically close to you — in Mumbai, Bangalore, Delhi. You stream from the nearest CDN, not from a server in America."
+            },
+            {
+              type: "code",
+              code: "You in Mumbai → Request Episode 1\n→ CDN server in Mumbai has it cached\n→ Streams from 10ms away ✅\n\n(Without CDN → streams from US → 200ms latency → buffering 😭)"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Browser cache handles static files. Server cache (Redis) handles metadata. DB cache handles repeated queries. CDN cache handles video streaming close to you. Netflix uses all four layers together — that's why it feels instant everywhere in the world."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Now we know where cache lives. But how does Netflix actually read data into the cache? Does it load everything upfront? Or only when someone asks for it? There are two strategies — and each works differently."
+            }
+          ]
+        }
+      },
 
-  //     {
-  //       id: 2,
-  //       title: "Cache Reading Strategies",
-  //       level: "freshers",
-  //       topics: [
-  //         "Cache-Aside (Lazy Loading)",
-  //         "Read-Through Cache",
-  //       ],
-  //       topicDetails: {
-  //         "Cache-Aside (Lazy Loading)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix just launched a brand new original series — 'Delhi Files'. Nobody has watched it yet. Nobody has searched for it. The cache is completely empty for this show. Now the first user in India searches for it. What does Netflix do?"
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ Should Netflix have pre-loaded every new show into cache? Or should it only cache things when someone actually asks for them?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Cache-Aside — Load It Only When Needed"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Cache-Aside means the application itself manages the cache. It always checks cache first. If data isn't there — it fetches from the database, stores it in cache, and then returns it. Next time someone asks — it's already in cache."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "User searches 'Delhi Files'",
-  //             desc: "Application checks Redis cache first."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Cache Miss — not there yet",
-  //             desc: "Nobody has searched this before. Cache has nothing."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Fetch from database",
-  //             desc: "Application queries the database for all Delhi Files metadata — title, cast, episodes, thumbnails."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Store in cache",
-  //             desc: "Application saves the result in Redis. TTL set to 1 hour."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Return data to user",
-  //             desc: "First user gets the data. Every user after that gets a Cache Hit — served in 5ms."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "data = cache.get('delhi_files')\n\nif not data:\n  data = db.query('SELECT * FROM shows WHERE title=delhi_files')\n  cache.set('delhi_files', data, ttl=3600)\n\nreturn data"
-  //           },
-  //           { type: "image", src: "cacheaside.jpeg" },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Cache only fills up with data people actually request. No wasted memory pre-loading shows nobody watches. Netflix uses this for long-tail content — older shows, regional titles, niche content."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Cache-Aside has one weakness — the very first user always takes the slow path. Cache Miss → DB → slow response. What if you want cache to be populated automatically, without the application having to manage it manually? That's Read-Through Cache."
-  //           }
-  //         ],
+      {
+        id: 2,
+        title: "Cache Reading Strategies",
+        level: "freshers",
+        topics: [
+          "Cache-Aside (Lazy Loading)",
+          "Read-Through Cache",
+        ],
+        topicDetails: {
+          "Cache-Aside (Lazy Loading)": [
+            {
+              type: "paragraph",
+              text: "Netflix just launched a brand new original series — 'Delhi Files'. Nobody has watched it yet. Nobody has searched for it. The cache is completely empty for this show. Now the first user in India searches for it. What does Netflix do?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Should Netflix have pre-loaded every new show into cache? Or should it only cache things when someone actually asks for them?"
+            },
+            {
+              type: "heading",
+              text: "Cache-Aside — Load It Only When Needed"
+            },
+            {
+              type: "paragraph",
+              text: "Cache-Aside means the application itself manages the cache. It always checks cache first. If data isn't there — it fetches from the database, stores it in cache, and then returns it. Next time someone asks — it's already in cache."
+            },
+            {
+              type: "step",
+              title: "User searches 'Delhi Files'",
+              desc: "Application checks Redis cache first."
+            },
+            {
+              type: "step",
+              title: "Cache Miss — not there yet",
+              desc: "Nobody has searched this before. Cache has nothing."
+            },
+            {
+              type: "step",
+              title: "Fetch from database",
+              desc: "Application queries the database for all Delhi Files metadata — title, cast, episodes, thumbnails."
+            },
+            {
+              type: "step",
+              title: "Store in cache",
+              desc: "Application saves the result in Redis. TTL set to 1 hour."
+            },
+            {
+              type: "step",
+              title: "Return data to user",
+              desc: "First user gets the data. Every user after that gets a Cache Hit — served in 5ms."
+            },
+            {
+              type: "code",
+              code: "data = cache.get('delhi_files')\n\nif not data:\n  data = db.query('SELECT * FROM shows WHERE title=delhi_files')\n  cache.set('delhi_files', data, ttl=3600)\n\nreturn data"
+            },
+            { type: "image", src: "cacheaside.jpeg" },
+            {
+              type: "success-callout",
+              text: "✅ Cache only fills up with data people actually request. No wasted memory pre-loading shows nobody watches. Netflix uses this for long-tail content — older shows, regional titles, niche content."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Cache-Aside has one weakness — the very first user always takes the slow path. Cache Miss → DB → slow response. What if you want cache to be populated automatically, without the application having to manage it manually? That's Read-Through Cache."
+            }
+          ],
 
-  //         "Read-Through Cache": [
-  //           {
-  //             type: "paragraph",
-  //             text: "In Cache-Aside, the application itself checks cache, then database, then stores in cache. The application is doing all the work. What if Netflix had so many services and teams that they couldn't trust every developer to correctly write that cache-check-then-db logic every time? What if the cache layer could just handle it automatically?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Let the Cache Handle It"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "In Read-Through Cache, the application only ever talks to the cache — never directly to the database. If the cache has the data, it returns it. If not, the cache itself goes to the database, fetches the data, stores it, and returns it. The application doesn't need to know or care."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "User opens Wednesday on Netflix",
-  //             desc: "Application asks cache: 'Give me Wednesday show data.'"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Cache checks itself",
-  //             desc: "Cache Hit → returns data instantly. ✅"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Or — Cache Miss",
-  //             desc: "Cache doesn't have it. Cache itself goes to the database — not the application."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Cache fetches, stores, returns",
-  //             desc: "Cache gets the data from DB, saves it internally, returns it to the application."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "// Application code — simple and clean\ndata = cache.get('wednesday')\nreturn data\n\n// Cache handles everything internally:\n// Miss → fetch from DB → store → return"
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "💡 Cache-Aside: App manages the cache logic. Read-Through: Cache manages itself. Netflix uses Read-Through for its core content metadata layer — show titles, descriptions, ratings — where consistency matters and the team wants one single place managing cache population."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Cleaner application code. Cache is always the single source. No developer accidentally forgets to write to cache. The cache layer takes full responsibility."
-  //           }
-  //           ,
-  //           { type: "image", src: "read.jpeg" },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Both strategies are about reading data. But what about writing? When a Netflix editor updates Stranger Things' description, adds a new episode, or changes the thumbnail — how does that update reach the cache? There are three ways to write — and each comes with different trade-offs."
-  //           }
-  //         ]
-  //       }
-  //     },
+          "Read-Through Cache": [
+            {
+              type: "paragraph",
+              text: "In Cache-Aside, the application itself checks cache, then database, then stores in cache. The application is doing all the work. What if Netflix had so many services and teams that they couldn't trust every developer to correctly write that cache-check-then-db logic every time? What if the cache layer could just handle it automatically?"
+            },
+            {
+              type: "heading",
+              text: "Let the Cache Handle It"
+            },
+            {
+              type: "paragraph",
+              text: "In Read-Through Cache, the application only ever talks to the cache — never directly to the database. If the cache has the data, it returns it. If not, the cache itself goes to the database, fetches the data, stores it, and returns it. The application doesn't need to know or care."
+            },
+            {
+              type: "step",
+              title: "User opens Wednesday on Netflix",
+              desc: "Application asks cache: 'Give me Wednesday show data.'"
+            },
+            {
+              type: "step",
+              title: "Cache checks itself",
+              desc: "Cache Hit → returns data instantly. ✅"
+            },
+            {
+              type: "step",
+              title: "Or — Cache Miss",
+              desc: "Cache doesn't have it. Cache itself goes to the database — not the application."
+            },
+            {
+              type: "step",
+              title: "Cache fetches, stores, returns",
+              desc: "Cache gets the data from DB, saves it internally, returns it to the application."
+            },
+            {
+              type: "code",
+              code: "// Application code — simple and clean\ndata = cache.get('wednesday')\nreturn data\n\n// Cache handles everything internally:\n// Miss → fetch from DB → store → return"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Cache-Aside: App manages the cache logic. Read-Through: Cache manages itself. Netflix uses Read-Through for its core content metadata layer — show titles, descriptions, ratings — where consistency matters and the team wants one single place managing cache population."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cleaner application code. Cache is always the single source. No developer accidentally forgets to write to cache. The cache layer takes full responsibility."
+            }
+            ,
+            { type: "image", src: "read.jpeg" },
+            {
+              type: "warning-callout",
+              text: "⚠️ Both strategies are about reading data. But what about writing? When a Netflix editor updates Stranger Things' description, adds a new episode, or changes the thumbnail — how does that update reach the cache? There are three ways to write — and each comes with different trade-offs."
+            }
+          ]
+        }
+      },
 
-  //     {
-  //       id: 3,
-  //       title: "Cache Writing Strategies",
-  //       level: "freshers",
-  //       topics: [
-  //         "Write-Through Cache",
-  //         "Write-Behind (Write-Back) Cache",
-  //         "Write-Around Cache",
-  //       ],
-  //       topicDetails: {
-  //         "Write-Through Cache": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix's content team just updated the description of Stranger Things Season 5. New episode titles added. Thumbnail changed. This update needs to go into the database. But the cache still has the old data. If someone opens the show right now, they'll see the outdated description."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ How do you make sure the cache and database always stay in sync when data changes?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Write to Cache and Database at the Same Time"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Write-Through Cache means every time data is written, it's written to the cache AND the database simultaneously — in the same operation. Both are always in sync. No stale data."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Editor updates Stranger Things description",
-  //             desc: "The update request hits Netflix's backend."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Write to cache first",
-  //             desc: "New description is saved in Redis immediately."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Write to database",
-  //             desc: "Same update is written to the main database in the same operation."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "User opens Stranger Things",
-  //             desc: "Cache has the latest data. User sees the updated description instantly. ✅"
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "cache.set('stranger_things', newData)\ndb.update('stranger_things', newData)\n// Both updated. Always in sync."
-  //           },
+      {
+        id: 3,
+        title: "Cache Writing Strategies",
+        level: "freshers",
+        topics: [
+          "Write-Through Cache",
+          "Write-Behind (Write-Back) Cache",
+          "Write-Around Cache",
+        ],
+        topicDetails: {
+          "Write-Through Cache": [
+            {
+              type: "paragraph",
+              text: "Netflix's content team just updated the description of Stranger Things Season 5. New episode titles added. Thumbnail changed. This update needs to go into the database. But the cache still has the old data. If someone opens the show right now, they'll see the outdated description."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How do you make sure the cache and database always stay in sync when data changes?"
+            },
+            {
+              type: "heading",
+              text: "Write to Cache and Database at the Same Time"
+            },
+            {
+              type: "paragraph",
+              text: "Write-Through Cache means every time data is written, it's written to the cache AND the database simultaneously — in the same operation. Both are always in sync. No stale data."
+            },
+            {
+              type: "step",
+              title: "Editor updates Stranger Things description",
+              desc: "The update request hits Netflix's backend."
+            },
+            {
+              type: "step",
+              title: "Write to cache first",
+              desc: "New description is saved in Redis immediately."
+            },
+            {
+              type: "step",
+              title: "Write to database",
+              desc: "Same update is written to the main database in the same operation."
+            },
+            {
+              type: "step",
+              title: "User opens Stranger Things",
+              desc: "Cache has the latest data. User sees the updated description instantly. ✅"
+            },
+            {
+              type: "code",
+              code: "cache.set('stranger_things', newData)\ndb.update('stranger_things', newData)\n// Both updated. Always in sync."
+            },
 
-  //           { type: "image", src: "write.jpeg" },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Cache and database are always consistent. No user ever sees stale data. Netflix uses this for critical data — show metadata, episode lists, content ratings."
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "Trade-off:",
-  //             list: [
-  //               "Every single write hits both cache and database",
-  //               "Writes are slower — two operations every time",
-  //               "If data is written but never read, you wasted a cache write"
-  //             ],
-  //             footer: "Write-Through is ideal when reads are frequent and data must always be fresh."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Write-Through writes to database immediately — every time. What if Netflix has thousands of small updates happening per second — user watch history, pause positions, ratings? Writing all of them instantly to the database is expensive. What if you could batch them up and write later?"
-  //           }
-  //         ],
+            { type: "image", src: "write.jpeg" },
+            {
+              type: "success-callout",
+              text: "✅ Cache and database are always consistent. No user ever sees stale data. Netflix uses this for critical data — show metadata, episode lists, content ratings."
+            },
+            {
+              type: "error-callout",
+              title: "Trade-off:",
+              list: [
+                "Every single write hits both cache and database",
+                "Writes are slower — two operations every time",
+                "If data is written but never read, you wasted a cache write"
+              ],
+              footer: "Write-Through is ideal when reads are frequent and data must always be fresh."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Write-Through writes to database immediately — every time. What if Netflix has thousands of small updates happening per second — user watch history, pause positions, ratings? Writing all of them instantly to the database is expensive. What if you could batch them up and write later?"
+            }
+          ],
 
-  //         "Write-Behind (Write-Back) Cache": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You're watching Stranger Things on Netflix. Every 30 seconds, Netflix saves your watch progress — which episode, which minute, which second. That's thousands of tiny writes per second across 230 million users. If every single progress update hit the database instantly — the database would be hammered non-stop."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if Netflix wrote to cache immediately but delayed the database write — batching them up and saving in bulk?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Write Fast Now — Sync to Database Later"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Write-Behind Cache writes data to cache immediately and returns success to the user — but the database write happens later, asynchronously, in the background. Netflix confirms your progress is saved instantly. The actual DB write happens in a batch a few seconds later."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "You pause at 24:13 in Episode 3",
-  //             desc: "Netflix writes your progress to Redis cache immediately. Done in 2ms."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Returns success instantly",
-  //             desc: "Netflix tells your app — progress saved. You didn't wait for any database write."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Background job batches writes",
-  //             desc: "Every few seconds, a background process collects all progress updates from cache and writes them to the database in one bulk operation."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "// Immediate:\ncache.set('user_123_progress', { ep: 3, time: '24:13' })\nreturn 'saved' ✅\n\n// Background (few seconds later):\ndb.bulkUpdate(cache.getPendingWrites())"
-  //           }
-  //           , { type: "image", src: "writeback.jpeg" },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Database load drops massively. Writes feel instant to the user. Netflix uses this for watch history, continue watching, pause positions — high-frequency writes where slight delay in DB sync is perfectly acceptable."
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "The risk:",
-  //             list: [
-  //               "Cache crashes before background sync runs",
-  //               "Those unsaved writes are lost forever",
-  //               "User's progress from the last few seconds disappears"
-  //             ],
-  //             footer: "Netflix accepts this small risk for watch progress — losing 5 seconds of position data is annoying, not catastrophic."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Write-Through and Write-Behind both write to cache. But what about data that changes so often that caching it would cause more confusion than help — like real-time view counts or live ratings? Sometimes it's better to skip the cache on writes entirely."
-  //           }
-  //         ],
+          "Write-Behind (Write-Back) Cache": [
+            {
+              type: "paragraph",
+              text: "You're watching Stranger Things on Netflix. Every 30 seconds, Netflix saves your watch progress — which episode, which minute, which second. That's thousands of tiny writes per second across 230 million users. If every single progress update hit the database instantly — the database would be hammered non-stop."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if Netflix wrote to cache immediately but delayed the database write — batching them up and saving in bulk?"
+            },
+            {
+              type: "heading",
+              text: "Write Fast Now — Sync to Database Later"
+            },
+            {
+              type: "paragraph",
+              text: "Write-Behind Cache writes data to cache immediately and returns success to the user — but the database write happens later, asynchronously, in the background. Netflix confirms your progress is saved instantly. The actual DB write happens in a batch a few seconds later."
+            },
+            {
+              type: "step",
+              title: "You pause at 24:13 in Episode 3",
+              desc: "Netflix writes your progress to Redis cache immediately. Done in 2ms."
+            },
+            {
+              type: "step",
+              title: "Returns success instantly",
+              desc: "Netflix tells your app — progress saved. You didn't wait for any database write."
+            },
+            {
+              type: "step",
+              title: "Background job batches writes",
+              desc: "Every few seconds, a background process collects all progress updates from cache and writes them to the database in one bulk operation."
+            },
+            {
+              type: "code",
+              code: "// Immediate:\ncache.set('user_123_progress', { ep: 3, time: '24:13' })\nreturn 'saved' ✅\n\n// Background (few seconds later):\ndb.bulkUpdate(cache.getPendingWrites())"
+            }
+            , { type: "image", src: "writeback.jpeg" },
+            {
+              type: "success-callout",
+              text: "✅ Database load drops massively. Writes feel instant to the user. Netflix uses this for watch history, continue watching, pause positions — high-frequency writes where slight delay in DB sync is perfectly acceptable."
+            },
+            {
+              type: "error-callout",
+              title: "The risk:",
+              list: [
+                "Cache crashes before background sync runs",
+                "Those unsaved writes are lost forever",
+                "User's progress from the last few seconds disappears"
+              ],
+              footer: "Netflix accepts this small risk for watch progress — losing 5 seconds of position data is annoying, not catastrophic."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Write-Through and Write-Behind both write to cache. But what about data that changes so often that caching it would cause more confusion than help — like real-time view counts or live ratings? Sometimes it's better to skip the cache on writes entirely."
+            }
+          ],
 
-  //         "Write-Around Cache": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Every second, millions of Netflix users are watching shows. The view count for Stranger Things is updating thousands of times per second. If Netflix wrote every view count update to cache — the cache would be flooded with rapidly changing numbers, each one becoming stale almost instantly. Caching it is pointless."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if some data changes so frequently that writing it to cache is just a waste — and you're better off skipping the cache entirely on writes?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Skip the Cache — Write Directly to Database"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Write-Around Cache bypasses the cache on writes completely. Data goes straight to the database. The cache is only populated later — when someone actually reads that data (Cache Miss → fetch from DB → store in cache)."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "View count updates every second",
-  //             desc: "Netflix writes the new count directly to the database. Cache is not touched."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "User opens Stranger Things page",
-  //             desc: "Netflix checks cache. No view count there (or it's stale)."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Fetch from database",
-  //             desc: "Gets the latest count from DB. Stores it in cache for a short TTL — say 60 seconds."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Next user within 60 seconds",
-  //             desc: "Cache Hit — served the count from 60 seconds ago. Close enough. ✅"
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "// Write — skips cache entirely:\ndb.update('stranger_things_views', newCount)\n\n// Read — normal cache-aside:\ndata = cache.get('stranger_things_views')\nif not data:\n  data = db.query(...)\n  cache.set('stranger_things_views', data, ttl=60)"
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Cache isn't polluted with data that changes every second. Database handles high-frequency writes. Cache serves reads that are slightly delayed — which is perfectly fine for view counts. Nobody cares if the count shows 10.2M vs 10.3M."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ All three write strategies assume cache has unlimited memory. But Redis has limits. What happens when the cache is full? How does Netflix decide which data to keep and which to throw out? That's Cache Invalidation — TTL, LRU, LFU and more."
-  //           }
-  //         ]
-  //       }
-  //     },
+          "Write-Around Cache": [
+            {
+              type: "paragraph",
+              text: "Every second, millions of Netflix users are watching shows. The view count for Stranger Things is updating thousands of times per second. If Netflix wrote every view count update to cache — the cache would be flooded with rapidly changing numbers, each one becoming stale almost instantly. Caching it is pointless."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if some data changes so frequently that writing it to cache is just a waste — and you're better off skipping the cache entirely on writes?"
+            },
+            {
+              type: "heading",
+              text: "Skip the Cache — Write Directly to Database"
+            },
+            {
+              type: "paragraph",
+              text: "Write-Around Cache bypasses the cache on writes completely. Data goes straight to the database. The cache is only populated later — when someone actually reads that data (Cache Miss → fetch from DB → store in cache)."
+            },
+            {
+              type: "step",
+              title: "View count updates every second",
+              desc: "Netflix writes the new count directly to the database. Cache is not touched."
+            },
+            {
+              type: "step",
+              title: "User opens Stranger Things page",
+              desc: "Netflix checks cache. No view count there (or it's stale)."
+            },
+            {
+              type: "step",
+              title: "Fetch from database",
+              desc: "Gets the latest count from DB. Stores it in cache for a short TTL — say 60 seconds."
+            },
+            {
+              type: "step",
+              title: "Next user within 60 seconds",
+              desc: "Cache Hit — served the count from 60 seconds ago. Close enough. ✅"
+            },
+            {
+              type: "code",
+              code: "// Write — skips cache entirely:\ndb.update('stranger_things_views', newCount)\n\n// Read — normal cache-aside:\ndata = cache.get('stranger_things_views')\nif not data:\n  data = db.query(...)\n  cache.set('stranger_things_views', data, ttl=60)"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Cache isn't polluted with data that changes every second. Database handles high-frequency writes. Cache serves reads that are slightly delayed — which is perfectly fine for view counts. Nobody cares if the count shows 10.2M vs 10.3M."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ All three write strategies assume cache has unlimited memory. But Redis has limits. What happens when the cache is full? How does Netflix decide which data to keep and which to throw out? That's Cache Invalidation — TTL, LRU, LFU and more."
+            }
+          ]
+        }
+      },
 
-  //     {
-  //       id: 4,
-  //       title: "Cache Invalidation",
-  //       level: "freshers",
-  //       topics: [
-  //         "TTL (Time to Live)",
-  //         "LRU (Least Recently Used)",
-  //         "LFU (Least Frequently Used)",
-  //         "FIFO (First In First Out)",
-  //         "Manual & Event-Driven Invalidation"
-  //       ],
-  //       topicDetails: {
-  //         "TTL (Time to Live)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix cached Stranger Things metadata — description, cast, episode list. That data sits in Redis. It will sit there forever — unless Netflix tells it when to expire. Three months later, a new episode drops. The cache still has the old episode list. Users see wrong data. Nobody knows why."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ How does Netflix make sure cached data doesn't live forever and become stale?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Give Every Cached Item an Expiry Time"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "TTL — Time to Live — is a timer you attach to every cached item. When the timer runs out, the item is automatically deleted from cache. Next request is a Cache Miss, fresh data is fetched from database, cached again with a new TTL. Clean cycle."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "cache.set('stranger_things', data, ttl=3600)\n// This data lives for 3600 seconds (1 hour)\n// After 1 hour — automatically deleted\n// Next request → Cache Miss → fresh DB fetch"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix sets different TTLs based on how often data changes."
-  //           },
-  //           { type: "image", src: "TTL.png" },
-  //           {
-  //             type: "code",
-  //             code: "Show metadata (title, cast)  → TTL: 24 hours\nEpisode list                 → TTL: 1 hour\nTrending shows list          → TTL: 5 minutes\nReal-time view counts        → TTL: 60 seconds"
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ TTL is the simplest cache invalidation strategy. Set it and forget it. Data auto-expires. No manual cleanup. Netflix uses TTL on almost every cached item as the baseline."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ TTL handles expiry over time — but what about when Redis runs out of memory right now? Netflix has 10,000 shows cached. Cache is full. A new show needs to be added. Something has to be removed to make space. Which one? That's where eviction policies come in — LRU, LFU, FIFO."
-  //           }
-  //         ],
+      {
+        id: 4,
+        title: "Cache Invalidation",
+        level: "freshers",
+        topics: [
+          "TTL (Time to Live)",
+          "LRU (Least Recently Used)",
+          "LFU (Least Frequently Used)",
+          "FIFO (First In First Out)",
+          "Manual & Event-Driven Invalidation"
+        ],
+        topicDetails: {
+          "TTL (Time to Live)": [
+            {
+              type: "paragraph",
+              text: "Netflix cached Stranger Things metadata — description, cast, episode list. That data sits in Redis. It will sit there forever — unless Netflix tells it when to expire. Three months later, a new episode drops. The cache still has the old episode list. Users see wrong data. Nobody knows why."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Netflix make sure cached data doesn't live forever and become stale?"
+            },
+            {
+              type: "heading",
+              text: "Give Every Cached Item an Expiry Time"
+            },
+            {
+              type: "paragraph",
+              text: "TTL — Time to Live — is a timer you attach to every cached item. When the timer runs out, the item is automatically deleted from cache. Next request is a Cache Miss, fresh data is fetched from database, cached again with a new TTL. Clean cycle."
+            },
+            {
+              type: "code",
+              code: "cache.set('stranger_things', data, ttl=3600)\n// This data lives for 3600 seconds (1 hour)\n// After 1 hour — automatically deleted\n// Next request → Cache Miss → fresh DB fetch"
+            },
+            {
+              type: "paragraph",
+              text: "Netflix sets different TTLs based on how often data changes."
+            },
+            { type: "image", src: "TTL.png" },
+            {
+              type: "code",
+              code: "Show metadata (title, cast)  → TTL: 24 hours\nEpisode list                 → TTL: 1 hour\nTrending shows list          → TTL: 5 minutes\nReal-time view counts        → TTL: 60 seconds"
+            },
+            {
+              type: "success-callout",
+              text: "✅ TTL is the simplest cache invalidation strategy. Set it and forget it. Data auto-expires. No manual cleanup. Netflix uses TTL on almost every cached item as the baseline."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ TTL handles expiry over time — but what about when Redis runs out of memory right now? Netflix has 10,000 shows cached. Cache is full. A new show needs to be added. Something has to be removed to make space. Which one? That's where eviction policies come in — LRU, LFU, FIFO."
+            }
+          ],
 
-  //         "LRU (Least Recently Used)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Netflix's Redis cache is full. 10,000 shows are cached. A new show just dropped — 'Scam 2024'. It needs to be added to cache. Something has to go. How does Redis decide which show to evict? It looks at one thing — which show was accessed the least recently."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Remove What Nobody Has Touched Lately"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "LRU — Least Recently Used — evicts whichever item hasn't been accessed for the longest time. The logic is simple: if nobody has opened that show's cache entry in a long time, they probably won't any time soon. So it's the safest thing to remove."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Cache is full. Need space for 'Scam 2024'.\n\nLast accessed times:\n'Stranger Things'  → 2 minutes ago\n'Wednesday'        → 5 minutes ago\n'Taj Mahal 1989'   → 47 days ago  ← LRU\n\nEvict: 'Taj Mahal 1989' ✅\nAdd: 'Scam 2024' ✅"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Taj Mahal 1989 — an old regional show — hasn't been clicked in 47 days. It's the least recently used. It gets evicted. Scam 2024 takes its spot. If someone does search for Taj Mahal 1989 tomorrow, it's a Cache Miss — Netflix fetches it from DB and caches it again."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ LRU is Netflix's most commonly used eviction policy. It keeps popular, recently trending content in cache and naturally pushes out old, untouched content. Cache stays relevant automatically."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ LRU looks at recency — when was it last accessed? But what about a show that was opened once last night and never again vs a show that's been opened 50,000 times total but not in the last hour? LRU would keep the one opened last night and evict the more popular one. Is recency always the best measure?"
-  //           }
-  //         ],
+          "LRU (Least Recently Used)": [
+            {
+              type: "paragraph",
+              text: "Netflix's Redis cache is full. 10,000 shows are cached. A new show just dropped — 'Scam 2024'. It needs to be added to cache. Something has to go. How does Redis decide which show to evict? It looks at one thing — which show was accessed the least recently."
+            },
+            {
+              type: "heading",
+              text: "Remove What Nobody Has Touched Lately"
+            },
+            {
+              type: "paragraph",
+              text: "LRU — Least Recently Used — evicts whichever item hasn't been accessed for the longest time. The logic is simple: if nobody has opened that show's cache entry in a long time, they probably won't any time soon. So it's the safest thing to remove."
+            },
+            {
+              type: "code",
+              code: "Cache is full. Need space for 'Scam 2024'.\n\nLast accessed times:\n'Stranger Things'  → 2 minutes ago\n'Wednesday'        → 5 minutes ago\n'Taj Mahal 1989'   → 47 days ago  ← LRU\n\nEvict: 'Taj Mahal 1989' ✅\nAdd: 'Scam 2024' ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Taj Mahal 1989 — an old regional show — hasn't been clicked in 47 days. It's the least recently used. It gets evicted. Scam 2024 takes its spot. If someone does search for Taj Mahal 1989 tomorrow, it's a Cache Miss — Netflix fetches it from DB and caches it again."
+            },
+            {
+              type: "success-callout",
+              text: "✅ LRU is Netflix's most commonly used eviction policy. It keeps popular, recently trending content in cache and naturally pushes out old, untouched content. Cache stays relevant automatically."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ LRU looks at recency — when was it last accessed? But what about a show that was opened once last night and never again vs a show that's been opened 50,000 times total but not in the last hour? LRU would keep the one opened last night and evict the more popular one. Is recency always the best measure?"
+            }
+          ],
 
-  //         "LFU (Least Frequently Used)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Cache is full again. LRU would evict based on last access time. But consider this — 'Squid Game' hasn't been clicked in the last 2 hours. 'Some random documentary' was clicked once, 10 minutes ago. LRU evicts Squid Game because it's older. But Squid Game has been accessed 2 million times this week. That's a terrible eviction."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if instead of recency, we tracked how many times each item has been accessed — and removed the least popular one?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Remove What Nobody Actually Watches"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "LFU — Least Frequently Used — tracks access count for every cached item. When eviction is needed, it removes the item with the lowest total access count. Not the oldest — the least watched."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Cache is full. Need space.\n\nAccess counts:\n'Squid Game'          → 2,000,000 hits\n'Wednesday'           → 1,800,000 hits\n'Random Documentary'  → 3 hits  ← LFU\n\nEvict: 'Random Documentary' ✅\nKeep: Squid Game, Wednesday"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "The documentary was cached but barely anyone opened it. 3 hits total. It's the least valuable item in cache. It goes. Squid Game — with 2 million hits — absolutely stays, even if it wasn't accessed in the last hour."
-  //           }
-  //           ,
-  //           { type: "image", src: "LFU.jpeg" },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ LFU keeps genuinely popular content in cache regardless of recency. Netflix uses LFU for evergreen content — shows that have consistent long-term demand like Friends, Breaking Bad, Money Heist."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "💡 LRU vs LFU: LRU = keep what was opened recently. LFU = keep what has been opened most. Netflix combines both signals in practice — recent AND popular content stays. Rarely watched AND old content gets evicted first."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ LFU needs to track access counts for every cached item — that's extra memory and computation. For simpler systems that just need to evict in order, there's FIFO — the most basic approach of all."
-  //           }
-  //         ],
+          "LFU (Least Frequently Used)": [
+            {
+              type: "paragraph",
+              text: "Cache is full again. LRU would evict based on last access time. But consider this — 'Squid Game' hasn't been clicked in the last 2 hours. 'Some random documentary' was clicked once, 10 minutes ago. LRU evicts Squid Game because it's older. But Squid Game has been accessed 2 million times this week. That's a terrible eviction."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if instead of recency, we tracked how many times each item has been accessed — and removed the least popular one?"
+            },
+            {
+              type: "heading",
+              text: "Remove What Nobody Actually Watches"
+            },
+            {
+              type: "paragraph",
+              text: "LFU — Least Frequently Used — tracks access count for every cached item. When eviction is needed, it removes the item with the lowest total access count. Not the oldest — the least watched."
+            },
+            {
+              type: "code",
+              code: "Cache is full. Need space.\n\nAccess counts:\n'Squid Game'          → 2,000,000 hits\n'Wednesday'           → 1,800,000 hits\n'Random Documentary'  → 3 hits  ← LFU\n\nEvict: 'Random Documentary' ✅\nKeep: Squid Game, Wednesday"
+            },
+            {
+              type: "paragraph",
+              text: "The documentary was cached but barely anyone opened it. 3 hits total. It's the least valuable item in cache. It goes. Squid Game — with 2 million hits — absolutely stays, even if it wasn't accessed in the last hour."
+            }
+            ,
+            { type: "image", src: "LFU.jpeg" },
+            {
+              type: "success-callout",
+              text: "✅ LFU keeps genuinely popular content in cache regardless of recency. Netflix uses LFU for evergreen content — shows that have consistent long-term demand like Friends, Breaking Bad, Money Heist."
+            },
+            {
+              type: "info-callout",
+              text: "💡 LRU vs LFU: LRU = keep what was opened recently. LFU = keep what has been opened most. Netflix combines both signals in practice — recent AND popular content stays. Rarely watched AND old content gets evicted first."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ LFU needs to track access counts for every cached item — that's extra memory and computation. For simpler systems that just need to evict in order, there's FIFO — the most basic approach of all."
+            }
+          ],
 
-  //         "FIFO (First In First Out)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Imagine Netflix's cache as a queue. Shows enter from the back and leave from the front. The show that entered the cache first — leaves first. Doesn't matter if it's popular. Doesn't matter when it was last accessed. First in, first out. Like a line at a movie ticket counter."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Simple Queue — Oldest Entry Leaves First"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "FIFO evicts items in the exact order they were added to cache. No access tracking. No popularity score. No recency check. Pure order of entry."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Cache entry order:\n1. 'Money Heist'    → added first\n2. 'Dark'           → added second\n3. 'Squid Game'     → added third\n\nCache full. Need space.\nFIFO evicts: 'Money Heist' (entered first) ✅"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Money Heist gets evicted — even if 500,000 people are watching it right now — just because it was cached first. FIFO doesn't care about that."
-  //           },
-  //           { type: "image", src: "FIFO.png" },
-  //           {
-  //             type: "error-callout",
-  //             title: "Why Netflix doesn't use FIFO for show content:",
-  //             list: [
-  //               "Doesn't consider popularity — evicts blockbusters as easily as flops",
-  //               "Doesn't consider recency — might evict trending content",
-  //               "Results in constant Cache Misses for popular old shows"
-  //             ],
-  //             footer: "FIFO is too naive for Netflix's content cache. LRU and LFU are smarter choices."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "💡 FIFO works well for simpler use cases — like caching the last N API responses in order, or managing a fixed-size request log. Not ideal where popularity or recency matters."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ TTL, LRU, LFU, FIFO — all these strategies evict based on time or usage patterns. But what about immediate invalidation? When Netflix releases a new season RIGHT NOW and needs every cached copy of that show wiped instantly — no waiting for TTL, no waiting for eviction. That's Manual and Event-Driven invalidation."
-  //           }
-  //         ],
+          "FIFO (First In First Out)": [
+            {
+              type: "paragraph",
+              text: "Imagine Netflix's cache as a queue. Shows enter from the back and leave from the front. The show that entered the cache first — leaves first. Doesn't matter if it's popular. Doesn't matter when it was last accessed. First in, first out. Like a line at a movie ticket counter."
+            },
+            {
+              type: "heading",
+              text: "Simple Queue — Oldest Entry Leaves First"
+            },
+            {
+              type: "paragraph",
+              text: "FIFO evicts items in the exact order they were added to cache. No access tracking. No popularity score. No recency check. Pure order of entry."
+            },
+            {
+              type: "code",
+              code: "Cache entry order:\n1. 'Money Heist'    → added first\n2. 'Dark'           → added second\n3. 'Squid Game'     → added third\n\nCache full. Need space.\nFIFO evicts: 'Money Heist' (entered first) ✅"
+            },
+            {
+              type: "paragraph",
+              text: "Money Heist gets evicted — even if 500,000 people are watching it right now — just because it was cached first. FIFO doesn't care about that."
+            },
+            { type: "image", src: "FIFO.png" },
+            {
+              type: "error-callout",
+              title: "Why Netflix doesn't use FIFO for show content:",
+              list: [
+                "Doesn't consider popularity — evicts blockbusters as easily as flops",
+                "Doesn't consider recency — might evict trending content",
+                "Results in constant Cache Misses for popular old shows"
+              ],
+              footer: "FIFO is too naive for Netflix's content cache. LRU and LFU are smarter choices."
+            },
+            {
+              type: "info-callout",
+              text: "💡 FIFO works well for simpler use cases — like caching the last N API responses in order, or managing a fixed-size request log. Not ideal where popularity or recency matters."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ TTL, LRU, LFU, FIFO — all these strategies evict based on time or usage patterns. But what about immediate invalidation? When Netflix releases a new season RIGHT NOW and needs every cached copy of that show wiped instantly — no waiting for TTL, no waiting for eviction. That's Manual and Event-Driven invalidation."
+            }
+          ],
 
-  //         "Manual & Event-Driven Invalidation": [
-  //           {
-  //             type: "paragraph",
-  //             text: "It's 12:00 AM. Netflix just dropped all 8 episodes of Stranger Things Season 5 simultaneously worldwide. Every user opening the show needs to see the new season immediately. But the cache has the old season data — cached with a 24 hour TTL. That TTL won't expire for another 18 hours. 18 hours of users seeing wrong episode counts. That's unacceptable."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ How does Netflix wipe specific cache entries instantly — the moment something important changes — without waiting for TTL or eviction policies?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Manual Invalidation — Wipe It Right Now"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Manual invalidation means explicitly deleting a cache entry the moment you know the data has changed. No waiting. The next request will be a Cache Miss — fetching fresh data from the database and caching it again."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Netflix content team publishes Season 5",
-  //             desc: "New episodes are uploaded. Database is updated with new episode list."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Manually delete the cache entry",
-  //             desc: "Engineering triggers an immediate cache delete for the Stranger Things entry."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "cache.delete('stranger_things')\n// Cache entry wiped instantly ✅"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "First user opens Stranger Things",
-  //             desc: "Cache Miss. Netflix fetches fresh data from DB — now includes Season 5. Cached again."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "All users after that",
-  //             desc: "Cache Hit — Season 5 data. Everyone sees the new season immediately. ✅"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Event-Driven Invalidation — Automate It"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Manual invalidation still requires someone to remember to delete the cache. Netflix automates this with event-driven invalidation — whenever the database is updated, it automatically fires an event that triggers cache deletion. No human needed."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "// Database update triggers an event:\ndb.update('stranger_things', newData)\n→ fires event: 'show_updated'\n\n// Cache listener catches it:\non('show_updated', (showId) => {\n  cache.delete(showId) // Auto-invalidated ✅\n})"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "The moment any show data changes in the database — the event fires, the cache is cleared, fresh data is ready on the next request. No developer has to remember to do it. No stale data ever sits in cache after an update."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Netflix uses event-driven invalidation for all content updates — new episodes, changed thumbnails, updated descriptions, removed titles. The cache stays perfectly in sync with the database automatically — the moment something changes."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "🎯 Full picture — TTL handles natural expiry over time. LRU/LFU/FIFO handle eviction when memory is full. Manual invalidation handles urgent one-off clears. Event-driven handles automatic real-time sync. Netflix uses all four together — that's how the cache always stays fresh at scale."
-  //           }
-  //         ]
-  //       }
-  //     },
+          "Manual & Event-Driven Invalidation": [
+            {
+              type: "paragraph",
+              text: "It's 12:00 AM. Netflix just dropped all 8 episodes of Stranger Things Season 5 simultaneously worldwide. Every user opening the show needs to see the new season immediately. But the cache has the old season data — cached with a 24 hour TTL. That TTL won't expire for another 18 hours. 18 hours of users seeing wrong episode counts. That's unacceptable."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Netflix wipe specific cache entries instantly — the moment something important changes — without waiting for TTL or eviction policies?"
+            },
+            {
+              type: "heading",
+              text: "Manual Invalidation — Wipe It Right Now"
+            },
+            {
+              type: "paragraph",
+              text: "Manual invalidation means explicitly deleting a cache entry the moment you know the data has changed. No waiting. The next request will be a Cache Miss — fetching fresh data from the database and caching it again."
+            },
+            {
+              type: "step",
+              title: "Netflix content team publishes Season 5",
+              desc: "New episodes are uploaded. Database is updated with new episode list."
+            },
+            {
+              type: "step",
+              title: "Manually delete the cache entry",
+              desc: "Engineering triggers an immediate cache delete for the Stranger Things entry."
+            },
+            {
+              type: "code",
+              code: "cache.delete('stranger_things')\n// Cache entry wiped instantly ✅"
+            },
+            {
+              type: "step",
+              title: "First user opens Stranger Things",
+              desc: "Cache Miss. Netflix fetches fresh data from DB — now includes Season 5. Cached again."
+            },
+            {
+              type: "step",
+              title: "All users after that",
+              desc: "Cache Hit — Season 5 data. Everyone sees the new season immediately. ✅"
+            },
+            {
+              type: "heading",
+              text: "Event-Driven Invalidation — Automate It"
+            },
+            {
+              type: "paragraph",
+              text: "Manual invalidation still requires someone to remember to delete the cache. Netflix automates this with event-driven invalidation — whenever the database is updated, it automatically fires an event that triggers cache deletion. No human needed."
+            },
+            {
+              type: "code",
+              code: "// Database update triggers an event:\ndb.update('stranger_things', newData)\n→ fires event: 'show_updated'\n\n// Cache listener catches it:\non('show_updated', (showId) => {\n  cache.delete(showId) // Auto-invalidated ✅\n})"
+            },
+            {
+              type: "paragraph",
+              text: "The moment any show data changes in the database — the event fires, the cache is cleared, fresh data is ready on the next request. No developer has to remember to do it. No stale data ever sits in cache after an update."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Netflix uses event-driven invalidation for all content updates — new episodes, changed thumbnails, updated descriptions, removed titles. The cache stays perfectly in sync with the database automatically — the moment something changes."
+            },
+            {
+              type: "info-callout",
+              text: "🎯 Full picture — TTL handles natural expiry over time. LRU/LFU/FIFO handle eviction when memory is full. Manual invalidation handles urgent one-off clears. Event-driven handles automatic real-time sync. Netflix uses all four together — that's how the cache always stays fresh at scale."
+            }
+          ]
+        }
+      }
+    ]
+  }
 
   //     {
   //       id: 5,

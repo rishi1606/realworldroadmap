@@ -12,12 +12,11 @@ export const roadmapData = [
         title: "Basics (Foundation)",
         level: "freshers",
         topics: [
-          "The Bouncer Problem: How Flipkart Knows It's Really You",
-          "Hashed & Salted: Why Hackers Can't Steal Your Flipkart Password",  // ✅ added
-
+          "How Flipkart Knows It's Really You",
+          "Hashed & Salted: Why Hackers Can't Steal Your Flipkart Password",
         ],
         topicDetails: {
-          "The Bouncer Problem: How Flipkart Knows It's Really You": [
+          "How Flipkart Knows It's Really You": [
             {
               type: "paragraph",
               text: "You open Flipkart. Browse shoes. Check prices. Nobody stops you. But the moment you try to place an order — boom. Login wall. Why does Flipkart suddenly care who you are?"
@@ -91,90 +90,14 @@ export const roadmapData = [
             },
             {
               type: "warning-callout",
-              text: "⚠️ Hold on. We just said Flipkart checks your password from the database. Does that mean Flipkart is storing your password exactly as you typed it?\n\npassword: 'raj@secure99'\n\nIf a hacker breaks into Flipkart's database tomorrow — every single user's password is exposed. Plain text. Ready to steal.\n\nSo does Flipkart actually store it like this? Absolutely not. And what they do instead is far more clever."
-            },
-            {
-              type: "heading",
-              text: "What's Coming Next"
-            },
-
+              text: "⚠️ Flipkart checks your password from the database. Does that mean Flipkart stores your password exactly as you typed it? password: 'raj@secure99' — If a hacker breaks in tomorrow, every single password is exposed. Plain text. Ready to steal. So does Flipkart actually store it like this? Absolutely not. And what they do instead is far more clever."
+            }
           ],
-
-          // "What is Authorization? (Auth vs Authz)": [
-          //   {
-          //     type: "paragraph",
-          //     text: "You just logged into Flipkart. You're in. But now — you try to open another user's order history by changing the URL. Flipkart blocks you. Or you try to access the seller dashboard even though you're a regular buyer. Blocked again. Logging in worked. So why are you still being stopped?"
-          //   },
-          //   {
-          //     type: "curious-callout",
-          //     text: "❓ Flipkart knows who you are. So why does it still block certain pages and actions?"
-          //   },
-          //   {
-          //     type: "heading",
-          //     text: "Authentication vs Authorization — Two Different Questions"
-          //   },
-          //   {
-          //     type: "paragraph",
-          //     text: "Authentication asks — Who are you? Authorization asks — What are you allowed to do? These are two completely separate checks. Passing one doesn't mean you pass the other."
-          //   },
-          //   {
-          //     type: "info-callout",
-          //     text: "💡 Back to the office building analogy. The security guard checked your ID and let you in — that's Authentication. But once inside, you try to enter the CEO's private office. A different lock stops you — because your ID doesn't give you that access. That second check is Authorization."
-          //   },
-          //   {
-          //     type: "heading",
-          //     text: "How This Plays Out on Flipkart"
-          //   },
-          //   {
-          //     type: "step",
-          //     title: "You log in as a regular buyer",
-          //     desc: "Flipkart verifies your email and password. Authentication done. ✅ You're in."
-          //   },
-          //   {
-          //     type: "step",
-          //     title: "You try to open the Seller Dashboard",
-          //     desc: "You type flipkart.com/seller/dashboard in the browser."
-          //   },
-          //   {
-          //     type: "step",
-          //     title: "Flipkart checks your role",
-          //     desc: "Your account is tagged as 'buyer'. Seller Dashboard requires role: 'seller'. You don't have it."
-          //   },
-          //   {
-          //     type: "step",
-          //     title: "Access denied",
-          //     desc: "Flipkart blocks the page. Not because you aren't logged in — but because your account doesn't have seller permissions. ❌"
-          //   },
-          //   {
-          //     type: "code",
-          //     code: "// Authentication — who are you?\nuser = { id: 1, email: 'ram@gmail.com', role: 'buyer' }\n// ✅ Logged in\n\n// Authorization — what can you do?\nif (user.role !== 'seller') {\n  return 'Access Denied' // ❌\n}"
-          //   },
-          //   {
-          //     type: "heading",
-          //     text: "Flipkart Has Multiple Roles"
-          //   },
-          //   {
-          //     type: "paragraph",
-          //     text: "Flipkart isn't just buyers and sellers. There are admins who can ban accounts, delivery agents who can update order status, support staff who can view any order. Each role has different permissions — and Authorization enforces exactly that."
-          //   },
-          //   {
-          //     type: "code",
-          //     code: "Buyer        → view own orders, add to cart, buy\nSeller       → manage listings, view sales, update stock\nDelivery     → update delivery status only\nAdmin        → access everything, ban users, manage all orders"
-          //   },
-          //   {
-          //     type: "success-callout",
-          //     text: "✅ Authentication = Flipkart confirms you are Ram.\nAuthorization = Flipkart checks what Ram is allowed to do.\nBoth checks happen. Both are necessary. One without the other is incomplete."
-          //   },
-          //   {
-          //     type: "warning-callout",
-          //     text: "⚠️ Now that we know how Flipkart identifies and controls users — let's go back to that uncomfortable question. When you set your Flipkart password, how does Flipkart actually store it? Because storing 'ram123' as plain text in a database is a disaster waiting to happen."
-          //   }
-          // ],
 
           "Hashed & Salted: Why Hackers Can't Steal Your Flipkart Password": [
             {
               type: "paragraph",
-              text: "Last time Flipkart verified you're real. But we left with a scary question — if Flipkart stores your password in plain text and gets hacked tomorrow, every password is exposed. So how does Flipkart actually store passwords?"
+              text: "Flipkart verified you're real. But one scary problem remains — if Flipkart stores your password in plain text and gets hacked, every password is exposed instantly. So how does Flipkart actually store passwords?"
             },
             {
               type: "curious-callout",
@@ -221,7 +144,7 @@ export const roadmapData = [
             },
             {
               type: "paragraph",
-              text: "So when you login, Flipkart doesn't reverse the hash. It hashes what you just typed and compares the two hashes."
+              text: "When you login, Flipkart doesn't reverse the hash. It hashes what you just typed and compares the two hashes."
             },
             {
               type: "code",
@@ -233,7 +156,7 @@ export const roadmapData = [
             },
             {
               type: "paragraph",
-              text: "Here's the crack in plain hashing. Two users with the same password get the same hash."
+              text: "Two users with the same password get the same hash. That's a crack in plain hashing."
             },
             {
               type: "code",
@@ -241,7 +164,7 @@ export const roadmapData = [
             },
             {
               type: "warning-callout",
-              text: "⚠️ Hackers use something called Rainbow Tables — pre-computed lists of millions of common passwords and their hashes. If your hash matches their table — your password is cracked in seconds. Plain hashing doesn't stop this."
+              text: "⚠️ Hackers use Rainbow Tables — pre-computed lists of millions of common passwords and their hashes. If your hash matches their table — your password is cracked in seconds. Plain hashing doesn't stop this."
             },
             {
               type: "heading",
@@ -249,7 +172,7 @@ export const roadmapData = [
             },
             {
               type: "paragraph",
-              text: "A salt is a random string added to your password before hashing. Every user gets a unique salt."
+              text: "A salt is a random string added to your password before hashing. Every user gets a unique salt — so even identical passwords produce completely different hashes."
             },
             {
               type: "code",
@@ -269,9 +192,8 @@ export const roadmapData = [
             },
             {
               type: "code",
-              code: "const bcrypt = require('bcrypt')\n\n// When you create your Flipkart account\nconst saltRounds = 10  // how complex the hash is\nconst passwordHash = await bcrypt.hash(\"raj@secure99\", saltRounds)\n\n// What gets saved in database\n{\n  email: \"raj@gmail.com\",\n  password: \"$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy\"\n  // ✅ Flipkart itself cannot reverse this\n}"
+              code: "const bcrypt = require('bcrypt')\n\nconst saltRounds = 10  // how complex the hash is\nconst passwordHash = await bcrypt.hash(\"raj@secure99\", saltRounds)\n\n// What gets saved in database\n{\n  email: \"raj@gmail.com\",\n  password: \"$2b$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy\"\n  // ✅ Flipkart itself cannot reverse this\n}"
             },
-
             {
               type: "heading",
               text: "The Full Picture"
@@ -279,12 +201,12 @@ export const roadmapData = [
             {
               type: "step",
               title: "Step 1 — You create your Flipkart account",
-              desc: "You type password: raj@secure99"
+              desc: "You type your password. Flipkart never stores it as-is."
             },
             {
               type: "step",
               title: "Step 2 — bcrypt hashes + salts it",
-              desc: "Random salt generated. Password + salt hashed 1024 times. Unreadable string stored."
+              desc: "Random salt generated. Password + salt hashed 1024 times. Unreadable string stored in database."
             },
             {
               type: "step",
@@ -297,264 +219,173 @@ export const roadmapData = [
               desc: "✅ Hashes match → You're in.\n❌ No match → Rejected. Even Flipkart can't tell you your own password."
             },
             {
-              type: "heading",
-              text: "What's Coming Next"
-            },
-            {
               type: "warning-callout",
-              text: "➡️ You're verified. Password is safe. But now Flipkart has a new problem — how does it remember you're logged in as you browse from page to page? It can't ask you to login on every click. That's where Sessions come in. Next up: How Flipkart keeps you logged in without asking for your password every 30 seconds."
+              text: "⚠️ Password is safe in the database. But now Flipkart has a completely new problem — you're verified once at login. But how does it remember you're logged in as you browse from page to page? It can't ask for your password on every click. That's where Sessions come in."
             }
           ]
         }
       },
+
       {
         id: 2,
         title: "Session Based Authentication",
         level: "freshers",
         topics: [
-          "Session-based auth (cookies + server session)",
-          "Session Store (Memory, Redis)",
-
-          "Logout & Session Destruction"
+          "How Flipkart Remembers You",
         ],
         topicDetails: {
-          "Session-based auth (cookies + server session)": [
+          "How Flipkart Remembers You": [
             {
               type: "paragraph",
-              text: "You just logged into Flipkart. Verified. But now you click on 'My Orders'. Then 'Wishlist'. Then 'Cart'. Each click is a brand new HTTP request — and HTTP is stateless. The server remembers nothing between requests. So how does Flipkart know it's still you on every single page?"
+              text: "You logged in. Flipkart verified your password. But now you click 'My Orders' — how does Flipkart know the request is still you? You didn't send your password again."
             },
             {
               type: "curious-callout",
-              text: "❓ You logged in once — but how does Flipkart remember you across every page you visit after that?"
+              text: "❓ HTTP is stateless — every request is a stranger. So how does Flipkart remember you across 50 clicks without asking your password every time?"
             },
             {
               type: "heading",
-              text: "What is a Session?"
+              text: "The Stateless Problem"
             },
             {
               type: "paragraph",
-              text: "After you log in, Flipkart's server creates a Session — a small record stored on the server that says 'User Ram is currently logged in'. The server gives this session a unique ID — called a Session ID. That ID gets sent to your browser and stored as a Cookie."
-            },
-            {
-              type: "info-callout",
-              text: "💡 Think of it like a token at a restaurant. You place your order and the waiter gives you a token number — say #42. Every time you ask for something, you show token #42. The waiter doesn't need to re-verify who you are each time — he just looks up token #42 in his records. That token is your Session ID. The waiter's record book is the Session Store."
-            },
-            {
-              type: "heading",
-              text: "How Session-Based Auth Works on Flipkart — Step by Step"
-            },
-            {
-              type: "step",
-              title: "You log in with email and password",
-              desc: "Flipkart verifies your credentials. Authentication successful. ✅"
-            },
-            {
-              type: "step",
-              title: "Server creates a session",
-              desc: "Flipkart creates a session object and stores it server-side."
-            },
-            {
-              type: "code",
-              code: "// Session stored on server:\nsessionStore['abc123xyz'] = {\n  userId: 1,\n  email: 'ram@gmail.com',\n  role: 'buyer',\n  createdAt: '2024-01-01T10:00:00Z'\n}"
-            },
-            {
-              type: "step",
-              title: "Server sends Session ID to browser via Cookie",
-              desc: "The session ID is set as a cookie in the response headers."
-            },
-            {
-              type: "code",
-              code: "Set-Cookie: sessionId=abc123xyz; HttpOnly; Secure"
-            },
-            {
-              type: "step",
-              title: "Browser stores the cookie",
-              desc: "Your browser automatically saves this cookie and sends it with every future request to Flipkart."
-            },
-            {
-              type: "step",
-              title: "You click 'My Orders'",
-              desc: "Your browser sends the request — with the cookie attached automatically."
-            },
-            {
-              type: "code",
-              code: "GET /my-orders\nCookie: sessionId=abc123xyz"
-            },
-            {
-              type: "step",
-              title: "Server looks up the session",
-              desc: "Flipkart takes the session ID, looks it up in the session store, finds your user data. No re-login needed. ✅"
-            },
-            {
-              type: "success-callout",
-              text: "✅ One login. Cookie stored. Every request after that — server reads the cookie, finds the session, knows it's you. That's session-based auth in a nutshell."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Sessions work — but where are they actually stored? In the server's memory? In a database? What happens when Flipkart restarts a server and all sessions vanish? That's the next problem — and it's solved by the Session Store."
-            }
-          ],
-
-          "Session Store (Memory, Redis)": [
-            {
-              type: "paragraph",
-              text: "Flipkart just created a session for Ram. Great. But now — where does it save it? Every time Ram makes a request, the server needs to look up that session ID and find his data. That means sessions need to be stored somewhere fast, reliable, and accessible by all servers. That somewhere is called the Session Store."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Flipkart runs on thousands of servers. If Ram's session is stored on Server #12 — what happens when his next request hits Server #47?"
-            },
-            {
-              type: "heading",
-              text: "Option 1 — Memory Store"
-            },
-            {
-              type: "paragraph",
-              text: "By default, sessions are stored directly in the server's RAM — the Memory Store. It's fast. Zero setup. Works fine on your local machine."
-            },
-            {
-              type: "code",
-              code: "// Sessions live in server RAM:\nconst sessionStore = {}\nsessionStore['abc123xyz'] = { userId: 1, email: 'ram@gmail.com' }\n// Request comes in → look up in RAM → found instantly ✅"
+              text: "Every HTTP request is completely independent. The server has zero memory of what happened before."
             },
             {
               type: "error-callout",
-              title: "But Memory Store breaks in production:",
+              title: "Without sessions this is what happens:",
               list: [
-                "Server restarts → RAM is wiped → all sessions gone → every user logged out",
-                "Flipkart has 10,000 servers → each has its own memory → sessions don't sync",
-                "Ram logs in on Server #12 → next request hits Server #47 → session not found → logged out instantly",
-                "Memory fills up with millions of sessions → server crashes"
+                "You login → server verifies you → great",
+                "You click My Orders → server has no idea who you are",
+                "You click Add to Cart → stranger again",
+                "Every single click needs a fresh login"
               ],
-              footer: "Memory Store is for local development only. Never for production."
-            },
-            {
-              type: "heading",
-              text: "Option 2 — Redis (The Production Standard)"
-            },
-            {
-              type: "paragraph",
-              text: "Redis is an external key-value store — blazing fast, runs in memory, but persists to disk. All of Flipkart's servers connect to one central Redis instance. Every session is stored there. Any server can look up any session. Problem solved."
-            },
-            {
-              type: "code",
-              code: "// Redis session store:\n// Server #12 creates session:\nredis.set('abc123xyz', JSON.stringify({ userId: 1, email: 'ram@gmail.com' }))\n\n// Server #47 gets next request:\nredis.get('abc123xyz') // ✅ Found — same Redis, different server\n\n// Server restarts? Redis is external — sessions survive ✅"
+              footer: "HTTP doesn't remember you. So Flipkart has to build memory on top of it. That's exactly what sessions do."
             },
             {
               type: "info-callout",
-              text: "💡 Think of Redis like a shared locker room. Every server in Flipkart's fleet has a key to the same locker room. It doesn't matter which server Ram hits — they all look in the same place for his session."
-            },
-            {
-              type: "code",
-              code: "Memory Store vs Redis:\n\nMemory Store:\n  Speed      → ✅ Fast\n  Persistence → ❌ Lost on restart\n  Multi-server → ❌ Not shared\n  Production  → ❌ Never\n\nRedis:\n  Speed       → ✅ Fast (in-memory)\n  Persistence → ✅ Survives restarts\n  Multi-server → ✅ Shared by all\n  Production  → ✅ Standard choice"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Redis gives Flipkart one central session store that all servers share. Fast lookups. Persistent. Scalable to millions of sessions. That's why every production app uses Redis for sessions."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Sessions are created and stored — but what happens when Ram clicks Logout? Just clearing the cookie in the browser isn't enough. If the session still exists on the server, someone with the old cookie ID can still use it. The session needs to be actively destroyed — on the server."
-            }
-          ],
-
-          "Logout & Session Destruction": [
-            {
-              type: "paragraph",
-              text: "Ram is done shopping on Flipkart. He clicks Logout. The page refreshes. He's back to the login screen. Looks simple. But something very specific just happened on the server — and if it didn't happen correctly, Ram's account is still wide open to anyone who has his session ID."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ If someone copies Ram's session cookie before he logs out — can they still use it after he clicks Logout? What actually happens during logout?"
+              text: "💡 Think of a concert. You show your ticket at the gate — they verify you once. Then they put a wristband on you. Now you can walk in and out freely all night. Nobody checks your ticket again — they just check the wristband. Sessions work exactly like this. Login = show ticket. Session cookie = wristband."
             },
             {
               type: "heading",
-              text: "What Logout Must Do"
+              text: "How Flipkart Sessions Actually Work"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You login successfully",
+              desc: "Password verified. Flipkart now needs to remember you."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server creates a Session ID",
+              desc: "A unique random ID is generated just for your login. This is your wristband."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Session ID is sent as a Cookie",
+              desc: "Server sends this ID to your browser. Browser stores it automatically."
+            },
+            {
+              type: "code",
+              code: "// Server creates session after login\nreq.session.userId = user._id\nreq.session.email = \"raj@gmail.com\"\n\n// Browser automatically receives and stores\n// Set-Cookie: sessionId=abc123xyz; HttpOnly; Secure"
+            },
+            {
+              type: "step",
+              title: "Step 4 — Every request sends cookie automatically",
+              desc: "Every time you click anything on Flipkart — browser sends that cookie automatically. You don't do anything."
+            },
+            {
+              type: "step",
+              title: "Step 5 — Server reads the cookie",
+              desc: "Server gets your session ID, looks it up, finds your data. Knows it's you."
+            },
+            {
+              type: "code",
+              code: "// Every request — server checks session\napp.get('/my-orders', (req, res) => {\n  if (!req.session.userId) {\n    return res.status(401).json({ error: 'Not logged in' })\n  }\n  // ✅ Session found — we know who you are\n  const orders = await Order.find({ userId: req.session.userId })\n  res.json(orders)\n})"
+            },
+            {
+              type: "heading",
+              text: "But Where Does Flipkart Store These Sessions?"
             },
             {
               type: "paragraph",
-              text: "Logout is not just clearing a cookie on the browser. The session ID stored in the cookie is just a key. The actual session data lives on the server. If the server doesn't destroy the session — the key still works. Someone with the old cookie can still make authenticated requests."
+              text: "Flipkart doesn't run on one server — it runs on hundreds. This creates a serious problem."
             },
             {
               type: "error-callout",
-              title: "What happens if logout only clears the browser cookie:",
+              title: "The multi-server problem:",
               list: [
-                "Session still exists in Redis — fully valid",
-                "Attacker who copied the cookie earlier sends it in a request",
-                "Server finds the session in Redis — thinks it's Ram",
-                "Attacker has full access to Ram's account — even after Ram 'logged out'"
+                "You login → Server 1 creates your session → stores in its memory",
+                "You click My Orders → request goes to Server 2",
+                "Server 2 has no idea about your session — Server 1 stored it",
+                "You're logged out even though you just logged in ❌"
               ],
-              footer: "Browser-only logout is incomplete. The server must kill the session."
+              footer: "Storing sessions in server memory breaks the moment you have more than one server."
             },
             {
               type: "heading",
-              text: "Correct Logout — Step by Step"
+              text: "This is Where Redis Comes In"
             },
             {
-              type: "step",
-              title: "Ram clicks Logout",
-              desc: "Browser sends a POST /logout request — with the session cookie attached."
+              type: "paragraph",
+              text: "Instead of each server storing sessions in its own memory — all servers store sessions in one shared place. That shared place is Redis."
             },
             {
-              type: "code",
-              code: "POST /logout\nCookie: sessionId=abc123xyz"
-            },
-            {
-              type: "step",
-              title: "Server deletes the session from Redis",
-              desc: "The session record is permanently removed. The session ID is now dead — points to nothing."
+              type: "info-callout",
+              text: "💡 Redis is an extremely fast in-memory database. Think of it as a giant shared whiteboard all servers can read and write to. We will go deep into Redis in a separate roadmap — for now just understand: Redis = shared super-fast memory that all servers can access."
             },
             {
               type: "code",
-              code: "// Server-side logout:\nredis.del('abc123xyz')\n// Session is gone. Forever."
+              code: "// Session stored in Redis — not server memory\napp.use(session({\n  store: new RedisStore({ client: redisClient }),\n  secret: 'flipkart-secret-key',\n  resave: false,\n  saveUninitialized: false,\n  cookie: { secure: true, httpOnly: true }\n}))\n\n// Server 1 saves it → Server 2 reads it ✅"
             },
             {
               type: "step",
-              title: "Server clears the cookie in the browser",
-              desc: "Server tells the browser to expire the cookie immediately."
-            },
-            {
-              type: "code",
-              code: "Set-Cookie: sessionId=; Max-Age=0; HttpOnly; Secure\n// Max-Age=0 tells browser: delete this cookie right now"
+              title: "Full flow with Redis",
+              desc: "Login → Server 1 creates session → saved in Redis → cookie sent to browser."
             },
             {
               type: "step",
-              title: "Attacker tries the old session ID",
-              desc: "Too late. Redis has no record of 'abc123xyz' anymore. Server returns 401 Unauthorized."
+              title: "Next request",
+              desc: "Click My Orders → cookie sent → any server reads Redis → finds your session → knows it's you ✅"
+            },
+            {
+              type: "heading",
+              text: "Logout — Destroying the Session"
+            },
+            {
+              type: "paragraph",
+              text: "Logout is simple — delete the session from Redis. Cookie becomes useless."
             },
             {
               type: "code",
-              code: "// Attacker sends stolen cookie:\nGET /my-orders\nCookie: sessionId=abc123xyz\n\n// Server checks Redis:\nredis.get('abc123xyz') // → null\n\n// Response:\n401 Unauthorized ❌"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Real logout = server destroys the session first, then clears the browser cookie. Even if someone stole the session ID — the moment Ram logs out, that ID is dead on the server. Useless."
+              code: "app.post('/logout', (req, res) => {\n  req.session.destroy((err) => {\n    if (err) return res.status(500).json({ error: 'Logout failed' })\n    res.clearCookie('sessionId')\n    // ✅ Session deleted from Redis\n    // Cookie in browser is now worthless\n    res.json({ message: 'Logged out successfully' })\n  })\n})"
             },
             {
               type: "warning-callout",
-              text: "⚠️ Sessions solve the 'remember me' problem — but they have a cost. Every single request requires a Redis lookup. Flipkart gets millions of requests per second. That's millions of Redis hits per second just to verify 'is this session still valid?'. At massive scale — across mobile apps, microservices, third-party integrations — sessions become a bottleneck. There's a smarter way: what if the server didn't need to look anything up at all? That's exactly what JWT-based Token Authentication solves."
+              text: "⚠️ Sessions + Redis work well. But Flipkart has 400M users — that's 400M sessions sitting in Redis at all times. Memory is expensive. Every single request needs a round trip to Redis to verify you. At massive scale this becomes a real bottleneck. What if the server stored absolutely nothing? No Redis. No session. No database lookup on every request. That's exactly what JWT solves."
             }
           ]
         }
       },
+
       {
         id: 3,
         title: "Token Based Authentication",
         level: "freshers",
         topics: [
-          "What is JWT and How JWT works?",
-          "Access Token vs Refresh Token",
-          "Storing Tokens (Cookie vs LocalStorage)",
-          "Token Expiry & Renewal"
+          "JWT: The Token Flipkart Never Has to Store",
+          "Access Token vs Refresh Token: How Flipkart Keeps You Logged In Safely",
+          "Storing Tokens: Why Flipkart Never Trusts LocalStorage",
         ],
         topicDetails: {
-          "What is JWT and How JWT works?": [
+          "JWT: The Token Flipkart Never Has to Store": [
             {
               type: "paragraph",
-              text: "Flipkart gets millions of requests per second. With session-based auth, every single one needs a Redis lookup — 'Is this session ID valid? Who does it belong to?' That's millions of database hits per second just for authentication. Add the mobile app, seller portal, delivery agent app — all hammering the same Redis instance. It becomes a bottleneck. There had to be a smarter way."
+              text: "Sessions work but Flipkart has to store 400M sessions in Redis. Expensive. Slow at scale. What if the server stored nothing at all?"
             },
             {
               type: "curious-callout",
-              text: "❓ What if the server didn't need to look anything up at all? What if the token itself carried everything the server needs to know?"
+              text: "❓ What if instead of remembering you on the server — you carried a token that proved itself? No lookup needed. No Redis. Nothing."
             },
             {
               type: "heading",
@@ -562,157 +393,162 @@ export const roadmapData = [
             },
             {
               type: "paragraph",
-              text: "JWT stands for JSON Web Token. Instead of storing your session on the server and giving you just an ID — JWT packs your actual user information into the token itself and hands it to you at login. You carry it. Every request, you send it. The server reads it, verifies it, and responds. Zero database lookup required."
+              text: "JWT stands for JSON Web Token. It's a small encoded string that carries your identity inside it. Server creates it once after login — and never stores it anywhere."
             },
             {
               type: "info-callout",
-              text: "💡 Think of it like a government-issued Aadhaar card. When you check into a hotel — the receptionist doesn't call a government office to verify you exist. All the info is right there on the card. They just check if it looks genuine. JWT works the same way — all the user data is inside the token, and the server just verifies it's authentic."
+              text: "💡 Think of JWT like a government ID. The police don't call a central database every time they check your ID. The ID itself proves who you are. JWT works exactly the same — the token carries its own proof."
             },
             {
               type: "heading",
-              text: "How JWT Works — The Full Flow"
-            },
-            {
-              type: "step",
-              title: "Ram logs in with email and password",
-              desc: "Flipkart verifies credentials. Authentication successful. ✅"
-            },
-            {
-              type: "step",
-              title: "Server creates a JWT and signs it",
-              desc: "Flipkart packs Ram's user info — userId, email, role — into a token and signs it with a secret key only the server knows. This signature is what makes the token tamper-proof."
-            },
-            {
-              type: "code",
-              code: "const token = jwt.sign(\n  { userId: 1, role: 'buyer' },\n  process.env.JWT_SECRET,\n  { expiresIn: '15m' }\n)"
-            },
-            {
-              type: "step",
-              title: "Server sends the token to Ram's browser",
-              desc: "The JWT is returned in the login response. Ram's app stores it in memory."
-            },
-            {
-              type: "step",
-              title: "Ram clicks 'My Orders'",
-              desc: "App attaches the JWT to the Authorization header and sends the request to the server."
-            },
-            {
-              type: "code",
-              code: "GET /my-orders\nAuthorization: Bearer eyJhbGci...SflKxw"
-            },
-            {
-              type: "step",
-              title: "Server verifies the token",
-              desc: "Flipkart checks the signature to confirm nobody tampered with it, checks the expiry timestamp, and reads the payload — userId and role. All in one step. No database hit."
-            },
-            {
-              type: "step",
-              title: "Response sent",
-              desc: "Server knows it's Ram, knows his role, returns his orders. All without touching a database. ✅"
-            },
-            {
-              type: "heading",
-              text: "What Does a JWT Actually Look Like?"
+              text: "What's Inside a JWT?"
             },
             {
               type: "paragraph",
-              text: "A JWT is a long string with exactly three parts separated by dots — Header, Payload, and Signature. The header says which algorithm was used. The payload holds the actual user data like userId, role, and expiry. The signature is a cryptographic seal — if anyone changes even one character in the payload, the signature breaks and the server rejects it instantly."
+              text: "Every JWT has 3 parts separated by dots. Header tells which algorithm was used. Payload carries your actual data like userId and email. Signature is the tamper-proof seal — if anyone changes even one character the signature breaks instantly."
             },
             {
               type: "code",
-              code: "// Header . Payload . Signature\neyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9.SflKxw"
+              code: "// Decoded Payload — what Flipkart stores inside the token\n{\n  userId: \"raj_123\",\n  email: \"raj@gmail.com\",\n  role: \"customer\",\n  exp: 1716239022  // when this token expires\n}"
+            },
+            {
+              type: "heading",
+              text: "How Flipkart Uses JWT — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You login successfully",
+              desc: "Password is verified. Instead of creating a session — Flipkart's server creates a JWT, signs it with a secret key only Flipkart knows, and sends it to your browser. Nothing stored on the server."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Your browser stores the token",
+              desc: "Browser saves this JWT. Every request you make after this — browser sends the token along in the request header."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server verifies without any lookup",
+              desc: "When your request arrives — server checks the signature using its secret key. If valid it instantly knows who you are. No Redis. No database call. No memory used."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Tampered token? Rejected instantly",
+              desc: "If anyone tries to modify the token — change the userId, fake a role — the signature breaks. Server rejects it immediately without any database check."
+            },
+            {
+              type: "code",
+              code: "// Server verifies token on every request\nconst decoded = jwt.verify(token, process.env.JWT_SECRET)\n\n// ✅ Valid → { userId: 'raj_123', email: 'raj@gmail.com' }\n// ❌ Tampered → Error thrown. Access denied."
             },
             {
               type: "warning-callout",
-              text: "⚠️ The payload is NOT encrypted — anyone can base64-decode and read it. Never store passwords, bank details, or sensitive data in a JWT payload."
-            },
-            {
-              type: "success-callout",
-              text: "✅ JWT is stateless — the token carries the user data, the server just verifies. No session store. No Redis. No DB lookup. One secret key is all Flipkart needs to verify millions of tokens per second across every server and service."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ But JWT tokens can't last forever — a stolen token valid for 30 days is a disaster. Make it too short and users are re-logging in every 15 minutes. There's a smart solution: two tokens working together — an Access Token and a Refresh Token. Each with a very different job."
+              text: "⚠️ JWT has one real problem. Once Flipkart creates a token — it cannot cancel it until it expires. If your token gets stolen, the attacker has full access until expiry. This is why tokens are kept short-lived — 15 minutes. But then how does Flipkart keep you logged in for days without asking your password every 15 minutes? That's where Access Token and Refresh Token come in."
             }
           ],
 
-          "Access Token vs Refresh Token": [
+          "Access Token vs Refresh Token: How Flipkart Keeps You Logged In Safely": [
             {
               type: "paragraph",
-              text: "Access tokens expire in 15 minutes — that's intentional. A short window limits damage if stolen. But nobody wants to re-enter their password every 15 minutes on Flipkart. At the same time, a 30-day access token is a nightmare — stolen once, the attacker has month-long access. This feels like an unsolvable tradeoff. Flipkart solves it with two tokens working together."
+              text: "JWT can't be cancelled once created. So Flipkart can't make tokens last too long — if stolen, attacker has full access. But they also can't ask you to login every 15 minutes. How do they solve this?"
             },
             {
               type: "curious-callout",
-              text: "❓ How does Flipkart keep you logged in for days — without making a stolen token dangerous?"
+              text: "❓ Flipkart keeps you logged in for days — but tokens expire in 15 minutes. How does that even work?"
             },
             {
               type: "heading",
-              text: "Two Tokens — Two Jobs"
+              text: "Two Tokens. Two Jobs."
             },
             {
               type: "paragraph",
-              text: "The Access Token is short-lived — 15 minutes. It's sent with every API request. If stolen, the attacker only has a 15-minute window. The Refresh Token is long-lived — 7 days. It's never sent to APIs. Its only job is to get a new access token when the old one expires. It lives in an HttpOnly cookie so JavaScript can't touch it."
+              text: "Flipkart solves this by using two tokens at the same time. Each has a completely different job and a completely different lifetime."
             },
             {
               type: "info-callout",
-              text: "💡 Think of it like a building access system. Your access card opens doors — but expires every 15 minutes. Your master key can generate a new access card instantly — but you keep it locked in a safe, not in your pocket. Two separate tools. Two separate risk levels."
+              text: "💡 Think of it like a hotel. Access Token = your room key card. Works for today only. Refresh Token = your booking confirmation. Even if key card expires — you go to reception, show your booking, get a new key card. You never have to check in again from scratch."
             },
             {
               type: "heading",
-              text: "The Full Flow — Login to Silent Refresh"
+              text: "Access Token"
+            },
+            {
+              type: "paragraph",
+              text: "Access Token is the token you send with every request. Short-lived — usually 15 minutes. This is what Flipkart's server checks when you hit any API like My Orders or Add to Cart."
+            },
+            {
+              type: "paragraph",
+              text: "Because it expires in 15 minutes — even if a hacker steals it, the damage window is tiny. 15 minutes and it's completely useless."
+            },
+            {
+              type: "heading",
+              text: "Refresh Token"
+            },
+            {
+              type: "paragraph",
+              text: "Refresh Token is a separate long-lived token — usually 7 to 30 days. It has only one job: get a new Access Token when the old one expires. It never goes with every request. It sits safely stored and only comes out when needed."
+            },
+            {
+              type: "paragraph",
+              text: "When your Access Token expires — browser silently sends the Refresh Token to Flipkart's server. Server verifies it and issues a brand new Access Token. You never see any of this. You stay logged in seamlessly."
+            },
+            {
+              type: "heading",
+              text: "The Full Flow"
             },
             {
               type: "step",
-              title: "Ram logs in",
-              desc: "Server issues both tokens at once. The access token goes to the app and is stored in memory. The refresh token is set as an HttpOnly cookie — the browser stores it automatically, JavaScript can't read it."
+              title: "Step 1 — You login",
+              desc: "Flipkart creates both tokens at once. Access Token expires in 15 minutes. Refresh Token expires in 30 days. Both sent to your browser."
             },
             {
               type: "step",
-              title: "Ram uses the app for 15 minutes",
-              desc: "Every API call sends the access token in the Authorization header. Server verifies it. No DB hit. Fast. ✅"
+              title: "Step 2 — You use the app normally",
+              desc: "Every request sends only the Access Token. Refresh Token stays hidden and safe."
             },
             {
               type: "step",
-              title: "Access token expires",
-              desc: "The next API call returns 401 Unauthorized. The access token's 15-minute window is up."
+              title: "Step 3 — Access Token expires after 15 minutes",
+              desc: "Next request fails with 401 Unauthorized. Browser catches this automatically."
             },
             {
               type: "step",
-              title: "App silently calls /refresh-token",
-              desc: "The app catches the 401 and automatically calls the refresh endpoint. The browser sends the HttpOnly refresh token cookie automatically — no JavaScript needed. Ram sees nothing."
+              title: "Step 4 — Silent refresh happens",
+              desc: "Browser sends Refresh Token to Flipkart's /refresh endpoint. Server verifies it, creates a brand new Access Token. All of this in milliseconds — you see nothing."
             },
             {
               type: "step",
-              title: "Server issues a new access token",
-              desc: "Server verifies the refresh token, and returns a fresh 15-minute access token. The app stores it in memory and retries the original request. Ram stays logged in. ✅"
+              title: "Step 5 — You continue seamlessly",
+              desc: "New Access Token is used for next 15 minutes. This cycle repeats until Refresh Token itself expires after 30 days. Only then does Flipkart ask you to login again."
             },
             {
-              type: "step",
-              title: "Refresh token expires — after 7 days",
-              desc: "The /refresh-token call itself returns 401. No more silent renewal. App redirects Ram to the login page. This is the intended security boundary."
+              type: "heading",
+              text: "Access Token vs Refresh Token"
             },
             {
-              type: "code",
-              code: "// Complete lifecycle:\nLogin → Access Token (15m) + Refresh Token (7d)\n  ↓ 15 min\n401 → silent refresh → new Access Token ✅\n  ↓ 7 days\n401 on /refresh-token → redirect to Login"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Short-lived access tokens limit damage if stolen. Long-lived refresh tokens keep users logged in without re-entering passwords. Silent refresh happens invisibly. Ram stays logged in for 7 days — with 15-minute security windows throughout."
+              type: "table",
+              headers: ["", "Access Token", "Refresh Token"],
+              rows: [
+                ["Job", "Access APIs and resources", "Get new Access Token"],
+                ["Lifetime", "15 minutes", "7 to 30 days"],
+                ["Sent with", "Every request", "Only when Access Token expires"],
+                ["If stolen", "Usable for 15 minutes only", "Can issue new tokens — high risk"],
+                ["Stored in", "Memory or cookie", "HttpOnly secure cookie"],
+                ["Flipkart checks", "On every API call", "Only at /refresh endpoint"]
+              ]
             },
             {
               type: "warning-callout",
-              text: "⚠️ Two tokens — but where exactly do they live in the browser? This isn't a preference question — it's a security decision. Storing tokens in the wrong place is one of the most common and catastrophic mistakes in web development. LocalStorage vs Cookies — the wrong choice exposes every user's token to attackers."
+              text: "⚠️ Refresh Token is the more dangerous one. If stolen — attacker can keep generating new Access Tokens indefinitely. Both tokens need to be stored somewhere in the browser. But where exactly? Cookie? LocalStorage? The wrong choice exposes 400M Flipkart users to attacks."
             }
           ],
 
-          "Storing Tokens (Cookie vs LocalStorage)": [
+          "Storing Tokens: Why Flipkart Never Trusts LocalStorage": [
             {
               type: "paragraph",
-              text: "You have a JWT. You need to store it somewhere in the browser so it can be sent with every request. Two obvious options — LocalStorage and Cookies. Most developers reach for LocalStorage first. It's simple, it's easy, it works. It has also been responsible for some of the worst token theft incidents in web security history."
+              text: "You have two tokens. Both need to live somewhere in the browser between requests. Sounds simple — just store them somewhere. But the wrong choice exposes 400M Flipkart users to attacks."
             },
             {
               type: "curious-callout",
-              text: "❓ LocalStorage and Cookies both store data in the browser — what makes one a security disaster and the other the right choice for tokens?"
+              text: "❓ Cookie vs LocalStorage — both store data in browser. So why does it matter where Flipkart stores its tokens?"
             },
             {
               type: "heading",
@@ -720,18 +556,18 @@ export const roadmapData = [
             },
             {
               type: "paragraph",
-              text: "LocalStorage is easy to use — store the token on login, read it on every request, attach it to the Authorization header manually. Sounds fine. The problem: any JavaScript running on the page can read LocalStorage. Including malicious scripts injected through XSS attacks."
+              text: "LocalStorage is the easiest option. Simple to use, survives page refresh, any JavaScript on the page can read it. That last part is exactly the problem."
             },
             {
               type: "error-callout",
-              title: "XSS + LocalStorage = every user's token stolen:",
+              title: "The XSS Attack — how hackers steal from LocalStorage:",
               list: [
-                "Attacker finds any XSS vulnerability on Flipkart — even in a product review field",
-                "Injects a script that reads localStorage.getItem('accessToken') and sends it to attacker's server",
-                "Every user who loads that page silently leaks their token",
-                "Attacker has valid JWTs for thousands of users — full account access instantly"
+                "Hacker injects malicious JavaScript into Flipkart's page",
+                "That script runs: localStorage.getItem('accessToken')",
+                "Token stolen. Sent to hacker's server instantly.",
+                "Hacker now has full access to your Flipkart account"
               ],
-              footer: "XSS is one of the most common vulnerabilities on the web. LocalStorage makes it catastrophic."
+              footer: "Any JavaScript on the page can read LocalStorage — including the hacker's script. This is called an XSS attack and it's extremely common."
             },
             {
               type: "heading",
@@ -739,400 +575,310 @@ export const roadmapData = [
             },
             {
               type: "paragraph",
-              text: "An HttpOnly cookie is set by the server — not by JavaScript. The browser stores it and sends it automatically with every matching request. The critical difference: JavaScript cannot read it. Not your code. Not injected malicious code. Not anyone's code. It's completely invisible to the JavaScript layer."
-            },
-            {
-              type: "code",
-              code: "res.cookie('refreshToken', token, {\n  httpOnly: true,\n  secure: true,\n  sameSite: 'Strict'\n})"
-            },
-            {
-              type: "heading",
-              text: "The Recommended Pattern for Production"
-            },
-            {
-              type: "paragraph",
-              text: "Store the access token in memory — a JavaScript variable or React state. It's never persisted anywhere, so XSS has nothing to steal. It gets lost on page refresh, but that's fine — the app silently fetches a new one using the refresh token. Store the refresh token in an HttpOnly cookie. JavaScript can't read it, it survives page refreshes, and the browser sends it automatically."
-            },
-            {
-              type: "code",
-              code: "// LocalStorage  → ❌ JS can read it → XSS steals it\n// HttpOnly Cookie → ✅ JS cannot read it → XSS blind"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Access token in memory — nothing for XSS to steal. Refresh token in HttpOnly cookie — invisible to JavaScript entirely. This combination gives Flipkart both airtight security and seamless user experience."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Tokens are stored safely — but they don't last forever. Access tokens expire in 15 minutes. Refresh tokens expire in 7 days. What exactly happens at expiry? How does the app silently renew without interrupting Ram mid-checkout? That's the final piece — Token Expiry and Renewal."
-            }
-          ],
-
-          "Token Expiry & Renewal": [
-            {
-              type: "paragraph",
-              text: "Ram is in the middle of checkout on Flipkart. He's been browsing for 20 minutes. His access token silently expired 5 minutes ago. He clicks 'Place Order'. If Flipkart handles this wrong — he gets logged out mid-transaction. Cart cleared. Order lost. Terrible experience. But if tokens never expire — a stolen token means lifetime access for an attacker. Expiry and renewal is how Flipkart balances both."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Access token expires mid-session. How does Flipkart silently renew it without Ram ever knowing — or losing his checkout?"
-            },
-            {
-              type: "heading",
-              text: "What Happens When the Access Token Expires"
-            },
-            {
-              type: "step",
-              title: "Ram's access token hits expiry",
-              desc: "The exp timestamp inside the JWT payload is now in the past. The token is dead."
-            },
-            {
-              type: "step",
-              title: "Ram clicks 'Place Order'",
-              desc: "App sends the API request with the expired token in the Authorization header."
-            },
-            {
-              type: "step",
-              title: "Server rejects it with 401",
-              desc: "jwt.verify() detects the expiry — returns 401 Unauthorized instantly."
-            },
-            {
-              type: "step",
-              title: "App catches the 401 silently",
-              desc: "An Axios interceptor catches every 401 response globally — before it ever reaches any component. Instead of showing an error or logging Ram out, it triggers a silent refresh behind the scenes."
-            },
-            {
-              type: "step",
-              title: "App calls /refresh-token",
-              desc: "The refresh token HttpOnly cookie is automatically attached by the browser. Server verifies it and returns a brand new access token."
-            },
-            {
-              type: "step",
-              title: "Original request is retried",
-              desc: "The interceptor takes the new access token, attaches it to the original 'Place Order' request, and resends it — successfully. Ram sees his order placed. He noticed nothing. ✅"
-            },
-            {
-              type: "code",
-              code: "// Interceptor catches 401 → refresh → retry:\naxios.interceptors.response.use(\n  res => res,\n  async err => {\n    if (err.response.status === 401) {\n      const { data } = await axios.post('/refresh-token')\n      err.config.headers['Authorization'] = `Bearer ${data.accessToken}`\n      return axios(err.config)  // retry original request ✅\n    }\n  }\n)"
-            },
-            {
-              type: "heading",
-              text: "When the Refresh Token Also Expires"
-            },
-            {
-              type: "step",
-              title: "Refresh token expires after 7 days",
-              desc: "The /refresh-token endpoint itself returns 401. The refresh token's exp timestamp is also in the past — nothing can save it."
-            },
-            {
-              type: "step",
-              title: "No more silent renewal possible",
-              desc: "The interceptor catches the 401 from /refresh-token — recognizes it's not a regular API call — and stops retrying."
-            },
-            {
-              type: "step",
-              title: "App redirects Ram to login",
-              desc: "Ram sees the login page. He enters credentials. Server issues a fresh access token and refresh token pair. The full cycle starts again."
-            },
-            {
-              type: "success-callout",
-              text: "✅ Access token expires every 15 minutes — stolen tokens are short-lived. Silent refresh keeps Ram logged in for 7 days without a single re-login prompt. After 7 days — fresh login, fresh tokens. Maximum security. Zero friction. That's the complete JWT lifecycle in production."
-            }
-          ],
-        }
-      },
-      {
-        id: 4,
-        title: "Authorization",          // ✅ new module
-        level: "freshers",
-        topics: [
-          "What is Authorization?",
-          "Role Based Access Control (RBAC)",
-          "Protecting Routes (Public vs Private)",
-          "Authorization Header & Middleware"
-        ],
-        topicDetails: {
-          "What is Authorization?": [
-            {
-              type: "paragraph",
-              text: "Ram just logged into Flipkart. Authentication passed — Flipkart knows it's him. But now Ram types flipkart.com/seller/dashboard in the browser. He's a buyer. Not a seller. Yet he's logged in. So why does Flipkart still block him? Logging in was supposed to be the gate — why is there another one?"
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Flipkart already knows who Ram is. So why does it still block certain pages and actions even after login?"
-            },
-            {
-              type: "heading",
-              text: "Authentication vs Authorization — Two Completely Different Questions"
-            },
-            {
-              type: "paragraph",
-              text: "Authentication asks — Who are you? Authorization asks — What are you allowed to do? These are two separate checks. Passing authentication does not mean you pass authorization. You need both — and they happen in order."
+              text: "HttpOnly Cookie is a special type of cookie that JavaScript cannot read at all. Only the browser can access it — and it gets sent automatically with every request to the server."
             },
             {
               type: "info-callout",
-              text: "💡 Back to the office building. The security guard checked your ID at the entrance — that's Authentication. You're inside now. But you try to walk into the CEO's private office. A different lock stops you — your ID doesn't grant that access. That second check is Authorization."
+              text: "💡 HttpOnly means exactly what it says — this cookie works over HTTP only. No JavaScript can touch it. Even if a hacker injects a script on Flipkart's page — document.cookie returns nothing. The token is invisible to all JavaScript."
             },
             {
               type: "heading",
-              text: "How Authorization Plays Out on Flipkart"
-            },
-            {
-              type: "step",
-              title: "Ram logs in as a buyer",
-              desc: "Authentication done. Flipkart issues a JWT with Ram's role embedded."
+              text: "How Flipkart Sets HttpOnly Cookies"
             },
             {
               type: "code",
-              code: "// Ram's JWT payload:\n{\n  userId: 1,\n  email: 'ram@gmail.com',\n  role: 'buyer'  // ← this is what Authorization checks\n}"
-            },
-            {
-              type: "step",
-              title: "Ram tries to open the Seller Dashboard",
-              desc: "He types flipkart.com/seller/dashboard — his JWT is sent with the request."
-            },
-            {
-              type: "step",
-              title: "Server checks his role",
-              desc: "JWT decoded. Role is 'buyer'. Seller Dashboard requires role 'seller'. Mismatch."
-            },
-            {
-              type: "code",
-              code: "// Authorization check on server:\nconst decoded = jwt.verify(token, SECRET)\n// decoded.role → 'buyer'\n\nif (decoded.role !== 'seller') {\n  return res.status(403).json({ error: 'Access Denied' }) // ❌\n}"
-            },
-            {
-              type: "step",
-              title: "403 Forbidden — not 401",
-              desc: "401 means not authenticated. 403 means authenticated but not authorized. Ram is logged in — just not allowed here."
+              code: "// Server sets token as HttpOnly cookie after login\nres.cookie('refreshToken', token, {\n  httpOnly: true,   // JavaScript cannot read this\n  secure: true,     // Only sent over HTTPS\n  sameSite: 'Strict' // Not sent on cross-site requests\n})"
             },
             {
               type: "heading",
-              text: "Flipkart Has Multiple Roles — Each With Different Permissions"
+              text: "So What Goes Where?"
             },
             {
-              type: "code",
-              code: "buyer:\n  ✅ View own orders\n  ✅ Add to cart, checkout\n  ❌ Manage listings\n  ❌ Ban users\n\nseller:\n  ✅ Manage own listings\n  ✅ View own sales data\n  ❌ Access other sellers' data\n  ❌ Ban users\n\ndelivery_agent:\n  ✅ Update delivery status\n  ❌ View order details beyond delivery info\n  ❌ Access any dashboard\n\nadmin:\n  ✅ Access everything\n  ✅ Ban users, manage all orders\n  ✅ View any account"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Authentication = Flipkart confirms you are Ram. Authorization = Flipkart checks what Ram is allowed to do. Both checks happen. Both are necessary. One without the other is incomplete — and dangerous."
+              type: "table",
+              headers: ["", "LocalStorage", "HttpOnly Cookie"],
+              rows: [
+                ["JavaScript can read?", "✅ Yes — dangerous", "❌ No — safe"],
+                ["XSS attack risk", "🔴 High", "🟢 None"],
+                ["Sent automatically?", "❌ No — manual", "✅ Yes — automatic"],
+                ["CSRF attack risk", "🟢 None", "🔴 Needs protection"],
+                ["Best for", "Non sensitive data", "Tokens — Access + Refresh"],
+                ["Flipkart uses it for", "UI preferences", "Auth tokens"]
+              ]
             },
             {
               type: "warning-callout",
-              text: "⚠️ So roles exist — buyer, seller, admin, delivery agent. But how does Flipkart actually manage and enforce these roles systematically across every route and every action? That's the job of Role Based Access Control — RBAC."
-            }
-          ],
-
-          "Role Based Access Control (RBAC)": [
-            {
-              type: "paragraph",
-              text: "Flipkart has millions of users. Buyers, sellers, delivery agents, admins, support staff. Each needs different access to different parts of the system. Checking roles manually in every single route handler — if user.role === 'admin', if user.role === 'seller' — scattered across thousands of files would be unmaintainable chaos. There's a systematic way to handle this: RBAC."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ How does Flipkart enforce different permissions for different roles across every route — without duplicating checks everywhere?"
-            },
-            {
-              type: "heading",
-              text: "What is RBAC?"
-            },
-            {
-              type: "paragraph",
-              text: "Role Based Access Control is a pattern where permissions are tied to roles — not to individual users. You don't give Ram access to the seller dashboard. You give the 'seller' role access to the seller dashboard. Ram gets access only when his role is 'seller'. Change the role, change the access. Clean, scalable, maintainable."
-            },
-            {
-              type: "code",
-              code: "// Without RBAC — messy, scattered, error-prone:\napp.get('/seller/dashboard', (req, res) => {\n  if (req.user.role !== 'seller') return res.status(403).send('Denied')\n  // ...\n})\n\napp.get('/seller/products', (req, res) => {\n  if (req.user.role !== 'seller') return res.status(403).send('Denied')\n  // ...\n})\n// Repeated everywhere. One missed check = security hole. ❌"
-            },
-            {
-              type: "heading",
-              text: "RBAC Done Right — Reusable Middleware"
-            },
-            {
-              type: "step",
-              title: "Define a reusable role-checking middleware",
-              desc: "One function. Takes allowed roles. Returns a middleware. Used everywhere."
-            },
-            {
-              type: "code",
-              code: "// authorizeRoles.js:\nconst authorizeRoles = (...allowedRoles) => {\n  return (req, res, next) => {\n    const userRole = req.user.role  // from decoded JWT\n\n    if (!allowedRoles.includes(userRole)) {\n      return res.status(403).json({ error: 'Access Denied' }) // ❌\n    }\n\n    next() // ✅ role matches — continue\n  }\n}"
-            },
-            {
-              type: "step",
-              title: "Apply it to routes — clean and explicit",
-              desc: "Each route declares exactly which roles can access it."
-            },
-            {
-              type: "code",
-              code: "// Routes with RBAC:\napp.get('/seller/dashboard',\n  authenticateToken,          // Step 1: is this user logged in?\n  authorizeRoles('seller'),   // Step 2: do they have the right role?\n  sellerDashboardController\n)\n\napp.get('/admin/users',\n  authenticateToken,\n  authorizeRoles('admin'),\n  adminUsersController\n)\n\napp.get('/orders/update-status',\n  authenticateToken,\n  authorizeRoles('delivery_agent', 'admin'), // multiple roles allowed\n  updateStatusController\n)"
-            },
-            {
-              type: "step",
-              title: "Ram (buyer) hits /seller/dashboard",
-              desc: "authenticateToken passes — he's logged in. authorizeRoles('seller') runs — his role is 'buyer'. 403 returned. ❌"
-            },
-            {
-              type: "step",
-              title: "Priya (seller) hits /seller/dashboard",
-              desc: "authenticateToken passes. authorizeRoles('seller') passes — her role matches. Request continues. ✅"
-            },
-            {
-              type: "info-callout",
-              text: "💡 With RBAC middleware, every route is self-documenting. Looking at any route, you instantly know: who needs to be logged in, and what role they need. One middleware handles all the enforcement. No duplication. No missed checks."
-            },
-            {
-              type: "success-callout",
-              text: "✅ RBAC separates authentication from authorization cleanly. Roles are defined once. Middleware enforces them everywhere. Adding a new role or changing permissions is a one-line change — not a hunt through thousands of files."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Roles are enforced on the backend. But what about the frontend? Some routes on Flipkart should be accessible without login — homepage, product listings. Others require login — checkout, orders. Some require specific roles — seller dashboard. How does Flipkart protect frontend routes from being accessed by the wrong users? That's Public vs Private route protection."
-            }
-          ],
-
-          "Protecting Routes (Public vs Private)": [
-            {
-              type: "paragraph",
-              text: "Flipkart's homepage loads for anyone — no login needed. But try to visit /checkout or /my-orders without logging in — Flipkart redirects you to login instantly. And even if you're logged in as a buyer — /seller/dashboard sends you away. Three types of access. Three types of route protection. All working silently, every time."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ How does Flipkart decide which pages anyone can see, which need login, and which need a specific role — and enforce it consistently on both frontend and backend?"
-            },
-            {
-              type: "heading",
-              text: "Three Types of Routes on Flipkart"
-            },
-            {
-              type: "code",
-              code: "Public Routes:\n  /home, /products, /search, /product/:id\n  → Anyone can access. No token needed.\n\nPrivate Routes:\n  /checkout, /my-orders, /wishlist, /profile\n  → Must be logged in. Any valid role.\n\nRole-Protected Routes:\n  /seller/dashboard, /admin/users, /delivery/status\n  → Must be logged in AND have the correct role."
-            },
-            {
-              type: "heading",
-              text: "Backend Route Protection — Middleware Stack"
-            },
-            {
-              type: "code",
-              code: "// Public — no middleware:\napp.get('/products', productController)\n\n// Private — must be authenticated:\napp.get('/my-orders',\n  authenticateToken,   // ← blocks if no valid JWT\n  myOrdersController\n)\n\n// Role-protected — must be authenticated + correct role:\napp.get('/seller/dashboard',\n  authenticateToken,\n  authorizeRoles('seller'),  // ← blocks wrong roles\n  sellerDashboardController\n)"
-            },
-            {
-              type: "heading",
-              text: "Frontend Route Protection — React"
-            },
-            {
-              type: "paragraph",
-              text: "Backend protection is the real security. But on the frontend, Flipkart also prevents users from even seeing pages they shouldn't — avoiding unnecessary API calls and broken UI states."
-            },
-            {
-              type: "code",
-              code: "// PrivateRoute — redirect to login if not authenticated:\nconst PrivateRoute = ({ children }) => {\n  const { isLoggedIn } = useAuth()\n  return isLoggedIn ? children : <Navigate to='/login' />\n}\n\n// RoleRoute — redirect if wrong role:\nconst RoleRoute = ({ children, allowedRole }) => {\n  const { user } = useAuth()\n  return user?.role === allowedRole\n    ? children\n    : <Navigate to='/unauthorized' />\n}\n\n// Usage in React Router:\n<Route path='/my-orders'\n  element={\n    <PrivateRoute>\n      <MyOrders />\n    </PrivateRoute>\n  }\n/>\n\n<Route path='/seller/dashboard'\n  element={\n    <RoleRoute allowedRole='seller'>\n      <SellerDashboard />\n    </RoleRoute>\n  }\n/>"
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Frontend route protection is UX — not security. A user can disable JavaScript, modify React state, or call your APIs directly. Frontend checks just improve experience. The real enforcement must always happen on the backend. Never trust the frontend alone."
-            },
-            {
-              type: "step",
-              title: "Ram (buyer) visits /seller/dashboard",
-              desc: "Frontend RoleRoute checks his role — 'buyer' ≠ 'seller' → redirected to /unauthorized instantly. Never even loads the page."
-            },
-            {
-              type: "step",
-              title: "Ram tries to call /seller/dashboard API directly",
-              desc: "Even bypassing the frontend — backend authorizeRoles('seller') middleware runs → 403 Forbidden. ❌"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Public routes open to all. Private routes gated by authentication. Role routes gated by role. Both frontend and backend enforce this — frontend for UX, backend for actual security. Two layers. No gaps."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Routes are protected — but how does the backend actually receive and verify the user's identity on every request? The token needs to travel from the frontend to the backend in a standard way — and the backend needs a single consistent place to check it before any route handler runs. That's the Authorization Header and Middleware pattern."
-            }
-          ],
-
-          "Authorization Header & Middleware": [
-            {
-              type: "paragraph",
-              text: "Every protected route on Flipkart needs to know: who is making this request? Is their token valid? What is their role? This check happens before the route handler runs — on every single protected request. If this check is scattered across individual route handlers, one missed check is a security hole. Flipkart centralizes this in one place: the Authorization Header and a middleware that reads it."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ How does the backend reliably receive the JWT on every request — and verify it once before any route logic runs?"
-            },
-            {
-              type: "heading",
-              text: "The Authorization Header — How JWT Travels"
-            },
-            {
-              type: "paragraph",
-              text: "When Ram makes any authenticated request, his app attaches the JWT to the Authorization header using the Bearer scheme. This is the industry standard — not a cookie, not a query param, not a request body."
-            },
-            {
-              type: "code",
-              code: "// Every authenticated request from frontend:\nGET /my-orders\nAuthorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9.SflKxw...\n\n// 'Bearer' = standard prefix that says 'I am presenting a token'\n// Everything after 'Bearer ' is the actual JWT"
-            },
-            {
-              type: "code",
-              code: "// Axios — attaching token to every request automatically:\naxios.interceptors.request.use(config => {\n  const token = getAccessToken()  // from memory\n  if (token) {\n    config.headers['Authorization'] = `Bearer ${token}`\n  }\n  return config\n})\n// Set once. Works for every API call. No repetition."
-            },
-            {
-              type: "heading",
-              text: "The authenticateToken Middleware — One Check for Everything"
-            },
-            {
-              type: "paragraph",
-              text: "On the backend, a single middleware function intercepts every protected request, extracts the JWT from the Authorization header, verifies it, and attaches the decoded user to the request object."
-            },
-            {
-              type: "code",
-              code: "// authenticateToken.js — runs before any protected route handler:\nconst authenticateToken = (req, res, next) => {\n\n  // Step 1: Extract token from header\n  const authHeader = req.headers['authorization']\n  const token = authHeader && authHeader.split(' ')[1]\n  // 'Bearer eyJ...' → split → ['Bearer', 'eyJ...']\n\n  // Step 2: Token missing\n  if (!token) {\n    return res.status(401).json({ error: 'No token provided' }) // ❌\n  }\n\n  // Step 3: Verify token\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET)\n    req.user = decoded  // { userId: 1, email: '...', role: 'buyer' }\n    next()  // ✅ token valid — continue to route handler\n\n  } catch (err) {\n    return res.status(401).json({ error: 'Invalid or expired token' }) // ❌\n  }\n}"
-            },
-            {
-              type: "heading",
-              text: "The Full Middleware Chain in Action"
-            },
-            {
-              type: "code",
-              code: "// Protected route — full chain:\napp.get('/my-orders',\n  authenticateToken,        // 1. Is token valid? Who is this?\n  myOrdersController        // 2. Fetch and return their orders\n)\n\napp.get('/seller/dashboard',\n  authenticateToken,        // 1. Is token valid? Who is this?\n  authorizeRoles('seller'), // 2. Do they have seller role?\n  sellerDashboardController // 3. Return seller data\n)\n\n// authenticateToken sets req.user\n// authorizeRoles reads req.user.role\n// Route handler uses req.user.userId to fetch the right data"
-            },
-            {
-              type: "step",
-              title: "Request arrives at /my-orders",
-              desc: "authenticateToken runs — extracts JWT from Authorization header, verifies signature, sets req.user. ✅"
-            },
-            {
-              type: "step",
-              title: "Route handler runs",
-              desc: "Reads req.user.userId — fetches only Ram's orders. Not everyone's. Not a random user's."
-            },
-            {
-              type: "code",
-              code: "// myOrdersController:\nconst myOrdersController = async (req, res) => {\n  const orders = await Order.find({ userId: req.user.userId })\n  // req.user set by authenticateToken middleware\n  // Ram only sees Ram's orders ✅\n  res.json(orders)\n}"
-            },
-            {
-              type: "success-callout",
-              text: "✅ JWT travels in the Authorization header — industry standard. One middleware extracts, verifies, and decodes it. req.user is set once and available to every route handler and role middleware downstream. Authentication and authorization work together as a clean, centralized pipeline."
+              text: "⚠️ Token is stored safely. You're logged in. But being logged in doesn't mean you can do everything on Flipkart. A customer shouldn't access the seller dashboard. A delivery partner shouldn't cancel orders. Flipkart needs to decide what each user is allowed to do — and that's a completely different problem from authentication."
             }
           ]
         }
       },
 
+      // {
+      //   id: 4,
+      //   title: "Authorization",
+      //   level: "freshers",
+      //   topics: [
+      //     "Authorization: What You're Allowed to Do on Flipkart",
+      //     "Role Based Access Control (RBAC)",
+      //     "Protecting Routes (Public vs Private)",
+      //     "Authorization Header & Middleware"
+      //   ],
+      //   topicDetails: {
+      //     "Authorization: What You're Allowed to Do on Flipkart": [
+      //       {
+      //         type: "paragraph",
+      //         text: "You're logged in. Flipkart knows exactly who you are. But now a different question — just because Flipkart knows it's you, does that mean you can do everything on the platform?"
+      //       },
+      //       {
+      //         type: "curious-callout",
+      //         text: "❓ A Flipkart delivery boy and a Flipkart admin both have accounts. Both are logged in. Should they see the same things and do the same things?"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "Authentication vs Authorization"
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "Authentication answers — who are you? Authorization answers — what are you allowed to do? These are two completely separate checks and Flipkart runs both on every single request."
+      //       },
+      //       {
+      //         type: "info-callout",
+      //         text: "💡 Think of a Flipkart office. Security guard at gate checks your ID — that's Authentication. But once inside, only HR can access salary data, only engineers can push code, only managers can approve leaves. Those restrictions inside — that's Authorization."
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "Why Flipkart Needs Authorization"
+      //       },
+      //       {
+      //         type: "error-callout",
+      //         title: "Without Authorization on Flipkart:",
+      //         list: [
+      //           "Any logged in user could delete any product listing",
+      //           "A customer could access the seller dashboard and change prices",
+      //           "A delivery partner could cancel orders they don't handle",
+      //           "Any user could access admin panels and user data"
+      //         ],
+      //         footer: "Authentication gets you through the door. Authorization decides which rooms you can enter."
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "How Flipkart Thinks About Users"
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "Flipkart has many types of users on the same platform. Each type has a role. Each role has specific permissions attached to it."
+      //       },
+      //       {
+      //         type: "table",
+      //         headers: ["Role", "What They Can Do"],
+      //         rows: [
+      //           ["Customer", "Browse, buy, return, review"],
+      //           ["Seller", "Add products, manage inventory, view own orders"],
+      //           ["Delivery Partner", "View assigned orders, update delivery status"],
+      //           ["Admin", "Everything — manage users, sellers, products, refunds"]
+      //         ]
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "Same platform. Same login system. Completely different access for each role. This is Role Based Access Control — and that's exactly what's coming next."
+      //       },
+      //       {
+      //         type: "warning-callout",
+      //         text: "⚠️ Roles exist — buyer, seller, admin, delivery agent. But how does Flipkart actually manage and enforce these roles systematically across every route and every action? Checking roles manually in every single route handler would be unmaintainable chaos. There's a systematic way to handle this."
+      //       }
+      //     ],
+
+      //     "Role Based Access Control (RBAC)": [
+      //       {
+      //         type: "paragraph",
+      //         text: "Flipkart has millions of users. Buyers, sellers, delivery agents, admins, support staff. Each needs different access. Checking roles manually in every route — if user.role === 'admin', if user.role === 'seller' — scattered across thousands of files would be a maintenance disaster. RBAC solves this."
+      //       },
+      //       {
+      //         type: "curious-callout",
+      //         text: "❓ How does Flipkart enforce different permissions for different roles across every route — without duplicating checks everywhere?"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "What is RBAC?"
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "Role Based Access Control is a pattern where permissions are tied to roles — not to individual users. You don't give Ram access to the seller dashboard. You give the 'seller' role access to the seller dashboard. Ram gets access only when his role is 'seller'. Change the role, change the access."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "// Without RBAC — messy, scattered, error-prone:\napp.get('/seller/dashboard', (req, res) => {\n  if (req.user.role !== 'seller') return res.status(403).send('Denied')\n})\n\napp.get('/seller/products', (req, res) => {\n  if (req.user.role !== 'seller') return res.status(403).send('Denied')\n})\n// Repeated everywhere. One missed check = security hole. ❌"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "RBAC Done Right — Reusable Middleware"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Step 1 — Define a reusable role-checking middleware",
+      //         desc: "One function. Takes allowed roles. Returns a middleware. Used everywhere."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "const authorizeRoles = (...allowedRoles) => {\n  return (req, res, next) => {\n    const userRole = req.user.role\n\n    if (!allowedRoles.includes(userRole)) {\n      return res.status(403).json({ error: 'Access Denied' }) // ❌\n    }\n\n    next() // ✅ role matches — continue\n  }\n}"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Step 2 — Apply it to routes",
+      //         desc: "Each route declares exactly which roles can access it. Clean and explicit."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "app.get('/seller/dashboard',\n  authenticateToken,          // Step 1: is this user logged in?\n  authorizeRoles('seller'),   // Step 2: do they have the right role?\n  sellerDashboardController\n)\n\napp.get('/orders/update-status',\n  authenticateToken,\n  authorizeRoles('delivery_agent', 'admin'), // multiple roles allowed\n  updateStatusController\n)"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Ram (buyer) hits /seller/dashboard",
+      //         desc: "authenticateToken passes — he's logged in. authorizeRoles('seller') runs — his role is 'buyer'. 403 returned. ❌"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Priya (seller) hits /seller/dashboard",
+      //         desc: "authenticateToken passes. authorizeRoles('seller') passes — her role matches. Request continues. ✅"
+      //       },
+      //       {
+      //         type: "info-callout",
+      //         text: "💡 With RBAC middleware, every route is self-documenting. Looking at any route, you instantly know who needs to be logged in and what role they need. One middleware handles all enforcement. No duplication. No missed checks."
+      //       },
+      //       {
+      //         type: "warning-callout",
+      //         text: "⚠️ Roles are enforced on the backend. But what about the frontend? Some Flipkart routes should be accessible without login — homepage, product listings. Others require login — checkout, orders. Some require specific roles — seller dashboard. How does Flipkart protect frontend routes from being accessed by the wrong users?"
+      //       }
+      //     ],
+
+      //     "Protecting Routes (Public vs Private)": [
+      //       {
+      //         type: "paragraph",
+      //         text: "Flipkart's homepage loads for anyone — no login needed. But visit /checkout without logging in — redirected to login instantly. Visit /seller/dashboard as a buyer — blocked again. Three types of access. Three types of route protection. All working silently, every time."
+      //       },
+      //       {
+      //         type: "curious-callout",
+      //         text: "❓ How does Flipkart decide which pages anyone can see, which need login, and which need a specific role — and enforce it on both frontend and backend?"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "Three Types of Routes on Flipkart"
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "Public Routes:\n  /home, /products, /search, /product/:id\n  → Anyone can access. No token needed.\n\nPrivate Routes:\n  /checkout, /my-orders, /wishlist, /profile\n  → Must be logged in. Any valid role.\n\nRole-Protected Routes:\n  /seller/dashboard, /admin/users, /delivery/status\n  → Must be logged in AND have the correct role."
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "Backend Route Protection"
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "// Public — no middleware:\napp.get('/products', productController)\n\n// Private — must be authenticated:\napp.get('/my-orders',\n  authenticateToken,\n  myOrdersController\n)\n\n// Role-protected:\napp.get('/seller/dashboard',\n  authenticateToken,\n  authorizeRoles('seller'),\n  sellerDashboardController\n)"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "Frontend Route Protection — React"
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "Backend protection is the real security. But on the frontend, Flipkart also prevents users from seeing pages they shouldn't — avoiding broken UI states and unnecessary API calls."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "const PrivateRoute = ({ children }) => {\n  const { isLoggedIn } = useAuth()\n  return isLoggedIn ? children : <Navigate to='/login' />\n}\n\nconst RoleRoute = ({ children, allowedRole }) => {\n  const { user } = useAuth()\n  return user?.role === allowedRole\n    ? children\n    : <Navigate to='/unauthorized' />\n}"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Ram (buyer) visits /seller/dashboard",
+      //         desc: "Frontend RoleRoute checks his role — 'buyer' ≠ 'seller' → redirected to /unauthorized. Never even loads the page."
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Ram tries to call /seller/dashboard API directly",
+      //         desc: "Even bypassing the frontend — backend authorizeRoles('seller') runs → 403 Forbidden. ❌"
+      //       },
+      //       {
+      //         type: "warning-callout",
+      //         text: "⚠️ Frontend route protection is UX — not security. A user can disable JavaScript or call your APIs directly. The real enforcement must always happen on the backend. But routes are protected now — the last piece is how the backend actually receives and verifies the user's identity on every single request. That's the Authorization Header and Middleware."
+      //       }
+      //     ],
+
+      //     "Authorization Header & Middleware": [
+      //       {
+      //         type: "paragraph",
+      //         text: "Every protected route on Flipkart needs to know: who is making this request? Is their token valid? What is their role? This check happens before the route handler runs — on every single protected request. Flipkart centralizes this in one place: the Authorization Header and a middleware that reads it."
+      //       },
+      //       {
+      //         type: "curious-callout",
+      //         text: "❓ How does the backend reliably receive the JWT on every request — and verify it once before any route logic runs?"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "The Authorization Header — How JWT Travels"
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "When Ram makes any authenticated request, his app attaches the JWT to the Authorization header using the Bearer scheme. This is the industry standard — not a query param, not a request body."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "// Every authenticated request from frontend:\nGET /my-orders\nAuthorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VySWQiOjF9...\n\n// Axios — attaching token to every request automatically:\naxios.interceptors.request.use(config => {\n  const token = getAccessToken()\n  if (token) {\n    config.headers['Authorization'] = `Bearer ${token}`\n  }\n  return config\n})"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "The authenticateToken Middleware"
+      //       },
+      //       {
+      //         type: "paragraph",
+      //         text: "One middleware function intercepts every protected request, extracts the JWT from the Authorization header, verifies it, and attaches the decoded user to the request object."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "const authenticateToken = (req, res, next) => {\n  const authHeader = req.headers['authorization']\n  const token = authHeader && authHeader.split(' ')[1]\n\n  if (!token) {\n    return res.status(401).json({ error: 'No token provided' })\n  }\n\n  try {\n    const decoded = jwt.verify(token, process.env.JWT_SECRET)\n    req.user = decoded  // { userId: 1, email: '...', role: 'buyer' }\n    next()  // ✅ token valid — continue\n  } catch (err) {\n    return res.status(401).json({ error: 'Invalid or expired token' })\n  }\n}"
+      //       },
+      //       {
+      //         type: "heading",
+      //         text: "The Full Middleware Chain"
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "app.get('/my-orders',\n  authenticateToken,        // 1. Is token valid? Who is this?\n  myOrdersController        // 2. Fetch and return their orders\n)\n\napp.get('/seller/dashboard',\n  authenticateToken,        // 1. Is token valid? Who is this?\n  authorizeRoles('seller'), // 2. Do they have seller role?\n  sellerDashboardController // 3. Return seller data\n)"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Request arrives at /my-orders",
+      //         desc: "authenticateToken runs — extracts JWT, verifies signature, sets req.user. ✅"
+      //       },
+      //       {
+      //         type: "step",
+      //         title: "Route handler runs",
+      //         desc: "Reads req.user.userId — fetches only Ram's orders. Not everyone's."
+      //       },
+      //       {
+      //         type: "code",
+      //         code: "const myOrdersController = async (req, res) => {\n  const orders = await Order.find({ userId: req.user.userId })\n  // req.user set by authenticateToken middleware\n  // Ram only sees Ram's orders ✅\n  res.json(orders)\n}"
+      //       },
+      //       {
+      //         type: "success-callout",
+      //         text: "✅ That completes the full authentication and authorization pipeline. Login → password hashed safely → session or JWT issued → token stored securely → every request verified → roles enforced → routes protected. This is exactly how Flipkart handles 400M users securely. Level 2 goes deeper — OAuth, social login, MFA, and security hardening."
+      //       }
+      //     ]
+      //   }
+      // },
+
 
 
 
 
       {
         id: 4,
-        title: "OAuth 2.0 & Social Login",
+        title: "OAuth & Social Login",
         level: "intermediate",
         topics: [
-          "What is OAuth 2.0?",
-          "OAuth Roles (Resource Owner, Client, Auth Server)",
-          "Authorization Code Flow",
-          "Implicit Flow (deprecated - why?)",
-          "Client Credentials Flow",
-          "Google OAuth in Node.js (Passport.js)",
-          "Passport.js strategies"
+          "What is OAuth 2.0 & How Google Login Works",
+          "Authorization Code Flow Through Flipkart",
+          "Google Login in Node.js (Passport.js)"
         ]
       },
 
@@ -1142,7 +888,6 @@ export const roadmapData = [
         level: "intermediate",
         topics: [
           "HTTPS & Secure Cookies",
-          "HttpOnly & SameSite Cookie flags",
           "CSRF Attack & Prevention",
           "SQL Injection",
           "XSS Attack & Prevention",

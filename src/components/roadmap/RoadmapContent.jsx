@@ -197,7 +197,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   });
 
   return (
-    <div id="roadmap-content" className="w-full md:w-[60%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
+    <div id="roadmap-content" className="w-full md:w-[80%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
       <div className="transition-all duration-300 flex-1">
         <div className="flex justify-between p-4 border-b border-slate-200 items-center flex-wrap gap-4 bg-white sticky top-0 z-10">
         </div>

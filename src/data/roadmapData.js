@@ -1036,7 +1036,7 @@ export const roadmapData = [
               ],
               footer: "Friday night. Everyone opens Netflix. Database gets hit with 10 million requests. It dies. Netflix goes down."
             },
-            { type: "image", src: "cacheproblem.jpeg" },
+            { type: "image", src: "netflixcache.png" },
             {
               type: "heading",
               text: "What is Caching?"
@@ -1069,6 +1069,7 @@ export const roadmapData = [
               type: "success-callout",
               text: "✅ Same data. Same response. 300ms becomes 5ms. Database load drops from 10 million hits to almost zero. That's caching."
             },
+
             {
               type: "warning-callout",
               text: "⚠️ But how does Netflix know if the data in cache is fresh or stale? What if the cache has it but it's outdated? What if it doesn't have it at all? Those two situations have names — Cache Hit and Cache Miss. Let's understand them."

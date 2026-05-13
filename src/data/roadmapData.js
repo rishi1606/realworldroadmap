@@ -99,6 +99,7 @@ export const roadmapData = [
           ],
 
           "Hashed & Salted: Why Hackers Can't Steal Your Flipkart Password": [
+
             {
               type: "paragraph",
               text: "Flipkart verified you're real. But one scary problem remains — if Flipkart stores your password in plain text and gets hacked, every password is exposed instantly. So how does Flipkart actually store passwords?"
@@ -225,7 +226,11 @@ export const roadmapData = [
             {
               type: "warning-callout",
               text: "⚠️ Password is safe in the database. But now Flipkart has a completely new problem — you're verified once at login. But how does it remember you're logged in as you browse from page to page? It can't ask for your password on every click. That's where Sessions come in."
-            }
+            },
+            {
+              type: "image",
+              src: "auth2.png"
+            },
           ]
         }
       },

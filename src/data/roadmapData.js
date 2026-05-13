@@ -556,6 +556,10 @@ export const roadmapData = [
             {
               type: "warning-callout",
               text: "⚠️ Refresh Token is the more dangerous one. If stolen — attacker can keep generating new Access Tokens indefinitely. Both tokens need to be stored somewhere in the browser. But where exactly? Cookie? LocalStorage? The wrong choice exposes 400M Flipkart users to attacks."
+            },
+            {
+              type: "image",
+              src: "auth5.png"
             }
           ],
 

@@ -169,8 +169,14 @@ function RenderBlock({ block, index }) {
 // ─── Main RoadmapContent Component ───────────────────────────────────────────
 
 export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic }) {
+  const [viewMode, setViewMode] = useState("concept");
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  // Reset view mode when topic changes
+  useEffect(() => {
+    setViewMode("concept");
+  }, [selectedTopic._id]);
 
   if (!selectedNode || !selectedTopic) return null;
 
@@ -181,6 +187,14 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
       : null;
 
   const topicBlocks = selectedTopic.contentBlocks || [];
+  
+  const hasImages = topicBlocks.some(b => b.type === 'image');
+  
+  const filteredBlocks = topicBlocks.filter(block => {
+    if (viewMode === "concept") return block.type !== "image";
+    if (viewMode === "image") return block.type === "image";
+    return true;
+  });
 
   return (
     <div id="roadmap-content" className="w-full md:w-[50%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
@@ -192,32 +206,47 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
           <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">
             {selectedTopic.title || selectedNode.title}
           </h1>
-          <p className="text-slate-500 text-[15px] leading-relaxed mb-10 font-medium italic border-l-4 border-slate-200 pl-4">
+          <p className="text-slate-500 text-[15px] leading-relaxed mb-6 font-medium italic border-l-4 border-slate-200 pl-4">
             Module: {selectedNode.title}
           </p>
 
-          <div className="mb-10">
-            {topicBlocks.map((block, index) => (
-              <RenderBlock key={index} block={block} index={index} />
-            ))}
-          </div>
-
-          {nextTopic && (
-            <div className="mt-12 flex justify-end">
+          {/* View Toggle */}
+          {hasImages && (
+            <div className="flex bg-slate-100/50 p-1 rounded-xl mb-10 w-full border border-slate-200/50">
               <button
-                onClick={() => onSelectTopic(nextTopic)}
-                className="group flex items-center gap-4 bg-white border border-slate-200 hover:border-blue-200 px-6 py-4 rounded-xl font-bold transition-all shadow-sm hover:shadow"
+                onClick={() => setViewMode("concept")}
+                className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${
+                  viewMode === "concept"
+                    ? "bg-white text-blue-600 shadow-sm border border-slate-200"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
               >
-                <div className="flex flex-col items-end">
-                  <span className="text-[10px] text-slate-400 uppercase tracking-widest mb-1">Up Next</span>
-                  <span className="text-slate-900">{nextTopic.title}</span>
-                </div>
-                <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center group-hover:bg-blue-50 transition-colors">
-                  <FiChevronDown className="w-5 h-5 -rotate-90 text-slate-400 group-hover:text-blue-500" />
-                </div>
+                Concept View
+              </button>
+              <button
+                onClick={() => setViewMode("image")}
+                className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${
+                  viewMode === "image"
+                    ? "bg-white text-blue-600 shadow-sm border border-slate-200"
+                    : "text-slate-500 hover:text-slate-900"
+                }`}
+              >
+                Image View
               </button>
             </div>
           )}
+
+          <div className="mb-10 animate-in fade-in duration-500">
+            {filteredBlocks.length > 0 ? (
+              filteredBlocks.map((block, index) => (
+                <RenderBlock key={`${viewMode}-${index}`} block={block} index={index} />
+              ))
+            ) : (
+              <div className="py-20 text-center border-2 border-dashed border-slate-100 rounded-3xl">
+                <p className="text-slate-400 font-medium">No {viewMode} available for this topic.</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

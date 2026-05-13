@@ -89,6 +89,10 @@ export const roadmapData = [
               desc: "✅ Match → You're in. Flipkart now knows it's you.\n❌ No match → Rejected. 'Invalid credentials.'"
             },
             {
+              type: "image",
+              src: "auth1.png"
+            },
+            {
               type: "warning-callout",
               text: "⚠️ Flipkart checks your password from the database. Does that mean Flipkart stores your password exactly as you typed it? password: 'raj@secure99' — If a hacker breaks in tomorrow, every single password is exposed. Plain text. Ready to steal. So does Flipkart actually store it like this? Absolutely not. And what they do instead is far more clever."
             }

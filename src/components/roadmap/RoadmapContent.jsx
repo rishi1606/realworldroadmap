@@ -170,15 +170,26 @@ function RenderBlock({ block, index }) {
 
 export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic }) {
   const [viewMode, setViewMode] = useState("concept");
+  const [isChangingView, setIsChangingView] = useState(false);
   const navigate = useNavigate();
   const { user } = useAuth();
 
   // Reset view mode when topic changes
   useEffect(() => {
     setViewMode("concept");
-  }, [selectedTopic._id]);
+    setIsChangingView(false);
+  }, [selectedTopic?._id]);
 
   if (!selectedNode || !selectedTopic) return null;
+
+  const handleViewChange = (mode) => {
+    if (mode === viewMode) return;
+    setIsChangingView(true);
+    setViewMode(mode);
+    setTimeout(() => {
+      setIsChangingView(false);
+    }, 1000);
+  };
 
   const currentTopicIndex = selectedNode.topics.findIndex(t => t._id === selectedTopic._id);
   const nextTopic =
@@ -214,7 +225,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
           {hasImages && (
             <div className="flex bg-slate-100/50 p-1 rounded-xl mb-10 w-full border border-slate-200/50">
               <button
-                onClick={() => setViewMode("concept")}
+                onClick={() => handleViewChange("concept")}
                 className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${viewMode === "concept"
                     ? "bg-white text-blue-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-900"
@@ -223,7 +234,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
                 Concept View
               </button>
               <button
-                onClick={() => setViewMode("image")}
+                onClick={() => handleViewChange("image")}
                 className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${viewMode === "image"
                     ? "bg-white text-blue-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-900"
@@ -235,7 +246,12 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
           )}
 
           <div className="mb-10 animate-in fade-in duration-500">
-            {filteredBlocks.length > 0 ? (
+            {isChangingView ? (
+              <div className="space-y-8">
+                <SkeletonLoader type="content" />
+                <SkeletonLoader type="content" />
+              </div>
+            ) : filteredBlocks.length > 0 ? (
               filteredBlocks.map((block, index) => (
                 <RenderBlock key={`${viewMode}-${index}`} block={block} index={index} />
               ))

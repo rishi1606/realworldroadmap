@@ -187,9 +187,9 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
       : null;
 
   const topicBlocks = selectedTopic.contentBlocks || [];
-  
+
   const hasImages = topicBlocks.some(b => b.type === 'image');
-  
+
   const filteredBlocks = topicBlocks.filter(block => {
     if (viewMode === "concept") return block.type !== "image";
     if (viewMode === "image") return block.type === "image";
@@ -197,7 +197,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   });
 
   return (
-    <div id="roadmap-content" className="w-full md:w-[50%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
+    <div id="roadmap-content" className="w-full md:w-[60%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
       <div className="transition-all duration-300 flex-1">
         <div className="flex justify-between p-4 border-b border-slate-200 items-center flex-wrap gap-4 bg-white sticky top-0 z-10">
         </div>
@@ -215,21 +215,19 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
             <div className="flex bg-slate-100/50 p-1 rounded-xl mb-10 w-full border border-slate-200/50">
               <button
                 onClick={() => setViewMode("concept")}
-                className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${
-                  viewMode === "concept"
+                className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${viewMode === "concept"
                     ? "bg-white text-blue-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-900"
-                }`}
+                  }`}
               >
                 Concept View
               </button>
               <button
                 onClick={() => setViewMode("image")}
-                className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${
-                  viewMode === "image"
+                className={`flex-1 px-6 py-2.5 rounded-lg text-[13px] font-bold transition-all ${viewMode === "image"
                     ? "bg-white text-blue-600 shadow-sm border border-slate-200"
                     : "text-slate-500 hover:text-slate-900"
-                }`}
+                  }`}
               >
                 Image View
               </button>

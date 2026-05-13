@@ -11,7 +11,7 @@ export function RoadmapPage() {
   const { title } = useParams();
   const location = useLocation();
   const { user } = useAuth();
-  
+
   const [mounted, setMounted] = useState(false);
   const [activeRoadmap, setActiveRoadmap] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -35,7 +35,7 @@ export function RoadmapPage() {
         setLoading(true);
         // First fetch all to find the slug if title is used as ID in URL
         const { data: allRoadmaps } = await roadmapAPI.getAll();
-        
+
         let targetSlug = allRoadmaps[0]?.slug;
         if (title) {
           const decodedTitle = decodeURIComponent(title);
@@ -46,11 +46,11 @@ export function RoadmapPage() {
         if (targetSlug) {
           const { data: roadmap } = await roadmapAPI.getBySlug(targetSlug);
           setActiveRoadmap(roadmap);
-          
+
           // Initial selection logic
           const queryParams = new URLSearchParams(location.search);
           const topicSlug = queryParams.get('topic');
-          
+
           let foundTopic = null;
           let foundNode = null;
 
@@ -68,7 +68,7 @@ export function RoadmapPage() {
           if (foundNode && foundTopic) {
             setSelectedNode(foundNode);
             setSelectedTopic(foundTopic);
-            
+
             setTimeout(() => {
               const contentEl = document.getElementById('roadmap-content');
               if (contentEl) {

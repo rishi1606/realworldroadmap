@@ -64,7 +64,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             <FiLock className={`w-4 h-4 ${theme.icon}`} />
           </div>
         </div>
-        
+
         <div className={`${theme.bg} rounded-lg p-4`}>
           <ul className="flex flex-col gap-2.5">
             {nodes.map((n, i) => (
@@ -80,7 +80,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
   };
 
   return (
-    <div className="w-full md:w-[50%] md:h-full md:overflow-y-auto border-b md:border-b-0 md:border-r border-slate-200 relative z-20 bg-white custom-scrollbar">
+    <div className="w-full md:w-[40%] md:h-full md:overflow-y-auto border-b md:border-b-0 md:border-r border-slate-200 relative z-20 bg-white custom-scrollbar">
       <div className="p-6 md:p-8 pb-16 flex flex-col items-start">
 
         {/* ── Top actions */}
@@ -89,8 +89,8 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             ← All Roadmaps
           </Link>
           <div className="flex items-center gap-2">
-            <button 
-              onClick={() => setIsShareOpen(true)} 
+            <button
+              onClick={() => setIsShareOpen(true)}
               className="w-9 h-9 rounded-lg border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-slate-50 transition-colors"
             >
               <FiShare2 className="w-4 h-4" />
@@ -144,7 +144,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
         {/* ── Roadmap Content */}
         <div className="w-full relative mt-6">
           <div className="flex flex-col gap-0 w-full relative">
-            
+
             {showFreshers && (
               <div className="relative">
                 {fresherNodes.map((node, index) => {
@@ -157,47 +157,46 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
                         <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-black z-10 shadow-sm bg-slate-200 text-slate-700`}>
                           {index + 1}
                         </div>
-                        
+
                         {!isLast && <div className="flex-1 w-[2px] bg-slate-200 my-1" />}
                         {isLast && showComingSoon && <div className="h-10 w-[2px] bg-gradient-to-b from-slate-200 to-transparent my-1" />}
                       </div>
 
-                      <div className={`flex-1 rounded-xl border transition-all overflow-hidden bg-white mb-6 ${
-                        isSelected ? 'border-blue-200 shadow-md ring-1 ring-blue-50' : 'border-slate-200 hover:border-slate-300'
-                      }`}>
-                          <div
-                            onClick={() => { onSelectNode(node); onSelectTopic(node.topics?.[0] || null); }}
-                            className="flex items-center gap-2 px-3 py-2.5 cursor-pointer"
-                          >
-                            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
-                              {React.createElement(NODE_ICONS[index % NODE_ICONS.length], { className: "w-4 h-4 text-slate-600" })}
-                            </div>
-                            <span className={`flex-1 text-[14px] font-bold tracking-tight ${isSelected ? 'text-blue-600' : 'text-slate-800'}`}>
-                              {node.title}
-                            </span>
+                      <div className={`flex-1 rounded-xl border transition-all overflow-hidden bg-white mb-6 ${isSelected ? 'border-blue-200 shadow-md ring-1 ring-blue-50' : 'border-slate-200 hover:border-slate-300'
+                        }`}>
+                        <div
+                          onClick={() => { onSelectNode(node); onSelectTopic(node.topics?.[0] || null); }}
+                          className="flex items-center gap-2 px-3 py-2.5 cursor-pointer"
+                        >
+                          <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center shrink-0">
+                            {React.createElement(NODE_ICONS[index % NODE_ICONS.length], { className: "w-4 h-4 text-slate-600" })}
                           </div>
+                          <span className={`flex-1 text-[14px] font-bold tracking-tight ${isSelected ? 'text-blue-600' : 'text-slate-800'}`}>
+                            {node.title}
+                          </span>
+                        </div>
 
-                          <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5 bg-slate-50/30">
-                            {node.topics.map((topic, i) => {
-                              const isSel = selectedTopic?._id === topic._id;
+                        <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5 bg-slate-50/30">
+                          {node.topics.map((topic, i) => {
+                            const isSel = selectedTopic?._id === topic._id;
 
-                              return (
-                                <div key={i}
-                                  onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
-                                  className={`flex items-center gap-3 px-2.5 py-2 rounded-md transition-colors relative ${isSel ? 'bg-blue-50' : 'hover:bg-white'} cursor-pointer`}
-                                >
-                                  <div className={`w-1.5 h-1.5 rounded-full flex items-center justify-center shrink-0 border-[1.5px] border-slate-300 bg-white`}>
-                                  </div>
-                                  <span className={`flex-1 text-[13px] leading-snug ${isSel ? 'font-bold text-slate-900' : 'font-medium text-slate-600'}`}>
-                                    {topic.title}
-                                  </span>
+                            return (
+                              <div key={i}
+                                onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
+                                className={`flex items-center gap-3 px-2.5 py-2 rounded-md transition-colors relative ${isSel ? 'bg-blue-50' : 'hover:bg-white'} cursor-pointer`}
+                              >
+                                <div className={`w-1.5 h-1.5 rounded-full flex items-center justify-center shrink-0 border-[1.5px] border-slate-300 bg-white`}>
                                 </div>
-                              );
-                            })}
-                          </div>
+                                <span className={`flex-1 text-[13px] leading-snug ${isSel ? 'font-bold text-slate-900' : 'font-medium text-slate-600'}`}>
+                                  {topic.title}
+                                </span>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
-                    );
+                    </div>
+                  );
                 })}
               </div>
             )}
@@ -215,11 +214,11 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
 
       </div>
 
-      <ShareModal 
-        isOpen={isShareOpen} 
+      <ShareModal
+        isOpen={isShareOpen}
         onClose={() => setIsShareOpen(false)}
-        url={shareUrl} 
-        title={roadmap?.title || 'Roadmap'} 
+        url={shareUrl}
+        title={roadmap?.title || 'Roadmap'}
       />
     </div>
   );

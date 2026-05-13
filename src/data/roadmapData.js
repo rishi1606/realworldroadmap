@@ -630,6 +630,10 @@ export const roadmapData = [
             {
               type: "warning-callout",
               text: "⚠️ Token is stored safely. You're logged in. But being logged in doesn't mean you can do everything on Flipkart. A customer shouldn't access the seller dashboard. A delivery partner shouldn't cancel orders. Flipkart needs to decide what each user is allowed to do — and that's a completely different problem from authentication."
+            },
+            {
+              type: "image",
+              src: "auth6.png"
             }
           ]
         }

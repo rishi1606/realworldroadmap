@@ -88,14 +88,15 @@ export const roadmapData = [
               title: "Step 4 — Decision",
               desc: "✅ Match → You're in. Flipkart now knows it's you.\n❌ No match → Rejected. 'Invalid credentials.'"
             },
+
+            {
+              type: "warning-callout",
+              text: "⚠️ Flipkart checks your password from the database. Does that mean Flipkart stores your password exactly as you typed it? password: 'raj@secure99' — If a hacker breaks in tomorrow, every single password is exposed. Plain text. Ready to steal. So does Flipkart actually store it like this? Absolutely not. And what they do instead is far more clever."
+            },
             {
               type: "image",
               src: "auth1.png"
             },
-            {
-              type: "warning-callout",
-              text: "⚠️ Flipkart checks your password from the database. Does that mean Flipkart stores your password exactly as you typed it? password: 'raj@secure99' — If a hacker breaks in tomorrow, every single password is exposed. Plain text. Ready to steal. So does Flipkart actually store it like this? Absolutely not. And what they do instead is far more clever."
-            }
           ],
 
           "Hashed & Salted: Why Hackers Can't Steal Your Flipkart Password": [
@@ -372,6 +373,10 @@ export const roadmapData = [
             {
               type: "warning-callout",
               text: "⚠️ Sessions + Redis work well. But Flipkart has 400M users — that's 400M sessions sitting in Redis at all times. Memory is expensive. Every single request needs a round trip to Redis to verify you. At massive scale this becomes a real bottleneck. What if the server stored absolutely nothing? No Redis. No session. No database lookup on every request. That's exactly what JWT solves."
+            },
+            {
+              type: "image",
+              src: "auth3.png"
             }
           ]
         }
@@ -451,6 +456,10 @@ export const roadmapData = [
             {
               type: "warning-callout",
               text: "⚠️ JWT has one real problem. Once Flipkart creates a token — it cannot cancel it until it expires. If your token gets stolen, the attacker has full access until expiry. This is why tokens are kept short-lived — 15 minutes. But then how does Flipkart keep you logged in for days without asking your password every 15 minutes? That's where Access Token and Refresh Token come in."
+            },
+            {
+              type: "image",
+              src: "auth4.png"
             }
           ],
 

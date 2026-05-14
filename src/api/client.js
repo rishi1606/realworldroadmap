@@ -29,4 +29,9 @@ export const searchAPI = {
   query: (q) => apiClient.get('/search', { params: { q } }),
 };
 
+export const notifyAPI = {
+  subscribe: (email, roadmapId, level) => apiClient.post('/notify', { email, roadmapId, level }),
+  check: (email, roadmapId, level) => apiClient.get('/notify/check', { params: { email, roadmapId, level } }),
+};
+
 export default apiClient;

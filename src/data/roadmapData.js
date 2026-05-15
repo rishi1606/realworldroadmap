@@ -6821,7 +6821,6 @@ export const roadmapData = [
           "What is Clustering?",
           "cluster module in Node.js",
           "Master & Worker processes",
-          "Load balancing across CPU cores"
         ],
         "topicDetails": {
           "What is Clustering?": [
@@ -6994,92 +6993,6 @@ export const roadmapData = [
               "text": "⚠️ Workers run in parallel — but how does incoming traffic get split across them? The load balancing mechanism determines whether each worker gets a fair share, or whether Worker 1 gets overwhelmed with 10,000 searches while Worker 16 handles only 200."
             }
           ],
-
-          "Load balancing across CPU cores": [
-            {
-              "type": "paragraph",
-              "text": "MakeMyTrip's cluster has 16 workers. During December peak, 50,000 flight searches per minute hit port 3000. How do searches get split — does Worker 1 get crushed with 30,000 while Worker 16 handles 2,000? Or does each worker get exactly 3,125? This is load balancing in a Node.js cluster — and it determines whether MakeMyTrip's December traffic kills the server or gets handled gracefully."
-            },
-            {
-              "type": "heading",
-              "text": "Two Load Balancing Approaches"
-            },
-            {
-              "type": "paragraph",
-              "text": "Node.js cluster uses round-robin by default on Linux and macOS — the master accepts each incoming connection and hands it to the next worker in sequence. On Windows, the OS itself distributes connections, which can be uneven. Node.js strongly recommends round-robin because it guarantees equal distribution — critical for MakeMyTrip's traffic where one slow worker can cascade into timeouts for thousands of users."
-            },
-            {
-              "type": "code",
-              "code": "// Force round-robin (recommended, default on Linux/macOS):\ncluster.schedulingPolicy = cluster.SCHED_RR;\n\n// Let OS decide (can be uneven — not recommended):\ncluster.schedulingPolicy = cluster.SCHED_NONE;"
-            },
-            {
-              "type": "heading",
-              "text": "Round-Robin — How MakeMyTrip Splits 50,000 Searches"
-            },
-            {
-              "type": "paragraph",
-              "text": "In round-robin, the master hands each new connection to the next worker in sequence — Priya's search to Worker 1, Rahul's to Worker 2, Amit's to Worker 3, and so on up to Worker 16, then loops back. Every worker gets the same number of searches over time. No worker starves. No worker drowns."
-            },
-            {
-              "type": "code",
-              "code": "MakeMyTrip — December peak, 50,000 searches/minute:\n\nSearch 001 → Worker 1  (Priya: MUM→DEL, Dec 25)\nSearch 002 → Worker 2  (Rahul: BLR→GOA, Dec 24)\nSearch 003 → Worker 3  (Amit: DEL→CCU, Dec 26)\n...\nSearch 016 → Worker 16 (Sneha: HYD→JAI, Dec 25)\nSearch 017 → Worker 1  (loops back)\n...\nAfter 1 minute: each worker handled exactly 3,125 searches.\nAll 16 cores at 100%. No user waited more than 200ms."
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — MakeMyTrip December 20th Peak Traffic"
-            },
-            {
-              "type": "paragraph",
-              "text": "December 20th — schools close, offices wind down. MakeMyTrip's biggest traffic day of the year. 2 million users open the app within 2 hours. Here's exactly how the clustered server handles it:"
-            },
-            {
-              "type": "step",
-              "title": "t=0ms — 2 million users hit port 3000 within 2 hours",
-              "desc": "From 10am to 12pm, 2 million flight searches pour in. The OS delivers all incoming connections to the master's port 3000 socket. The master starts accepting and distributing as fast as it can. Without clustering, this kills the server — 1 core, 2 million searches, multi-minute wait times. With clustering, the master immediately begins splitting the load across 16 workers."
-            },
-            {
-              "type": "step",
-              "title": "t=1ms — Master distributes round-robin to 16 workers",
-              "desc": "Priya's MUM→DEL search goes to Worker 1. Rahul's BLR→GOA goes to Worker 2. Amit's DEL→CCU goes to Worker 3. The cycle repeats — 16 workers each receive their equal share. Within 1ms, all 16 workers have received thousands of searches and are immediately processing them — querying flight databases, fetching seat availability from airline APIs, calculating prices."
-            },
-            {
-              "type": "step",
-              "title": "t=1ms to t=200ms — 16 cores process searches in parallel",
-              "desc": "All 16 workers run simultaneously on 16 cores. Worker 1 is fetching IndiGo seat data for Priya (async). Worker 2 is querying SpiceJet fares for Rahul (async). Worker 3 is calculating multi-stop options for Amit (async). None block each other. 16 independent servers, 16 CPU cores, all at 100%. 2 million searches processed across 2 hours — peak response time stays at 200ms."
-            },
-            {
-              "type": "step",
-              "title": "t=200ms — Priya, Rahul, and Amit all see their results",
-              "desc": "Flight database queries return (async). Airline API responses arrive (async). Pricing calculations complete. All 16 workers send their results back to users simultaneously. Priya sees 12 MUM→DEL flights. Rahul sees BLR→GOA options with prices. Amit sees DEL→CCU availability. Response time: 200ms across the board. Without clustering, they'd still be waiting 4 minutes."
-            },
-            {
-              "type": "step",
-              "title": "Worker 6 slows down — NGINX steps in",
-              "desc": "During peak, Worker 6 got unlucky — it received several searches that triggered slow Air India API calls simultaneously. Worker 6's response time spikes to 3 seconds while other workers respond in 200ms. The cluster module's round-robin doesn't rebalance in-flight requests. This is why MakeMyTrip runs NGINX in front of the cluster — NGINX uses least-connections balancing and automatically stops sending new searches to Worker 6 until it recovers."
-            },
-            {
-              "type": "code",
-              "code": "# nginx.conf — MakeMyTrip production setup:\nupstream makemytrip_flight_servers {\n  least_conn; # route to worker with fewest active connections\n  server flight-server-01:3000;\n  server flight-server-02:3000;\n  server flight-server-03:3000;\n  # Each server runs 16 Node.js cluster workers internally\n}\n# Total: 3 servers × 16 workers = 48 parallel Node.js processes\n# NGINX balances across servers, cluster balances across cores"
-            },
-            {
-              "type": "table",
-              "headers": ["Layer", "Tool", "Balances Across", "MakeMyTrip Usage"],
-              "rows": [
-                ["Global", "AWS Load Balancer", "Data centers worldwide", "Mumbai, Singapore, US servers"],
-                ["Server", "NGINX", "Multiple server machines", "flight-server-01 to flight-server-10"],
-                ["Process", "Node.js Cluster", "CPU cores per machine", "16 workers per server"],
-                ["Thread", "Worker Threads", "CPU cores (for CPU tasks)", "Dynamic pricing calculations"]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Node.js cluster's round-robin load balancing evenly splits MakeMyTrip's 50,000 searches/minute across all 16 workers. Combined with NGINX at the server level and AWS globally, MakeMyTrip handles December peak traffic — 2 million searches in 2 hours — with 200ms response times across the board."
-            },
-            {
-              "type": "info-callout",
-              "text": "🎯 Full picture — Clustering solves Node.js's single-core limitation by running one worker per CPU core. The master coordinates and distributes via round-robin. Workers handle Priya's flight searches, Rahul's price checks, and Amit's bookings independently. Shared state (flight prices, seat availability) lives in Redis. NGINX handles server-level load balancing. Together, this stack is what keeps MakeMyTrip running smoothly on December 20th — their highest traffic day of the year."
-            }
-          ]
         }
       }
 

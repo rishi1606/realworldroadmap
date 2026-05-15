@@ -6592,7 +6592,6 @@ export const roadmapData = [
         "topics": [
           "Why Node.js Needs Worker Threads & How to Use Them",
           "Child Processes (spawn, fork, exec)",
-          "CPU Intensive Tasks in Node.js"
         ],
         "topicDetails": {
           "Why Node.js Needs Worker Threads & How to Use Them": [
@@ -6740,76 +6739,6 @@ export const roadmapData = [
               "text": "⚠️ When should you use Worker Threads vs Child Processes vs just async/await? The answer depends on what kind of work you're doing. Let's look at four concrete strategies — from the lightest fix to the heaviest solution."
             }
           ],
-
-          "CPU Intensive Tasks in Node.js": [
-            {
-              "type": "paragraph",
-              "text": "MakeMyTrip's backend handles three kinds of CPU-intensive work every second: dynamic pricing (analyzing 40+ variables per flight search), itinerary optimization (finding the best flight + hotel + cab combination across thousands of options), and fraud detection (pattern matching Amit's ₹85,000 booking against millions of past transactions). Each one freezes the Event Loop if run unchecked on the main thread. Knowing when to offload — and how — is one of the most important skills for any Node.js engineer."
-            },
-            {
-              "type": "heading",
-              "text": "How to Spot CPU-Intensive Work"
-            },
-            {
-              "type": "paragraph",
-              "text": "Simple test: if your function has await or callbacks, it's I/O-heavy — Node.js handles it fine. If it runs a tight loop, processes a large dataset in memory, or runs a complex algorithm with no pauses — it's CPU-intensive and needs special handling. The longer it runs without yielding, the more users are left waiting."
-            },
-            {
-              "type": "code",
-              "code": "// I/O bound — Node.js handles perfectly:\nasync function searchHotels(city, checkIn, checkOut) {\n  // Priya also wants a hotel in Delhi\n  const hotels = await db.query(\n    'SELECT * FROM hotels WHERE city = ? AND available_date = ?',\n    [city, checkIn]\n  );\n  return hotels.filter(h => h.rating >= 4.0);\n  // Most time: WAITING for DB response → Event Loop is free ✅\n  // While waiting, Rahul's flight search and Amit's payment run fine\n}\n\n// CPU bound — WILL freeze Event Loop:\nfunction optimizeItinerary(flights, hotels, cabs, preferences) {\n  // Find the best MUM→DEL flight + Delhi hotel + airport cab combo\n  // 50 flights × 200 hotels × 10 cab options = 100,000 combinations\n  let bestPlan = null;\n  for (const flight of flights) {\n    for (const hotel of hotels) {\n      for (const cab of cabs) {\n        const score = scoreTrip(flight, hotel, cab, preferences);\n        if (!bestPlan || score > bestPlan.score) {\n          bestPlan = { flight, hotel, cab, score };\n        }\n      }\n    }\n  }\n  return bestPlan;\n  // 400ms of pure CPU → Rahul, Sneha, 500 others all wait ❌\n}"
-            },
-            {
-              "type": "heading",
-              "text": "Four Strategies — Lightest to Heaviest"
-            },
-            {
-              "type": "step",
-              "title": "Strategy 1 — Batch price refresh with setImmediate()",
-              "desc": "Every 15 minutes, MakeMyTrip refreshes prices for all 5,000 active routes. Running this in one go freezes the server for seconds. Instead, they process 50 routes at a time and yield to the Event Loop between each batch using setImmediate(). Priya's live search, Rahul's hotel booking, and Amit's payment all go through between batches. No single freeze is longer than ~4ms. No new threads, no new processes — just smart scheduling."
-            },
-            {
-              "type": "code",
-              "code": "// Every 15 minutes: refresh prices for all 5000 MakeMyTrip routes\nasync function recalculateAllPrices(allRoutes) {\n  const results = [];\n  const chunkSize = 50; // 50 routes per batch\n\n  for (let i = 0; i < allRoutes.length; i += chunkSize) {\n    const chunk = allRoutes.slice(i, i + chunkSize);\n\n    // Process this batch — e.g. MUM-DEL, BLR-HYD, DEL-GOA...\n    for (const route of chunk) {\n      results.push(calculateRoutePrice(route));\n    }\n\n    // Yield to Event Loop between batches\n    await new Promise(resolve => setImmediate(resolve));\n    // Priya's live search, Rahul's payment, Sneha's booking\n    // all get processed here between each batch ✅\n  }\n\n  return results;\n}\n// 5000 routes → 100 batches of 50\n// Each batch: ~4ms. Between each: Event Loop runs.\n// Total: ~400ms spread out — no user ever feels it."
-            },
-            {
-              "type": "step",
-              "title": "Strategy 2 — Worker Thread for real-time fraud scoring",
-              "desc": "Every time a user clicks 'Confirm Booking', MakeMyTrip runs a fraud score in real time. For Amit's ₹85,000 Goa booking, this means pattern-matching his transaction against 50 million past bookings — pure JavaScript, heavy CPU, takes ~150ms. Too heavy to chunk (it's one atomic calculation), too frequent to be a microservice call. A Worker Thread is the right fit: JS code, runs in parallel, main thread stays free for everyone else booking simultaneously."
-            },
-            {
-              "type": "step",
-              "title": "Strategy 3 — Child Process for the Python delay prediction model",
-              "desc": "When Priya sees IndiGo 6E-204 in her search results, MakeMyTrip shows '34% delay probability'. This prediction comes from a Python scikit-learn model trained on 3 years of DGCA flight data — it cannot run inside Node.js. The server spawns a Python child process, sends Priya's flight details, and streams the prediction back. Completely isolated, any language, no impact on the main thread."
-            },
-            {
-              "type": "step",
-              "title": "Strategy 4 — Microservice for itinerary optimization",
-              "desc": "Priya clicks 'Holiday Packages' — MakeMyTrip finds the best combination of flight + hotel + cab across 100,000+ combinations, scores them against her preferences (budget, ratings, travel time), and ranks the top 10. This runs 24/7 at massive scale — not occasionally. So MakeMyTrip runs it as a dedicated Go microservice. Node.js makes a single non-blocking HTTP call, the Go service does all the heavy computation, and returns the ranked results. Node.js does zero CPU work."
-            },
-            {
-              "type": "code",
-              "code": "// Strategy 4: Call MakeMyTrip's Go itinerary optimization service\nasync function getBestHolidayPackages(searchParams) {\n  // Priya: MUM→DEL, Dec 15-20, budget ₹25,000, prefers 4★+ hotels\n  const payload = {\n    route: searchParams.route,          // 'MUM-DEL'\n    dates: searchParams.dates,          // ['2024-12-15', '2024-12-20']\n    budget: searchParams.budget,        // 25000\n    preferences: searchParams.prefs     // { hotelRating: 4, cabType: 'sedan' }\n  };\n\n  // HTTP call to Go microservice — just I/O for Node.js\n  const response = await fetch('http://itinerary-service:8080/optimize', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(payload)\n  });\n\n  const packages = await response.json();\n  // Go service evaluated 100,000+ combinations\n  // Returns top 10 ranked packages for Priya\n  // Node.js did ZERO CPU work — just sent and received\n  return packages;\n}"
-            },
-            {
-              "type": "table",
-              "headers": ["Situation", "Strategy", "MakeMyTrip Example"],
-              "rows": [
-                ["Moderate CPU, JS", "Chunk with setImmediate()", "Refresh prices for 5,000 routes every 15 minutes"],
-                ["Heavy CPU, JS, per request", "Worker Threads", "Real-time fraud score on Amit's ₹85,000 booking"],
-                ["Heavy CPU, Python/Go", "Child Process (spawn)", "Predict IndiGo 6E-204 delay probability for Priya"],
-                ["Constant heavy CPU, any scale", "Separate microservice", "Holiday package optimizer — flight + hotel + cab combos"],
-                ["Light CPU + I/O", "Just async/await", "Search Delhi hotels for Priya's dates and rating filter"]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ CPU-intensive work must never run unchecked on Node.js's main thread. Use chunking for moderate batch work, Worker Threads for heavy per-request JS algorithms, Child Processes for other languages, and microservices for constant CPU load at scale. The rule never changes: keep the Event Loop free."
-            },
-            {
-              "type": "info-callout",
-              "text": "🎯 Full picture — Node.js single thread freezes on CPU work. Worker Threads add parallel JS execution (same process, separate V8 — Amit's fraud score). Child Processes run external programs in any language (Priya's Python delay model). Microservices handle constant heavy load (holiday package optimizer). Four strategies, one rule: the Event Loop must always stay free."
-            }
-          ]
         }
       },
 

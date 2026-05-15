@@ -278,29 +278,34 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
       <div className={isLocked ? "opacity-30 blur-md pointer-events-none select-none transition-all duration-300 flex-1 flex flex-col" : "transition-all duration-300 flex-1 flex flex-col"}>
 
 
-        <div className="p-8 md:p-12 w-full flex-1">
-          <div className="flex items-start justify-between mb-2">
-            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              {selectedTopic.title || selectedNode.title}
-            </h1>
+        <div className="p-8 md:p-12 w-full flex-1 max-w-5xl mx-auto">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
+            <div className="space-y-3 flex-1">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded-md bg-slate-100 text-slate-500 text-[10px] font-black uppercase tracking-widest border border-slate-200">Module</span>
+                <p className="text-slate-400 text-xs font-bold uppercase tracking-wider">
+                  {selectedNode.title}
+                </p>
+              </div>
+              <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
+                {selectedTopic.title || selectedNode.title}
+              </h1>
+            </div>
 
             {/* Status Toggle Button */}
             <button
               onClick={() => updateStatus(selectedTopic._id)}
-              className={`flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold transition-all shadow-sm ${topicStatus[selectedTopic._id] === 'done'
-                ? 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border border-emerald-200'
-                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'}`}
+              className={`shrink-0 flex items-center gap-2 px-6 py-3 rounded-2xl text-sm font-black transition-all shadow-sm active:scale-95 ${topicStatus[selectedTopic._id] === 'done'
+                ? 'bg-emerald-500 text-white shadow-lg shadow-emerald-200 border-none'
+                : 'bg-white text-slate-600 hover:bg-slate-50 border border-slate-200 hover:border-slate-300'}`}
             >
               {topicStatus[selectedTopic._id] === 'done' ? (
-                <><FiCheck className="w-4 h-4" /> Completed</>
+                <><FiCheck className="w-5 h-5" /> Completed</>
               ) : (
                 "Mark as Done"
               )}
             </button>
           </div>
-          <p className="text-slate-500 text-[15px] leading-relaxed mb-6 font-medium italic border-l-4 border-slate-200 pl-4">
-            Module: {selectedNode.title}
-          </p>
 
           {/* View Toggle */}
           {hasImages && (

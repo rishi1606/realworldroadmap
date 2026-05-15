@@ -1,15 +1,15 @@
 import React from 'react';
 
-export function Button({ 
-  children, 
-  variant = 'default', 
-  size = 'default', 
-  className = '', 
+export function Button({
+  children,
+  variant = 'default',
+  size = 'default',
+  className = '',
   fullWidth = false,
-  ...props 
+  ...props
 }) {
   const baseStyle = "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-bg-surface transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50";
-  
+
   const variants = {
     default: "bg-text-main text-white hover:bg-text-main/90 shadow",
     primary: "bg-brand text-white hover:bg-brand/90 shadow",
@@ -30,7 +30,7 @@ export function Button({
   };
 
   return (
-    <button 
+    <button
       className={`${baseStyle} ${variants[variant] || variants.default} ${sizes[size] || sizes.default} ${fullWidth ? 'w-full' : ''} ${className}`}
       {...props}
     >

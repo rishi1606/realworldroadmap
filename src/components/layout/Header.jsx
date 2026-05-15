@@ -28,10 +28,10 @@ export function Header() {
       <div className="w-full max-w-[1600px] mx-auto px-4 md:px-8 flex items-center justify-between">
 
         {/* Left Section */}
-        <div className="flex items-center gap-4 pt-1">
-          {/* <Link to="/" className="flex items-center gap-2 text-text-main">
-            <Logo className="h-28 w-auto" />
-          </Link> */}
+        <div className="flex items-center gap-4">
+          <Link to="/" className="flex items-center gap-2 text-text-main group hover:opacity-90 transition-all">
+            <Logo className="h-8" />
+          </Link>
 
           <nav className="hidden md:flex items-center gap-[18px] text-[14px] font-medium text-[#71717A]">
           </nav>

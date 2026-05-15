@@ -7,6 +7,8 @@ import { LoginModal } from '../common/LoginModal';
 export function Layout({ children }) {
   const location = useLocation();
   const isRoadmapPage = location.pathname.startsWith('/roadmap');
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
+  const hideFooter = isRoadmapPage || isAuthPage;
 
   return (
     <div className="min-h-screen flex flex-col font-sans">
@@ -14,7 +16,7 @@ export function Layout({ children }) {
       <main className="flex-1 flex flex-col">
         {children}
       </main>
-      {!isRoadmapPage && <Footer />}
+      {!hideFooter && <Footer />}
       <LoginModal />
     </div>
   );

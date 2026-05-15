@@ -1,70 +1,79 @@
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-brand: #2563eb;
-  /* Blue 600 */
-  --color-brand-hover: #1d4ed8;
-  --color-brand-light: #dbeafe;
-  /* Blue 100 */
-  --color-brand-subtle: #eff6ff;
-  /* Blue 50 */
+  --color-brand: #0f172a;
+  --color-brand-hover: #1e293b;
+  --color-brand-light: #f1f5f9;
+  --color-brand-subtle: #f8fafc;
 
-  --color-secondary: #9333ea;
-  /* Purple 600 */
-  --color-secondary-hover: #7e22ce;
-  --color-secondary-light: #f3e8ff;
-
+  --color-accent: #2563eb;
+  
   --color-bg-base: #ffffff;
   --color-bg-surface: #ffffff;
-  --color-bg-dark: #0f172a;
+  --color-bg-subtle: #f9fafb;
 
-  --color-text-main: #0f172a;
+  --color-text-main: #111827;
   --color-text-muted: #64748b;
-  --color-border-subtle: #e2e8f0;
+  --color-border-subtle: #f1f5f9;
 
-  --font-sans: 'Inter', 'Inter Fallback', sans-serif;
+  --font-sans: 'Outfit', system-ui, sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
-html {
-  /* Removed overflow-y: scroll to fix scrollbar issue */
-}
+@layer base {
+  body {
+    background-color: var(--color-bg-base);
+    color: var(--color-text-main);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 
-body {
-  background-color: var(--color-bg-base);
-  color: var(--color-text-main);
-  font-family: var(--font-sans);
-}
+  /* Global Cursor Pointer for all interactive elements */
+  button, 
+  a, 
+  input[type="button"], 
+  input[type="submit"], 
+  input[type="checkbox"], 
+  input[type="radio"], 
+  select,
+  [role="button"],
+  .cursor-pointer,
+  [onclick] {
+    cursor: pointer !important;
+  }
 
-.font-mono {
-  font-family: var(--font-mono);
-}
+  /* Specific Interactive Containers */
+  .roadmap-card,
+  .sidebar-item,
+  .topic-item,
+  .nav-link {
+    cursor: pointer !important;
+  }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  /* Typography refinement */
+  h1, h2, h3, h4 {
+    letter-spacing: -0.01em;
+    @apply font-semibold;
+  }
 }
 
 .custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  background: transparent;
+  width: 5px;
+  height: 5px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
+  background: #e2e8f0;
   border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: rgba(0, 0, 0, 0.25);
+  background: #cbd5e1;
 }
 
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgba(0, 0, 0, 0.15) transparent;
+  scrollbar-color: #e2e8f0 transparent;
 }

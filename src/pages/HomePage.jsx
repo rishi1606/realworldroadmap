@@ -50,12 +50,12 @@ export function HomePage() {
             <svg className="ml-2 h-4 w-4" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z" clipRule="evenodd" /></svg>
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-extrabold mb-6 tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-pink-500">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-slate-900 leading-[1.1]">
             Developer Roadmaps
           </h1>
 
-          <p className="text-[#71717A] text-[18px] md:text-[20px] leading-relaxed max-w-2xl font-medium">
-            <strong className="text-text-main">TechPaths</strong> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
+          <p className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
+            <span className="text-slate-900 font-semibold">TechPaths</span> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
           </p>
 
         </div>

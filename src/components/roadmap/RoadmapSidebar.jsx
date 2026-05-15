@@ -237,10 +237,10 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
         </div>
 
         {/* ── Title */}
-        <h1 className="text-[28px] md:text-[32px] font-extrabold text-slate-900 mb-2 tracking-tight leading-[1.15]">
+        <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 tracking-tight leading-tight">
           {roadmap?.title || 'Roadmap'}
         </h1>
-        <p className="text-slate-500 text-[14px] mb-4 leading-relaxed font-medium">
+        <p className="text-slate-500 text-[14px] mb-6 leading-relaxed">
           {roadmap?.description || 'Step by step guide to mastering this topic'}
         </p>
 

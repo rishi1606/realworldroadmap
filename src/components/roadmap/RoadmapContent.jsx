@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
@@ -37,13 +37,27 @@ const blockRenderers = {
 
   code: ({ block, index }) => <CodeBlock key={index} code={block.code} />,
 
-  image: ({ block, index }) => (
+  image: ({ block, index, onZoom }) => (
     <div key={index} className="mb-6">
-      <img
-        src={block.src}
-        alt={block.alt}
-        className="w-full rounded-lg border border-slate-200 shadow-sm object-contain"
-      />
+      <div
+        className="relative cursor-pointer rounded-lg overflow-hidden border border-slate-200 shadow-sm"
+        onClick={() => onZoom && onZoom(block.src)}
+      >
+        <img
+          src={block.src}
+          alt={block.alt}
+          className="w-full object-contain"
+        />
+        {/* Zoom icon — always visible, top-right */}
+        <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 shadow-sm flex items-center justify-center">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <polyline points="15 3 21 3 21 9" />
+            <polyline points="9 21 3 21 3 15" />
+            <polyline points="21 3 14 10" />
+            <polyline points="3 21 10 14" />
+          </svg>
+        </div>
+      </div>
       {block.alt && (
         <p className="text-[13px] text-slate-500 mt-2 text-center italic">
           {block.alt}
@@ -163,9 +177,144 @@ const blockRenderers = {
   ),
 };
 
-function RenderBlock({ block, index }) {
+function RenderBlock({ block, index, onZoom }) {
   const renderer = blockRenderers[block.type];
-  return renderer ? renderer({ block, index }) : null;
+  return renderer ? renderer({ block, index, onZoom }) : null;
+}
+
+// ─── Image Lightbox with Scroll Zoom & Drag Pan ─────────────────────────────
+
+function ImageLightbox({ src, onClose }) {
+  const [scale, setScale] = useState(1);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleKey = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', handleKey);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [onClose]);
+
+  const handleWheel = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setScale(prev => {
+      const delta = e.deltaY > 0 ? -0.15 : 0.15;
+      const next = Math.min(Math.max(prev + delta, 0.5), 5);
+      // Reset position when zooming back to 1
+      if (next <= 1) setPosition({ x: 0, y: 0 });
+      return next;
+    });
+  }, []);
+
+  const handleMouseDown = useCallback((e) => {
+    if (scale <= 1) return;
+    e.preventDefault();
+    setIsDragging(true);
+    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+  }, [scale, position]);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!isDragging) return;
+    setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
+  }, [isDragging, dragStart]);
+
+  const handleMouseUp = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+
+  const handleDoubleClick = useCallback((e) => {
+    e.stopPropagation();
+    if (scale > 1) {
+      setScale(1);
+      setPosition({ x: 0, y: 0 });
+    } else {
+      setScale(2.5);
+    }
+  }, [scale]);
+
+  const handleReset = useCallback(() => {
+    setScale(1);
+    setPosition({ x: 0, y: 0 });
+  }, []);
+
+  return createPortal(
+    <div
+      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      onClick={onClose}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseUp}
+      style={{ cursor: isDragging ? 'grabbing' : 'default' }}
+    >
+      {/* Top bar */}
+      <div className="absolute top-4 right-4 flex items-center gap-2 z-10" onClick={(e) => e.stopPropagation()}>
+        {/* Zoom percentage */}
+        <span className="text-white/80 text-xs font-mono bg-black/40 backdrop-blur-sm px-2.5 py-1.5 rounded-lg">
+          {Math.round(scale * 100)}%
+        </span>
+        {/* Reset zoom */}
+        {scale !== 1 && (
+          <button
+            onClick={handleReset}
+            className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-slate-200 hover:bg-white transition-all cursor-pointer"
+            title="Reset zoom"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="1 4 1 10 7 10" />
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10" />
+            </svg>
+          </button>
+        )}
+        {/* Close */}
+        <button
+          onClick={onClose}
+          className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-slate-200 hover:bg-white transition-all cursor-pointer"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+      </div>
+
+      {/* Zoom hint */}
+      {scale === 1 && (
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs font-medium bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-full z-10 pointer-events-none">
+          Scroll to zoom · Double-click to zoom in
+        </div>
+      )}
+
+      {/* Image container */}
+      <div
+        className="w-[96vw] h-[96vh] flex items-center justify-center overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+        onWheel={handleWheel}
+        onMouseDown={handleMouseDown}
+        onDoubleClick={handleDoubleClick}
+        style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
+      >
+        <img
+          src={src}
+          alt="Zoomed view"
+          className="max-w-full max-h-full object-contain rounded-xl shadow-2xl select-none"
+          draggable={false}
+          style={{
+            transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
+            transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+          }}
+        />
+      </div>
+    </div>,
+    document.body
+  );
 }
 
 // ─── Locked Overlay with Email Subscription ─────────────────────────────────
@@ -242,8 +391,12 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
 
 export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, topicStatus, updateStatus }) {
   const [viewMode, setViewMode] = useState("concept");
+  const [zoomedImage, setZoomedImage] = useState(null);
   const navigate = useNavigate();
   const { user } = useAuth();
+
+  const handleZoom = useCallback((src) => setZoomedImage(src), []);
+  const handleCloseZoom = useCallback(() => setZoomedImage(null), []);
 
   // Reset view mode when topic changes
   useEffect(() => {
@@ -334,7 +487,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
           <div className="mb-10 animate-in fade-in duration-500">
             {filteredBlocks.length > 0 ? (
               filteredBlocks.map((block, index) => (
-                <RenderBlock key={`${viewMode}-${index}`} block={block} index={index} />
+                <RenderBlock key={`${viewMode}-${index}`} block={block} index={index} onZoom={handleZoom} />
               ))
             ) : (
               <div className="py-20 text-center border-2 border-dashed border-slate-100 rounded-3xl">
@@ -344,6 +497,9 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
           </div>
         </div>
       </div>
+
+      {/* Image Lightbox */}
+      {zoomedImage && <ImageLightbox src={zoomedImage} onClose={handleCloseZoom} />}
     </div>
   );
 }

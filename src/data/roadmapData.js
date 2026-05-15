@@ -3951,6 +3951,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "You spent 10 minutes on Booking.com — searched hotels in Goa, filtered by pool and breakfast, shortlisted 3 options, and finally clicked on the perfect one. All of that is stored on Server A. Now you click View Rooms. The Load Balancer sends this new request to Server B. Server B has never seen you before. No filters. No shortlist. Your entire session is gone."
             },
+            { type: "image", src: "iphash.png" },
             {
               type: "error-callout",
               title: "Without sticking to the same server:",
@@ -4024,6 +4025,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "You're on Booking.com. You log in, search hotels in Goa, apply filters — pool, breakfast included, under ₹8,000. You click on a hotel. Behind the scenes, your request goes to Server A. Now you click 'View Rooms'. This request lands on Server B. Server B has absolutely no memory of who you are or what you just did."
             },
+            { type: "image", src: "stateless.png" },
             {
               type: "curious-callout",
               text: "❓ Does the server remember you between requests? Or does it treat every click like you're a brand new stranger?"

@@ -6,12 +6,12 @@ import { RoadmapContent } from '../components/roadmap/RoadmapContent';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { useAuth } from '../context/AuthContext';
 import { roadmapAPI, progressAPI } from '../api/client';
-import toast from 'react-hot-toast';
+
 
 export function RoadmapPage() {
   const { title } = useParams();
   const location = useLocation();
-  const { user } = useAuth();
+  const { user, setShowLoginModal } = useAuth();
 
   const [mounted, setMounted] = useState(false);
   const [activeRoadmap, setActiveRoadmap] = useState(null);
@@ -41,7 +41,7 @@ export function RoadmapPage() {
   }, [activeRoadmap, user]);
 
   const updateStatus = async (topicId) => {
-    if (!user) return toast.error("Please login to track progress");
+    if (!user) return setShowLoginModal(true);
 
     try {
       const { data } = await progressAPI.toggle(activeRoadmap._id, topicId);
@@ -54,9 +54,8 @@ export function RoadmapPage() {
       setTopicStatus(statusMap);
 
       const isDone = data.completedTopics.includes(topicId);
-      toast.success(isDone ? "Topic marked as complete!" : "Topic status updated");
     } catch (error) {
-      toast.error("Failed to update progress");
+      console.error(error);
     }
   };
 

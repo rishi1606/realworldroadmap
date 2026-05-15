@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { authAPI } from '../api/client';
-import toast from 'react-hot-toast';
 
 const AuthContext = createContext();
 
@@ -44,7 +43,6 @@ export function AuthProvider({ children }) {
       localStorage.removeItem('isAuthenticated');
     } catch (error) {
       console.error('Logout failed', error);
-      toast.error('Logout failed');
     }
   };
 

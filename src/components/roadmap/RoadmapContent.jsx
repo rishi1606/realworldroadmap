@@ -15,7 +15,7 @@ import {
   FiBell
 } from "react-icons/fi";
 import { notifyAPI } from "../../api/client";
-import toast from "react-hot-toast";
+
 
 // ─── Block Renderers ────────────────────────────────────────────────────────
 
@@ -179,16 +179,15 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
   useEffect(() => setMounted(true), []);
 
   const handleNotify = async () => {
-    if (!email.trim()) return toast.error("Please enter your email address");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast.error("Please enter a valid email");
+    if (!email.trim()) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
 
     setLoading(true);
     try {
       const { data } = await notifyAPI.subscribe(email, roadmapId, nodeLevel);
-      toast.success(data.message || "Subscribed successfully!");
       setSubscribed(true);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Something went wrong.");
+      console.error(error);
     } finally {
       setLoading(false);
     }

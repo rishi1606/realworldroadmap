@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom';
 import { FiShare2, FiMap, FiFolder, FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX, FiCheck, FiBell, FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import toast from 'react-hot-toast';
+
 import { ShareModal } from '../common/ShareModal';
 import { notifyAPI } from '../../api/client';
 
@@ -19,16 +19,15 @@ function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscri
 
   const handleNotify = async () => {
     const emailToUse = email || user?.email;
-    if (!emailToUse?.trim()) return toast.error('Please enter your email');
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) return toast.error('Invalid email');
+    if (!emailToUse?.trim()) return;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) return;
     setLoading(true);
     try {
       await notifyAPI.subscribe(emailToUse, roadmapId, 'all');
       onSubscribeSuccess();
-      toast.success('Successfully subscribed!');
       setTimeout(() => onClose(), 1000);
     } catch (e) {
-      toast.error(e.response?.data?.message || 'Something went wrong.');
+      console.error(e);
     } finally { setLoading(false); }
   };
 
@@ -89,7 +88,7 @@ function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscri
 
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
 export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, topicStatus, updateStatus }) {
-  const { user } = useAuth();
+  const { user, setShowLoginModal } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
   const [showNotify, setShowNotify] = useState(false);
@@ -129,7 +128,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
   const showComingSoon = activeLevel === 'all' || activeLevel === 'comingSoon';
 
   const handleNotifyClick = () => {
-    if (!user) return toast.error('Please login to subscribe');
+    if (!user) return setShowLoginModal(true);
     setShowNotify(true);
   };
 

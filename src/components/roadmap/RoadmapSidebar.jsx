@@ -176,18 +176,20 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             <span className="bg-slate-100 text-slate-500 text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider">Coming Soon</span>
           </div>
 
-          <div className="text-[12px] text-slate-500 mb-4 font-medium">In Progress • Launching Soon</div>
+          <div className="text-[12px] text-slate-500 mb-4 font-medium">{isInter ? "In Progress • " : ""}Launching Soon</div>
 
-          {/* Progress Bar */}
-          <div className="flex items-center gap-3 mb-6">
-            <div className="flex-1 h-1.5 bg-slate-50 rounded-full overflow-hidden">
-              <div className={`h-full ${theme.accent} transition-all duration-1000`} style={{ width: `${theme.progress}%` }} />
+          {/* Progress Bar - Only for Intermediate */}
+          {isInter && (
+            <div className="flex items-center gap-3 mb-6">
+              <div className="flex-1 h-1.5 bg-slate-50 rounded-full overflow-hidden">
+                <div className={`h-full ${theme.accent} transition-all duration-1000`} style={{ width: `${theme.progress}%` }} />
+              </div>
+              <span className="text-[12px] font-bold text-slate-400">{theme.progress}%</span>
             </div>
-            <span className="text-[12px] font-bold text-slate-400">{theme.progress}%</span>
-          </div>
+          )}
 
           {/* Topics List */}
-          <ul className="flex flex-col gap-3 mb-6">
+          <ul className={`flex flex-col gap-3 ${isInter ? 'mb-6' : 'mb-2'}`}>
             {nodes.map((n, i) => (
               <li key={i} className="flex items-center gap-3">
                 <div className={`w-1.5 h-1.5 rounded-full ${theme.dot} shrink-0 shadow-sm`} />
@@ -196,19 +198,21 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             ))}
           </ul>
 
-          {/* Founder Access Card */}
-          <div className={`${theme.bg} rounded-xl p-3 border border-white/50 shadow-inner`}>
-            <div className="flex items-start gap-3">
-              <div className={`w-9 h-9 rounded-lg ${theme.accent} flex items-center justify-center shrink-0 shadow-sm text-white`}>
-                {isInter ? <FiZap className="w-5 h-5" /> : <FiLayers className="w-5 h-5" />}
-              </div>
-              <div>
-                <h4 className="text-[13px] font-bold text-slate-900">Currently Building</h4>
-                <p className="text-[11px] text-slate-500 leading-tight">Get lifetime access before launch at founder pricing.</p>
-                <p className={`text-[9px] mt-1.5 font-bold ${theme.text} uppercase tracking-wider`}>Pre-access with Founder Benefits</p>
+          {/* Founder Access Card - Only for Intermediate */}
+          {isInter && (
+            <div className={`${theme.bg} rounded-xl p-3 border border-white/50 shadow-inner`}>
+              <div className="flex items-start gap-3">
+                <div className={`w-9 h-9 rounded-lg ${theme.accent} flex items-center justify-center shrink-0 shadow-sm text-white`}>
+                  <FiZap className="w-5 h-5" />
+                </div>
+                <div>
+                  <h4 className="text-[13px] font-bold text-slate-900">Currently Building</h4>
+                  <p className="text-[11px] text-slate-500 leading-tight">Get lifetime access before launch at founder pricing.</p>
+                  <p className={`text-[9px] mt-1.5 font-bold ${theme.text} uppercase tracking-wider`}>Pre-access with Founder Benefits</p>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     );

@@ -911,7 +911,7 @@ export const roadmapData = [
       {
         id: 5,
         title: "Security Hardening",
-        level: "intermediate",
+        level: "freshers",
         topics: [
           "HTTPS & Secure Cookies",
           "CSRF Attack & Prevention",
@@ -1098,6 +1098,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "You open Netflix and search 'Stranger Things'. Netflix goes to check the cache. Two things can happen — either the data is sitting right there waiting for you, or it's not there at all and Netflix has to go fetch it. These two moments have names."
             },
+
             {
               type: "heading",
               text: "Cache Hit — The Data is Already There"
@@ -1124,7 +1125,7 @@ export const roadmapData = [
               type: "success-callout",
               text: "✅ Cache Hit = fast, cheap, database never involved. This is what Netflix optimises for."
             },
-            { type: "image", src: "hit.jpeg" },
+            { type: "image", src: "chit.png" },
             {
               type: "heading",
               text: "Cache Miss — The Data is Not There"
@@ -1148,7 +1149,7 @@ export const roadmapData = [
               title: "Store in cache for next time",
               desc: "Netflix saves the data in cache. Next person who searches gets a Cache Hit."
             },
-            { type: "image", src: "cachemiss.jpeg" },
+
             {
               type: "code",
               code: "cache.get('new_show_xyz')\n→ ❌ MISS — not found\n→ Query database (~300ms)\n→ cache.set('new_show_xyz', data)\n→ Return data"
@@ -1180,6 +1181,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "Netflix targets a Cache Hit Ratio above 95% for popular content like Stranger Things, Wednesday, Money Heist. That means for every 100 users clicking a popular show, 95+ are served from cache and less than 5 ever touch the database."
             },
+            { type: "image", src: "hitratio.png" },
             {
               type: "info-callout",
               text: "💡 Higher Hit Ratio = faster Netflix, less database load, lower infrastructure cost. A drop from 95% to 80% during Friday night peak means millions of extra database queries — and a possible outage."
@@ -1206,6 +1208,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "You've opened Netflix on your laptop. You watched Stranger Things yesterday. Today you open it again — and the thumbnail loads before the page even fully renders. How? Netflix didn't fetch that from a server. It was already sitting on your laptop. Cache isn't just one place — it lives everywhere."
             },
+            { type: "image", "src": "stored.png" },
             {
               type: "heading",
               text: "1 — Browser Cache (On Your Device)"
@@ -1317,7 +1320,7 @@ export const roadmapData = [
               type: "code",
               code: "data = cache.get('delhi_files')\n\nif not data:\n  data = db.query('SELECT * FROM shows WHERE title=delhi_files')\n  cache.set('delhi_files', data, ttl=3600)\n\nreturn data"
             },
-            { type: "image", src: "cacheaside.jpeg" },
+            { type: "image", src: "caside.png" },
             {
               type: "success-callout",
               text: "✅ Cache only fills up with data people actually request. No wasted memory pre-loading shows nobody watches. Netflix uses this for long-tail content — older shows, regional titles, niche content."
@@ -1374,7 +1377,7 @@ export const roadmapData = [
               text: "✅ Cleaner application code. Cache is always the single source. No developer accidentally forgets to write to cache. The cache layer takes full responsibility."
             }
             ,
-            { type: "image", src: "read.jpeg" },
+            { type: "image", src: "rthrough.png" },
             {
               type: "warning-callout",
               text: "⚠️ Both strategies are about reading data. But what about writing? When a Netflix editor updates Stranger Things' description, adds a new episode, or changes the thumbnail — how does that update reach the cache? There are three ways to write — and each comes with different trade-offs."
@@ -1435,7 +1438,7 @@ export const roadmapData = [
               code: "cache.set('stranger_things', newData)\ndb.update('stranger_things', newData)\n// Both updated. Always in sync."
             },
 
-            { type: "image", src: "write.jpeg" },
+            { type: "image", src: "writethrough.png" },
             {
               type: "success-callout",
               text: "✅ Cache and database are always consistent. No user ever sees stale data. Netflix uses this for critical data — show metadata, episode lists, content ratings."
@@ -1492,7 +1495,7 @@ export const roadmapData = [
               type: "code",
               code: "// Immediate:\ncache.set('user_123_progress', { ep: 3, time: '24:13' })\nreturn 'saved' ✅\n\n// Background (few seconds later):\ndb.bulkUpdate(cache.getPendingWrites())"
             }
-            , { type: "image", src: "writeback.jpeg" },
+            , { type: "image", src: "writeb.png" },
             {
               type: "success-callout",
               text: "✅ Database load drops massively. Writes feel instant to the user. Netflix uses this for watch history, continue watching, pause positions — high-frequency writes where slight delay in DB sync is perfectly acceptable."
@@ -1516,7 +1519,7 @@ export const roadmapData = [
           "Write-Around Cache": [
             {
               type: "paragraph",
-              text: "Every second, millions of Netflix users are watching shows. The view count for Stranger Things is updating thousands of times per second. If Netflix wrote every view count update to cache — the cache would be flooded with rapidly changing numbers, each one becoming stale almost instantly. Caching it is pointless."
+              text: "Every second, millions of Netflix users are watching shows. The view count for Breaking Bad is updating thousands of times per second. If Netflix wrote every view count update to cache — the cache would be flooded with rapidly changing numbers, each one becoming stale almost instantly. Caching it is pointless."
             },
             {
               type: "curious-callout",
@@ -1535,6 +1538,7 @@ export const roadmapData = [
               title: "View count updates every second",
               desc: "Netflix writes the new count directly to the database. Cache is not touched."
             },
+            { type: "image", src: "waround.png" },
             {
               type: "step",
               title: "User opens Stranger Things page",
@@ -1568,55 +1572,55 @@ export const roadmapData = [
 
       {
         id: 4,
-        title: "Cache Invalidation",
+        title: "Cache Eviction",
         level: "freshers",
         topics: [
-          "TTL (Time to Live)",
+          // "TTL (Time to Live)",
           "LRU (Least Recently Used)",
           "LFU (Least Frequently Used)",
           "FIFO (First In First Out)",
-          "Manual & Event-Driven Invalidation"
+          // "Manual & Event-Driven Invalidation"
         ],
         topicDetails: {
-          "TTL (Time to Live)": [
-            {
-              type: "paragraph",
-              text: "Netflix cached Stranger Things metadata — description, cast, episode list. That data sits in Redis. It will sit there forever — unless Netflix tells it when to expire. Three months later, a new episode drops. The cache still has the old episode list. Users see wrong data. Nobody knows why."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ How does Netflix make sure cached data doesn't live forever and become stale?"
-            },
-            {
-              type: "heading",
-              text: "Give Every Cached Item an Expiry Time"
-            },
-            {
-              type: "paragraph",
-              text: "TTL — Time to Live — is a timer you attach to every cached item. When the timer runs out, the item is automatically deleted from cache. Next request is a Cache Miss, fresh data is fetched from database, cached again with a new TTL. Clean cycle."
-            },
-            {
-              type: "code",
-              code: "cache.set('stranger_things', data, ttl=3600)\n// This data lives for 3600 seconds (1 hour)\n// After 1 hour — automatically deleted\n// Next request → Cache Miss → fresh DB fetch"
-            },
-            {
-              type: "paragraph",
-              text: "Netflix sets different TTLs based on how often data changes."
-            },
-            { type: "image", src: "TTL.png" },
-            {
-              type: "code",
-              code: "Show metadata (title, cast)  → TTL: 24 hours\nEpisode list                 → TTL: 1 hour\nTrending shows list          → TTL: 5 minutes\nReal-time view counts        → TTL: 60 seconds"
-            },
-            {
-              type: "success-callout",
-              text: "✅ TTL is the simplest cache invalidation strategy. Set it and forget it. Data auto-expires. No manual cleanup. Netflix uses TTL on almost every cached item as the baseline."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ TTL handles expiry over time — but what about when Redis runs out of memory right now? Netflix has 10,000 shows cached. Cache is full. A new show needs to be added. Something has to be removed to make space. Which one? That's where eviction policies come in — LRU, LFU, FIFO."
-            }
-          ],
+          // "TTL (Time to Live)": [
+          //   {
+          //     type: "paragraph",
+          //     text: "Netflix cached Stranger Things metadata — description, cast, episode list. That data sits in Redis. It will sit there forever — unless Netflix tells it when to expire. Three months later, a new episode drops. The cache still has the old episode list. Users see wrong data. Nobody knows why."
+          //   },
+          //   {
+          //     type: "curious-callout",
+          //     text: "❓ How does Netflix make sure cached data doesn't live forever and become stale?"
+          //   },
+          //   {
+          //     type: "heading",
+          //     text: "Give Every Cached Item an Expiry Time"
+          //   },
+          //   {
+          //     type: "paragraph",
+          //     text: "TTL — Time to Live — is a timer you attach to every cached item. When the timer runs out, the item is automatically deleted from cache. Next request is a Cache Miss, fresh data is fetched from database, cached again with a new TTL. Clean cycle."
+          //   },
+          //   {
+          //     type: "code",
+          //     code: "cache.set('stranger_things', data, ttl=3600)\n// This data lives for 3600 seconds (1 hour)\n// After 1 hour — automatically deleted\n// Next request → Cache Miss → fresh DB fetch"
+          //   },
+          //   {
+          //     type: "paragraph",
+          //     text: "Netflix sets different TTLs based on how often data changes."
+          //   },
+          //   { type: "image", src: "TTL.png" },
+          //   {
+          //     type: "code",
+          //     code: "Show metadata (title, cast)  → TTL: 24 hours\nEpisode list                 → TTL: 1 hour\nTrending shows list          → TTL: 5 minutes\nReal-time view counts        → TTL: 60 seconds"
+          //   },
+          //   {
+          //     type: "success-callout",
+          //     text: "✅ TTL is the simplest cache invalidation strategy. Set it and forget it. Data auto-expires. No manual cleanup. Netflix uses TTL on almost every cached item as the baseline."
+          //   },
+          //   {
+          //     type: "warning-callout",
+          //     text: "⚠️ TTL handles expiry over time — but what about when Redis runs out of memory right now? Netflix has 10,000 shows cached. Cache is full. A new show needs to be added. Something has to be removed to make space. Which one? That's where eviction policies come in — LRU, LFU, FIFO."
+          //   }
+          // ],
 
           "LRU (Least Recently Used)": [
             {
@@ -1627,6 +1631,7 @@ export const roadmapData = [
               type: "heading",
               text: "Remove What Nobody Has Touched Lately"
             },
+            { type: "image", src: "lru.png" },
             {
               type: "paragraph",
               text: "LRU — Least Recently Used — evicts whichever item hasn't been accessed for the longest time. The logic is simple: if nobody has opened that show's cache entry in a long time, they probably won't any time soon. So it's the safest thing to remove."
@@ -1675,7 +1680,7 @@ export const roadmapData = [
               text: "The documentary was cached but barely anyone opened it. 3 hits total. It's the least valuable item in cache. It goes. Squid Game — with 2 million hits — absolutely stays, even if it wasn't accessed in the last hour."
             }
             ,
-            { type: "image", src: "LFU.jpeg" },
+            { type: "image", src: "lfu.png" },
             {
               type: "success-callout",
               text: "✅ LFU keeps genuinely popular content in cache regardless of recency. Netflix uses LFU for evergreen content — shows that have consistent long-term demand like Friends, Breaking Bad, Money Heist."
@@ -1732,72 +1737,72 @@ export const roadmapData = [
             }
           ],
 
-          "Manual & Event-Driven Invalidation": [
-            {
-              type: "paragraph",
-              text: "It's 12:00 AM. Netflix just dropped all 8 episodes of Stranger Things Season 5 simultaneously worldwide. Every user opening the show needs to see the new season immediately. But the cache has the old season data — cached with a 24 hour TTL. That TTL won't expire for another 18 hours. 18 hours of users seeing wrong episode counts. That's unacceptable."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ How does Netflix wipe specific cache entries instantly — the moment something important changes — without waiting for TTL or eviction policies?"
-            },
-            {
-              type: "heading",
-              text: "Manual Invalidation — Wipe It Right Now"
-            },
-            {
-              type: "paragraph",
-              text: "Manual invalidation means explicitly deleting a cache entry the moment you know the data has changed. No waiting. The next request will be a Cache Miss — fetching fresh data from the database and caching it again."
-            },
-            {
-              type: "step",
-              title: "Netflix content team publishes Season 5",
-              desc: "New episodes are uploaded. Database is updated with new episode list."
-            },
-            {
-              type: "step",
-              title: "Manually delete the cache entry",
-              desc: "Engineering triggers an immediate cache delete for the Stranger Things entry."
-            },
-            {
-              type: "code",
-              code: "cache.delete('stranger_things')\n// Cache entry wiped instantly ✅"
-            },
-            {
-              type: "step",
-              title: "First user opens Stranger Things",
-              desc: "Cache Miss. Netflix fetches fresh data from DB — now includes Season 5. Cached again."
-            },
-            {
-              type: "step",
-              title: "All users after that",
-              desc: "Cache Hit — Season 5 data. Everyone sees the new season immediately. ✅"
-            },
-            {
-              type: "heading",
-              text: "Event-Driven Invalidation — Automate It"
-            },
-            {
-              type: "paragraph",
-              text: "Manual invalidation still requires someone to remember to delete the cache. Netflix automates this with event-driven invalidation — whenever the database is updated, it automatically fires an event that triggers cache deletion. No human needed."
-            },
-            {
-              type: "code",
-              code: "// Database update triggers an event:\ndb.update('stranger_things', newData)\n→ fires event: 'show_updated'\n\n// Cache listener catches it:\non('show_updated', (showId) => {\n  cache.delete(showId) // Auto-invalidated ✅\n})"
-            },
-            {
-              type: "paragraph",
-              text: "The moment any show data changes in the database — the event fires, the cache is cleared, fresh data is ready on the next request. No developer has to remember to do it. No stale data ever sits in cache after an update."
-            },
-            {
-              type: "success-callout",
-              text: "✅ Netflix uses event-driven invalidation for all content updates — new episodes, changed thumbnails, updated descriptions, removed titles. The cache stays perfectly in sync with the database automatically — the moment something changes."
-            },
-            {
-              type: "info-callout",
-              text: "🎯 Full picture — TTL handles natural expiry over time. LRU/LFU/FIFO handle eviction when memory is full. Manual invalidation handles urgent one-off clears. Event-driven handles automatic real-time sync. Netflix uses all four together — that's how the cache always stays fresh at scale."
-            }
-          ]
+          // "Manual & Event-Driven Invalidation": [
+          //   {
+          //     type: "paragraph",
+          //     text: "It's 12:00 AM. Netflix just dropped all 8 episodes of Stranger Things Season 5 simultaneously worldwide. Every user opening the show needs to see the new season immediately. But the cache has the old season data — cached with a 24 hour TTL. That TTL won't expire for another 18 hours. 18 hours of users seeing wrong episode counts. That's unacceptable."
+          //   },
+          //   {
+          //     type: "curious-callout",
+          //     text: "❓ How does Netflix wipe specific cache entries instantly — the moment something important changes — without waiting for TTL or eviction policies?"
+          //   },
+          //   {
+          //     type: "heading",
+          //     text: "Manual Invalidation — Wipe It Right Now"
+          //   },
+          //   {
+          //     type: "paragraph",
+          //     text: "Manual invalidation means explicitly deleting a cache entry the moment you know the data has changed. No waiting. The next request will be a Cache Miss — fetching fresh data from the database and caching it again."
+          //   },
+          //   {
+          //     type: "step",
+          //     title: "Netflix content team publishes Season 5",
+          //     desc: "New episodes are uploaded. Database is updated with new episode list."
+          //   },
+          //   {
+          //     type: "step",
+          //     title: "Manually delete the cache entry",
+          //     desc: "Engineering triggers an immediate cache delete for the Stranger Things entry."
+          //   },
+          //   {
+          //     type: "code",
+          //     code: "cache.delete('stranger_things')\n// Cache entry wiped instantly ✅"
+          //   },
+          //   {
+          //     type: "step",
+          //     title: "First user opens Stranger Things",
+          //     desc: "Cache Miss. Netflix fetches fresh data from DB — now includes Season 5. Cached again."
+          //   },
+          //   {
+          //     type: "step",
+          //     title: "All users after that",
+          //     desc: "Cache Hit — Season 5 data. Everyone sees the new season immediately. ✅"
+          //   },
+          //   {
+          //     type: "heading",
+          //     text: "Event-Driven Invalidation — Automate It"
+          //   },
+          //   {
+          //     type: "paragraph",
+          //     text: "Manual invalidation still requires someone to remember to delete the cache. Netflix automates this with event-driven invalidation — whenever the database is updated, it automatically fires an event that triggers cache deletion. No human needed."
+          //   },
+          //   {
+          //     type: "code",
+          //     code: "// Database update triggers an event:\ndb.update('stranger_things', newData)\n→ fires event: 'show_updated'\n\n// Cache listener catches it:\non('show_updated', (showId) => {\n  cache.delete(showId) // Auto-invalidated ✅\n})"
+          //   },
+          //   {
+          //     type: "paragraph",
+          //     text: "The moment any show data changes in the database — the event fires, the cache is cleared, fresh data is ready on the next request. No developer has to remember to do it. No stale data ever sits in cache after an update."
+          //   },
+          //   {
+          //     type: "success-callout",
+          //     text: "✅ Netflix uses event-driven invalidation for all content updates — new episodes, changed thumbnails, updated descriptions, removed titles. The cache stays perfectly in sync with the database automatically — the moment something changes."
+          //   },
+          //   {
+          //     type: "info-callout",
+          //     text: "🎯 Full picture — TTL handles natural expiry over time. LRU/LFU/FIFO handle eviction when memory is full. Manual invalidation handles urgent one-off clears. Event-driven handles automatic real-time sync. Netflix uses all four together — that's how the cache always stays fresh at scale."
+          //   }
+          // ]
         }
       }
     ]

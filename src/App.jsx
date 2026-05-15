@@ -7,6 +7,7 @@ import { SignupPage } from './pages/SignupPage';
 import { PrivacyPolicyPage } from './pages/PrivacyPolicyPage';
 import { ContactPage } from './pages/ContactPage';
 import { TermsPage } from './pages/TermsPage';
+import { SupportPage } from './pages/SupportPage';
 import { Layout } from './components/layout/Layout';
 import './App.css';
 
@@ -23,6 +24,7 @@ function App() {
           <Route path="/privacy-policy" element={<PrivacyPolicyPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/terms" element={<TermsPage />} />
+          <Route path="/support" element={<SupportPage />} />
         </Routes>
       </Layout>
     </BrowserRouter>

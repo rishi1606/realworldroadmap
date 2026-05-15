@@ -6671,6 +6671,10 @@ export const roadmapData = [
             {
               "type": "warning-callout",
               "text": "⚠️ Worker Threads are for JavaScript CPU work. But what if MakeMyTrip needs to run a Python ML model to predict Priya's flight delay, or compress last night's booking logs, or talk to a separate fraud detection service? That's where Child Processes come in — entirely separate OS processes, any language."
+            },
+            {
+              "type": "image",
+              "src": "wt1.png"
             }
           ],
 

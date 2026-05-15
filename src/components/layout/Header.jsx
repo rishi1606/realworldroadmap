@@ -52,7 +52,12 @@ export function Header() {
             </kbd>
           </div>
 
-          <div className="flex items-center gap-1 border-l border-border-subtle pl-3">
+          <div className="flex items-center gap-2 border-l border-border-subtle pl-3">
+
+            {/* Support Project */}
+            <Link to="/support" className="hidden sm:inline-flex items-center gap-1.5 text-[13px] font-medium text-text-muted hover:text-red-500 transition-colors px-2 py-1 rounded-md hover:bg-red-50">
+              Support Project <span className="text-red-400">❤️</span>
+            </Link>
 
             {/* Theme Toggle placeholder */}
             {!user ? (

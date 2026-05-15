@@ -1917,7 +1917,7 @@ export const roadmapData = [
 
     ]
 
-  }
+  },
   // ,
   // {
   //   id: "websockets-gaming",
@@ -3471,831 +3471,837 @@ export const roadmapData = [
 
   //   ]
   // },
-  // {
-  //   id: "loadbalancer-booking",
-  //   image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Icon_2022.svg",
-  //   title: "How Booking.com Handles Millions of Users",
-  //   description: "Explore how Booking.com handles massive traffic spikes — from round-robin & least-connections algorithms, NGINX reverse proxy setup, health checks, sticky sessions, to auto-scaling load balancers in cloud environments.",
-  //   tags: ["NGINX", "Load Balancer", "Reverse Proxy"],
-  //   nodes: [
+  ,
+  {
+    id: "loadbalancer-booking",
+    image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Icon_2022.svg",
+    title: "How Booking.com Handles Millions of Users",
+    description: "Explore how Booking.com handles massive traffic spikes — from round-robin & least-connections algorithms, NGINX reverse proxy setup, health checks, sticky sessions, to auto-scaling load balancers in cloud environments.",
+    tags: ["NGINX", "Load Balancer", "Reverse Proxy"],
+    nodes: [
 
-  //     {
-  //       id: 1,
-  //       title: "Basics (Foundation)",
-  //       level: "freshers",
-  //       topics: [
-  //         "What is Load Balancer and Why do we need it?",
-  //         "What is High Availability — How Booking.com stays online 24/7"
-  //       ],
-  //       topicDetails: {
-  //         "What is Load Balancer and Why do we need it?": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Imagine it's New Year's Eve and you're desperately searching for a hotel in Goa on Booking.com. Now imagine 20 lakh other people doing the exact same thing — same app, same moment, same panic. Any normal system would collapse under that pressure. But Booking.com handles it smoothly, every single time. The secret behind that? Load Balancing."
-  //           },
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "What is Load Balancer and Why do we need it?",
+          "What is High Availability — How Booking.com stays online 24/7"
+        ],
+        topicDetails: {
+          "What is Load Balancer and Why do we need it?": [
+            {
+              type: "paragraph",
+              text: "Imagine it's New Year's Eve and you're desperately searching for a hotel in Goa on Booking.com. Now imagine 20 lakh other people doing the exact same thing — same app, same moment, same panic. Any normal system would collapse under that pressure. But Booking.com handles it smoothly, every single time. The secret behind that? Load Balancing."
+            },
 
 
-  //           // 🔴 PROBLEM
-  //           {
-  //             type: "heading",
-  //             text: "The Problem — One Server Can't Handle Everything"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Before we understand the solution, let's understand the problem. What actually happens when 20 lakh people hit the same server at the same time?"
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "If Booking.com had only ONE server:",
-  //             list: [
-  //               "20 lakh requests crash into that one server",
-  //               "It slows down... lags... then completely crashes",
-  //               "Nobody can search hotels, view rooms, or make payments",
-  //               "Booking.com loses crores of rupees in just minutes"
-  //             ],
-  //             footer: "This is called Server Overload — a very real, very expensive problem."
-  //           },
-  //           { type: "image", src: "traffic.png" },
+            // 🔴 PROBLEM
+            {
+              type: "heading",
+              text: "The Problem — One Server Can't Handle Everything"
+            },
+            {
+              type: "paragraph",
+              text: "Before we understand the solution, let's understand the problem. What actually happens when 20 lakh people hit the same server at the same time?"
+            },
+            {
+              type: "error-callout",
+              title: "If Booking.com had only ONE server:",
+              list: [
+                "20 lakh requests crash into that one server",
+                "It slows down... lags... then completely crashes",
+                "Nobody can search hotels, view rooms, or make payments",
+                "Booking.com loses crores of rupees in just minutes"
+              ],
+              footer: "This is called Server Overload — a very real, very expensive problem."
+            },
+            { type: "image", src: "traffic.png" },
 
-  //           // 💡 SOLUTION INTRO
-  //           {
-  //             type: "heading",
-  //             text: "So What is a Load Balancer?"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Simple answer — instead of one server doing all the work, Booking.com runs many servers doing the same job. And a Load Balancer sits in front of all of them, acting like a smart traffic cop — deciding which server gets which request, so no single server drowns."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "🍔 Think of it like McDonald's on a Sunday. 500 people walk in — instead of one counter handling everyone, the manager opens 10 counters and sends each customer to the free one. That manager? That's your Load Balancer."
-  //           },
+            // 💡 SOLUTION INTRO
+            {
+              type: "heading",
+              text: "So What is a Load Balancer?"
+            },
+            {
+              type: "paragraph",
+              text: "Simple answer — instead of one server doing all the work, Booking.com runs many servers doing the same job. And a Load Balancer sits in front of all of them, acting like a smart traffic cop — deciding which server gets which request, so no single server drowns."
+            },
+            {
+              type: "info-callout",
+              text: "🍔 Think of it like McDonald's on a Sunday. 500 people walk in — instead of one counter handling everyone, the manager opens 10 counters and sends each customer to the free one. That manager? That's your Load Balancer."
+            },
 
-  //           // ⚙️ HOW IT WORKS - STEP BY STEP
-  //           {
-  //             type: "heading",
-  //             text: "How Does It Actually Work? — Step by Step"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — You search 'Hotels in Goa'",
-  //             desc: "You enter your destination, pick your dates, and hit Search. Simple enough, right?"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Your request hits the Load Balancer first",
-  //             desc: "Your request never goes directly to a server. It lands on the Load Balancer first — every single time, no exceptions."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "You → Load Balancer → Server A / Server B / Server C"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — Load Balancer finds the least busy server",
-  //             desc: "It checks all servers in real time and picks the one with the least load:\n\nServer A → 900 requests (busy)\nServer B → 850 requests (busy)\nServer C → 200 requests ← Your request goes here"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 4 — Server C responds with your results",
-  //             desc: "Server C fetches hotels in Goa and sends results back to you — in milliseconds. You don't feel a thing."
-  //           },
-  //           { type: "image", src: "load-balancer.png" },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ 20 lakh users. New Year's Eve. Peak traffic. Booking.com stays fast, smooth, and crash-free. That's Load Balancing doing its job."
-  //           },
+            // ⚙️ HOW IT WORKS - STEP BY STEP
+            {
+              type: "heading",
+              text: "How Does It Actually Work? — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You search 'Hotels in Goa'",
+              desc: "You enter your destination, pick your dates, and hit Search. Simple enough, right?"
+            },
+            {
+              type: "step",
+              title: "Step 2 — Your request hits the Load Balancer first",
+              desc: "Your request never goes directly to a server. It lands on the Load Balancer first — every single time, no exceptions."
+            },
+            {
+              type: "code",
+              code: "You → Load Balancer → Server A / Server B / Server C"
+            },
+            {
+              type: "step",
+              title: "Step 3 — Load Balancer finds the least busy server",
+              desc: "It checks all servers in real time and picks the one with the least load:\n\nServer A → 900 requests (busy)\nServer B → 850 requests (busy)\nServer C → 200 requests ← Your request goes here"
+            },
+            {
+              type: "step",
+              title: "Step 4 — Server C responds with your results",
+              desc: "Server C fetches hotels in Goa and sends results back to you — in milliseconds. You don't feel a thing."
+            },
 
-  //           // 🔀 ADVANCED - SEPARATE LOAD BALANCERS
-  //           {
-  //             type: "heading",
-  //             text: "One More Thing — Booking.com Uses Separate Load Balancers"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Booking.com doesn't use just one Load Balancer for everything. It separates traffic by job — searching, viewing, and paying all have their own lanes."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Search Hotels  →  Search Load Balancer  →  Search Servers\nView Rooms     →  Rooms Load Balancer   →  Room Servers\nMake Payment   →  Payment Load Balancer →  Payment Servers"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "So even if 1 crore people are searching hotels at once, your payment goes through on its own separate lane — completely unaffected. Smart, right?"
-  //           },
+            {
+              type: "success-callout",
+              text: "✅ 20 lakh users. New Year's Eve. Peak traffic. Booking.com stays fast, smooth, and crash-free. That's Load Balancing doing its job."
+            },
 
-  //           // ⚠️ CLIFFHANGER
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But wait — what if the Load Balancer itself crashes? Or a server dies mid-request? Who saves you then? That's exactly what High Availability solves — coming up next!"
-  //           }
-  //         ],
+            // 🔀 ADVANCED - SEPARATE LOAD BALANCERS
+            {
+              type: "heading",
+              text: "One More Thing — Booking.com Uses Separate Load Balancers"
+            },
+            {
+              type: "paragraph",
+              text: "Booking.com doesn't use just one Load Balancer for everything. It separates traffic by job — searching, viewing, and paying all have their own lanes."
+            },
+            {
+              type: "code",
+              code: "Search Hotels  →  Search Load Balancer  →  Search Servers\nView Rooms     →  Rooms Load Balancer   →  Room Servers\nMake Payment   →  Payment Load Balancer →  Payment Servers"
+            },
+            {
+              type: "paragraph",
+              text: "So even if 1 crore people are searching hotels at once, your payment goes through on its own separate lane — completely unaffected. Smart, right?"
+            },
 
-  //         "What is High Availability — How Booking.com stays online 24/7": [
+            // ⚠️ CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ But wait — what if the Load Balancer itself crashes? Or a server dies mid-request? Who saves you then? That's exactly what High Availability solves — coming up next!"
+            }
+          ],
 
-  //           // 🎬 HOOK
-  //           {
-  //             type: "paragraph",
-  //             text: "You found the perfect hotel in Goa on Booking.com. ₹12,000 for New Year's Eve. You click 'Pay Now', enter your card details, and hit Confirm. At that exact moment — the payment server crashes. What happens to your ₹12,000? What happens to your booking?"
-  //           },
+          "What is High Availability — How Booking.com stays online 24/7": [
 
-  //           // 🔴 PROBLEM
-  //           {
-  //             type: "heading",
-  //             text: "Servers Do Crash. It's Not If — It's When."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Every server in the world will crash at some point. Hardware fails. Memory overloads. Bugs slip through. The real question is — what happens to the user when it does?"
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "If Booking.com had no backup plan:",
-  //             list: [
-  //               "Payment fails right in the middle of your transaction",
-  //               "Money deducted from your account — hotel not booked",
-  //               "You see a random error screen with no explanation",
-  //               "You call support. They have no idea what happened."
-  //             ],
-  //             footer: "1 minute of downtime on Booking.com = thousands of lost bookings + crores in losses."
-  //           },
-  //           { type: "image", src: "HA-problem.png" },
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "You found the perfect hotel in Goa on Booking.com. ₹12,000 for New Year's Eve. You click 'Pay Now', enter your card details, and hit Confirm. At that exact moment — the payment server crashes. What happens to your ₹12,000? What happens to your booking?"
+            },
 
-  //           // 💡 SOLUTION INTRO
-  //           {
-  //             type: "heading",
-  //             text: "So What is High Availability?"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "High Availability simply means — even if something breaks inside the system, the user never feels it. No error. No downtime. No panic. The app just keeps running like nothing happened."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "🛣️ Think of a highway with 4 lanes. One lane is blocked? Traffic moves to the other 3. The highway never fully shuts down. That's exactly what High Availability does for servers."
-  //           },
+            // 🔴 PROBLEM
+            {
+              type: "heading",
+              text: "Servers Do Crash. It's Not If — It's When."
+            },
+            {
+              type: "paragraph",
+              text: "Every server in the world will crash at some point. Hardware fails. Memory overloads. Bugs slip through. The real question is — what happens to the user when it does?"
+            },
+            {
+              type: "error-callout",
+              title: "If Booking.com had no backup plan:",
+              list: [
+                "Payment fails right in the middle of your transaction",
+                "Money deducted from your account — hotel not booked",
+                "You see a random error screen with no explanation",
+                "You call support. They have no idea what happened."
+              ],
+              footer: "1 minute of downtime on Booking.com = thousands of lost bookings + crores in losses."
+            },
 
-  //           // ⚙️ HOW IT WORKS
-  //           {
-  //             type: "heading",
-  //             text: "How Does Booking.com Stay Up Even When a Server Crashes?"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "They never rely on just one server. Booking.com runs the same payment system on multiple servers simultaneously. If one dies, the others are already running and ready to take over — instantly."
-  //           },
-  //           { type: "image", src: "paymentserver.png" },
-  //           {
-  //             type: "paragraph",
-  //             text: "But how does the system know when a server dies? It doesn't wait for a human to notice. The Load Balancer pings every server every few seconds — asking one simple question: 'Hey, are you alive?'"
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Every 5 seconds:\n→ Ping Server A ... 200 OK ✅\n→ Ping Server B ... 200 OK ✅\n→ Ping Server C ... ❌ No response\n   Server C marked DOWN. Removed from pool instantly."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "The moment a server stops responding — it's out. All traffic automatically shifts to the healthy ones. No human involvement. No delay. The user never sees a thing."
-  //           },
 
-  //           // 🪜 STEP BY STEP - YOUR ₹12,000 STORY
-  //           {
-  //             type: "heading",
-  //             text: "Back to Your ₹12,000 — Here's What Actually Happened"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — You click Pay Now",
-  //             desc: "Your ₹12,000 payment request is sent to Payment Server A — the least busy one at that moment."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Server A crashes mid-request",
-  //             desc: "Memory overload. Hardware failure. A rogue bug. Server A goes completely dark — mid-transaction."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — System detects it within seconds",
-  //             desc: "The Load Balancer pinged Server A. No response. It immediately marks Server A as DOWN and removes it from the pool."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "GET /health → Server A → ❌ Timeout\nServer A = DOWN. Rerouting traffic to Server B..."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 4 — Your payment lands on Server B",
-  //             desc: "Server B picks up right where Server A left off. Payment goes through. Booking confirmed. ✅"
-  //           },
-  //           { type: "image", src: "paymentsuccess.jpeg" },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ You never saw an error. You never even knew Server A crashed. Your booking was confirmed. Your ₹12,000 is safe. That's High Availability — working silently in the background, every single time."
-  //           },
+            // 💡 SOLUTION INTRO
+            {
+              type: "heading",
+              text: "So What is High Availability?"
+            },
+            {
+              type: "paragraph",
+              text: "High Availability simply means — even if something breaks inside the system, the user never feels it. No error. No downtime. No panic. The app just keeps running like nothing happened."
+            },
+            {
+              type: "info-callout",
+              text: "🛣️ Think of a highway with 4 lanes. One lane is blocked? Traffic moves to the other 3. The highway never fully shuts down. That's exactly what High Availability does for servers."
+            },
 
-  //           // 🖼️ FULL PICTURE
-  //           {
-  //             type: "heading",
-  //             text: "The Full Picture — Load Balancer + High Availability Together"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "These two concepts aren't separate — they work as a team. The Load Balancer distributes traffic smartly. High Availability ensures no crash ever reaches the user. Together, they make Booking.com bulletproof."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Your Request\n       ↓\n  Load Balancer\n  (splits traffic smartly)\n       ↓\n┌──────────┬──────────┬──────────┐\n│ Server A │ Server B │ Server C │\n└──────────┴──────────┴──────────┘\n       ↓\n Ping every 5s → server dead?\n → Traffic shifts automatically. User feels nothing."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "🎯 Load Balancer handles the traffic. High Availability handles the failures. Together — Booking.com stays alive no matter what."
-  //           },
+            // ⚙️ HOW IT WORKS
+            {
+              type: "heading",
+              text: "How Does Booking.com Stay Up Even When a Server Crashes?"
+            },
+            {
+              type: "paragraph",
+              text: "They never rely on just one server. Booking.com runs the same payment system on multiple servers simultaneously. If one dies, the others are already running and ready to take over — instantly."
+            },
+            { type: "image", src: "hiva.png" },
+            {
+              type: "paragraph",
+              text: "But how does the system know when a server dies? It doesn't wait for a human to notice. The Load Balancer pings every server every few seconds — asking one simple question: 'Hey, are you alive?'"
+            },
+            {
+              type: "code",
+              code: "Every 5 seconds:\n→ Ping Server A ... 200 OK ✅\n→ Ping Server B ... 200 OK ✅\n→ Ping Server C ... ❌ No response\n   Server C marked DOWN. Removed from pool instantly."
+            },
+            {
+              type: "paragraph",
+              text: "The moment a server stops responding — it's out. All traffic automatically shifts to the healthy ones. No human involvement. No delay. The user never sees a thing."
+            },
 
-  //           // ⚠️ CLIFFHANGER INTO ALGORITHMS
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But wait — when 20 lakh users hit Booking.com at the same time, how does the Load Balancer decide who goes to Server A, who goes to Server B, and who goes to Server C? Does it just go one by one? Does it check who's least busy? Does it randomly pick? There are actual algorithms behind this decision — and that's exactly what we're breaking down next."
-  //           }
-  //         ]
-  //       }
-  //     },
+            // 🪜 STEP BY STEP - YOUR ₹12,000 STORY
+            {
+              type: "heading",
+              text: "Back to Your ₹12,000 — Here's What Actually Happened"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You click Pay Now",
+              desc: "Your ₹12,000 payment request is sent to Payment Server A — the least busy one at that moment."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Server A crashes mid-request",
+              desc: "Memory overload. Hardware failure. A rogue bug. Server A goes completely dark — mid-transaction."
+            },
+            {
+              type: "step",
+              title: "Step 3 — System detects it within seconds",
+              desc: "The Load Balancer pinged Server A. No response. It immediately marks Server A as DOWN and removes it from the pool."
+            },
+            {
+              type: "code",
+              code: "GET /health → Server A → ❌ Timeout\nServer A = DOWN. Rerouting traffic to Server B..."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Your payment lands on Server B",
+              desc: "Server B picks up right where Server A left off. Payment goes through. Booking confirmed. ✅"
+            },
 
-  //     {
-  //       id: 2,
-  //       title: "Load Balancing Algorithms",
-  //       level: "freshers",
-  //       topics: [
-  //         "Round Robin",
-  //         "Weighted Round Robin",
-  //         "Least Connections",
-  //         "Least Response Time",
-  //         "IP Hash",
+            {
+              type: "success-callout",
+              text: "✅ You never saw an error. You never even knew Server A crashed. Your booking was confirmed. Your ₹12,000 is safe. That's High Availability — working silently in the background, every single time."
+            },
 
-  //       ],
-  //       topicDetails: {
+            // 🖼️ FULL PICTURE
+            {
+              type: "heading",
+              text: "The Full Picture — Load Balancer + High Availability Together"
+            },
+            {
+              type: "paragraph",
+              text: "These two concepts aren't separate — they work as a team. The Load Balancer distributes traffic smartly. High Availability ensures no crash ever reaches the user. Together, they make Booking.com bulletproof."
+            },
+            {
+              type: "code",
+              code: "Your Request\n       ↓\n  Load Balancer\n  (splits traffic smartly)\n       ↓\n┌──────────┬──────────┬──────────┐\n│ Server A │ Server B │ Server C │\n└──────────┴──────────┴──────────┘\n       ↓\n Ping every 5s → server dead?\n → Traffic shifts automatically. User feels nothing."
+            },
+            {
+              type: "success-callout",
+              text: "🎯 Load Balancer handles the traffic. High Availability handles the failures. Together — Booking.com stays alive no matter what."
+            },
 
-  //         "Round Robin": [
-  //           {
-  //             type: "paragraph",
-  //             text: "New Year's Eve. 20 lakh users on Booking.com — all searching, filtering, comparing hotels at the same time. Requests are flying in every millisecond. The Load Balancer has 3 servers ready. So — who gets which request?"
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ Does it pick randomly? Does it check which server is free? Or does it just go one by one?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "The Simplest Approach — Just Take Turns"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Round Robin does exactly that. No overthinking. No checking server load. Just — next in line, you're up. Request 1 goes to Server A. Request 2 to Server B. Request 3 to Server C. Then back to Server A again. It keeps rotating forever."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Request 1 → Server A\nRequest 2 → Server B\nRequest 3 → Server C\nRequest 4 → Server A  ← back to start\n... repeats forever"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "How It Works on Booking.com — Step by Step"
-  //           },
+            // ⚠️ CLIFFHANGER INTO ALGORITHMS
+            {
+              type: "warning-callout",
+              text: "⚠️ But wait — when 20 lakh users hit Booking.com at the same time, how does the Load Balancer decide who goes to Server A, who goes to Server B, and who goes to Server C? Does it just go one by one? Does it check who's least busy? Does it randomly pick? There are actual algorithms behind this decision — and that's exactly what we're breaking down next."
+            }
+          ]
+        }
+      },
 
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — 3 users search hotels at the same second",
-  //             desc: "Ravi, Priya, and Ankit all search Hotels in Goa at the exact same moment on New Year's Eve. Three requests hit the Load Balancer at once."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Load Balancer doesn't think. It just rotates.",
-  //             desc: "It doesn't check which server is free. It doesn't check speed. It simply follows the order — Server A, then B, then C."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — Every server gets one request. Equal. Done.",
-  //             desc: "Ravi goes to Server A. Priya goes to Server B. Ankit goes to Server C. All three servers handled exactly one request each. No server sat idle. No server got overloaded. Simple and fair."
-  //           }
-  //           ,
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Simple. Fast. No extra logic needed. Works perfectly when all servers are identical and requests are roughly the same size — like users just browsing and searching hotels."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But here's the catch — what if Booking.com's servers are NOT identical? Server A has 16GB RAM. Server B has 4GB RAM. Round Robin still sends them equal requests. Server B will choke while Server A sits half-empty. That's unfair — and it causes slowdowns. So what do we do? That's where Weighted Round Robin comes in."
-  //           }
-  //         ],
+      {
+        id: 2,
+        title: "Load Balancing Algorithms",
+        level: "freshers",
+        topics: [
+          "Round Robin",
+          "Weighted Round Robin",
+          "Least Connections",
+          "Least Response Time",
+          "IP Hash",
 
-  //         "Weighted Round Robin": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Booking.com just upgraded Server A — 16GB RAM, faster CPU, built to handle 3x more traffic. Server B is the old one — 4GB RAM, slower. If Round Robin sends them equal requests, Server B will choke while Server A sits half-empty. Same rotation won't work here."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if we could tell the Load Balancer — Server A is stronger, give it more requests?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Same Rotation — But Not Equal Turns"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Weighted Round Robin gives each server a weight based on how powerful it is. Higher weight means more requests. Lower weight means fewer. Server A gets weight 3. Server B gets weight 1. So in every cycle of 4 requests — Server A handles 3, Server B handles 1."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "How It Works on Booking.com — Step by Step"
-  //           },
+        ],
+        topicDetails: {
 
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — 2 users search hotels at the same time",
-  //             desc: "Ravi and Priya both hit Search together. Their requests reach the Load Balancer at the same moment."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Load Balancer reads server weights",
-  //             desc: "Server A has weight 3 — it can handle more requests. Server B has weight 1 — it handles fewer requests each cycle."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — Requests go based on server capacity",
-  //             desc: "Ravi's request goes to Server A. Priya's request also goes to Server A because it has higher weight and more capacity."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 4 — Pattern continues automatically",
-  //             desc: "As more users arrive, Server A keeps receiving more requests while Server B gets fewer. Traffic stays balanced based on server power."
-  //           }
-  //           ,
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Booking.com uses this when they have a mix of new and old servers. The powerful ones carry more load. The older ones handle what they can. Nothing goes to waste."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But weights are set manually — you decide them once and they stay fixed. The Load Balancer never actually checks if Server A is busy or free right now. It just blindly follows the weights. What if Server A is already drowning in 900 heavy requests and Server B is completely free? Weighted Round Robin won't care. It'll still send 3 to Server A. We need something smarter — that's where Least Connections comes in."
-  //           }
-  //         ],
+          "Round Robin": [
+            {
+              type: "paragraph",
+              text: "New Year's Eve. 20 lakh users on Booking.com — all searching, filtering, comparing hotels at the same time. Requests are flying in every millisecond. The Load Balancer has 3 servers ready. So — who gets which request?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Does it pick randomly? Does it check which server is free? Or does it just go one by one?"
+            },
+            {
+              type: "heading",
+              text: "The Simplest Approach — Just Take Turns"
+            },
+            { type: "image", "src": "rr.png" },
+            {
+              type: "paragraph",
+              text: "Round Robin does exactly that. No overthinking. No checking server load. Just — next in line, you're up. Request 1 goes to Server A. Request 2 to Server B. Request 3 to Server C. Then back to Server A again. It keeps rotating forever."
+            },
+            {
+              type: "code",
+              code: "Request 1 → Server A\nRequest 2 → Server B\nRequest 3 → Server C\nRequest 4 → Server A  ← back to start\n... repeats forever"
+            },
+            {
+              type: "heading",
+              text: "How It Works on Booking.com — Step by Step"
+            },
 
-  //         "Least Connections": [
-  //           {
-  //             type: "paragraph",
-  //             text: "It's peak time on Booking.com. Server A is handling 900 active connections — users mid-booking, filling payment details, waiting for confirmation. Server B just cleared a bunch of requests and is sitting at 200 connections. A new user hits Search. Where should the request go?"
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if instead of rotating, we just looked at who has the least work right now and sent it there?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Stop Rotating — Start Observing"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Least Connections does exactly that. Before every request, the Load Balancer checks all servers in real time — how many active connections does each one have right now? — and sends the new request to whoever has the least. No rotation. No weights. Just live observation."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "How It Works on Booking.com — Step by Step"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — Ravi clicks Pay Now for his Goa hotel",
-  //             desc: "Ravi's payment request hits the Load Balancer. It immediately checks all three servers live. Server A has 900 connections, Server B has 200, Server C has 650. Server B is the least busy — Ravi's payment goes there instantly."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Priya applies heavy filters on hotel search",
-  //             desc: "Priya is filtering 500 hotels by price, photos, rating, and availability — a heavy request. Load Balancer checks again. Server B now has 201 connections but is still the least busy. Priya's request goes to Server B."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — Server A suddenly clears 700 requests",
-  //             desc: "Server A just finished a huge batch. Its connections drop from 900 to 150. Now Ankit's search request comes in. Load Balancer checks — Server A is now the least busy. Ankit goes to Server A. Just like that, traffic shifted automatically."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 4 — This check happens before every single request",
-  //             desc: "Not once a minute. Not once a second. Before every request — Load Balancer takes a live snapshot, finds the least busy server, and routes there. Always accurate. No human involved."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Ravi's payment, Priya's heavy search, Ankit's request — all went to whoever had the most breathing room at that exact moment. No guessing. No fixed turns. Just real-time intelligence keeping Booking.com smooth."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But counting connections isn't the full picture. Server B has 200 connections — but what if they're all slow and heavy, taking 10 seconds each? Server C has 650 connections — but they're all nearly done, responding in 50ms. Least Connections would still pick Server B. And your user waits. We need an algorithm that also measures how fast each server is actually responding — that's Least Response Time."
-  //           }
-  //         ],
+            {
+              type: "step",
+              title: "Step 1 — 3 users search hotels at the same second",
+              desc: "Ravi, Priya, and Ankit all search Hotels in Goa at the exact same moment on New Year's Eve. Three requests hit the Load Balancer at once."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Load Balancer doesn't think. It just rotates.",
+              desc: "It doesn't check which server is free. It doesn't check speed. It simply follows the order — Server A, then B, then C."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Every server gets one request. Equal. Done.",
+              desc: "Ravi goes to Server A. Priya goes to Server B. Ankit goes to Server C. All three servers handled exactly one request each. No server sat idle. No server got overloaded. Simple and fair."
+            }
+            ,
+            {
+              type: "success-callout",
+              text: "✅ Simple. Fast. No extra logic needed. Works perfectly when all servers are identical and requests are roughly the same size — like users just browsing and searching hotels."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But here's the catch — what if Booking.com's servers are NOT identical? Server A has 16GB RAM. Server B has 4GB RAM. Round Robin still sends them equal requests. Server B will choke while Server A sits half-empty. That's unfair — and it causes slowdowns. So what do we do? That's where Weighted Round Robin comes in."
+            }
+          ],
 
-  //         "Least Response Time": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Server B has 200 connections. Server A has 400. Least Connections picks Server B — fewer connections, must be better. But Server B is responding in 800ms — it's struggling, maybe old hardware or a memory issue. Server A is responding in 50ms — fast, healthy, ready. Least Connections just sent your request to the wrong server."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if the Load Balancer looked at both — how many connections AND how fast each server is actually responding right now?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Pick the Fastest, Not Just the Emptiest"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Least Response Time does exactly this. It combines two signals — active connections and current response speed. The server with the best mix of low connections and fast response wins every request. Not the emptiest. The fastest."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "How It Works on Booking.com — Step by Step"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — Sneha applies a coupon code at checkout",
-  //             desc: "Sneha hits Apply on her 20% off coupon. Load Balancer checks all servers — connections and response speed both. Server A has 400 connections but is responding in 50ms. Server B has 200 connections but is taking 800ms. Server A wins. Coupon validates instantly."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Mohit loads 30 room photos for a beachfront suite",
-  //             desc: "Heavy request — 30 high quality images. Load Balancer checks again. Server B is now at 820ms and getting worse. Server A is still at 55ms. Even with more connections, Server A is clearly healthier. Mohit's photos go to Server A and load fast."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — Server B recovers on its own",
-  //             desc: "Server B clears its backlog. Response time drops from 820ms back to 45ms. Now Divya checks room availability for 5 adults. Load Balancer checks — Server B is now the fastest. Divya's request goes to Server B. Traffic shifted automatically the moment Server B recovered."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 4 — No human touched anything",
-  //             desc: "No config change. No alert. No engineer woke up at midnight. The Load Balancer noticed Server B was slow, avoided it, and came back to it the moment it recovered. All by itself. In real time."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Sneha's coupon applied instantly. Mohit's photos loaded fast. Divya's availability check came back in milliseconds. Every request went to the fastest, healthiest server at that exact moment — automatically."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But all 4 algorithms so far — Round Robin, Weighted, Least Connections, Least Response Time — treat every request as brand new. They don't remember who you are. So imagine Karan spent 10 minutes on Booking.com — searched hotels, filtered by pool and breakfast, shortlisted 3 rooms — all saved on Server A. He clicks to view a room. Load Balancer sends him to Server B. Server B has no idea who Karan is. No filters. No shortlist. Everything gone. That's the problem IP Hash was built to solve."
-  //           }
-  //         ],
+          "Weighted Round Robin": [
+            {
+              type: "paragraph",
+              text: "Booking.com just upgraded Server A — 16GB RAM, faster CPU, built to handle 3x more traffic. Server B is the old one — 4GB RAM, slower. If Round Robin sends them equal requests, Server B will choke while Server A sits half-empty. Same rotation won't work here."
+            },
+            { type: "image", "src": "wrr.png" },
+            {
+              type: "curious-callout",
+              text: "❓ What if we could tell the Load Balancer — Server A is stronger, give it more requests?"
+            },
+            {
+              type: "heading",
+              text: "Same Rotation — But Not Equal Turns"
+            },
+            {
+              type: "paragraph",
+              text: "Weighted Round Robin gives each server a weight based on how powerful it is. Higher weight means more requests. Lower weight means fewer. Server A gets weight 3. Server B gets weight 1. So in every cycle of 4 requests — Server A handles 3, Server B handles 1."
+            },
+            {
+              type: "heading",
+              text: "How It Works on Booking.com — Step by Step"
+            },
 
-  //         "IP Hash": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You spent 10 minutes on Booking.com — searched hotels in Goa, filtered by pool and breakfast, shortlisted 3 options, and finally clicked on the perfect one. All of that is stored on Server A. Now you click View Rooms. The Load Balancer sends this new request to Server B. Server B has never seen you before. No filters. No shortlist. Your entire session is gone."
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "Without sticking to the same server:",
-  //             list: [
-  //               "Your selected filters disappear completely",
-  //               "Cart gets wiped mid-booking",
-  //               "Login session breaks — you're suddenly logged out",
-  //               "Payment flow fails halfway through"
-  //             ],
-  //             footer: "This is called Session Loss — and it's a terrible user experience."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Same User — Always Same Server"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "IP Hash fixes this permanently. Every device on the internet has an IP address — a unique number that identifies it. IP Hash takes that number, runs a simple calculation on it, and always maps that IP to the same server. Same user, same IP, same server — every single time, for the entire session."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "How It Works on Booking.com — Step by Step"
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 1 — Karan opens Booking.com for the first time",
-  //             desc: "The moment Karan's first request hits the Load Balancer, it reads his IP address. It runs a quick hash on that IP and maps Karan permanently to Server B for this session. From this point on — every request Karan makes goes to Server B. No exceptions."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 2 — Karan searches, filters, and shortlists hotels",
-  //             desc: "Karan searches Hotels in Goa, filters by swimming pool and free breakfast, and shortlists 3 hotels. Every click goes to Server B. Server B builds up everything about Karan — his login, his filters, his shortlist, his browsing history on this session."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 3 — Karan opens a hotel to check room details",
-  //             desc: "Karan clicks on a beachfront resort. New request fires. Load Balancer hashes his IP again — same IP, same result, same server. Goes to Server B. Server B already knows Karan. Room details load instantly. Filters are intact. Nothing reset."
-  //           },
-  //           {
-  //             type: "step",
-  //             title: "Step 4 — Karan completes payment",
-  //             desc: "Karan selects a room, fills in guest details, applies a coupon, and hits Pay Now. All of this — four separate requests — go to Server B automatically. No session breaks. No re-login prompt. No lost cart. Server B had everything from click one. Payment goes through cleanly."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ From first search to payment confirmation — Karan never switched servers once. His filters stayed. His cart stayed. His login stayed. IP Hash kept him on Server B for the entire journey — silently, automatically, without Karan ever knowing it existed."
-  //           },
-  //           {
-  //             type: "info-callout",
-  //             text: "💡 Now you know all 5 algorithms. Round Robin for equal servers. Weighted for unequal servers. Least Connections for real-time load. Least Response Time for speed-aware routing. IP Hash for sticky sessions. Each one solves a different problem — and Booking.com uses the right one for the right job."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ But IP Hash creates a new question — Karan is always pinned to Server B. What if Server B crashes right in the middle of his payment? His session was only on Server B. It's gone. The system needs to detect the crash, move Karan to another server, and somehow not lose his session. That's exactly what Stateless vs Stateful systems solve — and that's what's coming next."
-  //           }
-  //         ]
-  //       }
-  //     },
+            {
+              type: "step",
+              title: "Step 1 — 2 users search hotels at the same time",
+              desc: "Ravi and Priya both hit Search together. Their requests reach the Load Balancer at the same moment."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Load Balancer reads server weights",
+              desc: "Server A has weight 3 — it can handle more requests. Server B has weight 1 — it handles fewer requests each cycle."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Requests go based on server capacity",
+              desc: "Ravi's request goes to Server A. Priya's request also goes to Server A because it has higher weight and more capacity."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Pattern continues automatically",
+              desc: "As more users arrive, Server A keeps receiving more requests while Server B gets fewer. Traffic stays balanced based on server power."
+            }
+            ,
+            {
+              type: "success-callout",
+              text: "✅ Booking.com uses this when they have a mix of new and old servers. The powerful ones carry more load. The older ones handle what they can. Nothing goes to waste."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But weights are set manually — you decide them once and they stay fixed. The Load Balancer never actually checks if Server A is busy or free right now. It just blindly follows the weights. What if Server A is already drowning in 900 heavy requests and Server B is completely free? Weighted Round Robin won't care. It'll still send 3 to Server A. We need something smarter — that's where Least Connections comes in."
+            }
+          ],
 
-  //     {
-  //       id: 3,
-  //       title: "State Management",
-  //       level: "freshers",
-  //       topics: [
-  //         "Stateless vs Stateful systems",
-  //         "Sticky Sessions (Session Affinity)"
-  //       ],
-  //       topicDetails: {
-  //         "Stateless vs Stateful systems": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You're on Booking.com. You log in, search hotels in Goa, apply filters — pool, breakfast included, under ₹8,000. You click on a hotel. Behind the scenes, your request goes to Server A. Now you click 'View Rooms'. This request lands on Server B. Server B has absolutely no memory of who you are or what you just did."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ Does the server remember you between requests? Or does it treat every click like you're a brand new stranger?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Stateless — Every Request Stands Alone"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "A Stateless server has no memory. Every request that comes in must carry all the information needed to process it — who you are, what you want, your login token, everything. The server reads it, responds, and immediately forgets you ever existed."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Request → Server A\n{\n  token: \"user_abc_jwt\",\n  action: \"search\",\n  city: \"Goa\"\n}\n→ Server A responds. Forgets you. Done."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Next request goes to Server B? No problem. Server B reads the same token, understands who you are, handles it. It doesn't need to remember you — because you brought everything it needs."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Stateless is beautiful for Load Balancing — any server can handle any request. No server is tied to any user. Scale up, scale down, swap servers freely."
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Stateful — The Server Remembers You"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "A Stateful server stores your session data in its own memory. It remembers your login, your cart, your filters — everything. But here's the catch — only that one server knows about you. If your next request goes to a different server, it has zero idea who you are."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Request 1 → Server A\nServer A stores: { user: 'ram', cart: ['Hotel Goa'] }\n\nRequest 2 → Server B\nServer B: ❌ Who is ram? I have no data."
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "Stateful servers cause real problems when:",
-  //             list: [
-  //               "Load Balancer routes your next request to a different server",
-  //               "Your server crashes mid-session",
-  //               "You're in the middle of checkout and suddenly logged out",
-  //               "Scaling up adds new servers — but they have no idea about existing users"
-  //             ],
-  //             footer: "This is exactly why most modern systems prefer Stateless — but Stateful still has its place."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ So if Stateful is so problematic, why does Booking.com still use it for certain flows like payments? Because some things genuinely need session memory — and that's where Sticky Sessions come in."
-  //           }
-  //         ],
+          "Least Connections": [
+            {
+              type: "paragraph",
+              text: "It's peak time on Booking.com. Server A is handling 900 active connections — users mid-booking, filling payment details, waiting for confirmation. Server B just cleared a bunch of requests and is sitting at 200 connections. A new user hits Search. Where should the request go?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if instead of rotating, we just looked at who has the least work right now and sent it there?"
+            },
+            // { type: "image", src: "lc.png" },
+            {
+              type: "heading",
+              text: "Stop Rotating — Start Observing"
+            },
+            {
+              type: "paragraph",
+              text: "Least Connections does exactly that. Before every request, the Load Balancer checks all servers in real time — how many active connections does each one have right now? — and sends the new request to whoever has the least. No rotation. No weights. Just live observation."
+            },
+            {
+              type: "heading",
+              text: "How It Works on Booking.com — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Ravi clicks Pay Now for his Goa hotel",
+              desc: "Ravi's payment request hits the Load Balancer. It immediately checks all three servers live. Server A has 900 connections, Server B has 200, Server C has 650. Server B is the least busy — Ravi's payment goes there instantly."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Priya applies heavy filters on hotel search",
+              desc: "Priya is filtering 500 hotels by price, photos, rating, and availability — a heavy request. Load Balancer checks again. Server B now has 201 connections but is still the least busy. Priya's request goes to Server B."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server A suddenly clears 700 requests",
+              desc: "Server A just finished a huge batch. Its connections drop from 900 to 150. Now Ankit's search request comes in. Load Balancer checks — Server A is now the least busy. Ankit goes to Server A. Just like that, traffic shifted automatically."
+            },
+            {
+              type: "step",
+              title: "Step 4 — This check happens before every single request",
+              desc: "Not once a minute. Not once a second. Before every request — Load Balancer takes a live snapshot, finds the least busy server, and routes there. Always accurate. No human involved."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Ravi's payment, Priya's heavy search, Ankit's request — all went to whoever had the most breathing room at that exact moment. No guessing. No fixed turns. Just real-time intelligence keeping Booking.com smooth."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But counting connections isn't the full picture. Server B has 200 connections — but what if they're all slow and heavy, taking 10 seconds each? Server C has 650 connections — but they're all nearly done, responding in 50ms. Least Connections would still pick Server B. And your user waits. We need an algorithm that also measures how fast each server is actually responding — that's Least Response Time."
+            }
+          ],
 
-  //         "Sticky Sessions (Session Affinity)": [
-  //           {
-  //             type: "paragraph",
-  //             text: "You're at the final step on Booking.com — payment page. You've entered your card details. The system is processing. At this exact moment, the Load Balancer sends your next request to a different server. That server has no memory of your payment flow. The transaction breaks. ₹12,000 gone. Booking lost."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if we could tell the Load Balancer — once a user lands on a server, keep them there for the entire session?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Sticky Sessions — Stay With the Same Server"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Sticky Sessions means the Load Balancer remembers which server you started with — and keeps sending all your requests to that same server for the entire session. You're 'stuck' to your server. On purpose."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "How does it remember? It gives you a cookie the moment you first connect. Every request you make after that carries this cookie. The Load Balancer reads it and routes you to your assigned server — every single time."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "First Request:\nYou → Load Balancer → Server B\nLoad Balancer sets: SERVERID=B (cookie)\n\nAll future requests:\nYou → Load Balancer reads cookie → Server B ✅\nAlways Server B. Until session ends."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Server B already has your payment state, your booking details, your session. Every click from here — confirm room, enter card, hit pay — all goes to Server B. No data loss. No broken flow."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Booking.com uses Sticky Sessions specifically for checkout and payment — where losing session mid-way would be catastrophic. Start on Server B, finish on Server B."
-  //           },
-  //           {
-  //             type: "error-callout",
-  //             title: "But Sticky Sessions come with trade-offs:",
-  //             list: [
-  //               "If Server B crashes, your entire session is lost — cookie is useless now",
-  //               "Server B might get overloaded while Server A and C sit idle",
-  //               "Hard to scale — new servers don't get existing sticky users"
-  //             ],
-  //             footer: "Use it only where truly needed — like payment flows. For everything else, go Stateless."
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Both Stateless and Sticky Sessions assume the servers are alive and healthy. But what if Server B — the one your entire payment session is stuck to — suddenly goes down? Who notices? How fast? What happens next? That's exactly what Health Checks and Failover handle."
-  //           }
-  //         ]
-  //       }
-  //     },
+          "Least Response Time": [
+            {
+              type: "paragraph",
+              text: "Server B has 200 connections. Server A has 400. Least Connections picks Server B — fewer connections, must be better. But Server B is responding in 800ms — it's struggling, maybe old hardware or a memory issue. Server A is responding in 50ms — fast, healthy, ready. Least Connections just sent your request to the wrong server."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if the Load Balancer looked at both — how many connections AND how fast each server is actually responding right now?"
+            },
+            // { type: "image", src: "lrt.png" },
+            {
+              type: "heading",
+              text: "Pick the Fastest, Not Just the Emptiest"
+            },
+            {
+              type: "paragraph",
+              text: "Least Response Time does exactly this. It combines two signals — active connections and current response speed. The server with the best mix of low connections and fast response wins every request. Not the emptiest. The fastest."
+            },
+            {
+              type: "heading",
+              text: "How It Works on Booking.com — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Sneha applies a coupon code at checkout",
+              desc: "Sneha hits Apply on her 20% off coupon. Load Balancer checks all servers — connections and response speed both. Server A has 400 connections but is responding in 50ms. Server B has 200 connections but is taking 800ms. Server A wins. Coupon validates instantly."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Mohit loads 30 room photos for a beachfront suite",
+              desc: "Heavy request — 30 high quality images. Load Balancer checks again. Server B is now at 820ms and getting worse. Server A is still at 55ms. Even with more connections, Server A is clearly healthier. Mohit's photos go to Server A and load fast."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Server B recovers on its own",
+              desc: "Server B clears its backlog. Response time drops from 820ms back to 45ms. Now Divya checks room availability for 5 adults. Load Balancer checks — Server B is now the fastest. Divya's request goes to Server B. Traffic shifted automatically the moment Server B recovered."
+            },
+            {
+              type: "step",
+              title: "Step 4 — No human touched anything",
+              desc: "No config change. No alert. No engineer woke up at midnight. The Load Balancer noticed Server B was slow, avoided it, and came back to it the moment it recovered. All by itself. In real time."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Sneha's coupon applied instantly. Mohit's photos loaded fast. Divya's availability check came back in milliseconds. Every request went to the fastest, healthiest server at that exact moment — automatically."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But all 4 algorithms so far — Round Robin, Weighted, Least Connections, Least Response Time — treat every request as brand new. They don't remember who you are. So imagine Karan spent 10 minutes on Booking.com — searched hotels, filtered by pool and breakfast, shortlisted 3 rooms — all saved on Server A. He clicks to view a room. Load Balancer sends him to Server B. Server B has no idea who Karan is. No filters. No shortlist. Everything gone. That's the problem IP Hash was built to solve."
+            }
+          ],
 
-  //     {
-  //       id: 4,
-  //       title: "Health Checks & Failover",
-  //       level: "freshers",
-  //       topics: [
-  //         "Active health checks",
-  //         "Passive health checks",
+          "IP Hash": [
+            {
+              type: "paragraph",
+              text: "You spent 10 minutes on Booking.com — searched hotels in Goa, filtered by pool and breakfast, shortlisted 3 options, and finally clicked on the perfect one. All of that is stored on Server A. Now you click View Rooms. The Load Balancer sends this new request to Server B. Server B has never seen you before. No filters. No shortlist. Your entire session is gone."
+            },
+            {
+              type: "error-callout",
+              title: "Without sticking to the same server:",
+              list: [
+                "Your selected filters disappear completely",
+                "Cart gets wiped mid-booking",
+                "Login session breaks — you're suddenly logged out",
+                "Payment flow fails halfway through"
+              ],
+              footer: "This is called Session Loss — and it's a terrible user experience."
+            },
+            {
+              type: "heading",
+              text: "Same User — Always Same Server"
+            },
+            {
+              type: "paragraph",
+              text: "IP Hash fixes this permanently. Every device on the internet has an IP address — a unique number that identifies it. IP Hash takes that number, runs a simple calculation on it, and always maps that IP to the same server. Same user, same IP, same server — every single time, for the entire session."
+            },
+            {
+              type: "heading",
+              text: "How It Works on Booking.com — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Karan opens Booking.com for the first time",
+              desc: "The moment Karan's first request hits the Load Balancer, it reads his IP address. It runs a quick hash on that IP and maps Karan permanently to Server B for this session. From this point on — every request Karan makes goes to Server B. No exceptions."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Karan searches, filters, and shortlists hotels",
+              desc: "Karan searches Hotels in Goa, filters by swimming pool and free breakfast, and shortlists 3 hotels. Every click goes to Server B. Server B builds up everything about Karan — his login, his filters, his shortlist, his browsing history on this session."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Karan opens a hotel to check room details",
+              desc: "Karan clicks on a beachfront resort. New request fires. Load Balancer hashes his IP again — same IP, same result, same server. Goes to Server B. Server B already knows Karan. Room details load instantly. Filters are intact. Nothing reset."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Karan completes payment",
+              desc: "Karan selects a room, fills in guest details, applies a coupon, and hits Pay Now. All of this — four separate requests — go to Server B automatically. No session breaks. No re-login prompt. No lost cart. Server B had everything from click one. Payment goes through cleanly."
+            },
+            {
+              type: "success-callout",
+              text: "✅ From first search to payment confirmation — Karan never switched servers once. His filters stayed. His cart stayed. His login stayed. IP Hash kept him on Server B for the entire journey — silently, automatically, without Karan ever knowing it existed."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Now you know all 5 algorithms. Round Robin for equal servers. Weighted for unequal servers. Least Connections for real-time load. Least Response Time for speed-aware routing. IP Hash for sticky sessions. Each one solves a different problem — and Booking.com uses the right one for the right job."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But IP Hash creates a new question — Karan is always pinned to Server B. What if Server B crashes right in the middle of his payment? His session was only on Server B. It's gone. The system needs to detect the crash, move Karan to another server, and somehow not lose his session. That's exactly what Stateless vs Stateful systems solve — and that's what's coming next."
+            }
+          ]
+        }
+      },
 
-  //       ],
-  //       topicDetails: {
-  //         "Active health checks": [
-  //           {
-  //             type: "paragraph",
-  //             text: "Booking.com has 5 payment servers running. Everything looks fine on the dashboard. But Server C — quietly, without any warning — starts running out of memory. It's not fully dead yet. It's just... stuck. Not responding. Users are hitting it. Requests are going in. Nothing is coming back."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ How does the Load Balancer know Server C is sick — before even more users get routed to it?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Don't Wait for a Crash — Go Check"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Active Health Checks means the Load Balancer doesn't wait for something to go wrong. It proactively pings every server at regular intervals — every few seconds — asking one simple question: 'Are you alive and working?'"
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Every 5 seconds:\nGET /health → Server A → 200 OK ✅\nGET /health → Server B → 200 OK ✅\nGET /health → Server C → ❌ Timeout\n\nServer C marked as DOWN.\nRemoved from pool immediately."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Server C didn't fully crash. But it stopped responding to health pings. That's enough. The Load Balancer pulls it out of rotation right away — no more users get sent there."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Active checks catch problems early — before users feel them. The server is removed silently. Traffic shifts to healthy servers. Nobody on Booking.com notices anything."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "And it's not just a basic ping. Booking.com's health check endpoint actually verifies the full system is working — can the server reach the database? Can it process a payment? Is response time acceptable?"
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "GET /health\n→ DB connection: ✅\n→ Payment gateway: ✅\n→ Response time: 45ms ✅\n→ Status: 200 OK — All good"
-  //           },
-  //           {
-  //             type: "warning-callout",
-  //             text: "⚠️ Active checks go out and ask servers 'are you okay?' — great for catching problems early. But what about failures that happen mid-request — while a user is literally in the middle of a booking? The ping hasn't gone out yet. The next one is 5 seconds away. What catches that?"
-  //           }
-  //         ],
+      {
+        id: 3,
+        title: "State Management",
+        level: "freshers",
+        topics: [
+          "Stateless vs Stateful systems",
+          "Sticky Sessions (Session Affinity)"
+        ],
+        topicDetails: {
+          "Stateless vs Stateful systems": [
+            {
+              type: "paragraph",
+              text: "You're on Booking.com. You log in, search hotels in Goa, apply filters — pool, breakfast included, under ₹8,000. You click on a hotel. Behind the scenes, your request goes to Server A. Now you click 'View Rooms'. This request lands on Server B. Server B has absolutely no memory of who you are or what you just did."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Does the server remember you between requests? Or does it treat every click like you're a brand new stranger?"
+            },
+            {
+              type: "heading",
+              text: "Stateless — Every Request Stands Alone"
+            },
+            {
+              type: "paragraph",
+              text: "A Stateless server has no memory. Every request that comes in must carry all the information needed to process it — who you are, what you want, your login token, everything. The server reads it, responds, and immediately forgets you ever existed."
+            },
+            {
+              type: "code",
+              code: "Request → Server A\n{\n  token: \"user_abc_jwt\",\n  action: \"search\",\n  city: \"Goa\"\n}\n→ Server A responds. Forgets you. Done."
+            },
+            {
+              type: "paragraph",
+              text: "Next request goes to Server B? No problem. Server B reads the same token, understands who you are, handles it. It doesn't need to remember you — because you brought everything it needs."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Stateless is beautiful for Load Balancing — any server can handle any request. No server is tied to any user. Scale up, scale down, swap servers freely."
+            },
+            {
+              type: "heading",
+              text: "Stateful — The Server Remembers You"
+            },
+            {
+              type: "paragraph",
+              text: "A Stateful server stores your session data in its own memory. It remembers your login, your cart, your filters — everything. But here's the catch — only that one server knows about you. If your next request goes to a different server, it has zero idea who you are."
+            },
+            {
+              type: "code",
+              code: "Request 1 → Server A\nServer A stores: { user: 'ram', cart: ['Hotel Goa'] }\n\nRequest 2 → Server B\nServer B: ❌ Who is ram? I have no data."
+            },
+            {
+              type: "error-callout",
+              title: "Stateful servers cause real problems when:",
+              list: [
+                "Load Balancer routes your next request to a different server",
+                "Your server crashes mid-session",
+                "You're in the middle of checkout and suddenly logged out",
+                "Scaling up adds new servers — but they have no idea about existing users"
+              ],
+              footer: "This is exactly why most modern systems prefer Stateless — but Stateful still has its place."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ So if Stateful is so problematic, why does Booking.com still use it for certain flows like payments? Because some things genuinely need session memory — and that's where Sticky Sessions come in."
+            }
+          ],
 
-  //         "Passive health checks": [
-  //           {
-  //             type: "paragraph",
-  //             text: "A user clicks Confirm Booking on Booking.com. The request goes to Server D. Server D accepts it — but then returns a 500 error. Something broke mid-request. The next active health check ping is 4 seconds away. That's 4 seconds of more users still being sent to a broken server."
-  //           },
-  //           {
-  //             type: "curious-callout",
-  //             text: "❓ What if the Load Balancer could detect a sick server just by watching real traffic — without sending any pings at all?"
-  //           },
-  //           {
-  //             type: "heading",
-  //             text: "Watch Real Requests — Not Test Pings"
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "Passive Health Checks don't send any pings. Instead, the Load Balancer silently watches every real request going through. If a server starts throwing errors — 500s, timeouts, failed responses — it notices the pattern and acts."
-  //           },
-  //           {
-  //             type: "code",
-  //             code: "Request 1 → Server D → 500 Error ❌\nRequest 2 → Server D → 500 Error ❌\nRequest 3 → Server D → Timeout  ❌\n\n3 failures in a row.\nServer D marked as DOWN. Removed from pool."
-  //           },
-  //           {
-  //             type: "paragraph",
-  //             text: "No test ping needed. The real traffic itself revealed the problem. The Load Balancer catches it mid-flight and pulls Server D out before more users are affected."
-  //           },
-  //           {
-  //             type: "success-callout",
-  //             text: "✅ Passive checks are instant — they react to real failures as they happen, not on a timer. Booking.com uses both active and passive together. Active catches slow degradation early. Passive catches sudden mid-request failures immediately."
-  //           },
+          "Sticky Sessions (Session Affinity)": [
+            {
+              type: "paragraph",
+              text: "You're at the final step on Booking.com — payment page. You've entered your card details. The system is processing. At this exact moment, the Load Balancer sends your next request to a different server. That server has no memory of your payment flow. The transaction breaks. ₹12,000 gone. Booking lost."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if we could tell the Load Balancer — once a user lands on a server, keep them there for the entire session?"
+            },
+            {
+              type: "heading",
+              text: "Sticky Sessions — Stay With the Same Server"
+            },
+            {
+              type: "paragraph",
+              text: "Sticky Sessions means the Load Balancer remembers which server you started with — and keeps sending all your requests to that same server for the entire session. You're 'stuck' to your server. On purpose."
+            },
+            {
+              type: "paragraph",
+              text: "How does it remember? It gives you a cookie the moment you first connect. Every request you make after that carries this cookie. The Load Balancer reads it and routes you to your assigned server — every single time."
+            },
+            {
+              type: "code",
+              code: "First Request:\nYou → Load Balancer → Server B\nLoad Balancer sets: SERVERID=B (cookie)\n\nAll future requests:\nYou → Load Balancer reads cookie → Server B ✅\nAlways Server B. Until session ends."
+            },
+            {
+              type: "paragraph",
+              text: "Server B already has your payment state, your booking details, your session. Every click from here — confirm room, enter card, hit pay — all goes to Server B. No data loss. No broken flow."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Booking.com uses Sticky Sessions specifically for checkout and payment — where losing session mid-way would be catastrophic. Start on Server B, finish on Server B."
+            },
+            {
+              type: "error-callout",
+              title: "But Sticky Sessions come with trade-offs:",
+              list: [
+                "If Server B crashes, your entire session is lost — cookie is useless now",
+                "Server B might get overloaded while Server A and C sit idle",
+                "Hard to scale — new servers don't get existing sticky users"
+              ],
+              footer: "Use it only where truly needed — like payment flows. For everything else, go Stateless."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Both Stateless and Sticky Sessions assume the servers are alive and healthy. But what if Server B — the one your entire payment session is stuck to — suddenly goes down? Who notices? How fast? What happens next? That's exactly what Health Checks and Failover handle."
+            }
+          ]
+        }
+      },
 
-  //         ]
-  //       }
-  //     },
+      {
+        id: 4,
+        title: "Health Checks & Failover",
+        level: "freshers",
+        topics: [
+          "Active health checks",
+          "Passive health checks",
 
-  //     {
-  //       id: 5,
-  //       title: "Networking Layer Understanding",
-  //       level: "intermediate",
-  //       topics: [
-  //         "Layer 4 Load Balancing (TCP/UDP)",
-  //         "Layer 7 Load Balancing (HTTP/HTTPS)",
-  //       ]
-  //     },
+        ],
+        topicDetails: {
+          "Active health checks": [
+            {
+              type: "paragraph",
+              text: "Booking.com has 5 payment servers running. Everything looks fine on the dashboard. But Server C — quietly, without any warning — starts running out of memory. It's not fully dead yet. It's just... stuck. Not responding. Users are hitting it. Requests are going in. Nothing is coming back."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does the Load Balancer know Server C is sick — before even more users get routed to it?"
+            },
+            {
+              type: "heading",
+              text: "Don't Wait for a Crash — Go Check"
+            },
+            {
+              type: "paragraph",
+              text: "Active Health Checks means the Load Balancer doesn't wait for something to go wrong. It proactively pings every server at regular intervals — every few seconds — asking one simple question: 'Are you alive and working?'"
+            },
+            {
+              type: "code",
+              code: "Every 5 seconds:\nGET /health → Server A → 200 OK ✅\nGET /health → Server B → 200 OK ✅\nGET /health → Server C → ❌ Timeout\n\nServer C marked as DOWN.\nRemoved from pool immediately."
+            },
+            {
+              type: "paragraph",
+              text: "Server C didn't fully crash. But it stopped responding to health pings. That's enough. The Load Balancer pulls it out of rotation right away — no more users get sent there."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Active checks catch problems early — before users feel them. The server is removed silently. Traffic shifts to healthy servers. Nobody on Booking.com notices anything."
+            },
+            {
+              type: "paragraph",
+              text: "And it's not just a basic ping. Booking.com's health check endpoint actually verifies the full system is working — can the server reach the database? Can it process a payment? Is response time acceptable?"
+            },
+            {
+              type: "code",
+              code: "GET /health\n→ DB connection: ✅\n→ Payment gateway: ✅\n→ Response time: 45ms ✅\n→ Status: 200 OK — All good"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Active checks go out and ask servers 'are you okay?' — great for catching problems early. But what about failures that happen mid-request — while a user is literally in the middle of a booking? The ping hasn't gone out yet. The next one is 5 seconds away. What catches that?"
+            }
+          ],
 
-  //     {
-  //       id: 6,
-  //       title: "System Design Level Concepts",
-  //       level: "intermediate",
-  //       topics: [
-  //         "Vertical Scaling",
-  //         "Horizontal Scaling",
-  //         "Reverse Proxy",
-  //         "API Gateway vs Load Balancer",
-  //         "Latency vs Throughput",
-  //         "Connection pooling",
-  //         "Keep-alive mechanism"
-  //       ]
-  //     },
+          "Passive health checks": [
+            {
+              type: "paragraph",
+              text: "A user clicks Confirm Booking on Booking.com. The request goes to Server D. Server D accepts it — but then returns a 500 error. Something broke mid-request. The next active health check ping is 4 seconds away. That's 4 seconds of more users still being sent to a broken server."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What if the Load Balancer could detect a sick server just by watching real traffic — without sending any pings at all?"
+            },
+            {
+              type: "heading",
+              text: "Watch Real Requests — Not Test Pings"
+            },
+            {
+              type: "paragraph",
+              text: "Passive Health Checks don't send any pings. Instead, the Load Balancer silently watches every real request going through. If a server starts throwing errors — 500s, timeouts, failed responses — it notices the pattern and acts."
+            },
+            {
+              type: "code",
+              code: "Request 1 → Server D → 500 Error ❌\nRequest 2 → Server D → 500 Error ❌\nRequest 3 → Server D → Timeout  ❌\n\n3 failures in a row.\nServer D marked as DOWN. Removed from pool."
+            },
+            {
+              type: "paragraph",
+              text: "No test ping needed. The real traffic itself revealed the problem. The Load Balancer catches it mid-flight and pulls Server D out before more users are affected."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Passive checks are instant — they react to real failures as they happen, not on a timer. Booking.com uses both active and passive together. Active catches slow degradation early. Passive catches sudden mid-request failures immediately."
+            },
 
-  //     {
-  //       id: 7,
-  //       title: "Advanced Traffic Management",
-  //       level: "experienced",
-  //       topics: [
-  //         "Path-based routing",
-  //         "Host-based routing",
-  //         "Header-based routing",
-  //         "Geo Load Balancing",
-  //         "Anycast vs DNS routing",
-  //         "Rate limiting",
-  //         "Throttling",
-  //         "Request prioritization"
-  //       ]
-  //     },
+          ]
+        }
+      },
 
-  //     {
-  //       id: 8,
-  //       title: "Reliability & Failure Handling",
-  //       level: "experienced",
-  //       topics: [
-  //         "Failover",
-  //         "Circuit Breaker pattern",
-  //         "Retry mechanisms",
-  //         "Timeout handling",
-  //         "Active-Active setup",
-  //         "Active-Passive setup",
-  //         "Thundering Herd Problem",
-  //         "Cascading failures"
-  //       ]
-  //     },
+      {
+        id: 5,
+        title: "Networking Layer Understanding",
+        level: "intermediate",
+        topics: [
+          "Layer 4 Load Balancing (TCP/UDP)",
+          "Layer 7 Load Balancing (HTTP/HTTPS)",
+        ]
+      },
 
-  //     {
-  //       id: 9,
-  //       title: "Security in Load Balancing",
-  //       level: "experienced",
-  //       topics: [
-  //         "SSL/TLS Termination",
-  //         "HTTPS offloading",
-  //         "DDoS protection basics",
-  //         "Web Application Firewall (WAF)",
-  //         "IP filtering"
-  //       ]
-  //     },
+      {
+        id: 6,
+        title: "System Design Level Concepts",
+        level: "intermediate",
+        topics: [
+          "Vertical Scaling",
+          "Horizontal Scaling",
+          "Reverse Proxy",
+          "API Gateway vs Load Balancer",
+          "Latency vs Throughput",
+          "Connection pooling",
+          "Keep-alive mechanism"
+        ]
+      },
 
-  //     {
-  //       id: 10,
-  //       title: "Cloud & Real Tools",
-  //       level: "experienced",
-  //       topics: [
-  //         "NGINX Load Balancer",
-  //         "HAProxy",
-  //         "Envoy Proxy",
-  //         "AWS ELB / ALB / NLB",
-  //         "Cloudflare Load Balancing",
-  //         "Kubernetes Ingress Controller"
-  //       ]
-  //     }
+      {
+        id: 7,
+        title: "Advanced Traffic Management",
+        level: "experienced",
+        topics: [
+          "Path-based routing",
+          "Host-based routing",
+          "Header-based routing",
+          "Geo Load Balancing",
+          "Anycast vs DNS routing",
+          "Rate limiting",
+          "Throttling",
+          "Request prioritization"
+        ]
+      },
 
-  //   ]
-  // },
+      {
+        id: 8,
+        title: "Reliability & Failure Handling",
+        level: "experienced",
+        topics: [
+          "Failover",
+          "Circuit Breaker pattern",
+          "Retry mechanisms",
+          "Timeout handling",
+          "Active-Active setup",
+          "Active-Passive setup",
+          "Thundering Herd Problem",
+          "Cascading failures"
+        ]
+      },
+
+      {
+        id: 9,
+        title: "Security in Load Balancing",
+        level: "experienced",
+        topics: [
+          "SSL/TLS Termination",
+          "HTTPS offloading",
+          "DDoS protection basics",
+          "Web Application Firewall (WAF)",
+          "IP filtering"
+        ]
+      },
+
+      {
+        id: 10,
+        title: "Cloud & Real Tools",
+        level: "experienced",
+        topics: [
+          "NGINX Load Balancer",
+          "HAProxy",
+          "Envoy Proxy",
+          "AWS ELB / ALB / NLB",
+          "Cloudflare Load Balancing",
+          "Kubernetes Ingress Controller"
+        ]
+      }
+
+    ]
+  },
+
   // {
   //   id: "streams-nodejs",
   //   image: "https://static.vecteezy.com/system/resources/previews/056/505/637/non_2x/jiohotstar-app-icon-on-transparent-background-free-png.png",

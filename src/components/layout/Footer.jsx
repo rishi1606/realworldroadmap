@@ -15,17 +15,17 @@ export function Footer() {
               rel="noreferrer"
               className="font-medium text-text-main underline-offset-4 hover:underline"
             >
-              Real World Roadmap
+              RealWorldDev.io
             </a>
-            . The source code is available on{" "}
-            <a
+            {/* . The source code is available on{" "} */}
+            {/* <a
               href="https://github.com"
               target="_blank"
               rel="noreferrer"
               className="font-medium text-text-main underline-offset-4 hover:underline"
             >
               GitHub
-            </a>
+            </a> */}
             .
           </p>
         </div>

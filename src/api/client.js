@@ -34,4 +34,9 @@ export const notifyAPI = {
   check: (email, roadmapId, level) => apiClient.get('/notify/check', { params: { email, roadmapId, level } }),
 };
 
+export const progressAPI = {
+  get: (roadmapId) => apiClient.get(`/progress/${roadmapId}`),
+  toggle: (roadmapId, topicId) => apiClient.post('/progress/toggle', { roadmapId, topicId }),
+};
+
 export default apiClient;

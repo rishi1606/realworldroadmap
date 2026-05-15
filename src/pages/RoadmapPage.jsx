@@ -5,7 +5,8 @@ import { RoadmapSidebar } from '../components/roadmap/RoadmapSidebar';
 import { RoadmapContent } from '../components/roadmap/RoadmapContent';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { useAuth } from '../context/AuthContext';
-import { roadmapAPI } from '../api/client';
+import { roadmapAPI, progressAPI } from '../api/client';
+import toast from 'react-hot-toast';
 
 export function RoadmapPage() {
   const { title } = useParams();
@@ -17,6 +18,47 @@ export function RoadmapPage() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [topicStatus, setTopicStatus] = useState({}); // { topicId: 'pending' | 'skip' | 'done' }
+
+  useEffect(() => {
+    if (activeRoadmap && user) {
+      const fetchProgress = async () => {
+        try {
+          const { data } = await progressAPI.get(activeRoadmap._id);
+          const statusMap = {};
+          if (data.completedTopics) {
+            data.completedTopics.forEach(id => {
+              statusMap[id] = 'done';
+            });
+          }
+          setTopicStatus(statusMap);
+        } catch (error) {
+          console.error("Failed to fetch progress", error);
+        }
+      };
+      fetchProgress();
+    }
+  }, [activeRoadmap, user]);
+
+  const updateStatus = async (topicId) => {
+    if (!user) return toast.error("Please login to track progress");
+
+    try {
+      const { data } = await progressAPI.toggle(activeRoadmap._id, topicId);
+      const statusMap = {};
+      if (data.completedTopics) {
+        data.completedTopics.forEach(id => {
+          statusMap[id] = 'done';
+        });
+      }
+      setTopicStatus(statusMap);
+
+      const isDone = data.completedTopics.includes(topicId);
+      toast.success(isDone ? "Topic marked as complete!" : "Topic status updated");
+    } catch (error) {
+      toast.error("Failed to update progress");
+    }
+  };
 
 
   useEffect(() => {
@@ -148,12 +190,16 @@ export function RoadmapPage() {
           onSelectNode={handleSelectNode}
           selectedTopic={selectedTopic}
           onSelectTopic={setSelectedTopic}
+          topicStatus={topicStatus}
+          updateStatus={updateStatus}
         />
         <RoadmapContent
           roadmap={activeRoadmap}
           selectedNode={selectedNode}
           selectedTopic={selectedTopic}
           onSelectTopic={setSelectedTopic}
+          topicStatus={topicStatus}
+          updateStatus={updateStatus}
         />
       </div>
     </div>

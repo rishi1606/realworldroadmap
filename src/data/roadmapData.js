@@ -1804,129 +1804,121 @@ export const roadmapData = [
           //   }
           // ]
         }
+      },
+      {
+        id: 5,
+        title: "Redis as a Cache",
+        level: "intermediate",
+        topics: [
+          "What is Redis & How it works",
+          "Redis TTL & Key Expiry",
+          "Redis Eviction Policies",
+          "Redis Data Structures (String, Hash, List, Set, ZSet)",
+          "Redis Memory Optimization"
+        ]
+      },
+      {
+        id: 6,
+        title: "HTTP & CDN Caching",
+        level: "intermediate",
+        topics: [
+          "How CDN Caching works",
+          "Cache-Control Headers",
+          "ETag & Conditional Requests",
+          "Stale-While-Revalidate",
+          "Browser Cache vs CDN Cache",
+          "How Netflix uses Open Connect (their own CDN)"
+        ]
+      },
+      {
+        id: 7,
+        title: "Cache Problems & Solutions",
+        level: "intermediate",
+        topics: [
+          "Cache Stampede (Thundering Herd)",
+          "Cache Penetration",
+          "Cache Avalanche",
+          "Hotspot Key Problem",
+          "Negative Caching",
+          "Cache Poisoning",
+          "Mutex Lock & Probabilistic Early Expiry"
+        ]
+      },
+      {
+        id: 8,
+        title: "Application Level Caching",
+        level: "intermediate",
+        topics: [
+          "In-Memory Caching (Node.js - node-cache)",
+          "Memoization pattern",
+          "Database Query Caching",
+          "API Response Caching",
+          "Fragment Caching",
+          "Full Page Caching"
+        ]
+      },
+      {
+        id: 9,
+        title: "Distributed Caching",
+        level: "experienced",
+        topics: [
+          "What is Distributed Caching",
+          "Consistent Hashing",
+          "Cache Replication",
+          "Cache Partitioning (Sharding)",
+          "Redis Cluster",
+          "Leader-Follower Redis Setup",
+          "CAP Theorem Applied to Cache",
+          "Replication Lag & Stale Reads"
+        ]
+      },
+      {
+        id: 10,
+        title: "Netflix EVCache (Real World)",
+        level: "experienced",
+        topics: [
+          "What is EVCache (Netflix's caching system)",
+          "EVCache Architecture & Design",
+          "Memcached vs Redis at Netflix scale",
+          "Replication across AWS Availability Zones",
+          "Cache Warming strategies at Netflix",
+          "Handling cache failures gracefully",
+          "Fallback to DB when cache is down"
+        ]
+      },
+      {
+        id: 11,
+        title: "Advanced Cache Patterns",
+        level: "experienced",
+        topics: [
+          "Multi-Layer Caching (L1, L2, L3)",
+          "Cache Warming & Pre-population",
+          "Session Caching",
+          "Rate Limiting with Redis",
+          "Idempotency Keys with Cache",
+          "Geo-distributed Cache (Multi-region)",
+          "Write-Heavy vs Read-Heavy Cache Design"
+        ]
+      },
+      {
+        id: 12,
+        title: "Production Caching Patterns",
+        level: "experienced",
+        topics: [
+          "Cache Monitoring & Hit Rate Alerting",
+          "Cache Eviction Tuning in Production",
+          "Cost vs Performance tradeoffs",
+          "Cache Size estimation",
+          "Hot vs Cold Cache behavior",
+          "Blue-Green Cache Deployments",
+          "GDPR & Caching (PII data in cache)"
+        ]
       }
+
     ]
+
   }
-
-  //     {
-  //       id: 5,
-  //       title: "Redis as a Cache",
-  //       level: "intermediate",
-  //       topics: [
-  //         "What is Redis & How it works",
-  //         "Redis TTL & Key Expiry",
-  //         "Redis Eviction Policies",
-  //         "Redis Data Structures (String, Hash, List, Set, ZSet)",
-  //         "Redis Memory Optimization"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 6,
-  //       title: "HTTP & CDN Caching",
-  //       level: "intermediate",
-  //       topics: [
-  //         "How CDN Caching works",
-  //         "Cache-Control Headers",
-  //         "ETag & Conditional Requests",
-  //         "Stale-While-Revalidate",
-  //         "Browser Cache vs CDN Cache",
-  //         "How Netflix uses Open Connect (their own CDN)"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 7,
-  //       title: "Cache Problems & Solutions",
-  //       level: "intermediate",
-  //       topics: [
-  //         "Cache Stampede (Thundering Herd)",
-  //         "Cache Penetration",
-  //         "Cache Avalanche",
-  //         "Hotspot Key Problem",
-  //         "Negative Caching",
-  //         "Cache Poisoning",
-  //         "Mutex Lock & Probabilistic Early Expiry"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 8,
-  //       title: "Application Level Caching",
-  //       level: "intermediate",
-  //       topics: [
-  //         "In-Memory Caching (Node.js - node-cache)",
-  //         "Memoization pattern",
-  //         "Database Query Caching",
-  //         "API Response Caching",
-  //         "Fragment Caching",
-  //         "Full Page Caching"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 9,
-  //       title: "Distributed Caching",
-  //       level: "experienced",
-  //       topics: [
-  //         "What is Distributed Caching",
-  //         "Consistent Hashing",
-  //         "Cache Replication",
-  //         "Cache Partitioning (Sharding)",
-  //         "Redis Cluster",
-  //         "Leader-Follower Redis Setup",
-  //         "CAP Theorem Applied to Cache",
-  //         "Replication Lag & Stale Reads"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 10,
-  //       title: "Netflix EVCache (Real World)",
-  //       level: "experienced",
-  //       topics: [
-  //         "What is EVCache (Netflix's caching system)",
-  //         "EVCache Architecture & Design",
-  //         "Memcached vs Redis at Netflix scale",
-  //         "Replication across AWS Availability Zones",
-  //         "Cache Warming strategies at Netflix",
-  //         "Handling cache failures gracefully",
-  //         "Fallback to DB when cache is down"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 11,
-  //       title: "Advanced Cache Patterns",
-  //       level: "experienced",
-  //       topics: [
-  //         "Multi-Layer Caching (L1, L2, L3)",
-  //         "Cache Warming & Pre-population",
-  //         "Session Caching",
-  //         "Rate Limiting with Redis",
-  //         "Idempotency Keys with Cache",
-  //         "Geo-distributed Cache (Multi-region)",
-  //         "Write-Heavy vs Read-Heavy Cache Design"
-  //       ]
-  //     },
-
-  //     {
-  //       id: 12,
-  //       title: "Production Caching Patterns",
-  //       level: "experienced",
-  //       topics: [
-  //         "Cache Monitoring & Hit Rate Alerting",
-  //         "Cache Eviction Tuning in Production",
-  //         "Cost vs Performance tradeoffs",
-  //         "Cache Size estimation",
-  //         "Hot vs Cold Cache behavior",
-  //         "Blue-Green Cache Deployments",
-  //         "GDPR & Caching (PII data in cache)"
-  //       ]
-  //     }
-
-  //   ]
-  // },
+  // ,
   // {
   //   id: "websockets-gaming",
   //   image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
@@ -5667,312 +5659,7 @@ export const roadmapData = [
               "type": "success-callout",
               "text": "✅ Call Stack runs tasks. Node APIs handle slow work in background. Microtask Queue handles priority responses first. Callback Queue handles the rest. Event Loop connects all four — non stop, forever. That's how Uber handles millions of rides on a single thread."
             },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Now you know how Node.js never misses a request. But what happens when Node.js has to handle something extremely heavy — like calculating surge pricing for an entire city at once? That's where it struggles. And that's what we cover next."
-            }
           ],
-          "Call Stack": [
-            {
-              "type": "paragraph",
-              "text": "Uber's matchmaking logic is a series of function calls — receiveRideRequest() calls findNearbyDrivers() which calls calculateDistance() which calls applyHaversineFormula(). Each function call is placed on a stack, executed, and removed when it's done. This is the Call Stack — the place where JavaScript code actually runs."
-            },
-            {
-              "type": "heading",
-              "text": "The Stack — Last In, First Out"
-            },
-            {
-              "type": "paragraph",
-              "text": "The Call Stack works like a stack of plates at a restaurant. You add plates on top (push). You take plates from the top (pop). In JavaScript, every time a function is called, it's pushed onto the stack. When the function returns, it's popped off. The Event Loop can only run code when the Call Stack is empty — that's the rule. If something is running on the stack, everything else waits."
-            },
-            {
-              "type": "code",
-              "code": "function applyHaversineFormula(lat1, lng1, lat2, lng2) {\n  return Math.sqrt(Math.pow(lat2-lat1, 2) + Math.pow(lng2-lng1, 2));\n}\n\nfunction calculateDistance(driver, rider) {\n  return applyHaversineFormula(driver.lat, driver.lng, rider.lat, rider.lng);\n}\n\nfunction findNearbyDrivers(riderLocation) {\n  return drivers.map(d => calculateDistance(d, riderLocation));\n}\n\nfunction receiveRideRequest(request) {\n  const distances = findNearbyDrivers(request.location);\n  return distances;\n}\n\nreceiveRideRequest(request); // This starts it all"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Call Stack in Action for an Uber Match"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — receiveRideRequest() is called",
-              "desc": "Event Loop picks up the ride request. Pushes receiveRideRequest onto the Call Stack. Stack: [receiveRideRequest]. This function starts executing."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — findNearbyDrivers() is called inside it",
-              "desc": "receiveRideRequest calls findNearbyDrivers. This gets pushed on top. Stack: [receiveRideRequest, findNearbyDrivers]. findNearbyDrivers is now running — receiveRideRequest is paused, waiting."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — calculateDistance() is called for each driver",
-              "desc": "findNearbyDrivers calls calculateDistance for Driver_1. Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance]. Then inside that, applyHaversineFormula is called. Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance, applyHaversineFormula]."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Functions complete and pop off",
-              "desc": "applyHaversineFormula returns the distance and pops off. calculateDistance uses that result, returns, and pops off. This repeats for each driver. Eventually findNearbyDrivers returns the full list and pops off. receiveRideRequest finishes with the distances."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — Call Stack is empty",
-              "desc": "receiveRideRequest pops off. Stack is now empty: []. Event Loop can now process the next item — maybe a GPS update that was waiting, or a timer that fired. The stack being empty is what ALLOWS the Event Loop to keep running."
-            },
-            {
-              "type": "code",
-              "code": "Call Stack visualization:\n\n→ receiveRideRequest(req) called\n  Stack: [receiveRideRequest]\n\n→ findNearbyDrivers(location) called inside it\n  Stack: [receiveRideRequest, findNearbyDrivers]\n\n→ calculateDistance(driver1, rider) called\n  Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance]\n\n→ applyHaversineFormula() called\n  Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance, applyHaversineFormula]\n\n← applyHaversineFormula returns 1.2km\n  Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance]\n\n← calculateDistance returns 1.2km\n  Stack: [receiveRideRequest, findNearbyDrivers]\n\n← findNearbyDrivers returns [1.2km, 2.1km, 0.8km]\n  Stack: [receiveRideRequest]\n\n← receiveRideRequest returns closest driver\n  Stack: []  ← EMPTY! Event Loop can run next task."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Here's the critical rule: if a function on the Call Stack takes too long — like a complex loop or a synchronous database call — NOTHING ELSE CAN RUN. The Event Loop is blocked. For Uber, this means no GPS updates, no new ride requests, nothing — until that function finishes. This is called 'blocking the event loop' and it's the #1 performance mistake in Node.js."
-            },
-            {
-              "type": "code",
-              "code": "// BAD — blocks the Call Stack for 5 seconds!\nfunction processAllRides() {\n  // Imagine this takes 5 seconds to compute\n  for (let i = 0; i < 1000000000; i++) {\n    calculateComplexSurgeAlgorithm(i);\n  }\n}\n// During these 5 seconds: NO GPS updates processed,\n// NO new ride requests handled, NO payments confirmed.\n// Uber's server is frozen for 5 seconds.\n\n// GOOD — hand heavy work off to a worker thread\nworker.postMessage({ task: 'calculateSurge', data: rideData });\n// Main thread is free immediately — Event Loop keeps spinning."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ The Call Stack is where JavaScript executes — one function at a time, top of the stack. For Uber's Node.js server, keeping functions short and non-blocking is critical. Heavy computation goes to worker threads. Fast I/O goes through libuv. The Call Stack should never be held up for long."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ The Call Stack handles synchronous code. But what about the database queries, file reads, and API calls — the stuff that takes time? Those go through Node APIs. Where do they live while they're running?"
-            }
-          ],
-          "Web APIs / Node APIs": [
-            {
-              "type": "paragraph",
-              "text": "When Uber's server receives a ride request and needs to query the database for nearby drivers, it can't put that 50ms database operation on the Call Stack — that would freeze everything for 50ms. Instead, Node.js has a set of background APIs — powered by libuv — that handle all time-consuming operations outside the Call Stack. These are called Node APIs (the server-side equivalent of browser Web APIs)."
-            },
-            {
-              "type": "heading",
-              "text": "The Handoff — From Call Stack to Node APIs"
-            },
-            {
-              "type": "paragraph",
-              "text": "When your JavaScript code hits an async operation — like a database query, reading a file, making an HTTP request, or a timer — Node.js doesn't execute it on the Call Stack. Instead, it HANDS IT OFF to the Node API layer (libuv). The Call Stack is immediately freed to handle other work. When the operation completes, libuv places the callback in a queue, and the Event Loop eventually picks it up."
-            },
-            {
-              "type": "code",
-              "code": "Uber's Node.js uses these Node APIs constantly:\n\ndb.query('SELECT * FROM drivers WHERE distance < 2')  → Database API (libuv thread pool)\nfs.readFile('/config/surge-zones.json', callback)     → File System API (libuv thread pool)\nhttps.get('https://maps.googleapis.com/...')          → Network API (OS kernel)\nsetTimeout(() => recalculateSurge(), 5000)           → Timer API\nfetch('https://api.stripe.com/charges')              → HTTP Client API (OS kernel)\n\nAll of these LEAVE the Call Stack immediately.\nlibuv handles them in the background.\nCallbacks come back when they're done."
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Uber's Ride Request Using Node APIs"
-            },
-            {
-              "type": "paragraph",
-              "text": "Here's a complete trace of what happens to async operations when Uber processes a ride request — showing exactly when things leave the Call Stack and when they come back:"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Ride request hits Node.js (on Call Stack)",
-              "desc": "function handleRideRequest(req) runs on the Call Stack. It parses the request data (synchronous — stays on stack). It prepares the database query. Stack: [handleRideRequest]."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — DB query handed off to Node API",
-              "desc": "handleRideRequest calls: db.query('SELECT nearby drivers', callback). This line runs on the Call Stack for a microsecond — but it immediately hands the actual database work to libuv's thread pool. The Call Stack doesn't wait. handleRideRequest continues and finishes. Stack empties."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — While DB query runs in background (libuv), other things happen",
-              "desc": "The DB query is now running in libuv's thread pool — completely outside the Call Stack. While it's running, the Event Loop handles 50 other things: GPS pings, payment webhooks, driver status updates. The main thread is free."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — DB query completes. Callback enters the queue.",
-              "desc": "50ms later, the database responds with nearby drivers. libuv takes the callback function (the one with the results) and places it in the Callback Queue. It's ready to run — but waits for the Event Loop to pick it up."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — Event Loop picks up the callback",
-              "desc": "Event Loop sees the callback waiting in the queue. Call Stack is currently empty. Event Loop pushes the callback onto the Call Stack. It runs: process the drivers list, pick the closest, send push notification. Done."
-            },
-            {
-              "type": "code",
-              "code": "Complete flow — async DB query in Uber's server:\n\nCALL STACK          NODE API (libuv)      CALLBACK QUEUE\n─────────────────   ─────────────────     ──────────────\nhandleRequest()\n  → db.query()   ─→ [DB query running]         -\n  → (returns)    \n[EMPTY]                [DB query...]             -\n\n(50 other things      [DB query...]             -\n processed here)\n\n[EMPTY]             [DB query done!]  ─→ [onDriversFound]\n\nonDriversFound()    ─────────────────     [EMPTY]\n  → matchDriver()\n  → sendPush()\n[EMPTY]\n\n✅ The Call Stack was never blocked.\n   The DB ran in the background.\n   Callback ran when it was ready."
-            },
-            {
-              "type": "info-callout",
-              "text": "🏢 Think of Node APIs as Uber's outsourcing departments. When Uber HQ (Call Stack) gets a complex task that takes time (database query, file read, API call), they outsource it to a specialist department (Node API / libuv). HQ is immediately free to handle the next task. When the outsourced work is done, the result comes back to HQ's inbox (Callback Queue)."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Node APIs (backed by libuv) are what make async programming possible in Node.js. Every time Uber's server queries a database, reads a file, or calls an external API — it uses Node APIs, stays non-blocking, and keeps the Event Loop free."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Callbacks from Node APIs go into a queue — but they have to wait their turn. That queue is called the Callback Queue (or Task Queue). And there's a separate queue with higher priority: the Microtask Queue (Promises). Let's see how they work."
-            }
-          ],
-          "Callback Queue (Task Queue)": [
-            {
-              "type": "paragraph",
-              "text": "Uber's server just finished three async operations at the same time: a database query came back with nearby drivers, a setTimeout for surge price recalculation fired, and a file read for zone config completed. All three callbacks are ready to run — but the Call Stack can only execute one thing at a time. They line up in the Callback Queue and the Event Loop processes them in order."
-            },
-            {
-              "type": "heading",
-              "text": "The Queue — First In, First Out"
-            },
-            {
-              "type": "paragraph",
-              "text": "The Callback Queue (also called the Task Queue or Macrotask Queue) is a waiting room for callbacks that are ready to run. When a Node API operation completes — a database query finishes, a setTimeout fires, a network request returns — its callback is placed here. The Event Loop checks this queue at the end of each tick. If the Call Stack is empty, it takes one callback from the queue, pushes it to the Call Stack, and runs it."
-            },
-            {
-              "type": "code",
-              "code": "What fills the Callback Queue:\n→ setTimeout callbacks (when timer expires)\n→ setInterval callbacks (on each interval tick)\n→ I/O callbacks (database result, file read done)\n→ HTTP response callbacks\n→ setImmediate callbacks (next iteration of event loop)\n\nWhat does NOT go in the Callback Queue:\n→ Promise .then() callbacks    ← these go to Microtask Queue (higher priority!)\n→ async/await resumes         ← also Microtask Queue\n→ process.nextTick()          ← also Microtask Queue"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Three Uber Callbacks Arrive Simultaneously"
-            },
-            {
-              "type": "paragraph",
-              "text": "It's surge hour. Uber's server just triggered three operations at the same time. All three complete within microseconds of each other. Here's how the Callback Queue handles them:"
-            },
-            {
-              "type": "step",
-              "title": "Setup — Three async operations were started",
-              "desc": "At t=0ms: db.query('SELECT nearby drivers', cb1) — started 50ms ago. setTimeout(() => recalculateSurge(), 5000) — timer set 5 seconds ago. fs.readFile('zones.json', cb3) — started 20ms ago. All three complete at approximately the same time."
-            },
-            {
-              "type": "step",
-              "title": "t=50ms — All three callbacks arrive in the Callback Queue",
-              "desc": "libuv notifies the Event Loop: the DB query, the setTimeout, and the file read all completed. All three callbacks are placed in the Callback Queue: Queue: [cb1_dbResult, cb2_surgeRecalc, cb3_fileRead]. They arrived in this order, so they'll be processed in this order."
-            },
-            {
-              "type": "step",
-              "title": "t=50ms — Event Loop checks: Call Stack empty?",
-              "desc": "Event Loop looks at the Call Stack. It's empty — the previous synchronous code finished. Event Loop takes cb1_dbResult from the front of the queue and pushes it to the Call Stack."
-            },
-            {
-              "type": "step",
-              "title": "t=50ms — cb1 runs: process nearby drivers",
-              "desc": "cb1_dbResult runs on the Call Stack: it receives the list of nearby drivers, sorts by distance, picks Driver_87 as the best match, fires a push notification (which goes to Node API / libuv — non-blocking). cb1 finishes and pops off the stack."
-            },
-            {
-              "type": "step",
-              "title": "t=51ms — cb2 runs: surge price recalculation",
-              "desc": "Call Stack is empty again. Event Loop takes cb2_surgeRecalc from the queue. Runs it: calculates new surge multiplier (1.8x), updates the in-memory surge map. Finishes, pops off."
-            },
-            {
-              "type": "step",
-              "title": "t=52ms — cb3 runs: zone config file loaded",
-              "desc": "cb3_fileRead runs: parses the JSON zone data, updates the server's zone boundaries. Finishes. Queue is now empty. Event Loop loops again — waiting for the next thing."
-            },
-            {
-              "type": "code",
-              "code": "Callback Queue processing timeline:\n\nt=0ms   db.query() started\nt=0ms   setTimeout(5000) started\nt=0ms   fs.readFile() started\n\nt=50ms  DB query done → cb1 enters queue\nt=50ms  Timer fired  → cb2 enters queue\nt=50ms  File read done → cb3 enters queue\n\nCallback Queue: [cb1_dbResult, cb2_surge, cb3_file]\n\nEvent Loop:\n  → Stack empty? YES → take cb1 → run it → stack empty\n  → Stack empty? YES → take cb2 → run it → stack empty\n  → Stack empty? YES → take cb3 → run it → stack empty\n  → Queue empty → wait for more...\n\nAll three handled. No blocking. No thread spawning."
-            },
-            {
-              "type": "info-callout",
-              "text": "⏰ Important: setTimeout(fn, 0) does NOT run immediately. It goes through the Callback Queue. Even with 0ms delay, it waits for: (1) the Call Stack to empty, (2) all microtasks (Promises) to run, THEN it runs. This surprises many developers."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ The Callback Queue is the waiting room for completed async operations. Uber's GPS callbacks, timer callbacks, and file system callbacks all queue here. The Event Loop processes them one by one — in order, without blocking."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ There's a second queue that runs BEFORE the Callback Queue on every tick — the Microtask Queue. This is where Promise callbacks go. And it has strict priority over the Callback Queue. Understanding this priority order explains some surprising Node.js behavior."
-            }
-          ],
-          "Microtask Queue (Promises)": [
-            {
-              "type": "paragraph",
-              "text": "Uber's server just processed a ride request using Promises (modern async/await style). A Promise resolved — the nearby drivers result is ready. At the same time, a setTimeout callback is waiting in the Callback Queue for the same tick. Which one runs first? The Promise. Always. The Microtask Queue is processed completely before the Callback Queue is even touched. This priority order matters enormously for getting correct behavior in Node.js."
-            },
-            {
-              "type": "heading",
-              "text": "Two Queues, Different Priority"
-            },
-            {
-              "type": "paragraph",
-              "text": "The Microtask Queue holds callbacks from Promises (.then(), .catch(), .finally()), async/await continuations, and process.nextTick(). The Event Loop has a strict rule: after every item from the Call Stack runs, drain the entire Microtask Queue before picking up the next item from the Callback Queue. Even if 1,000 microtasks arrive, ALL of them run before the next setTimeout callback."
-            },
-            {
-              "type": "code",
-              "code": "Priority order (highest to lowest):\n1. process.nextTick()  → Microtask Queue (very high priority)\n2. Promise callbacks   → Microtask Queue\n3. setTimeout/I/O      → Callback Queue (lower priority)\n4. setImmediate        → Check Queue\n\nRule: Empty the Microtask Queue COMPLETELY\n      before touching the Callback Queue."
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Promise vs setTimeout in Uber's Ride Matching"
-            },
-            {
-              "type": "paragraph",
-              "text": "Uber's matchmaking code uses both Promises and a setTimeout. Let's trace exactly which order they execute in — and why:"
-            },
-            {
-              "type": "code",
-              "code": "// Uber's ride request handler (simplified)\nconsole.log('1 - Ride request received');\n\nsetTimeout(() => {\n  console.log('4 - Timer: surge price check (setTimeout)');\n}, 0);\n\nPromise.resolve().then(() => {\n  console.log('3 - Promise: driver found (microtask)');\n});\n\nconsole.log('2 - Processing request...');\n\n// Output:\n// 1 - Ride request received\n// 2 - Processing request...\n// 3 - Promise: driver found (microtask)     ← BEFORE setTimeout!\n// 4 - Timer: surge price check (setTimeout) ← AFTER Promise!"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Synchronous code runs first (Call Stack)",
-              "desc": "console.log('1') runs. setTimeout is registered — its callback goes to a timer, NOT the queue yet. Promise.resolve().then() is registered — its callback goes to the Microtask Queue immediately (Promise is already resolved). console.log('2') runs. Call Stack is now empty."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Event Loop checks Microtask Queue FIRST",
-              "desc": "Before touching the Callback Queue, Event Loop checks the Microtask Queue. There's a Promise callback there. Runs it: console.log('3 - Promise: driver found'). Microtask Queue is now empty."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Now Event Loop checks Callback Queue",
-              "desc": "Microtask Queue is empty. NOW the Event Loop checks the Callback Queue. The setTimeout(fn, 0) callback is there (timer expired). Runs it: console.log('4 - Timer: surge price check'). Done."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Why this matters for Uber's code",
-              "desc": "If Uber's matchmaking uses async/await (which is built on Promises), it runs in the Microtask Queue. It's guaranteed to complete before any setTimeout-based operations (like logging, analytics). This ensures the driver match result is processed and sent to the rider BEFORE lower-priority tasks run."
-            },
-            {
-              "type": "code",
-              "code": "Real Uber ride-matching with async/await:\n\nasync function handleRideRequest(req) {\n  console.log('Received request');\n\n  // This fires a DB query — non-blocking\n  const drivers = await db.query('SELECT nearby drivers');\n  // ↑ Everything after 'await' is a microtask (Promise)\n\n  console.log('Drivers found:', drivers.length);\n  const match = selectBestDriver(drivers);\n  await sendPushNotification(match.deviceToken);\n  console.log('Driver notified!');\n}\n\n// When 'await' completes:\n// → The continuation goes to Microtask Queue\n// → Runs before any setTimeout/setInterval callbacks\n// → Ensures driver notification happens with highest priority"
-            },
-            {
-              "type": "table",
-              "headers": [
-                "Queue",
-                "What goes here",
-                "Priority",
-                "Uber example"
-              ],
-              "rows": [
-                [
-                  "Microtask Queue",
-                  "Promise .then(), async/await, process.nextTick()",
-                  "HIGH — runs first",
-                  "Driver match result, payment confirmation"
-                ],
-                [
-                  "Callback Queue",
-                  "setTimeout, setInterval, I/O callbacks",
-                  "NORMAL — runs after microtasks",
-                  "Surge timer, GPS batch write"
-                ],
-                [
-                  "Call Stack",
-                  "Synchronous code",
-                  "IMMEDIATE — blocks everything else",
-                  "Request parsing, math calculations"
-                ]
-              ]
-            },
-            {
-              "type": "info-callout",
-              "text": "⚠️ One trap: if you create an infinite loop of Promises (each .then() creates another Promise), the Microtask Queue NEVER empties — and the Callback Queue never runs. This starves timers and I/O callbacks. In production (like Uber's servers), this would freeze GPS updates and ride matching. Always make sure Promise chains eventually resolve."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ The Microtask Queue (Promises, async/await) runs before the Callback Queue (setTimeout, I/O) on every Event Loop tick. For Uber, this means async/await-based ride matching, payment processing, and driver notifications always take priority over timer-based operations. Understanding this queue priority prevents subtle bugs in production Node.js code."
-            },
-            {
-              "type": "info-callout",
-              "text": "🎯 Full Event Loop picture — The Call Stack executes code (one thing at a time). Node APIs (libuv) handle slow async work in the background. Completed async work goes to the Callback Queue. Promise callbacks go to the higher-priority Microtask Queue. The Event Loop orchestrates all of this — check microtasks → check callbacks → repeat. This is how Uber's server stays responsive while handling millions of async operations per second."
-            }
-          ]
         }
       },
       {
@@ -5981,299 +5668,281 @@ export const roadmapData = [
         "level": "freshers",
         "topics": [
           "Callbacks",
+          "Callback Hell & how to avoid it",
           "Promises",
-          "Async / Await",
-          "Callback Hell & how to avoid it"
+          "Async/Await",
+
         ],
         "topicDetails": {
 
           "Callbacks": [
             {
               "type": "paragraph",
-              "text": "You call a restaurant to order food. Instead of staying on hold for 40 minutes until your food is ready, you give them your phone number and say 'call me back when it's ready.' That phone number is a callback. In Node.js, a callback is a function you pass to an async operation — 'here's what to do when you're done.'"
+              "text": "A callback is a function you pass to another function — 'call this when you're done.'"
             },
             {
-              "type": "heading",
-              "text": "Callbacks — The Original Async Pattern"
-            },
-            {
-              "type": "paragraph",
-              "text": "In Node.js, the callback pattern is the foundation of async programming. You call a function that does something slow (database query, file read), and you pass it another function as an argument. When the slow operation completes, your callback function is called with the result. Node.js uses a specific convention: the first argument of a callback is always an error (null if no error), and the second is the result."
-            },
-            {
-              "type": "code",
-              "code": "// Node.js callback convention: (error, result)\n// If error is null → success. If error exists → failure.\n\n// Uber: Find nearby drivers (callback style)\ndb.query('SELECT * FROM drivers WHERE distance < 2', (error, drivers) => {\n  if (error) {\n    console.log('DB error:', error.message);\n    return; // stop here\n  }\n  // Success — drivers contains the results\n  console.log('Found', drivers.length, 'nearby drivers');\n  matchRiderToDriver(drivers);\n});"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Complete Ride Request Using Callbacks"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Rider requests a ride",
-              "desc": "Server receives the request. Needs to: (1) find nearby drivers, (2) check rider's payment method, (3) calculate fare estimate. Each is an async operation. With callbacks, you nest them."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Find nearby drivers (async)",
-              "desc": "Call db.query() with a callback. The callback receives (error, drivers). If no error, we have our drivers. Inside this callback, we start the next operation."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Check payment method (async, inside previous callback)",
-              "desc": "Inside the drivers callback, call stripeAPI.getPaymentMethod(riderId, callback). This callback receives (error, paymentMethod). Inside that callback, start the next operation."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Calculate fare (async, inside previous callback)",
-              "desc": "Inside the payment callback, call fareAPI.estimate(distance, callback). This callback receives (error, fare). Now we have everything we need to complete the match."
-            },
-            {
-              "type": "code",
-              "code": "// Complete ride request with callbacks:\ndb.query('SELECT nearby drivers', (err, drivers) => {\n  if (err) return handleError(err);\n\n  stripe.getPaymentMethod(riderId, (err, payment) => {\n    if (err) return handleError(err);\n\n    fareAPI.estimate(distance, (err, fare) => {\n      if (err) return handleError(err);\n\n        matchDriver(drivers[0], payment, fare, (err, match) => {\n          if (err) return handleError(err);\n\n          sendNotification(match.driverId, (err) => {\n            if (err) return handleError(err);\n            console.log('Driver notified!');\n          });\n        });\n    });\n  });\n});\n// This is Callback Hell — each operation\n// is nested inside the previous one."
+              "type": "curious-callout",
+              "text": "❓ How does Uber's server know when a slow operation is done — without waiting for it?"
             },
             {
               "type": "info-callout",
-              "text": "📞 Callbacks work — they're the foundation of async Node.js. But as the code above shows, chaining multiple async operations creates deeply nested code. This is called 'Callback Hell' — pyramid-shaped code that's hard to read, debug, and maintain. Uber's engineering team encountered this immediately. That's why Promises were invented."
+              "text": "💡 Like leaving your number at a restaurant — 'call me when my table is ready.' You don't stand at the door waiting. They call you back. That's a callback."
+            },
+            {
+              "type": "heading",
+              "text": "How It Works"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Raj opens his ride history",
+              "desc": "Uber fires a database query to fetch Raj's last 10 trips. Passes a function — 'call this when the data is ready.'"
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Server moves on",
+              "desc": "Server doesn't wait for Raj's history. Already processing Priya's payment, Sara's refund, and 500 other things."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Database responds",
+              "desc": "Database found Raj's 10 trips. Calls the callback with the result. Server handles it right then."
+            },
+            {
+              "type": "code",
+              "code": "// Raj opens ride history\ndb.query('SELECT * FROM rides WHERE user = raj', (error, rides) => {\n  if (error) return console.log('Failed to load history');\n  console.log('Raj has', rides.length, 'past rides');\n});\n// Server already moved on — not waiting here"
             },
             {
               "type": "success-callout",
-              "text": "✅ Callbacks are the original async pattern in Node.js — pass a function, get called when done. They work, but sequential async operations create deeply nested, hard-to-read code. Understanding callbacks is essential because all of Node.js's async foundations are built on them — Promises and async/await are abstractions on top of callbacks."
+              "text": "✅ Callback = pass a function, get called when done. Simple and powerful."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Callback Hell is real and painful. Uber's codebase would be unmaintainable with deeply nested callbacks. Promises were created specifically to solve this — flatten the nesting, make error handling cleaner, make async code readable again."
-            }
-          ],
-          "Promises": [
-            {
-              "type": "paragraph",
-              "text": "Uber books you a ride. Instead of making you wait on hold (callback), they give you a ticket — a Promise. 'This ticket represents your future ride. When a driver is confirmed, the ticket resolves with their details. If no driver is available, the ticket rejects with a reason.' You can do other things while holding the ticket. When it resolves or rejects, you handle it. That's a Promise."
-            },
-            {
-              "type": "heading",
-              "text": "A Promise — Three States"
-            },
-            {
-              "type": "paragraph",
-              "text": "A Promise object represents an operation that hasn't completed yet but will in the future. It exists in one of three states: Pending (operation in progress), Fulfilled (operation completed successfully — with a value), or Rejected (operation failed — with a reason). Once a Promise moves from Pending to either Fulfilled or Rejected, it stays there forever — you can't un-fulfill a Promise."
-            },
-            {
-              "type": "code",
-              "code": "// Promise states:\nconst ridePromise = findNearbyDriver(location);\n// State: PENDING (DB query is running)\n\nridePromise\n  .then(driver => {\n    // State: FULFILLED — DB returned a driver\n    console.log('Driver found:', driver.name);\n  })\n  .catch(error => {\n    // State: REJECTED — DB error or no drivers found\n    console.log('No driver available:', error.message);\n  })\n  .finally(() => {\n    // Runs regardless of success or failure\n    console.log('Ride matching attempt complete');\n  });"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Uber Ride Request Rewritten With Promises"
-            },
-            {
-              "type": "paragraph",
-              "text": "Here's the same 5-step ride request from the Callbacks section — but rewritten with Promises. Notice how the deeply nested pyramid becomes a flat chain:"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — findNearbyDrivers() returns a Promise",
-              "desc": "Instead of accepting a callback, findNearbyDrivers returns a Promise object. The database query runs in the background. When it completes, the Promise fulfills with the drivers list."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Chain .then() calls",
-              "desc": "Each .then() receives the result of the previous step and returns a new Promise. findNearbyDrivers() → .then(matchDriver) → .then(getPayment) → .then(calculateFare) → .then(sendNotification). It reads top to bottom — like synchronous code."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — One .catch() handles all errors",
-              "desc": "Instead of checking 'if (err)' inside every single callback, one .catch() at the end handles errors from ANY step in the chain. If findNearbyDrivers fails, OR getPayment fails, OR calculateFare fails — they all fall to the same .catch()."
-            },
-            {
-              "type": "code",
-              "code": "// Callback version (nested pyramid):\nfindDrivers(location, (err, drivers) => {\n  getPayment(riderId, (err, payment) => {\n    calcFare(distance, (err, fare) => {\n      matchDriver(drivers[0], (err, match) => {\n        notifyDriver(match, (err) => {\n          // 5 levels deep\n        });\n      });\n    });\n  });\n});\n\n// Promise version (flat chain):\nfindDrivers(location)\n  .then(drivers => matchBestDriver(drivers))\n  .then(match => getPaymentMethod(match))\n  .then(paymentDetails => calculateFare(paymentDetails))\n  .then(fare => notifyDriver(fare))\n  .then(() => console.log('Driver notified!'))\n  .catch(error => console.log('Something failed:', error.message));\n\n// Same logic. Flat. Readable. One error handler."
-            },
-            {
-              "type": "heading",
-              "text": "Promise.all — Uber Running Multiple Queries Simultaneously"
-            },
-            {
-              "type": "paragraph",
-              "text": "Sometimes Uber needs to run multiple independent async operations at the same time and wait for ALL of them. For example: when completing a ride, update the driver's earnings AND update the rider's ride history AND calculate the new driver rating — all at the same time, not one by one."
-            },
-            {
-              "type": "code",
-              "code": "// Sequential (slow — one by one):\nawait updateDriverEarnings(driverId);\nawait updateRiderHistory(riderId);\nawait updateDriverRating(driverId);\n// Total: ~150ms (50ms each)\n\n// Parallel with Promise.all (fast — all at once):\nawait Promise.all([\n  updateDriverEarnings(driverId),\n  updateRiderHistory(riderId),\n  updateDriverRating(driverId)\n]);\n// Total: ~50ms (all run simultaneously)\n// 3x faster for Uber's post-ride processing!"
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Promises flatten callback hell, provide clean error handling with .catch(), and enable powerful patterns like Promise.all() for parallel operations. Uber's modern Node.js code uses Promises extensively — and its even cleaner sugar syntax: async/await."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Promises are great, but .then().then().then() chains can still feel unnatural. What if you could write async code that LOOKS synchronous? Like writing Python or Java? That's what async/await gives you."
-            }
-          ],
-          "Async / Await": [
-            {
-              "type": "paragraph",
-              "text": "Uber's engineering team uses async/await throughout their Node.js codebase. Instead of chaining .then().then().then(), async/await lets you write code that reads like a step-by-step synchronous recipe — but behaves asynchronously under the hood. It's built on top of Promises — just with cleaner syntax."
-            },
-            {
-              "type": "heading",
-              "text": "async/await — Synchronous Syntax, Asynchronous Behavior"
-            },
-            {
-              "type": "paragraph",
-              "text": "The 'async' keyword before a function means: 'this function always returns a Promise.' The 'await' keyword inside an async function means: 'pause HERE and wait for this Promise to resolve — but don't block the entire thread, let other code run while waiting.' Every place you see 'await', execution pauses for that one async operation, then resumes. It's the promise chain written vertically."
-            },
-            {
-              "type": "code",
-              "code": "// Promise chain version:\nfunction processRideRequest(req) {\n  return findDrivers(req.location)\n    .then(drivers => selectBest(drivers))\n    .then(driver => getPaymentMethod(req.riderId))\n    .then(payment => calculateFare(req.distance))\n    .then(fare => notifyDriver(driver, fare))\n    .catch(err => handleError(err));\n}\n\n// async/await version — same logic, reads like synchronous:\nasync function processRideRequest(req) {\n  try {\n    const drivers = await findDrivers(req.location);\n    const driver = selectBest(drivers);\n    const payment = await getPaymentMethod(req.riderId);\n    const fare = await calculateFare(req.distance);\n    await notifyDriver(driver, fare);\n    console.log('Ride confirmed!');\n  } catch (err) {\n    handleError(err);\n  }\n}"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — How 'await' Works Under the Hood"
-            },
-            {
-              "type": "paragraph",
-              "text": "When Uber's server hits an 'await', what exactly happens? Let's trace it precisely:"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — async function starts running",
-              "desc": "processRideRequest() is called. It runs synchronously until it hits the first 'await'."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — 'await findDrivers()' is hit",
-              "desc": "findDrivers() is called — it returns a Promise. The 'await' keyword sees the Promise, PAUSES the execution of processRideRequest, and returns control to the Event Loop. processRideRequest is NOT on the Call Stack anymore — it's waiting. The Event Loop is FREE to handle other requests."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — While awaiting, other requests are handled",
-              "desc": "The Event Loop handles other incoming requests, GPS updates, payment webhooks — anything else that's ready. processRideRequest is paused but the server is not frozen. This is the key: 'await' pauses ONE function, not the entire server."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — findDrivers() resolves",
-              "desc": "The database query completes. The Promise resolves with the drivers list. This callback goes to the Microtask Queue (because it's a Promise resolution). Event Loop picks it up."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — processRideRequest RESUMES from where it paused",
-              "desc": "Execution resumes after the 'await findDrivers()' line. The 'drivers' variable now has the result. Code continues to the next line: 'const driver = selectBest(drivers)'. Runs synchronously (no await). Then hits 'await getPaymentMethod()' — pauses again. Cycle repeats."
-            },
-            {
-              "type": "code",
-              "code": "async function processRideRequest(req) {\n  console.log('A: Starting');\n\n  const drivers = await findDrivers(req.location);\n  // ↑ PAUSES HERE. Event loop handles other work.\n  // ↓ RESUMES HERE when findDrivers resolves (~50ms)\n  console.log('B: Drivers found', drivers.length);\n\n  const fare = await calculateFare(req.distance);\n  // ↑ PAUSES HERE again. Event loop handles other work.\n  // ↓ RESUMES HERE when fare calculated (~10ms)\n  console.log('C: Fare:', fare);\n\n  await notifyDriver(drivers[0].token, fare);\n  console.log('D: Driver notified');\n}\n\n// Other requests continue while this is awaiting:\n// A is printed... (50ms of other work happens)...\n// B is printed... (10ms of other work happens)...\n// C is printed... (5ms of other work happens)...\n// D is printed"
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ async/await is how modern Uber-scale Node.js applications are written. It's Promises with clean syntax — code reads top to bottom like synchronous code, errors are handled with familiar try/catch, but the server never blocks. It's the best of both worlds."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ We saw Callback Hell briefly earlier. It's worth fully understanding the problem — because even with async/await, you can still create complex, hard-to-maintain async code if you don't structure it well. Let's look at what Callback Hell actually looks like and the patterns that eliminate it."
+              "text": "⚠️ What if Uber needs to fetch Raj's history, then check his wallet balance, then apply promo code, then generate invoice — all one after another? With callbacks, this becomes a nightmare. That's Callback Hell."
             }
           ],
           "Callback Hell & how to avoid it": [
             {
               "type": "paragraph",
-              "text": "Imagine Uber's ride completion flow: get ride details → verify driver rating → process payment → update driver earnings → send receipt email → update rider stats → close the ride. Seven sequential async operations. Written with callbacks, this creates a staircase of doom — code that starts at column 0 and ends at column 70, with error handling copy-pasted in 7 places. This is Callback Hell, and it destroyed many early Node.js codebases."
+              "text": "Raj completes a ride. Uber needs to check his wallet, apply promo code, process payment, and generate invoice — all one after another. Simple right? Watch what happens with callbacks."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What happens when 4 async operations depend on each other — one after another?"
             },
             {
               "type": "heading",
-              "text": "What Callback Hell Looks Like"
+              "text": "How It Starts — Seems Fine at First"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Check Raj's wallet",
+              "desc": "Uber fires a database call to check Raj's wallet balance. Passes a callback — 'when done, do this.'"
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Inside that callback, apply promo code",
+              "desc": "Wallet balance is ready. Now need to apply Raj's promo code. Fire another async call — inside the first callback."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Inside that callback, process payment",
+              "desc": "Promo applied. Now fire payment to Stripe — inside the second callback. We're now 3 levels deep."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Inside that callback, generate invoice",
+              "desc": "Payment done. Now generate invoice — inside the third callback. 4 levels deep. And Uber has 10 more steps after this."
             },
             {
               "type": "code",
-              "code": "// Uber ride completion — Callback Hell version\ngetRideDetails(rideId, (err, ride) => {\n  if (err) return handleError(err);\n\n  verifyDriverRating(ride.driverId, (err, rating) => {\n    if (err) return handleError(err);\n\n    processPayment(ride.riderId, ride.fare, (err, payment) => {\n      if (err) return handleError(err);\n\n      updateDriverEarnings(ride.driverId, ride.fare, (err) => {\n        if (err) return handleError(err);\n\n        sendReceiptEmail(ride.riderId, payment, (err) => {\n          if (err) return handleError(err);\n\n          updateRiderStats(ride.riderId, (err) => {\n            if (err) return handleError(err);\n\n            closeRide(rideId, (err) => {\n              if (err) return handleError(err);\n              console.log('Ride completed!'); // 7 levels deep!\n            });\n          });\n        });\n      });\n    });\n  });\n});\n// 7 levels of indentation. 7 copies of error handling.\n// Try debugging this at 3am during an outage."
+              "code": "checkWallet(raj.id, (error, wallet) => {\n  // Level 1\n  applyPromoCode(raj.promo, (error, discount) => {\n    // Level 2\n    stripe.charge(raj.card, fare - discount, (error, payment) => {\n      // Level 3\n      generateInvoice(payment, (error, invoice) => {\n        // Level 4\n        sendEmail(raj.email, invoice, (error) => {\n          // Level 5 — and it keeps going...\n        });\n      });\n    });\n  });\n});\n// Each step forced inside the previous one\n// Error handling copy pasted everywhere\n// Adding one new step = going deeper into pyramid"
             },
             {
-              "type": "heading",
-              "text": "Why Callback Hell is Dangerous for Uber"
+              "type": "error-callout",
+              "title": "What makes this dangerous:",
+              "list": [
+                "Payment fires — but promo code fails silently inside level 2",
+                "Invoice generates with wrong amount — nobody catches it",
+                "Error in level 4 is invisible from level 1",
+                "Adding fraud check between payment and invoice = rewrite everything"
+              ],
+              "footer": "Bugs hide inside nested callbacks. Production breaks. Nobody knows where."
             },
+            {
+              "type": "success-callout",
+              "text": "✅ This is Callback Hell — not just ugly code, it's dangerous code. Errors get swallowed, logic gets buried, and debugging becomes a nightmare. Promises were built specifically to fix this."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ What if all 5 steps could be written flat — one after another — with a single error handler for everything? That's exactly what Promises give you. That's what we cover next."
+            }
+          ],
+          "Promises": [
             {
               "type": "paragraph",
-              "text": "It's not just about aesthetics. Callback Hell creates real engineering problems at Uber's scale. When a bug is found in production, debugging means tracing through 7 levels of nested callbacks — with no clear stack trace. Adding a new step (like fraud detection) means inserting into the middle of the pyramid. Testing individual steps is nearly impossible — they're all entangled. Error handling is duplicated and often inconsistent."
+              "text": "A Promise is a guarantee — 'I will give you the result, either success or failure, when I'm done.' Instead of passing callbacks inside callbacks, you get an object back that represents a future value."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What if all 5 steps of Raj's payment could be written flat — one after another — with one single error handler?"
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Uber books your ride — gives you a booking confirmation screen. That screen is a Promise. It's either going to say 'Driver Found' (success) or 'No drivers available' (failure). You don't get the answer now — but you're guaranteed to get one."
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Three Ways to Escape Callback Hell"
+              "text": "3 States of a Promise"
             },
             {
               "type": "step",
-              "title": "Solution 1 — Named functions (flatten the structure)",
-              "desc": "Instead of anonymous callbacks nested inside each other, give each callback a name and define them separately. The call chain stays flat — each step explicitly calls the next by name."
-            },
-            {
-              "type": "code",
-              "code": "// Solution 1: Named functions\nfunction onRideDetails(err, ride) {\n  if (err) return handleError(err);\n  verifyDriverRating(ride.driverId, onRatingVerified);\n}\n\nfunction onRatingVerified(err, rating) {\n  if (err) return handleError(err);\n  processPayment(riderId, fare, onPaymentProcessed);\n}\n\nfunction onPaymentProcessed(err, payment) {\n  if (err) return handleError(err);\n  // ... continues...\n}\n\n// Start the chain:\ngetRideDetails(rideId, onRideDetails);\n// Flat! Each function is testable independently."
+              "title": "Pending",
+              "desc": "Operation is still running. Raj's payment is being processed. No result yet."
             },
             {
               "type": "step",
-              "title": "Solution 2 — Promises (chain .then())",
-              "desc": "Convert each callback-based function to return a Promise. Chain them with .then(). One .catch() handles all errors. Flat. Readable."
-            },
-            {
-              "type": "code",
-              "code": "// Solution 2: Promises\ngetRideDetails(rideId)\n  .then(ride => verifyDriverRating(ride.driverId))\n  .then(rating => processPayment(riderId, fare))\n  .then(payment => updateDriverEarnings(driverId, fare))\n  .then(() => sendReceiptEmail(riderId, payment))\n  .then(() => updateRiderStats(riderId))\n  .then(() => closeRide(rideId))\n  .then(() => console.log('Ride completed!'))\n  .catch(err => handleError(err));\n// 7 steps. Still flat. ONE error handler."
+              "title": "Fulfilled",
+              "desc": "Operation succeeded. Payment went through. Promise resolves with the payment details."
             },
             {
               "type": "step",
-              "title": "Solution 3 — async/await (reads like synchronous)",
-              "desc": "The cleanest solution. Each step is a line of code with 'await'. try/catch handles all errors in one place. Reads like a recipe."
+              "title": "Rejected",
+              "desc": "Operation failed. Raj's card declined. Promise rejects with the error reason."
+            },
+            {
+              "type": "heading",
+              "text": "Callback Hell vs Promise — Same Logic, See the Difference"
             },
             {
               "type": "code",
-              "code": "// Solution 3: async/await — the Uber engineering team's choice\nasync function completeRide(rideId) {\n  try {\n    const ride = await getRideDetails(rideId);\n    const rating = await verifyDriverRating(ride.driverId);\n    const payment = await processPayment(ride.riderId, ride.fare);\n    await updateDriverEarnings(ride.driverId, ride.fare);\n    await sendReceiptEmail(ride.riderId, payment);\n    await updateRiderStats(ride.riderId);\n    await closeRide(rideId);\n    console.log('Ride completed!');\n  } catch (err) {\n    handleError(err);\n  }\n}\n\n// 7 steps. Perfectly flat. ONE try/catch.\n// Each line is readable. Easy to debug.\n// Easy to add a new step (just add a new 'await' line).\n// Easy to test each function in isolation."
+              "code": "// ❌ Callback Hell — pyramid, messy\ncheckWallet(raj.id, (error, wallet) => {\n  applyPromoCode(raj.promo, (error, discount) => {\n    stripe.charge(raj.card, fare, (error, payment) => {\n      generateInvoice(payment, (error, invoice) => {\n        sendEmail(raj.email, invoice, (error) => {\n          // 5 levels deep — impossible to read\n        });\n      });\n    });\n  });\n});\n\n// ✅ Promise — flat, clean, one error handler\ncheckWallet(raj.id)\n  .then(wallet => {\n    console.log('Wallet balance:', wallet.balance); // ₹500\n    return applyPromoCode(raj.promo);\n  })\n  .then(discount => {\n    console.log('Promo applied:', discount); // ₹50 off\n    return stripe.charge(raj.card, fare - discount);\n  })\n  .then(payment => {\n    console.log('Payment done:', payment.id); // pay_xyz123\n    return generateInvoice(payment);\n  })\n  .then(invoice => {\n    console.log('Invoice ready:', invoice.id);\n    return sendEmail(raj.email, invoice);\n  })\n  .catch(error => {\n    // ONE catch handles ALL failures above\n    // Wallet failed? Caught here.\n    // Promo failed? Caught here.\n    // Payment failed? Caught here.\n    console.log('Something failed:', error);\n  });"
+            },
+            {
+              "type": "heading",
+              "text": "Types of Promises"
+            },
+            {
+              "type": "step",
+              "title": "Promise.all — Wait for ALL, run together",
+              "desc": "Uber needs to check Raj's wallet, verify his card, and check pending dues — all at once. All 3 run simultaneously. If any one fails — entire thing fails."
+            },
+            {
+              "type": "code",
+              "code": "// All 3 run at same time — not one by one\nPromise.all([\n  checkWalletBalance(raj.id),   // 50ms\n  verifyCard(raj.card),          // 50ms\n  checkPendingDues(raj.id)       // 50ms\n])\n.then(() => stripe.charge(raj.card, fare))\n.catch(error => console.log('One of them failed:', error));\n// Total: 50ms instead of 150ms\n// If wallet check fails → payment never fires"
+            },
+            {
+              "type": "step",
+              "title": "Promise.allSettled — Wait for ALL, don't care if some fail",
+              "desc": "Uber sends notifications to 3 drivers — Vikram, Ravi, Suresh. Even if Vikram's notification fails — still want to know results of all 3. Don't stop on failure."
+            },
+            {
+              "type": "code",
+              "code": "Promise.allSettled([\n  notifyDriver(vikram.id),\n  notifyDriver(ravi.id),\n  notifyDriver(suresh.id)\n])\n.then(results => {\n  results.forEach(result => {\n    if (result.status === 'fulfilled') {\n      console.log('Notified:', result.value);\n    } else {\n      console.log('Failed to notify:', result.reason);\n    }\n  });\n});\n// Vikram's notification failed? Still gets Ravi and Suresh results."
+            },
+            {
+              "type": "step",
+              "title": "Promise.race — First one wins",
+              "desc": "Uber sends ride request to 3 nearby drivers — whoever accepts first gets the ride. Don't wait for all 3. First response wins."
+            },
+            {
+              "type": "code",
+              "code": "Promise.race([\n  sendRideRequest(vikram.id),\n  sendRideRequest(ravi.id),\n  sendRideRequest(suresh.id)\n])\n.then(driver => {\n  console.log('First to accept:', driver.name); // Ravi accepted first\n  assignRide(driver);\n});\n// Vikram and Suresh responses are ignored\n// Whoever responds first gets the ride"
+            },
+            {
+              "type": "step",
+              "title": "Promise.any — First SUCCESS wins",
+              "desc": "Uber tries 3 payment methods — UPI, card, wallet. Use whichever succeeds first. Unlike race, ignores failures and waits for first success."
+            },
+            {
+              "type": "code",
+              "code": "Promise.any([\n  payViaUPI(raj.upi),\n  payViaCard(raj.card),\n  payViaWallet(raj.wallet)\n])\n.then(payment => {\n  console.log('Payment success via:', payment.method);\n})\n.catch(() => {\n  console.log('All payment methods failed');\n});\n// UPI failed, Card failed — Wallet succeeds\n// Promise.any picks up Wallet success\n// Only fails if ALL 3 fail"
             },
             {
               "type": "table",
-              "headers": [
-                "Approach",
-                "Nesting",
-                "Error Handling",
-                "Readability",
-                "Uber uses?"
-              ],
+              "headers": ["Type", "Behaviour", "Uber Use Case"],
               "rows": [
-                [
-                  "Nested Callbacks",
-                  "Deep pyramid",
-                  "Duplicate in each callback",
-                  "Poor",
-                  "Legacy only"
-                ],
-                [
-                  "Named Functions",
-                  "Flat",
-                  "Still manual checks",
-                  "Better",
-                  "Rare"
-                ],
-                [
-                  "Promises",
-                  "Flat chain",
-                  "One .catch()",
-                  "Good",
-                  "Some places"
-                ],
-                [
-                  "async/await",
-                  "None",
-                  "One try/catch",
-                  "Excellent",
-                  "Primary choice"
-                ]
+                ["Promise.all", "All must succeed", "Check wallet + card + dues before payment"],
+                ["Promise.allSettled", "Wait for all, success or fail", "Notify multiple drivers, collect all results"],
+                ["Promise.race", "First response wins", "First driver to accept gets the ride"],
+                ["Promise.any", "First success wins", "First payment method that works gets used"]
               ]
             },
             {
               "type": "success-callout",
-              "text": "✅ Callback Hell is solved by async/await (or Promises). Uber's modern Node.js codebase uses async/await throughout — flat code, single error handling, easy to read, easy to debug. The evolution from callbacks → Promises → async/await represents the maturation of async programming in JavaScript."
+              "text": "✅ Promises flatten callback hell, give one single error handler, and give powerful tools — .all, .allSettled, .race, .any — for every real world scenario Uber faces."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ .then().then().then() is still chaining. What if you could write async code that looks exactly like normal synchronous code? No .then() at all. That's Async/Await"
+            }
+          ],
+          "Async/Await": [
+            {
+              "type": "paragraph",
+              "text": "Async/Await is just Promises — but written like normal code. No .then() chains. No nesting. Reads top to bottom like a recipe."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What if Raj's entire payment flow could be written like a simple step by step list?"
             },
             {
               "type": "info-callout",
-              "text": "🎯 Full picture of Async Programming — Synchronous code blocks, async code doesn't. Callbacks were the original async pattern but created pyramid code. Promises flattened the chain and unified error handling. async/await made async code look synchronous. All three are built on the same Event Loop foundation. Master these patterns and you can write any async Node.js code Uber needs."
+              "text": "💡 async = this function has slow operations inside it. await = pause here until this one thing is done, then continue."
+            },
+            {
+              "type": "heading",
+              "text": "Raj Opens His Payment History"
+            },
+            {
+              "type": "paragraph",
+              "text": "Raj opens Uber app and checks his payment history. Uber needs to fetch his rides, then fetch the invoice for each ride. Here's how async/await handles it."
+            },
+            {
+              "type": "code",
+              "code": "async function getPaymentHistory(raj) {\n  const rides   = await fetchRides(raj.id);      // wait for rides\n  const invoice = await fetchInvoice(rides[0]);  // wait for invoice\n  console.log('Last ride invoice:', invoice);    // done\n}"
+            },
+            {
+              "type": "heading",
+              "text": "What if Something Fails?"
+            },
+            {
+              "type": "code",
+              "code": "async function getPaymentHistory(raj) {\n  try {\n    const rides   = await fetchRides(raj.id);\n    const invoice = await fetchInvoice(rides[0]);\n    console.log('Invoice:', invoice);\n  } catch (error) {\n    console.log('Failed to load history:', error);\n    // ONE catch — handles both fetchRides and fetchInvoice failures\n  }\n}"
+            },
+            {
+              "type": "heading",
+              "text": "How await Actually Works"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — hits await fetchRides()",
+              "desc": "Function pauses. Server does NOT freeze — Event Loop handles other requests while Raj's rides are being fetched."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — rides are ready",
+              "desc": "Database responded with Raj's rides. Function resumes from exactly where it paused."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — hits await fetchInvoice()",
+              "desc": "Pauses again. Server still handling Priya's requests, Sara's requests. Invoice loads. Resumes."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — done",
+              "desc": "Invoice is ready. Raj sees his payment history. Whole function ran without blocking anyone."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Async/Await = Promises with clean syntax. Reads like normal code, works like async code. This is how modern Node.js is written."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Now you know how to write async code. But what happens when Uber needs to do something extremely heavy — like calculating surge pricing for an entire city? One thread can't handle that alone. That's where Worker Threads come in."
             }
-          ]
+          ],
+
         }
       },
       {

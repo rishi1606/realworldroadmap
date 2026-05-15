@@ -181,7 +181,7 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
   const handleNotify = async () => {
     if (!email.trim()) return toast.error("Please enter your email address");
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast.error("Please enter a valid email");
-    
+
     setLoading(true);
     try {
       const { data } = await notifyAPI.subscribe(email, roadmapId, nodeLevel);
@@ -241,7 +241,7 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
 
 // ─── Main RoadmapContent Component ───────────────────────────────────────────
 
-export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic }) {
+export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, topicStatus, updateStatus }) {
   const [viewMode, setViewMode] = useState("concept");
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -275,14 +275,30 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   return (
     <div id="roadmap-content" className="w-full md:w-[80%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
       {isLocked && <LockedOverlay roadmapId={roadmap?._id} nodeLevel={nodeLevel} />}
-      
+
       <div className={isLocked ? "opacity-30 blur-md pointer-events-none select-none transition-all duration-300 flex-1 flex flex-col" : "transition-all duration-300 flex-1 flex flex-col"}>
 
 
         <div className="p-8 md:p-12 w-full flex-1">
-          <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">
-            {selectedTopic.title || selectedNode.title}
-          </h1>
+          <div className="flex items-start justify-between mb-2">
+            <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">
+              {selectedTopic.title || selectedNode.title}
+            </h1>
+
+            {/* Status Toggle Button */}
+            <button
+              onClick={() => updateStatus(selectedTopic._id)}
+              className={`flex items-center gap-2 px-5 py-2 rounded-xl text-sm font-bold transition-all shadow-sm ${topicStatus[selectedTopic._id] === 'done'
+                ? 'bg-emerald-500/10 text-emerald-600 hover:bg-emerald-500/20 border border-emerald-200'
+                : 'bg-slate-100 text-slate-600 hover:bg-slate-200 border border-slate-200'}`}
+            >
+              {topicStatus[selectedTopic._id] === 'done' ? (
+                <><FiCheck className="w-4 h-4" /> Completed</>
+              ) : (
+                "Mark as Done"
+              )}
+            </button>
+          </div>
           <p className="text-slate-500 text-[15px] leading-relaxed mb-6 font-medium italic border-l-4 border-slate-200 pl-4">
             Module: {selectedNode.title}
           </p>

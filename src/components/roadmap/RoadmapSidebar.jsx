@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { FiShare2, FiMap, FiFolder, FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX, FiCheck, FiBell } from 'react-icons/fi';
+import { FiShare2, FiMap, FiFolder, FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX, FiCheck, FiBell, FiArrowRight } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
@@ -88,7 +88,7 @@ function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscri
 }
 
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
-export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic }) {
+export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, topicStatus, updateStatus }) {
   const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
@@ -109,7 +109,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
       if (user?.email && roadmap?._id) {
         notifyAPI.check(user.email, roadmap._id, 'all')
           .then(res => setIsSubscribed(res.data.isSubscribed))
-          .catch(() => {})
+          .catch(() => { })
           .finally(() => setIsNotifyLoading(false));
       } else {
         setIsNotifyLoading(false);
@@ -138,37 +138,77 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
     const isInter = levelKey === 'intermediate';
     const levelNum = isInter ? 2 : 3;
     const theme = isInter
-      ? { bg: 'bg-blue-50/80', iconBg: 'bg-blue-100', icon: 'text-blue-600', title: 'text-blue-900', dot: 'bg-blue-400', bullet: 'text-slate-700' }
-      : { bg: 'bg-purple-50/80', iconBg: 'bg-purple-100', icon: 'text-purple-600', title: 'text-purple-900', dot: 'bg-purple-400', bullet: 'text-slate-700' };
+      ? {
+        bg: 'bg-blue-500/5',
+        accent: 'bg-blue-500',
+        text: 'text-blue-600',
+        title: 'text-slate-900',
+        dot: 'bg-blue-500',
+        btn: 'bg-blue-500/10 border-blue-200 text-blue-600',
+        progress: 35
+      }
+      : {
+        bg: 'bg-purple-500/5',
+        accent: 'bg-purple-500',
+        text: 'text-purple-600',
+        title: 'text-slate-900',
+        dot: 'bg-purple-500',
+        btn: 'bg-purple-500/10 border-purple-200 text-purple-600',
+        progress: 10
+      };
 
-    const cardTitle = nodes.length === 1 ? `Level ${levelNum}: ${nodes[0].title}` : `Level ${levelNum}: Coming Soon`;
+    const levelTitle = isInter ? "Intermediate" : "Advanced";
 
     return (
-      <div className={`w-full rounded-xl border border-slate-200 bg-white p-5 shadow-sm flex flex-col mb-6`}>
-        <div className="flex items-start justify-between mb-4">
-          <div className="flex items-center gap-3">
-            <div className={`w-9 h-9 rounded-lg ${theme.iconBg} flex items-center justify-center shrink-0 shadow-sm`}>
-              <FiZap className={`w-4 h-4 ${theme.icon}`} />
-            </div>
-            <div className="flex flex-col">
-              <span className={`text-[14px] font-extrabold ${theme.title} tracking-tight`}>{cardTitle}</span>
-              <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider">Upcoming</span>
-            </div>
+      <div className="relative flex w-full">
+        {/* Left Vertical Line with Lock */}
+        <div className="flex flex-col items-center shrink-0 w-8 mr-4 relative">
+          <div className="w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-slate-50 text-slate-400 z-10 shadow-sm border border-slate-200">
+            <FiLock className="w-3 h-3" />
           </div>
-          <div className={`w-8 h-8 rounded-full ${theme.iconBg} flex items-center justify-center shrink-0`}>
-            <FiLock className={`w-4 h-4 ${theme.icon}`} />
-          </div>
+          <div className="flex-1 w-[2px] bg-slate-100" />
         </div>
 
-        <div className={`${theme.bg} rounded-lg p-4`}>
-          <ul className="flex flex-col gap-2.5">
+        {/* Level Card */}
+        <div className={`flex-1 rounded-2xl border border-slate-200 bg-white p-4 mb-6 shadow-sm group hover:border-slate-300 transition-all`}>
+          <div className="flex items-center justify-between mb-1.5">
+            <h3 className="text-[16px] font-bold text-slate-900 tracking-tight">Level {levelNum}: {levelTitle}</h3>
+            <span className="bg-slate-100 text-slate-500 text-[9px] font-black px-1.5 py-0.5 rounded-md uppercase tracking-wider">Coming Soon</span>
+          </div>
+
+          <div className="text-[12px] text-slate-500 mb-4 font-medium">In Progress • Launching Soon</div>
+
+          {/* Progress Bar */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-1.5 bg-slate-50 rounded-full overflow-hidden">
+              <div className={`h-full ${theme.accent} transition-all duration-1000`} style={{ width: `${theme.progress}%` }} />
+            </div>
+            <span className="text-[12px] font-bold text-slate-400">{theme.progress}%</span>
+          </div>
+
+          {/* Topics List */}
+          <ul className="flex flex-col gap-3 mb-6">
             {nodes.map((n, i) => (
-              <li key={i} className="flex items-start gap-3">
-                <div className={`w-1.5 h-1.5 rounded-full ${theme.dot} shrink-0 mt-[7px] shadow-sm`} />
-                <span className={`text-[13px] font-semibold ${theme.bullet} leading-snug`}>{n.title}</span>
+              <li key={i} className="flex items-center gap-3">
+                <div className={`w-1.5 h-1.5 rounded-full ${theme.dot} shrink-0 shadow-sm`} />
+                <span className="text-[13px] font-medium text-slate-600 tracking-tight">{n.title}</span>
               </li>
             ))}
           </ul>
+
+          {/* Founder Access Card */}
+          <div className={`${theme.bg} rounded-xl p-3 border border-white/50 shadow-inner`}>
+            <div className="flex items-start gap-3">
+              <div className={`w-9 h-9 rounded-lg ${theme.accent} flex items-center justify-center shrink-0 shadow-sm text-white`}>
+                {isInter ? <FiZap className="w-5 h-5" /> : <FiLayers className="w-5 h-5" />}
+              </div>
+              <div>
+                <h4 className="text-[13px] font-bold text-slate-900">Currently Building</h4>
+                <p className="text-[11px] text-slate-500 leading-tight">Get lifetime access before launch at founder pricing.</p>
+                <p className={`text-[9px] mt-1.5 font-bold ${theme.text} uppercase tracking-wider`}>Pre-access with Founder Benefits</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -207,9 +247,9 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             <span className="flex items-center gap-2 font-bold text-slate-900 border-b-2 border-slate-900 pb-2 cursor-pointer">
               <FiMap className="w-4 h-4" /> Roadmap
             </span>
-            <span className="flex items-center gap-2 text-slate-500 font-semibold pb-2 cursor-pointer hover:text-slate-900 transition-colors">
+            {/* <span className="flex items-center gap-2 text-slate-500 font-semibold pb-2 cursor-pointer hover:text-slate-900 transition-colors">
               <FiFolder className="w-4 h-4" /> Projects
-            </span>
+            </span> */}
           </div>
 
           {!isNotifyLoading && !isSubscribed && (
@@ -261,16 +301,17 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
                 {fresherNodes.map((node, index) => {
                   const isSelected = selectedNode?._id === node._id;
                   const isLast = index === fresherNodes.length - 1;
+                  const isNodeDone = node.topics?.length > 0 && node.topics.every(t => topicStatus[t._id] === 'done');
 
                   return (
                     <div key={node._id} className="relative z-10 flex w-full">
                       <div className="flex flex-col items-center shrink-0 w-8 mr-4">
-                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-black z-10 shadow-sm bg-slate-200 text-slate-700`}>
+                        <div className={`w-8 h-8 rounded-full flex items-center justify-center shrink-0 text-[13px] font-black z-10 shadow-sm transition-colors ${isNodeDone ? 'bg-emerald-500/10 text-emerald-600 border border-emerald-200' : 'bg-slate-200 text-slate-700'}`}>
                           {index + 1}
                         </div>
 
                         {!isLast && <div className="flex-1 w-[2px] bg-slate-200 my-1" />}
-                        {isLast && showComingSoon && <div className="h-10 w-[2px] bg-gradient-to-b from-slate-200 to-transparent my-1" />}
+                        {isLast && showComingSoon && <div className="flex-1 w-[2px] bg-slate-100 h-14 -mb-8" />}
                       </div>
 
                       <div className={`flex-1 rounded-xl border transition-all overflow-hidden bg-white mb-6 ${isSelected ? 'border-blue-200 shadow-md ring-1 ring-blue-50' : 'border-slate-200 hover:border-slate-300'
@@ -290,15 +331,25 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
                         <div className="border-t border-slate-100 px-2 py-2 flex flex-col gap-1.5 bg-slate-50/30">
                           {node.topics.map((topic, i) => {
                             const isSel = selectedTopic?._id === topic._id;
+                            const isDone = topicStatus[topic._id] === 'done';
 
                             return (
                               <div key={i}
-                                onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
-                                className={`flex items-center gap-3 px-2.5 py-2 rounded-md transition-colors relative ${isSel ? 'bg-blue-50' : 'hover:bg-white'} cursor-pointer`}
+                                className={`flex items-center gap-3 px-2.5 py-2 rounded-md transition-colors relative ${isSel ? 'bg-blue-50' : 'hover:bg-slate-50'} cursor-pointer group/topic`}
                               >
-                                <div className={`w-1.5 h-1.5 rounded-full flex items-center justify-center shrink-0 border-[1.5px] border-slate-300 bg-white`}>
+                                <div
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    updateStatus(topic._id);
+                                  }}
+                                  className={`w-4 h-4 rounded-full flex items-center justify-center shrink-0 border-2 transition-all ${isDone ? 'bg-emerald-500/10 border-emerald-500/50 shadow-sm' : 'border-slate-300 bg-white hover:border-emerald-400'}`}
+                                >
+                                  {isDone && <FiCheck className="w-2.5 h-2.5 text-emerald-600" />}
                                 </div>
-                                <span className={`flex-1 text-[13px] leading-snug ${isSel ? 'font-bold text-slate-900' : 'font-medium text-slate-600'}`}>
+                                <span
+                                  onClick={() => { onSelectNode(node); onSelectTopic(topic); }}
+                                  className={`flex-1 text-[13px] leading-snug ${isSel ? 'font-bold text-slate-900' : 'font-medium text-slate-600'}`}
+                                >
                                   {topic.title}
                                 </span>
                               </div>
@@ -313,7 +364,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
             )}
 
             {showComingSoon && (
-              <div className="relative z-10">
+              <div className="relative z-10 w-full">
                 {renderLevel('intermediate', intermNodes)}
                 {renderLevel('experienced', expNodes)}
               </div>
@@ -321,7 +372,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
           </div>
         </div>
 
-
+        {/* ── Founder Access Footer Chip */}
 
       </div>
 

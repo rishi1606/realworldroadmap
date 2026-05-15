@@ -5223,12 +5223,13 @@ export const roadmapData = [
         "title": "Basics (Foundation)",
         "level": "freshers",
         "topics": [
-          "What's Actually Running When You Book an Uber - What is Node.js?",
-          "Why Uber Doesn't Hire More Drivers for Every Ride - Single Threaded vs Multi Threaded",
+          "What is Node.js?",
+          "Single vs Multi Threaded",
+          "Blocking vs Non Blocking / Synchronous vs Asynchronous",
 
         ],
         "topicDetails": {
-          "What's Actually Running When You Book an Uber - What is Node.js?": [
+          "What is Node.js?": [
             {
               "type": "paragraph",
               "text": "You open Uber. Tap 'Request a Ride'. In 3 seconds — driver found, location shared, fare calculated. Ever wondered what's actually running behind that screen? That's Node.js."
@@ -5301,10 +5302,10 @@ export const roadmapData = [
               "text": "✅ Node.js is just JavaScript running on a server instead of a browser. That's it. Simple concept — powering 15 million Uber trips every single day."
             }
           ],
-          "Why Uber Doesn't Hire More Drivers for Every Ride - Single Threaded vs Multi Threaded": [
+          "Single vs Multi Threaded": [
             {
               "type": "paragraph",
-              "text": "When 10,000 people request an Uber at the same time — what does Uber's server actually do? Does it spin up 10,000 workers to handle each request? Or does something smarter happen?"
+              "text": "When 10,000 people request an Uber at the same time — what does the server do? Does it create 10,000 workers to handle each request? Or does something smarter happen?"
             },
             {
               "type": "curious-callout",
@@ -5312,83 +5313,228 @@ export const roadmapData = [
             },
             {
               "type": "heading",
-              "text": "The Multi Threaded Way — One Worker Per Request"
+              "text": "First — What is a Thread?"
             },
             {
               "type": "paragraph",
-              "text": "Imagine Uber built their server the multi threaded way — every ride request gets its own dedicated server thread, just sitting and waiting for the database to find a driver. 50,000 rides spike on New Year's Eve? 50,000 threads all waiting at the same time. Server runs out of memory. Uber goes down. That's the real cost of multi threading at scale."
-            },
-            {
-              "type": "heading",
-              "text": "The Single Threaded Way — One Smart Dispatcher"
-            },
-            {
-              "type": "paragraph",
-              "text": "Now Uber replaces all those agents with one extremely smart dispatcher. They receive your request, pass it to the right driver, and immediately move to the next caller — without waiting for the first ride to complete. They never sit idle. That's Node.js. One thread, handling everything, never waiting."
+              "text": "A thread is a worker inside your server. It picks up a task, works on it, and finishes it. More threads = more workers. Sounds good — but it comes at a cost."
             },
             {
               "type": "info-callout",
-              "text": "🌐 Multi threaded = 10,000 agents waiting on calls. Single threaded = 1 smart dispatcher passing requests and moving on instantly."
+              "text": "💡 Think of threads like Uber drivers. Each driver can only handle one ride at a time. More drivers = more rides handled. But hiring more drivers costs money, space, and management."
             },
             {
               "type": "heading",
-              "text": "What This Looks Like in Real Life"
+              "text": "The Multi Threaded Way"
+            },
+            {
+              "type": "paragraph",
+              "text": "Imagine Uber's server is multi threaded. Every ride request gets its own dedicated thread — its own worker sitting and waiting for the database to respond."
             },
             {
               "type": "step",
-              "title": "Step 1 — Request comes in",
-              "desc": "User taps Request a Ride. Node.js receives it instantly."
+              "title": "Step 1 — Raj books a ride",
+              "desc": "Server creates Thread 1 for Raj. Thread 1 queries the database to find nearby drivers. Thread 1 now sits and waits. Doing nothing."
             },
             {
               "type": "step",
-              "title": "Step 2 — Node.js delegates and moves on",
-              "desc": "Instead of waiting for the database to find nearby drivers, Node.js passes that job and immediately picks up the next request."
+              "title": "Step 2 — Priya books a ride",
+              "desc": "Server creates Thread 2 for Priya. Thread 2 queries the database. Thread 2 also sits and waits. Doing nothing."
             },
             {
               "type": "step",
-              "title": "Step 3 — Response comes back",
-              "desc": "When the database responds with nearby drivers, Node.js picks it up and sends the match back to the user. No waiting, no blocking."
+              "title": "Step 3 — New Year's Eve. 50,000 people book at once",
+              "desc": "Server tries to create 50,000 threads. Each thread consumes 1MB of memory. That's 50GB of memory just for waiting. Server runs out of memory. Uber goes down."
+            },
+            {
+              "type": "error-callout",
+              "title": "Multi Threaded server on New Year's Eve:",
+              "list": [
+                "50,000 ride requests = 50,000 threads created",
+                "Each thread uses 1MB memory just sitting idle",
+                "Server hits memory limit in seconds",
+                "Uber crashes exactly when people need it most"
+              ],
+              "footer": "More threads = more memory = server collapses under pressure."
+            },
+            {
+              "type": "heading",
+              "text": "The Single Threaded Way — How Node.js Does It"
+            },
+            {
+              "type": "paragraph",
+              "text": "Node.js uses one single thread. But this thread never sits and waits. The moment it hits something slow — it hands it off and moves on immediately."
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Raj books a ride",
+              "desc": "Single thread picks up Raj's request. Sends database query — 'find drivers near Raj'. Instead of waiting — immediately moves on."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Priya books a ride",
+              "desc": "Same single thread picks up Priya's request instantly. Sends database query — 'find drivers near Priya'. Moves on again. Never waited once."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Database responds for Raj",
+              "desc": "Database says — '3 drivers found near Raj'. Thread picks this up, sends confirmation to Raj. Done."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Database responds for Priya",
+              "desc": "Database says — '2 drivers found near Priya'. Thread picks this up, sends confirmation to Priya. Done."
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — New Year's Eve. 50,000 requests",
+              "desc": "Same single thread. Fires 50,000 database queries without waiting for any of them. Each request costs only 10KB memory. Total — 500MB. Server is fine. Uber stays up."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Multi Threaded = 50,000 workers hired, each standing idle waiting. Single Threaded = 1 smart dispatcher firing tasks and never waiting. Same work done — fraction of the cost."
             },
             {
               "type": "code",
-              "code": "// Multi Threaded — waits for each request\ngetDriver() → waits... waits... responds → next request\n\n// Single Threaded (Node.js) — never waits\ngetDriver() → moves on → moves on → response comes back → handles it"
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Single threaded doesn't mean slow. It means one smart worker who never sits idle — which is exactly why Node.js can handle millions of Uber rides without breaking a sweat."
+              "code": "// Multi Threaded — one worker per request, all waiting\nThread 1 → Raj's request   → waiting... waiting... waiting...\nThread 2 → Priya's request → waiting... waiting... waiting...\nThread 3 → Sara's request  → waiting... waiting... waiting...\n// 50,000 threads. 50GB memory. Server crashes.\n\n// Single Threaded (Node.js) — one worker, never waits\nThread → Raj's request   → fires DB query → moves on\nThread → Priya's request → fires DB query → moves on\nThread → Sara's request  → fires DB query → moves on\nThread → DB responds Raj  → confirms ride\nThread → DB responds Priya → confirms ride\n// 1 thread. 500MB memory. Server handles it fine."
             },
             {
               "type": "table",
-              "headers": ["Aspect", "Multi-Threaded (Old Uber)", "Single Threaded (Node.js Uber)"],
+              "headers": ["Aspect", "Multi Threaded", "Single Threaded (Node.js)"],
               "rows": [
-                ["Concurrent rides", "~10,000 (thread limit)", "100,000+"],
-                ["Memory per request", "~1MB per ride thread", "~10KB per callback"],
-                ["Waiting strategy", "Thread sits idle waiting for driver match", "Fires request, moves to next ride instantly"],
-                ["New Year's Eve spike", "Server crashes under load", "Handles smoothly"],
-                ["Driver location updates", "New thread every ping — memory explodes", "Single thread handles all pings"],
-                ["Payment processing", "Thread blocks until payment confirms", "Moves on, handles response when ready"],
+                ["Workers", "1 per request", "1 for everything"],
+                ["Memory per request", "~1MB per thread", "~10KB per callback"],
+                ["50,000 requests", "50GB memory — crashes", "500MB — handles fine"],
+                ["Waiting strategy", "Thread sits idle waiting", "Fires and moves on instantly"],
+                ["New Year's Eve spike", "Server goes down", "Handles smoothly"],
                 ["Best for", "CPU heavy tasks", "I/O heavy tasks like Uber"],
                 ["Uber's choice", "❌", "✅"]
               ]
             },
             {
+              "type": "success-callout",
+              "text": "✅ Single threaded doesn't mean slow. It means one smart worker who never sits idle. That's exactly why Node.js handles millions of Uber rides without breaking."
+            },
+            {
               "type": "warning-callout",
-              "text": "⚠️ But if Node.js never waits — how does it know when to come back and respond? There's a hidden mechanism running behind every request. That's what we cover next."
+              "text": "⚠️ But this raises a real question — if the thread never waits, does it mean Uber's server freezes when it hits something slow? What exactly happens when code blocks the thread? That's Blocking vs Non-Blocking — and that's what we cover next."
             }
           ],
+          "Blocking vs Non Blocking / Synchronous vs Asynchronous": [
+            {
+              "type": "paragraph",
+              "text": "Raj books a ride. Uber's server needs to find nearby drivers — that means a database call. What happens to Priya's request while that database call is running? Does the server freeze and wait? Or does it move on? That's the difference between Blocking and Non-Blocking."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What actually happens to Priya's request while Uber's server is fetching drivers for Raj?"
+            },
+            {
+              "type": "heading",
+              "text": "Blocking — The Server Freezes"
+            },
+            {
+              "type": "paragraph",
+              "text": "In blocking code, the thread stops completely and waits for the operation to finish. Nothing else runs until it's done."
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Raj books a ride",
+              "desc": "Server receives Raj's request. Hits the database — 'find drivers near Raj'. Thread stops. Waits. Does absolutely nothing else."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Priya books a ride",
+              "desc": "Priya's request arrives. But the thread is frozen waiting for Raj's database response. Priya's request just sits there — ignored."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Database finally responds for Raj",
+              "desc": "100ms later — database responds. Thread unfreezes. Now picks up Priya's request. But 100ms is already lost. And 500 more requests piled up behind."
+            },
+            {
+              "type": "error-callout",
+              "title": "Blocking on Uber's scale:",
+              "list": [
+                "One database call takes 100ms",
+                "Server frozen for those 100ms",
+                "500 requests pile up behind Raj's one query",
+                "Every user sees the app freezing"
+              ],
+              "footer": "One blocked thread = entire server frozen. Uber can't work like this."
+            },
+            {
+              "type": "code",
+              "code": "// BLOCKING — server freezes on database call\nconst drivers = db.querySync('find drivers near Raj');\n// ↑ Thread is FROZEN here\n// Priya's request is waiting\n// 500 more requests are waiting\n// Nothing moves until this one line finishes"
+            },
+            {
+              "type": "heading",
+              "text": "Non-Blocking — The Server Keeps Moving"
+            },
+            {
+              "type": "paragraph",
+              "text": "In non-blocking code, the thread fires the slow operation and immediately moves on. It comes back only when the response is ready."
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Raj books a ride",
+              "desc": "Server receives Raj's request. Fires database query — 'find drivers near Raj'. Thread does NOT wait. Moves on immediately."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Priya books a ride",
+              "desc": "Thread is already free. Picks up Priya's request instantly. Fires her database query too. Moves on again."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Database responds for Raj",
+              "desc": "Database responds with drivers near Raj. Thread picks it up, sends Raj his driver confirmation. Priya's query is still running in background."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Database responds for Priya",
+              "desc": "Database responds with drivers near Priya. Thread picks it up, sends Priya her confirmation. Both handled. Nobody waited."
+            },
+            {
+              "type": "code",
+              "code": "// NON-BLOCKING — thread never freezes\ndb.query('find drivers near Raj', (drivers) => {\n  // runs later — when database responds\n  confirmRide(raj, drivers);\n});\n// Thread already moved on to Priya's request ↓\ndb.query('find drivers near Priya', (drivers) => {\n  confirmRide(priya, drivers);\n});\n// Both queries running at same time\n// Nobody is waiting. Nobody is frozen."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Blocking = Uber's dispatcher picks up Raj's call and stays on hold with the database — letting Priya's call ring endlessly. Non-Blocking = dispatcher fires the request, puts it on hold, picks up Priya's call immediately."
+            },
+            {
+              "type": "table",
+              "headers": ["", "Blocking", "Non-Blocking"],
+              "rows": [
+                ["Thread while waiting", "Frozen — does nothing", "Free — handles next request"],
+                ["Priya's request", "Stuck behind Raj's query", "Picked up immediately"],
+                ["New Year's Eve", "Server freezes", "Handles smoothly"],
+                ["Node.js default", "❌", "✅"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Non-Blocking means the thread never sits idle. It fires slow operations, moves on, and comes back when ready. That's how Uber's server handles Raj, Priya, and 50,000 others — all at once, without freezing."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ But if the thread moves on immediately — how does it know when to come back for Raj's response? There's a system managing all of this behind the scenes. That's the Event Loop — and that's exactly what we cover next."
+            }
+          ]
 
-        }
+        },
       },
       {
         "id": 2,
         "title": "Event Loop",
         "level": "freshers",
         "topics": [
-          "What is the Event Loop?",
+          "What is the Event Loop and How does it works ?",
 
         ],
         "topicDetails": {
-          "What is the Event Loop?": [
+          "What is the Event Loop and How does it works ?": [
             {
               "type": "paragraph",
               "text": "Raj books a ride. Priya books a ride. 50,000 others book at the same time. Node.js has one thread. So how does it handle all of them without missing one? Four things work together — Call Stack, Node APIs, Callback Queue, and Microtask Queue. Let's walk through exactly what happens."
@@ -5834,69 +5980,13 @@ export const roadmapData = [
         "title": "Async Programming",
         "level": "freshers",
         "topics": [
-          "Synchronous vs Asynchronous",
           "Callbacks",
           "Promises",
           "Async / Await",
           "Callback Hell & how to avoid it"
         ],
         "topicDetails": {
-          "Synchronous vs Asynchronous": [
-            {
-              "type": "paragraph",
-              "text": "Two Uber dispatchers are managing ride requests. Dispatcher A (synchronous) gets a request, calls the database to find drivers, and stands there staring at the phone — doing NOTHING — until the database responds. Only then does he handle the next request. Dispatcher B (asynchronous) gets a request, fires off the database call, immediately picks up the next request, and handles the database response whenever it comes back. Which dispatcher handles more rides per hour? This is synchronous vs asynchronous programming."
-            },
-            {
-              "type": "heading",
-              "text": "Synchronous — One at a Time, Wait for Each"
-            },
-            {
-              "type": "paragraph",
-              "text": "In synchronous code, each operation must complete before the next one starts. The code reads top to bottom, line by line, waiting. If one line takes 500ms to execute (like a database query), the entire program is frozen for that 500ms. For Uber's server, this would be catastrophic — one slow database query would freeze all ride requests globally."
-            },
-            {
-              "type": "code",
-              "code": "// SYNCHRONOUS — Uber's server (bad approach)\nconsole.log('Ride request received');\n\nconst drivers = db.querySync('SELECT nearby drivers'); // BLOCKS for 50ms!\n// Nothing happens during those 50ms\n// All other ride requests in queue are FROZEN\n\nconsole.log('Drivers found:', drivers.length);\n// 50ms later, code continues here\n\n// If 1000 requests/second arrive:\n// Each blocks for 50ms\n// Server can only handle 20 requests/second\n// 980 requests/second are DROPPED"
-            },
-            {
-              "type": "heading",
-              "text": "Asynchronous — Fire and Come Back Later"
-            },
-            {
-              "type": "paragraph",
-              "text": "In asynchronous code, slow operations are fired and the program moves on immediately. When the operation completes, the program comes back to handle the result. The program is never frozen waiting. For Uber, this means while one ride request's database query is running, the server can handle hundreds of other requests."
-            },
-            {
-              "type": "code",
-              "code": "// ASYNCHRONOUS — Uber's server (correct approach)\nconsole.log('Ride request received');\n\ndb.query('SELECT nearby drivers', (err, drivers) => {\n  // This runs LATER — when DB responds\n  console.log('Drivers found:', drivers.length);\n  matchDriver(drivers);\n});\n\nconsole.log('Moving on to next request immediately!');\n// This line runs BEFORE the DB responds\n// Server is free to handle 999 more requests\n// while the DB is thinking"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — 3 Simultaneous Ride Requests"
-            },
-            {
-              "type": "step",
-              "title": "Synchronous server — 3 requests arrive at the same time",
-              "desc": "Request 1 arrives. Server queries DB. BLOCKED for 50ms. Request 2 WAITS. Request 3 WAITS. After 50ms, request 1 completes. Request 2 starts. BLOCKED for 50ms. Request 3 WAITS. After another 50ms, request 2 completes. Total time to handle all 3: 150ms. During those 150ms, 150 other requests arrived and got dropped."
-            },
-            {
-              "type": "step",
-              "title": "Asynchronous server — 3 requests arrive at the same time",
-              "desc": "Request 1 arrives. Server fires DB query (async). Immediately moves to Request 2. Fires DB query for Request 2. Immediately moves to Request 3. Fires DB query for Request 3. All 3 DB queries are in-flight simultaneously. At ~50ms, all 3 DB responses arrive. All 3 ride requests handled. Total time: ~50ms (not 150ms)."
-            },
-            {
-              "type": "code",
-              "code": "Synchronous (3 requests):\nRequest 1: ████████████ 50ms\nRequest 2:             ████████████ 50ms\nRequest 3:                          ████████████ 50ms\nTotal time: 150ms. One at a time.\n\nAsynchronous (3 requests):\nRequest 1: ████████████ 50ms\nRequest 2: ████████████ 50ms  (ran in parallel!)\nRequest 3: ████████████ 50ms  (ran in parallel!)\nTotal time: ~50ms. All at the same time."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Asynchronous programming is the reason Uber's server can handle thousands of concurrent ride requests. Instead of waiting for each database query, file read, or API call, Node.js fires them all and handles results as they come in. This is the foundation of everything in Node.js development."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Asynchronous is clearly better — but HOW do you write async code? The original answer was Callbacks. They work — but they have a famous problem. Let's look at callbacks in depth."
-            }
-          ],
+
           "Callbacks": [
             {
               "type": "paragraph",
@@ -7058,293 +7148,7 @@ export const roadmapData = [
           ]
         }
       },
-      {
-        "id": 7,
-        "title": "Memory Management",
-        "level": "freshers",
-        "topics": [
-          "V8 Engine & Heap Memory",
-          "Garbage Collection in Node.js",
-          "Memory Leaks — causes & detection",
-          "Buffer & Memory allocation"
-        ],
-        "topicDetails": {
-          "V8 Engine & Heap Memory": [
-            {
-              "type": "paragraph",
-              "text": "Uber's Node.js server has been running for 6 hours. It started using 200MB of RAM. Now it's using 4GB and slowing down. A restart brings it back to 200MB. Something is keeping memory alive that shouldn't be. To understand why this happens — and how to fix it — you need to understand how V8 manages memory: the heap, the stack, and how objects live and die in Node.js."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ Where do JavaScript objects, strings, and arrays actually live in memory? And what happens when you're done with them?"
-            },
-            {
-              "type": "heading",
-              "text": "V8's Memory Structure"
-            },
-            {
-              "type": "paragraph",
-              "text": "V8 divides memory into two main areas. The Stack holds primitive values (numbers, booleans, pointers) and function call frames — it's small, fast, and automatically managed as functions enter and exit. The Heap holds everything else — objects, arrays, strings, closures, buffers. The heap is where the interesting (and problematic) memory management happens."
-            },
-            {
-              "type": "code",
-              "code": "// What lives where in V8 memory:\n\n// STACK — automatic, fast, small (~1MB default)\nfunction handleRideRequest(req) {\n  const rideId = 42;          // number → stack\n  const isSurge = true;       // boolean → stack\n  const ptr = req;            // reference/pointer → stack\n  // When function returns, stack frame is instantly freed\n}\n\n// HEAP — manual GC, large, where most data lives\nconst ride = {               // object → heap\n  id: 42,\n  driver: { name: 'Raj' },  // nested object → heap\n  route: [...]              // array → heap\n};\n\nconst riderName = 'Priya';  // string → heap\nconst drivers = new Map();  // Map → heap\n\n// Heap can grow dynamically\n// V8 default heap limit: ~1.5GB (32-bit) or ~4GB (64-bit)"
-            },
-            {
-              "type": "heading",
-              "text": "Inside the Heap — Young and Old Generations"
-            },
-            {
-              "type": "paragraph",
-              "text": "V8 divides the heap into generations based on object age. The Young Generation (also called 'nursery' or 'new space') holds newly created objects — small (~32MB), collected frequently and fast. The Old Generation holds objects that survived multiple young-generation collections — large (~1-1.5GB default), collected less frequently. This two-generation design is critical: most objects in Uber's server are short-lived (one ride request creates objects that die when the request ends). V8 optimizes for this common pattern."
-            },
-            {
-              "type": "code",
-              "code": "V8 Heap generations for Uber's server:\n\n┌─────────────────────────────────────────────┐\n│              V8 HEAP                        │\n│                                             │\n│  ┌─────────────────────┐                   │\n│  │   YOUNG GENERATION  │ ~32MB             │\n│  │   (new objects)     │                   │\n│  │                     │                   │\n│  │ rideRequest obj     │ ← created now     │\n│  │ driverMatch result  │ ← created now     │\n│  │ GPS coordinate obj  │ ← created now     │\n│  └──────────┬──────────┘                   │\n│             │ survived 2 GC cycles?         │\n│             ↓                               │\n│  ┌─────────────────────┐                   │\n│  │   OLD GENERATION    │ ~1.5GB            │\n│  │   (long-lived)      │                   │\n│  │                     │                   │\n│  │ driverCache Map     │ ← lives for hours │\n│  │ surgeZone config    │ ← lives forever   │\n│  │ Express app obj     │ ← lives forever   │\n│  └─────────────────────┘                   │\n└─────────────────────────────────────────────┘"
-            },
-            {
-              "type": "step",
-              "title": "Young Generation — Born and die fast",
-              "desc": "Every ride request creates dozens of temporary objects: the request object, parsed JSON, driver query results, match result, response object. These are all created in Young Generation. When the request finishes, they're no longer referenced. V8's Scavenger GC clears them in ~1ms. This happens thousands of times per second on Uber's server."
-            },
-            {
-              "type": "step",
-              "title": "Old Generation — Promoted survivors",
-              "desc": "Uber's driver cache (a Map of all active drivers) survives every GC cycle — it's needed permanently. After surviving two Young GC passes, V8 promotes it to Old Generation. It stays there for the server's lifetime. Old Generation GC (Major GC) is slower and rarer — it only runs when Old Gen fills up."
-            },
-            {
-              "type": "code",
-              "code": "// Monitor V8 heap in Uber's production server:\nconst v8 = require('v8');\n\nsetInterval(() => {\n  const stats = v8.getHeapStatistics();\n  console.log({\n    total_heap: Math.round(stats.total_heap_size / 1024 / 1024) + 'MB',\n    used_heap:  Math.round(stats.used_heap_size / 1024 / 1024) + 'MB',\n    heap_limit: Math.round(stats.heap_size_limit / 1024 / 1024) + 'MB',\n    external:   Math.round(stats.external_memory / 1024 / 1024) + 'MB'\n  });\n}, 30000);\n\n// Healthy output:\n// { total_heap: '450MB', used_heap: '320MB', heap_limit: '4096MB' }\n\n// Concerning output (memory leak growing):\n// t=0h:  used_heap: '200MB'\n// t=2h:  used_heap: '800MB'\n// t=4h:  used_heap: '2.1GB'  ← growing without bound"
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ V8 manages memory with a generational heap: Young Generation for short-lived objects (most of Uber's per-request data), Old Generation for long-lived objects (caches, config, the app itself). The stack handles primitives automatically. Understanding this structure is the foundation for diagnosing memory issues in Node.js."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Objects in the heap don't live forever — V8's Garbage Collector cleans them up. But the GC has rules about what it can and cannot free. Understanding garbage collection explains why memory leaks happen."
-            }
-          ],
-          "Garbage Collection in Node.js": [
-            {
-              "type": "paragraph",
-              "text": "Uber's server creates thousands of objects per second — ride requests, driver matches, GPS coordinates, payment results. If these objects stayed in memory forever, the heap would fill up and the server would crash. Garbage Collection (GC) is V8's automatic memory cleanup system — it identifies objects that are no longer reachable from any part of your code and frees their memory. Understanding GC is understanding why Node.js memory works the way it does."
-            },
-            {
-              "type": "heading",
-              "text": "The Core Rule — Reachability"
-            },
-            {
-              "type": "paragraph",
-              "text": "V8's GC is based on one principle: an object is 'alive' if it's reachable from a root (global variables, local variables currently on the Call Stack, closures). An object is 'dead' if nothing points to it. The GC finds all reachable objects and frees everything else. It doesn't count references — it traces paths from roots. This is called mark-and-sweep."
-            },
-            {
-              "type": "code",
-              "code": "// Reachability — what GC can and cannot free:\n\n// Can be freed — nothing references this after function returns:\nasync function handleRideRequest(req) {\n  const rideData = parseRideRequest(req); // created in heap\n  const match = await findDriver(rideData); // created in heap\n  await notifyDriver(match);\n  return { matchId: match.id };\n  // rideData and match become unreachable after return\n  // GC can free them on next collection cycle ✅\n}\n\n// Cannot be freed — global reference keeps it alive:\nconst activeRides = new Map(); // global — GC cannot free it\n\nasync function startRide(rideId, data) {\n  activeRides.set(rideId, data); // adds to global Map\n  // data is reachable via activeRides → GC cannot free it\n}\n\nasync function endRide(rideId) {\n  activeRides.delete(rideId); // removes reference\n  // Now GC CAN free this ride's data ✅\n  // But if you forget to call endRide → memory leak! ❌"
-            },
-            {
-              "type": "heading",
-              "text": "V8's Two Garbage Collectors"
-            },
-            {
-              "type": "paragraph",
-              "text": "V8 has two GC algorithms tuned for different parts of the heap. The Minor GC (Scavenger) runs on the Young Generation — fast (~1ms), runs frequently (every few MB allocated), uses a copying algorithm. The Major GC (Mark-Sweep-Compact) runs on the Old Generation — slower (10-100ms), runs infrequently (when Old Gen is nearly full), stops the Event Loop while running."
-            },
-            {
-              "type": "step",
-              "title": "Minor GC — Scavenger (Young Generation)",
-              "desc": "V8 maintains two equal-sized spaces in Young Generation (From-space and To-space). When From-space fills, Scavenger runs: traces all live objects from roots, copies live objects to To-space, everything left in From-space is garbage and the space is cleared. From-space and To-space swap. Total time: ~1ms. Uber's server runs this hundreds of times per second — you never notice."
-            },
-            {
-              "type": "step",
-              "title": "Major GC — Mark-Sweep-Compact (Old Generation)",
-              "desc": "When Old Generation fills up, V8 runs a full heap collection. Phase 1 (Mark): traverse all roots, mark every reachable object. Phase 2 (Sweep): free all unmarked objects. Phase 3 (Compact): move live objects together to reduce fragmentation. This can take 10-100ms and pauses JavaScript execution. In Uber's server, a 100ms GC pause means 100ms where no rides are matched."
-            },
-            {
-              "type": "code",
-              "code": "// Triggering and observing GC in Node.js:\n\n// Force GC (only for debugging — never in production):\nif (global.gc) {\n  global.gc(); // run with: node --expose-gc server.js\n}\n\n// Listen for GC events (using perf_hooks):\nconst { PerformanceObserver } = require('perf_hooks');\n\nconst obs = new PerformanceObserver((list) => {\n  list.getEntries().forEach(entry => {\n    if (entry.entryType === 'gc') {\n      console.log(`GC: kind=${entry.detail.kind} duration=${entry.duration.toFixed(2)}ms`);\n      // kind 1 = Minor GC (Scavenger)\n      // kind 2 = Major GC (Mark-Sweep)\n      // kind 4 = Incremental Marking\n    }\n  });\n});\nobs.observe({ entryTypes: ['gc'] });\n\n// Production output on Uber's server:\n// GC: kind=1 duration=0.89ms   ← Minor GC, no problem\n// GC: kind=1 duration=1.12ms   ← Minor GC, fine\n// GC: kind=2 duration=87.43ms  ← Major GC, watch this!"
-            },
-            {
-              "type": "info-callout",
-              "text": "⚡ V8 uses 'incremental marking' to reduce Major GC pauses — instead of marking all at once (causing a long pause), it marks incrementally across many small pauses between Event Loop ticks. This spreads the GC work out over time. Uber's Node.js servers are configured to use this by default, which is why most GC pauses are invisible to users."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ V8's garbage collector automatically frees unreachable objects — no manual memory management needed. Minor GC handles short-lived objects (milliseconds, frequent). Major GC handles old objects (slower, less frequent, can cause noticeable pauses). The GC only frees objects with zero references — any global or closure holding a reference keeps objects alive forever."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ The GC only frees what it can reach. If your code accidentally keeps references to objects that should be freed — that's a memory leak. Uber's servers have encountered every type of memory leak. Let's look at the most common causes and how to detect them."
-            }
-          ],
-          "Memory Leaks — causes & detection": [
-            {
-              "type": "paragraph",
-              "text": "Uber's ride-matching service started leaking memory three weeks after a new feature was deployed. Memory grew 50MB per hour — slowly enough to miss in testing, catastrophic in production after a day. The cause: a Map that stored ride request data was never being cleared when rides completed. 18 hours of rides × thousands per hour = millions of dead ride objects still in memory. This is the most common Node.js memory leak pattern."
-            },
-            {
-              "type": "heading",
-              "text": "The Four Most Common Memory Leak Causes"
-            },
-            {
-              "type": "step",
-              "title": "Cause 1 — Global variables / forgotten caches",
-              "desc": "Global variables and module-level caches live for the entire server lifetime. If you keep adding to them without removing old entries, they grow forever. Uber's driver cache, ride history, and analytics aggregators are all potential leak sources if not managed carefully."
-            },
-            {
-              "type": "code",
-              "code": "// LEAK — Map grows forever, never cleaned:\nconst recentRides = new Map(); // global — lives forever\n\napp.post('/ride/start', (req, res) => {\n  recentRides.set(req.body.rideId, {\n    riderId: req.body.riderId,\n    startTime: Date.now(),\n    route: req.body.route,    // large object added\n    gpsHistory: []            // will grow during ride\n  });\n  // Added to Map — but never removed when ride ends!\n});\n\n// After 24 hours: millions of completed rides\n// still in recentRides Map → gigabytes of leaked memory\n\n// FIX — remove completed rides:\napp.post('/ride/end', (req, res) => {\n  recentRides.delete(req.body.rideId); // ← CRITICAL\n  res.json({ ok: true });\n});\n\n// BETTER FIX — use WeakMap or TTL cache:\nconst recentRides = new LRUCache({ max: 10000, ttl: 3600000 });\n// Automatically evicts old entries — no manual cleanup needed"
-            },
-            {
-              "type": "step",
-              "title": "Cause 2 — Event listener accumulation",
-              "desc": "Adding event listeners without removing them — especially in loops or per-request handlers — causes listeners to pile up. Each listener holds a reference to its closure and captured variables, preventing GC. Node.js warns when a single emitter has more than 10 listeners — take that warning seriously."
-            },
-            {
-              "type": "code",
-              "code": "// LEAK — listener added every request, never removed:\napp.get('/ride-status/:id', (req, res) => {\n  // This adds a new listener on EVERY request!\n  rideEventEmitter.on('status-update', (update) => {\n    if (update.rideId === req.params.id) {\n      res.json(update);\n    }\n  });\n  // Listener is NEVER removed — 1000 req/s = 1000 listeners/s\n  // Each holds ref to req, res, and the closure → memory leak\n});\n\n// FIX — use once() and remove on response:\napp.get('/ride-status/:id', (req, res) => {\n  const handler = (update) => {\n    if (update.rideId === req.params.id) {\n      rideEventEmitter.off('status-update', handler); // remove!\n      res.json(update);\n    }\n  };\n  rideEventEmitter.on('status-update', handler);\n\n  // Also remove if request times out:\n  req.on('close', () => {\n    rideEventEmitter.off('status-update', handler);\n  });\n});"
-            },
-            {
-              "type": "step",
-              "title": "Cause 3 — Closures capturing large objects",
-              "desc": "A closure captures the variables from its outer scope. If a long-lived closure (like a timer or event listener) captures a large object, that object can never be GC'd even if you think you're done with it. The closure keeps the reference alive."
-            },
-            {
-              "type": "code",
-              "code": "// LEAK — closure captures large rideHistory array:\nfunction setupSurgeMonitor(rideHistory) {\n  // rideHistory might be 100MB of ride data\n\n  setInterval(() => {\n    // This closure captures rideHistory\n    // Even if caller sets rideHistory = null, this\n    // interval still holds the reference → 100MB leaked\n    const surge = calculateSurge(rideHistory);\n    updateSurgeDisplay(surge);\n  }, 5000);\n}\n\n// FIX — don't capture large objects in long-lived closures:\nfunction setupSurgeMonitor() {\n  setInterval(async () => {\n    // Fetch fresh data each time instead of capturing it\n    const recentRides = await getRecentRides(last30minutes);\n    const surge = calculateSurge(recentRides);\n    updateSurgeDisplay(surge);\n    // recentRides is local — GC'd after each interval\n  }, 5000);\n}"
-            },
-            {
-              "type": "step",
-              "title": "Cause 4 — Timers and intervals not cleared",
-              "desc": "setInterval() runs forever unless clearInterval() is called. If an interval is created per-request or per-user-session, and never cleared, you end up with thousands of intervals all consuming memory and CPU. Each interval holds references to its closure."
-            },
-            {
-              "type": "code",
-              "code": "// LEAK — interval created per ride, never cleared:\napp.post('/ride/start', (req, res) => {\n  const { rideId } = req.body;\n\n  // Tracks GPS every 4 seconds for this ride\n  setInterval(() => {\n    updateGPSPosition(rideId);\n  }, 4000);\n  // No reference saved → cannot call clearInterval!\n  // Ride ends but interval runs forever\n});\n\n// FIX — save reference and clear on ride end:\nconst rideIntervals = new Map();\n\napp.post('/ride/start', (req, res) => {\n  const { rideId } = req.body;\n  const intervalId = setInterval(() => {\n    updateGPSPosition(rideId);\n  }, 4000);\n  rideIntervals.set(rideId, intervalId); // save the reference\n});\n\napp.post('/ride/end', (req, res) => {\n  const { rideId } = req.body;\n  clearInterval(rideIntervals.get(rideId)); // stop the interval\n  rideIntervals.delete(rideId);             // free the reference\n});"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Detecting a Memory Leak in Production"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Monitor heap usage over time",
-              "desc": "A steadily growing heap that never stabilizes is the classic memory leak signature. Healthy servers: heap grows under load, falls after GC. Leaking servers: heap grows continuously, never falls back to baseline."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Take heap snapshots",
-              "desc": "Use Node.js's --inspect flag and Chrome DevTools to take heap snapshots at different times. Compare two snapshots taken 30 minutes apart. Objects that grew significantly between snapshots are the leak suspects."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Identify retaining paths",
-              "desc": "Chrome DevTools shows the retaining path — the chain of references keeping a suspected object alive. Follow the path from the leaked object back to a root (global, closure, timer) to find the leak source."
-            },
-            {
-              "type": "code",
-              "code": "// Programmatic heap snapshot for Uber's production server:\nconst v8 = require('v8');\nconst fs = require('fs');\n\n// Take a snapshot (triggers GC first for accuracy)\nfunction takeHeapSnapshot() {\n  const snapshotStream = v8.writeHeapSnapshot();\n  console.log('Heap snapshot written to:', snapshotStream);\n  // Load in Chrome DevTools → Memory tab → Load profile\n}\n\n// Uber's automated leak detection:\nconst startHeap = process.memoryUsage().heapUsed;\nsetInterval(() => {\n  const currentHeap = process.memoryUsage().heapUsed;\n  const growthMB = (currentHeap - startHeap) / 1024 / 1024;\n  if (growthMB > 500) { // 500MB growth since start\n    console.error('Possible memory leak detected! Growth:', growthMB.toFixed(0), 'MB');\n    takeHeapSnapshot(); // save for analysis\n    // Alert Uber's on-call engineer\n  }\n}, 60000);"
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Memory leaks in Node.js almost always come from one of four causes: growing global collections, accumulating event listeners, closures capturing large objects, or uncleared timers. Detection: monitor heap growth over time, take heap snapshots, find retaining paths. Fix: remove unused references, use WeakMap/WeakRef for caches, always clear timers and listeners when done."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ One more memory topic that's specific to Node.js and very relevant to Uber's GPS and binary data handling: Buffers. They live OUTSIDE the V8 heap — and have their own memory management rules."
-            }
-          ],
-          "Buffer & Memory allocation": [
-            {
-              "type": "paragraph",
-              "text": "Uber's Node.js server receives GPS data over TCP sockets — raw binary bytes from driver phones. It processes payment data from Stripe — binary encoded. It reads compressed log files — binary. It streams map tile images — binary. All of this binary data flows through Node.js Buffers: a special memory area that lives OUTSIDE the V8 heap, directly allocated from the OS. Understanding Buffers is essential for any Node.js application handling binary data, network I/O, or files."
-            },
-            {
-              "type": "heading",
-              "text": "What Is a Buffer?"
-            },
-            {
-              "type": "paragraph",
-              "text": "A Buffer is a fixed-size chunk of raw memory allocated directly from the OS, outside the V8 heap. It holds binary data — bytes, not JavaScript objects. Buffers are used when you need to work with binary data: TCP streams, file system I/O, cryptographic operations, image processing. The key property: Buffer memory is not managed by V8's garbage collector in the same way — it's tracked by V8 but allocated from the OS heap."
-            },
-            {
-              "type": "code",
-              "code": "// Creating Buffers — three ways:\n\n// 1. Buffer.alloc() — safe, initializes memory to zeros\nconst gpsBuffer = Buffer.alloc(16); // 16 bytes, all zeros\n// ✅ Use this — guaranteed clean memory\n\n// 2. Buffer.from() — create from existing data\nconst messageBuffer = Buffer.from('GPS:12.97,77.59', 'utf8');\nconst hexBuffer = Buffer.from('deadbeef', 'hex');\nconst arrayBuffer = Buffer.from([0x47, 0x50, 0x53]); // raw bytes\n\n// 3. Buffer.allocUnsafe() — fast but uninitialized (may have old data)\nconst fastBuffer = Buffer.allocUnsafe(1024);\n// ⚠️ Contains random old memory — must fill before using!\n// Only use when you'll immediately overwrite all bytes\n\n// Reading and writing Buffer data:\ngpsBuffer.writeFloatBE(12.97, 0);  // write latitude at offset 0\ngpsBuffer.writeFloatBE(77.59, 4);  // write longitude at offset 4\ngpsBuffer.writeUInt32BE(Date.now(), 8); // timestamp at offset 8\n\nconst lat = gpsBuffer.readFloatBE(0);  // read latitude\nconst lng = gpsBuffer.readFloatBE(4);  // read longitude"
-            },
-            {
-              "type": "heading",
-              "text": "Buffer Memory — Outside the V8 Heap"
-            },
-            {
-              "type": "paragraph",
-              "text": "When you create a Buffer, V8 allocates raw memory from the OS directly — not from the V8 heap. This memory doesn't participate in young/old generation. V8 tracks it via an 'external memory' counter, which can trigger GC if it grows too large. But the actual bytes live outside the heap. This is why process.memoryUsage() shows both heapUsed and external — Buffer data appears in external."
-            },
-            {
-              "type": "code",
-              "code": "// Observing Buffer memory vs heap memory:\nconsole.log(process.memoryUsage());\n// { rss: 45MB, heapTotal: 20MB, heapUsed: 15MB, external: 1MB }\n\n// Allocate 100MB of Buffers:\nconst buffers = [];\nfor (let i = 0; i < 100; i++) {\n  buffers.push(Buffer.allocUnsafe(1024 * 1024)); // 1MB each\n}\n\nconsole.log(process.memoryUsage());\n// { rss: 150MB, heapTotal: 20MB, heapUsed: 15MB, external: 101MB }\n// ↑ heapUsed barely changed! Buffers are in 'external'"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — GPS Binary Data Through Buffers in Uber"
-            },
-            {
-              "type": "paragraph",
-              "text": "Here's the complete journey of binary GPS data from Driver_87's phone to Uber's database — showing exactly where Buffers are created, used, and released:"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — TCP socket receives raw bytes",
-              "desc": "Driver_87's phone sends 20 bytes: 4 bytes latitude (float), 4 bytes longitude (float), 4 bytes speed (int), 4 bytes timestamp (int), 4 bytes driverId (int). Node.js's net module receives this as a Buffer automatically. You don't allocate it — Node.js handles it."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Read structured data from Buffer",
-              "desc": "Your code receives a 'data' event with the Buffer. Read the fields using Buffer's typed read methods — readFloatBE for latitude/longitude, readUInt32BE for integers. No JSON parsing needed — direct binary to JavaScript number conversion."
-            },
-            {
-              "type": "code",
-              "code": "// Uber's GPS socket handler:\nconst net = require('net');\n\nconst server = net.createServer((socket) => {\n  socket.on('data', (buffer) => {\n    // buffer is a Buffer containing raw GPS bytes\n    if (buffer.length < 20) return; // incomplete packet\n\n    const lat = buffer.readFloatBE(0);       // bytes 0-3\n    const lng = buffer.readFloatBE(4);       // bytes 4-7\n    const speed = buffer.readUInt32BE(8);    // bytes 8-11\n    const timestamp = buffer.readUInt32BE(12); // bytes 12-15\n    const driverId = buffer.readUInt32BE(16); // bytes 16-19\n\n    // Now we have JavaScript numbers — process them\n    updateDriverLocation(driverId, lat, lng, speed, timestamp);\n    // buffer will be GC'd after this handler returns\n  });\n});\n\n// Binary protocol is ~10x smaller than JSON:\n// JSON: '{\"driverId\":87,\"lat\":12.97,\"lng\":77.59}' = ~45 bytes\n// Binary: 20 bytes — less network, less parsing, less memory"
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Buffer.concat() assembles fragmented packets",
-              "desc": "TCP can split a single logical message across multiple 'data' events. Uber's GPS packets (20 bytes) sometimes arrive as two chunks. Buffer.concat() combines partial buffers into a complete packet. This is a common pattern in all TCP socket programming."
-            },
-            {
-              "type": "code",
-              "code": "// Handling fragmented TCP packets with Buffers:\nconst GPS_PACKET_SIZE = 20;\nlet partialBuffer = Buffer.alloc(0);\n\nsocket.on('data', (chunk) => {\n  // Combine with any leftover bytes from previous chunk\n  partialBuffer = Buffer.concat([partialBuffer, chunk]);\n\n  // Process complete packets\n  while (partialBuffer.length >= GPS_PACKET_SIZE) {\n    const packet = partialBuffer.slice(0, GPS_PACKET_SIZE);\n    processGPSPacket(packet);\n    partialBuffer = partialBuffer.slice(GPS_PACKET_SIZE);\n  }\n  // partialBuffer now holds incomplete bytes for next chunk\n});"
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Buffer memory released",
-              "desc": "Once the GPS data is extracted into JavaScript numbers (lat, lng, speed), the Buffer is no longer referenced. V8's GC marks the external memory as reclaimable and frees it. The GPS numbers continue in V8 heap as normal JavaScript values."
-            },
-            {
-              "type": "table",
-              "headers": ["Aspect", "V8 Heap", "Buffer (external memory)"],
-              "rows": [
-                ["Holds", "JS objects, arrays, strings", "Raw binary bytes"],
-                ["Managed by", "V8 GC (automatic)", "OS malloc + V8 tracking"],
-                ["Speed", "Slower (GC overhead)", "Faster (direct OS memory)"],
-                ["Use for", "Application data", "Network I/O, file I/O, binary"],
-                ["Uber example", "Ride objects, driver Map", "GPS bytes, TCP packets, images"]
-              ]
-            },
-            {
-              "type": "info-callout",
-              "text": "🚀 Buffer.allocUnsafe() is significantly faster than Buffer.alloc() because it skips zero-initialization. For high-throughput scenarios like Uber's GPS processing (125,000 packets/second), using allocUnsafe() for temporary buffers that will immediately be overwritten can provide meaningful performance gains — but ONLY when you guarantee you'll overwrite every byte before reading."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Buffers are fixed-size chunks of raw memory outside the V8 heap, used for binary data handling — TCP sockets, files, crypto. Uber uses them for efficient GPS binary protocol handling, cutting network payload by 10x vs JSON. Buffer memory is tracked by V8 but allocated from the OS — visible in process.memoryUsage().external. Understanding Buffers is essential for any Node.js application doing serious network or file I/O."
-            },
-            {
-              "type": "info-callout",
-              "text": "🎯 Full picture of Memory Management — V8 manages memory with a generational heap (Young + Old Generation). Garbage Collection automatically frees unreachable objects (Minor GC for young, Major GC for old). Memory leaks happen when references are accidentally retained — growing Maps, unremoved listeners, closures, and uncleaned timers. Buffers handle binary data outside the V8 heap with OS-direct allocation. Master these concepts and you can diagnose and fix any memory issue in Uber-scale Node.js systems."
-            }
-          ]
-        }
-      }
+
 
 
 

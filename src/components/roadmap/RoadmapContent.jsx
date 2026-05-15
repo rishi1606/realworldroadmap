@@ -248,7 +248,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   // Reset view mode when topic changes
   useEffect(() => {
     setViewMode("concept");
-  }, [selectedTopic._id]);
+  }, [selectedTopic?._id]);
 
   if (!selectedNode || !selectedTopic) return null;
 

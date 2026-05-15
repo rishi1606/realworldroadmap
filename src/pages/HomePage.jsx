@@ -1,36 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiLayers } from 'react-icons/fi';
-import { roadmapAPI } from '../api/client';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
-
+import { useRoadmaps } from '../context/RoadmapContext';
 import { RoadmapCard } from '../components/common/RoadmapCard';
 
 export function HomePage() {
-  const [roadmaps, setRoadmaps] = useState([]);
+  const { roadmaps, fetchAllRoadmaps } = useRoadmaps();
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchRoadmaps = async () => {
-      try {
-        const { data } = await roadmapAPI.getAll();
-
-        // Add logos locally for UI aesthetics since they aren't in DB right now
-        const enhancedData = data.map(rm => ({
-          ...rm,
-          type: "featured",
-        }));
-
-        setRoadmaps(enhancedData);
-      } catch (error) {
-        console.error("Failed to fetch roadmaps", error);
-      } finally {
-        setLoading(false);
-      }
+    const init = async () => {
+      setLoading(roadmaps.length === 0);
+      await fetchAllRoadmaps();
+      setLoading(false);
     };
-
-    fetchRoadmaps();
-  }, []);
+    init();
+  }, [fetchAllRoadmaps, roadmaps.length]);
 
   return (
     <div className="bg-bg-base text-text-main font-sans flex-1 overflow-x-hidden">
@@ -79,21 +65,8 @@ export function HomePage() {
               <SkeletonLoader type="card" />
             </>
           ) : roadmaps.map((item, index) => {
-            if (item.type === "featured") {
-              return <RoadmapCard key={index} item={item} />;
-            }
-
-            const destUrl = `/roadmap/${encodeURIComponent(item.slug || item.title)}`;
-
-            return (
-              <Link
-                key={index}
-                to={destUrl}
-                className="bg-bg-surface border border-border-subtle rounded flex items-center justify-between p-4 hover:border-gray-400 hover:shadow-sm transition-all group"
-              >
-                <span className="font-semibold text-[15px] text-text-main group-hover:text-blue-600 transition-colors">{item.title}</span>
-              </Link>
-            );
+            const enhancedItem = { ...item, type: "featured" };
+            return <RoadmapCard key={index} item={enhancedItem} />;
           })}
 
         </div>

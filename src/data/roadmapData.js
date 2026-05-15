@@ -3851,7 +3851,7 @@ export const roadmapData = [
               type: "curious-callout",
               text: "❓ What if instead of rotating, we just looked at who has the least work right now and sent it there?"
             },
-            // { type: "image", src: "lc.png" },
+            { type: "image", src: "lc.png" },
             {
               type: "heading",
               text: "Stop Rotating — Start Observing"
@@ -3903,7 +3903,7 @@ export const roadmapData = [
               type: "curious-callout",
               text: "❓ What if the Load Balancer looked at both — how many connections AND how fast each server is actually responding right now?"
             },
-            // { type: "image", src: "lrt.png" },
+            { type: "image", src: "lrt.png" },
             {
               type: "heading",
               text: "Pick the Fastest, Not Just the Emptiest"

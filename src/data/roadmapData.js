@@ -5232,84 +5232,193 @@ export const roadmapData = [
           "What is Node.js?": [
             {
               "type": "paragraph",
-              "text": "You open Uber. Tap 'Request a Ride'. In 3 seconds — driver found, location shared, fare calculated. Ever wondered what's actually running behind that screen? That's Node.js."
+              "text": "You open MakeMyTrip during Diwali vacation season. You search 'Mumbai to Delhi'. Within 2 seconds — flights appear, prices update live, seats disappear in real time, discount coupons apply instantly. Ever wondered what powers all this behind the scenes? That's Node.js."
             },
             {
               "type": "curious-callout",
-              "text": "❓ What is Node.js and why did Uber choose it over everything else?"
-            },
-            {
-              "type": "error-callout",
-              "title": "Without Node.js — Uber couldn't exist the way it does:",
-              "list": [
-                "JavaScript had no way to run on a server",
-                "No backend, no database calls, no real-time tracking",
-                "Every ride request would need a full page reload",
-                "Handling 15 million trips a day would be impossible"
-              ],
-              "footer": "This is exactly why Uber needed something that could run JavaScript on the server. That something was Node.js."
+              "text": "❓ How does MakeMyTrip talk to airlines, hotels, payment gateways, and lakhs of users simultaneously without crashing?"
             },
             {
               "type": "heading",
-              "text": "JavaScript Was Trapped in the Browser"
+              "text": "Before Node.js — JavaScript Was Stuck Inside Browsers"
             },
             {
               "type": "paragraph",
-              "text": "Before Node.js, JavaScript could only run inside Chrome or Firefox. It was trapped — it couldn't talk to databases, couldn't handle requests, couldn't power a backend like Uber's."
+              "text": "Originally, JavaScript could only run inside browsers like Chrome or Firefox. It could make buttons clickable and update webpages — but it could not run a backend server."
             },
             {
-              "type": "code",
-              "code": "// Before Node.js — JavaScript only lived here\nBrowser → Chrome / Firefox / Safari\n\n// After Node.js — JavaScript now lives here too\nServer → Handles APIs, Databases, Real-time tracking"
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of it like this — JavaScript was a chef who could only cook in one kitchen (the browser). Node.js built a new kitchen on the server. Same chef, same skills, entirely new location. That chef is now running Uber's entire backend."
+              "type": "error-callout",
+              "title": "Without Node.js:",
+              "list": [
+                "JavaScript could not connect to airline APIs",
+                "JavaScript could not process payments",
+                "JavaScript could not store bookings in databases",
+                "JavaScript could not send OTPs or booking confirmations",
+                "MakeMyTrip would need separate frontend and backend languages"
+              ],
+              "footer": "JavaScript was powerful — but trapped inside the browser."
             },
             {
               "type": "heading",
-              "text": "What Happens When You Tap 'Request a Ride'"
+              "text": "Then Node.js Changed Everything"
             },
             {
-              "type": "step",
-              "title": "Step 1 — You tap Request a Ride",
-              "desc": "Your phone sends your location to Uber's Node.js server. Node.js receives it instantly."
+              "type": "paragraph",
+              "text": "Node.js allowed JavaScript to run on servers. Suddenly the same language running inside Chrome could now power entire backend systems."
             },
             {
-              "type": "step",
-              "title": "Step 2 — Node.js finds a driver",
-              "desc": "It queries the database for nearby drivers — and without waiting for the response, immediately moves on to handle the next request."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Driver match comes back",
-              "desc": "Database responds with nearby drivers. Node.js picks the closest one and sends a notification to their phone."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Driver accepts",
-              "desc": "Node.js updates your ride status, starts live GPS tracking, and sends confirmation to your phone. All of this — in under 3 seconds."
+              "type": "info-callout",
+              "text": "💡 Think of JavaScript like a travel agent. Earlier, the agent could only sit at the customer desk (browser). Node.js opened a huge backend office where the same agent now handles flights, hotels, payments, and bookings."
             },
             {
               "type": "code",
-              "code": "// What Node.js is doing RIGHT NOW globally\n\nRequest from Mumbai  → finding nearby drivers...\nRequest from Delhi   → matching driver...\nRequest from Bangalore → calculating ETA...\nRequest from Pune    → processing payment...\nRequest from Chennai → sending confirmation...\n\n// All of these — at the same time — on one Node.js server."
+              "code": "// Before Node.js\nJavaScript → Browser only\n\n// After Node.js\nJavaScript → Browser + Server"
             },
             {
-              "type": "warning-callout",
-              "text": "⚠️ But Uber had choices. They could have used Python, Java, or Ruby for their backend. Why did they specifically pick Node.js? And how does one single server handle all of this without collapsing? That's exactly what we unpack next."
+              "type": "heading",
+              "text": "What Happens When You Search Flights on MakeMyTrip"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — You enter Mumbai → Delhi",
+              "desc": "You select departure city, destination, travel date, and click Search."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Request reaches Node.js server",
+              "desc": "Your phone sends the request to MakeMyTrip's backend. Node.js receives it instantly."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Node.js starts multiple tasks together",
+              "desc": "Node.js now contacts airline APIs, hotel systems, pricing engines, and discount systems simultaneously."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Airline APIs are contacted",
+              "desc": "IndiGo, Air India, Vistara, Akasa, SpiceJet — all receive requests at the same time asking for flight prices and seat availability."
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — Node.js does NOT wait",
+              "desc": "Instead of waiting for one airline to respond, Node.js immediately starts handling requests from other users."
+            },
+            {
+              "type": "step",
+              "title": "Step 6 — Other users continue using MakeMyTrip",
+              "desc": "At the same moment, thousands of other users are booking hotels, checking buses, applying coupons, and making payments."
+            },
+            {
+              "type": "step",
+              "title": "Step 7 — Airline APIs start responding",
+              "desc": "IndiGo responds first with 12 flights. Air India responds with 8 flights. Vistara sends premium fare options."
+            },
+            {
+              "type": "step",
+              "title": "Step 8 — Node.js combines everything",
+              "desc": "Node.js merges all airline responses into one clean flight list."
+            },
+            {
+              "type": "step",
+              "title": "Step 9 — Smart processing happens",
+              "desc": "Flights are sorted by cheapest price, shortest duration, or best timings. Discounts and coupons are applied automatically."
+            },
+            {
+              "type": "step",
+              "title": "Step 10 — Results appear on your screen",
+              "desc": "Within 2 seconds, you see dozens of live flight options."
             },
             {
               "type": "success-callout",
-              "text": "✅ Node.js is just JavaScript running on a server instead of a browser. That's it. Simple concept — powering 15 million Uber trips every single day."
+              "text": "✅ Node.js handled thousands of slow airline API calls without freezing the server."
+            },
+            {
+              "type": "heading",
+              "text": "Now Imagine Booking the Flight"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — You click Book Now",
+              "desc": "Node.js immediately starts the booking workflow."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Seat gets locked",
+              "desc": "Node.js asks the airline to temporarily reserve your seat so nobody else books it."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Payment starts",
+              "desc": "Node.js contacts Razorpay/Paytm/payment gateway to process your payment."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Booking gets confirmed",
+              "desc": "Once payment succeeds, Node.js confirms the ticket with the airline."
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — PNR gets generated",
+              "desc": "Airline sends back booking confirmation and PNR number."
+            },
+            {
+              "type": "step",
+              "title": "Step 6 — Notifications are triggered",
+              "desc": "Node.js sends SMS, email confirmation, invoice PDF, and app notification simultaneously."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 All these tasks happen in parallel — not one by one."
+            },
+            {
+              "type": "heading",
+              "text": "Why MakeMyTrip Loves Node.js"
+            },
+            {
+              "type": "table",
+              "headers": ["Problem", "How Node.js Helps"],
+              "rows": [
+                ["Thousands of users searching together", "Handles huge concurrent traffic"],
+                ["Slow airline APIs", "Non-blocking async requests"],
+                ["Real-time price updates", "Fast event-driven architecture"],
+                ["Payments + notifications together", "Runs tasks in parallel"],
+                ["High traffic during holidays", "Efficient memory usage"],
+                ["Need fast responses", "Very low latency"]
+              ]
+            },
+            {
+              "type": "code",
+              "code": "// What MakeMyTrip's Node.js server may be doing simultaneously\n\nUser 1 -> Searching Mumbai flights\nUser 2 -> Booking Goa hotel\nUser 3 -> Cancelling ticket\nUser 4 -> Making payment\nUser 5 -> Applying coupon\nUser 6 -> Downloading invoice\n\n// All handled together using Node.js"
+            },
+            {
+              "type": "heading",
+              "text": "The Biggest Superpower of Node.js"
+            },
+            {
+              "type": "paragraph",
+              "text": "Node.js is extremely good at handling I/O tasks — tasks where the server spends most of its time waiting for APIs, databases, payments, or external systems."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Flight booking systems are mostly waiting systems. Waiting for airlines. Waiting for payments. Waiting for databases. Node.js shines exactly in these situations."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ But this creates another important question — if Node.js uses one single thread, how does it handle lakhs of users simultaneously without freezing? That's exactly what Single Threaded vs Multi Threaded explains next."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Node.js is simply JavaScript running on the server. Simple idea — powering massive systems like MakeMyTrip every second."
             }
           ],
           "Single vs Multi Threaded": [
             {
               "type": "paragraph",
-              "text": "When 10,000 people request an Uber at the same time — what does the server do? Does it create 10,000 workers to handle each request? Or does something smarter happen?"
+              "text": "Imagine 1 lakh people trying to book flights on MakeMyTrip during Diwali sale night. Flights are disappearing every second. Prices are changing constantly. How does the server handle so many people at the same time without crashing?"
             },
             {
               "type": "curious-callout",
-              "text": "❓ How does one single thread handle millions of ride requests — without breaking?"
+              "text": "❓ Does MakeMyTrip create 1 lakh workers for 1 lakh users? Or is there a smarter way?"
             },
             {
               "type": "heading",
@@ -5317,155 +5426,219 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "A thread is a worker inside your server. It picks up a task, works on it, and finishes it. More threads = more workers. Sounds good — but it comes at a cost."
+              "text": "A thread is like a worker inside the server. That worker picks up a task, does the work, then moves to the next task."
             },
             {
               "type": "info-callout",
-              "text": "💡 Think of threads like Uber drivers. Each driver can only handle one ride at a time. More drivers = more rides handled. But hiring more drivers costs money, space, and management."
+              "text": "💡 Think of a thread like a travel agent at MakeMyTrip support desk. One agent can help one customer at a time."
             },
             {
               "type": "heading",
-              "text": "The Multi Threaded Way"
+              "text": "The Multi Threaded Approach"
             },
             {
               "type": "paragraph",
-              "text": "Imagine Uber's server is multi threaded. Every ride request gets its own dedicated thread — its own worker sitting and waiting for the database to respond."
+              "text": "In a multi threaded system, every user request gets its own dedicated worker."
             },
             {
               "type": "step",
-              "title": "Step 1 — Raj books a ride",
-              "desc": "Server creates Thread 1 for Raj. Thread 1 queries the database to find nearby drivers. Thread 1 now sits and waits. Doing nothing."
+              "title": "Step 1 — Rahul searches for flights",
+              "desc": "Server creates Thread 1 for Rahul. Thread 1 asks airline APIs for ticket prices from Mumbai to Delhi."
             },
             {
               "type": "step",
-              "title": "Step 2 — Priya books a ride",
-              "desc": "Server creates Thread 2 for Priya. Thread 2 queries the database. Thread 2 also sits and waits. Doing nothing."
+              "title": "Step 2 — Airline APIs are slow",
+              "desc": "Thread 1 now waits for Indigo, Air India, and Vistara APIs to respond. During this time, the thread is doing absolutely nothing."
             },
             {
               "type": "step",
-              "title": "Step 3 — New Year's Eve. 50,000 people book at once",
-              "desc": "Server tries to create 50,000 threads. Each thread consumes 1MB of memory. That's 50GB of memory just for waiting. Server runs out of memory. Uber goes down."
+              "title": "Step 3 — Priya searches for hotels",
+              "desc": "Server creates Thread 2 for Priya. Thread 2 asks hotel databases for room availability."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Thread 2 also waits",
+              "desc": "Hotel database is slow. Thread 2 sits idle waiting for results."
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — Thousands of users arrive",
+              "desc": "50,000 users start searching flights and hotels during Diwali sale."
+            },
+            {
+              "type": "step",
+              "title": "Step 6 — Server creates 50,000 threads",
+              "desc": "Each user gets a dedicated worker thread. Most threads are just waiting for APIs and databases."
             },
             {
               "type": "error-callout",
-              "title": "Multi Threaded server on New Year's Eve:",
+              "title": "What goes wrong?",
               "list": [
-                "50,000 ride requests = 50,000 threads created",
-                "Each thread uses 1MB memory just sitting idle",
-                "Server hits memory limit in seconds",
-                "Uber crashes exactly when people need it most"
+                "50,000 threads consume massive memory",
+                "Most threads sit idle waiting",
+                "Context switching between threads becomes expensive",
+                "CPU wastes time managing threads instead of serving users",
+                "Server memory explodes under heavy traffic"
               ],
-              "footer": "More threads = more memory = server collapses under pressure."
+              "footer": "Too many workers become the problem itself."
             },
             {
               "type": "heading",
-              "text": "The Single Threaded Way — How Node.js Does It"
+              "text": "The Single Threaded Way — How Node.js Handles It"
             },
             {
               "type": "paragraph",
-              "text": "Node.js uses one single thread. But this thread never sits and waits. The moment it hits something slow — it hands it off and moves on immediately."
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Raj books a ride",
-              "desc": "Single thread picks up Raj's request. Sends database query — 'find drivers near Raj'. Instead of waiting — immediately moves on."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Priya books a ride",
-              "desc": "Same single thread picks up Priya's request instantly. Sends database query — 'find drivers near Priya'. Moves on again. Never waited once."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Database responds for Raj",
-              "desc": "Database says — '3 drivers found near Raj'. Thread picks this up, sends confirmation to Raj. Done."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Database responds for Priya",
-              "desc": "Database says — '2 drivers found near Priya'. Thread picks this up, sends confirmation to Priya. Done."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — New Year's Eve. 50,000 requests",
-              "desc": "Same single thread. Fires 50,000 database queries without waiting for any of them. Each request costs only 10KB memory. Total — 500MB. Server is fine. Uber stays up."
+              "text": "Node.js uses one main thread. But that thread never waits for slow tasks."
             },
             {
               "type": "info-callout",
-              "text": "💡 Multi Threaded = 50,000 workers hired, each standing idle waiting. Single Threaded = 1 smart dispatcher firing tasks and never waiting. Same work done — fraction of the cost."
+              "text": "💡 Instead of hiring 50,000 travel agents, MakeMyTrip hires one super-fast dispatcher who keeps assigning work and never stops moving."
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Rahul searches for flights",
+              "desc": "Single thread receives Rahul's request."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Node.js fires airline API requests",
+              "desc": "Node.js sends requests to Indigo, Air India, and Vistara APIs."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Node.js DOES NOT WAIT",
+              "desc": "Instead of sitting idle, the thread immediately moves to the next user."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Priya searches hotels",
+              "desc": "Same thread instantly handles Priya's request and fires hotel availability queries."
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — Aman searches trains",
+              "desc": "Same thread now handles train booking queries."
+            },
+            {
+              "type": "step",
+              "title": "Step 6 — APIs respond later",
+              "desc": "Whenever airline or hotel APIs respond, Node.js picks up the response and sends results back to users."
+            },
+            {
+              "type": "step",
+              "title": "Step 7 — Diwali Sale Spike",
+              "desc": "Even if 1 lakh users arrive, Node.js keeps firing requests asynchronously instead of creating 1 lakh waiting workers."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ One thread handles massive traffic because it never blocks waiting for slow databases or APIs."
+            },
+            {
+              "type": "heading",
+              "text": "Why This Saves So Much Memory"
+            },
+            {
+              "type": "step",
+              "title": "Multi Threaded Memory Usage",
+              "desc": "1 thread ≈ 1MB memory. 50,000 users = 50GB memory."
+            },
+            {
+              "type": "step",
+              "title": "Single Threaded Memory Usage",
+              "desc": "Each async callback uses only tiny memory. 50,000 users may consume only a few hundred MB."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Node.js wins because waiting requests don't occupy expensive worker threads."
             },
             {
               "type": "code",
-              "code": "// Multi Threaded — one worker per request, all waiting\nThread 1 → Raj's request   → waiting... waiting... waiting...\nThread 2 → Priya's request → waiting... waiting... waiting...\nThread 3 → Sara's request  → waiting... waiting... waiting...\n// 50,000 threads. 50GB memory. Server crashes.\n\n// Single Threaded (Node.js) — one worker, never waits\nThread → Raj's request   → fires DB query → moves on\nThread → Priya's request → fires DB query → moves on\nThread → Sara's request  → fires DB query → moves on\nThread → DB responds Raj  → confirms ride\nThread → DB responds Priya → confirms ride\n// 1 thread. 500MB memory. Server handles it fine."
+              "code": "// Multi Threaded\nRahul Request  -> Thread 1 -> waiting...\nPriya Request  -> Thread 2 -> waiting...\nAman Request   -> Thread 3 -> waiting...\n\n// Thousands of waiting threads\n// Huge memory usage\n// Server slows down\n\n\n// Node.js Single Threaded\nRahul Request -> Fire API request -> Move on\nPriya Request -> Fire DB request  -> Move on\nAman Request  -> Fire API request -> Move on\n\n// APIs respond later\n// Thread handles responses one by one\n// No waiting. No huge memory usage."
             },
             {
               "type": "table",
               "headers": ["Aspect", "Multi Threaded", "Single Threaded (Node.js)"],
               "rows": [
-                ["Workers", "1 per request", "1 for everything"],
-                ["Memory per request", "~1MB per thread", "~10KB per callback"],
-                ["50,000 requests", "50GB memory — crashes", "500MB — handles fine"],
-                ["Waiting strategy", "Thread sits idle waiting", "Fires and moves on instantly"],
-                ["New Year's Eve spike", "Server goes down", "Handles smoothly"],
-                ["Best for", "CPU heavy tasks", "I/O heavy tasks like Uber"],
-                ["Uber's choice", "❌", "✅"]
+                ["Worker Model", "1 worker per request", "1 event loop for all requests"],
+                ["Waiting Strategy", "Worker waits idle", "Thread never waits"],
+                ["Memory Usage", "Very high", "Very low"],
+                ["Handling 1 lakh users", "Can crash server", "Handles efficiently"],
+                ["Best For", "CPU-heavy work", "I/O-heavy apps"],
+                ["MakeMyTrip Operations", "❌ Not ideal", "✅ Perfect fit"],
+                ["Flight/Hotel APIs", "Threads blocked waiting", "Async non-blocking calls"],
+                ["Scalability", "Expensive", "Efficient"]
               ]
             },
             {
-              "type": "success-callout",
-              "text": "✅ Single threaded doesn't mean slow. It means one smart worker who never sits idle. That's exactly why Node.js handles millions of Uber rides without breaking."
+              "type": "heading",
+              "text": "But Wait — Is Single Thread Always Better?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Not always. Node.js is amazing for I/O-heavy tasks like booking systems, APIs, chats, and payments. But if one task becomes CPU heavy — like video rendering or huge calculations — the single thread can freeze."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ But this raises a real question — if the thread never waits, does it mean Uber's server freezes when it hits something slow? What exactly happens when code blocks the thread? That's Blocking vs Non-Blocking — and that's what we cover next."
+              "text": "⚠️ If one heavy calculation blocks the single thread, all users start waiting. That's why understanding Blocking vs Non-Blocking is extremely important."
             }
           ],
           "Blocking vs Non Blocking / Synchronous vs Asynchronous": [
             {
               "type": "paragraph",
-              "text": "Raj books a ride. Uber's server needs to find nearby drivers — that means a database call. What happens to Priya's request while that database call is running? Does the server freeze and wait? Or does it move on? That's the difference between Blocking and Non-Blocking."
+              "text": "You search flights on MakeMyTrip. The server now has to contact airline APIs to fetch ticket prices and seat availability. While those airline systems are responding, what happens to other users searching flights? Does the server stop and wait? Or does it continue handling everyone else? That's the difference between Blocking and Non-Blocking."
             },
             {
               "type": "curious-callout",
-              "text": "❓ What actually happens to Priya's request while Uber's server is fetching drivers for Raj?"
+              "text": "❓ While MakeMyTrip is waiting for airline responses for Rahul, what happens to Priya's hotel booking request?"
             },
             {
               "type": "heading",
-              "text": "Blocking — The Server Freezes"
+              "text": "Blocking — The Server Stops Everything"
             },
             {
               "type": "paragraph",
-              "text": "In blocking code, the thread stops completely and waits for the operation to finish. Nothing else runs until it's done."
+              "text": "In blocking code, the server waits for one task to finish before doing anything else."
             },
             {
               "type": "step",
-              "title": "Step 1 — Raj books a ride",
-              "desc": "Server receives Raj's request. Hits the database — 'find drivers near Raj'. Thread stops. Waits. Does absolutely nothing else."
+              "title": "Rahul searches flights",
+              "desc": "Rahul searches Mumbai to Delhi flights. Server contacts airline APIs for prices and seat availability."
             },
             {
               "type": "step",
-              "title": "Step 2 — Priya books a ride",
-              "desc": "Priya's request arrives. But the thread is frozen waiting for Raj's database response. Priya's request just sits there — ignored."
+              "title": "Server starts waiting",
+              "desc": "The airline API is slow. Server waits for the response. During this time, it does nothing else."
             },
             {
               "type": "step",
-              "title": "Step 3 — Database finally responds for Raj",
-              "desc": "100ms later — database responds. Thread unfreezes. Now picks up Priya's request. But 100ms is already lost. And 500 more requests piled up behind."
+              "title": "Priya searches hotels",
+              "desc": "Priya searches Goa hotels. But the server is still busy waiting for Rahul's airline response."
+            },
+            {
+              "type": "step",
+              "title": "Requests start piling up",
+              "desc": "Meanwhile thousands of other users continue searching flights, hotels, buses, and trains."
+            },
+            {
+              "type": "step",
+              "title": "Airline API finally responds",
+              "desc": "Only after Rahul's airline data returns does the server finally start handling Priya's request."
             },
             {
               "type": "error-callout",
-              "title": "Blocking on Uber's scale:",
+              "title": "What goes wrong in blocking systems?",
               "list": [
-                "One database call takes 100ms",
-                "Server frozen for those 100ms",
-                "500 requests pile up behind Raj's one query",
-                "Every user sees the app freezing"
+                "One slow airline API freezes the server",
+                "Other users are forced to wait",
+                "Requests pile up rapidly during traffic spikes",
+                "App feels slow and unresponsive",
+                "High traffic sales can crash the system"
               ],
-              "footer": "One blocked thread = entire server frozen. Uber can't work like this."
+              "footer": "One waiting request blocks everyone behind it."
             },
             {
               "type": "code",
-              "code": "// BLOCKING — server freezes on database call\nconst drivers = db.querySync('find drivers near Raj');\n// ↑ Thread is FROZEN here\n// Priya's request is waiting\n// 500 more requests are waiting\n// Nothing moves until this one line finishes"
+              "code": "// BLOCKING CODE\nconst flights = airlineAPI.getFlightsSync();\n\n// Server waits here\n// Priya's hotel search is waiting\n// Other users are waiting too\n\nshowFlights(flights);"
             },
             {
               "type": "heading",
@@ -5473,55 +5646,80 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "In non-blocking code, the thread fires the slow operation and immediately moves on. It comes back only when the response is ready."
+              "text": "In non-blocking systems, the server starts the slow task and immediately moves on to handle other users."
             },
             {
               "type": "step",
-              "title": "Step 1 — Raj books a ride",
-              "desc": "Server receives Raj's request. Fires database query — 'find drivers near Raj'. Thread does NOT wait. Moves on immediately."
+              "title": "Rahul searches flights",
+              "desc": "Node.js sends requests to airline APIs for Rahul's flight search."
             },
             {
               "type": "step",
-              "title": "Step 2 — Priya books a ride",
-              "desc": "Thread is already free. Picks up Priya's request instantly. Fires her database query too. Moves on again."
+              "title": "Node.js does NOT wait",
+              "desc": "Instead of waiting for airline responses, Node.js immediately becomes free again."
             },
             {
               "type": "step",
-              "title": "Step 3 — Database responds for Raj",
-              "desc": "Database responds with drivers near Raj. Thread picks it up, sends Raj his driver confirmation. Priya's query is still running in background."
+              "title": "Priya searches hotels",
+              "desc": "The same thread instantly handles Priya's hotel search request."
             },
             {
               "type": "step",
-              "title": "Step 4 — Database responds for Priya",
-              "desc": "Database responds with drivers near Priya. Thread picks it up, sends Priya her confirmation. Both handled. Nobody waited."
+              "title": "More users continue arriving",
+              "desc": "Thousands of users continue booking tickets, applying coupons, checking buses, and making payments."
             },
             {
-              "type": "code",
-              "code": "// NON-BLOCKING — thread never freezes\ndb.query('find drivers near Raj', (drivers) => {\n  // runs later — when database responds\n  confirmRide(raj, drivers);\n});\n// Thread already moved on to Priya's request ↓\ndb.query('find drivers near Priya', (drivers) => {\n  confirmRide(priya, drivers);\n});\n// Both queries running at same time\n// Nobody is waiting. Nobody is frozen."
+              "type": "step",
+              "title": "Airline APIs respond later",
+              "desc": "Whenever airline APIs send flight data back, Node.js picks up the response and sends results to Rahul."
+            },
+            {
+              "type": "step",
+              "title": "Everyone gets handled smoothly",
+              "desc": "Rahul gets flight results. Priya gets hotel listings. Other users continue using the app normally."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Non-blocking systems don't freeze while waiting. They keep serving other users continuously."
             },
             {
               "type": "info-callout",
-              "text": "💡 Blocking = Uber's dispatcher picks up Raj's call and stays on hold with the database — letting Priya's call ring endlessly. Non-Blocking = dispatcher fires the request, puts it on hold, picks up Priya's call immediately."
+              "text": "💡 Blocking is like a MakeMyTrip support agent staying on hold with one airline for 2 minutes while ignoring every other customer. Non-Blocking is like putting the airline call on hold and continuing to help everyone else."
+            },
+            {
+              "type": "code",
+              "code": "// NON-BLOCKING CODE\nairlineAPI.getFlights((flights) => {\n   showFlights(flights);\n});\n\n// Node.js immediately moves on\n// Priya's request is handled instantly\n// Thousands of users continue normally"
             },
             {
               "type": "table",
-              "headers": ["", "Blocking", "Non-Blocking"],
+              "headers": ["Aspect", "Blocking", "Non-Blocking"],
               "rows": [
-                ["Thread while waiting", "Frozen — does nothing", "Free — handles next request"],
-                ["Priya's request", "Stuck behind Raj's query", "Picked up immediately"],
-                ["New Year's Eve", "Server freezes", "Handles smoothly"],
+                ["While waiting", "Server freezes", "Server keeps working"],
+                ["Other users", "Must wait", "Handled immediately"],
+                ["Airline API delays", "Freeze the app", "Run in background"],
+                ["Traffic spikes", "System slows badly", "Handles smoothly"],
+                ["User experience", "Feels laggy", "Feels fast"],
                 ["Node.js default", "❌", "✅"]
               ]
             },
             {
-              "type": "success-callout",
-              "text": "✅ Non-Blocking means the thread never sits idle. It fires slow operations, moves on, and comes back when ready. That's how Uber's server handles Raj, Priya, and 50,000 others — all at once, without freezing."
+              "type": "heading",
+              "text": "Why Node.js Uses Non-Blocking"
+            },
+            {
+              "type": "paragraph",
+              "text": "Applications like MakeMyTrip spend most of their time waiting — waiting for airlines, hotels, payment gateways, and databases. Node.js avoids wasting time during these waits."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Node.js is designed for systems where thousands of users are constantly waiting for external APIs and databases."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ But if the thread moves on immediately — how does it know when to come back for Raj's response? There's a system managing all of this behind the scenes. That's the Event Loop — and that's exactly what we cover next."
+              "text": "⚠️ But if Node.js keeps moving without waiting — who remembers Rahul's airline response when it comes back later? That's handled by the Event Loop — the brain behind Node.js asynchronous behavior."
             }
           ]
+
 
         },
       },
@@ -5531,17 +5729,16 @@ export const roadmapData = [
         "level": "freshers",
         "topics": [
           "What is the Event Loop and How does it works ?",
-
         ],
         "topicDetails": {
           "What is the Event Loop and How does it works ?": [
             {
               "type": "paragraph",
-              "text": "Raj books a ride. Priya books a ride. 50,000 others book at the same time. Node.js has one thread. So how does it handle all of them without missing one? Four things work together — Call Stack, Node APIs, Callback Queue, and Microtask Queue. Let's walk through exactly what happens."
+              "text": "Raj searches Mumbai to Delhi. Priya books a flight to Goa. 50,000 others are browsing deals at the same time. Node.js has one thread. So how does it handle all of them without missing one? Four things work together — Call Stack, Node APIs, Callback Queue, and Microtask Queue. Let's walk through exactly what happens when Raj clicks 'Pay Now' on MakeMyTrip."
             },
             {
               "type": "curious-callout",
-              "text": "❓ One thread, millions of requests — what's actually happening inside Node.js step by step?"
+              "text": "❓ One thread, lakhs of payment requests — what's actually happening inside Node.js step by step?"
             },
             {
               "type": "heading",
@@ -5549,26 +5746,26 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The Call Stack is where Node.js actually runs code. One task at a time. Think of it as Uber's dispatcher — picks up a request, gives instructions, and moves on immediately without waiting."
+              "text": "The Call Stack is where Node.js actually runs code. One task at a time. Think of it as MakeMyTrip's booking agent — picks up a request, gives instructions, and moves on immediately without waiting."
             },
             {
               "type": "step",
-              "title": "Step 1 — Raj's request arrives",
-              "desc": "Raj taps Book a Ride. The Call Stack picks it up instantly and starts processing it."
+              "title": "Step 1 — Raj clicks 'Pay Now'",
+              "desc": "Raj selects his Mumbai-Delhi flight and clicks Pay Now. The Call Stack picks up his payment request instantly and starts processing it — validating the booking amount, checking the coupon code, preparing the payment data."
             },
             {
               "type": "step",
               "title": "Step 2 — Hits a slow task",
-              "desc": "Call Stack needs to find drivers near Raj — that means a database call. That's slow. So Call Stack hands it off immediately and clears itself."
+              "desc": "Call Stack needs to charge Raj's card — that means calling Razorpay's payment gateway API. That network call could take 200-400ms. The Call Stack can't sit and wait that long. So it hands the payment API call off immediately and clears itself."
             },
             {
               "type": "step",
               "title": "Step 3 — Already on Priya's request",
-              "desc": "Call Stack didn't wait even one second. It's already picked up Priya's request and doing the same thing. This is why Node.js never blocks."
+              "desc": "Call Stack didn't wait even one millisecond. It's already picked up Priya's flight booking request and doing the same thing. This is why MakeMyTrip never freezes even during peak sale hours."
             },
             {
               "type": "info-callout",
-              "text": "💡 Call Stack = Uber's dispatcher. Picks up call, gives instructions, hangs up immediately — never stays on the line waiting."
+              "text": "💡 Call Stack = MakeMyTrip's booking agent. Takes your payment request, fires it to Razorpay, hangs up immediately — never stays on hold waiting for the bank to respond."
             },
             {
               "type": "heading",
@@ -5576,21 +5773,21 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "When Call Stack hands off a slow task — Node APIs take over and run it silently in the background. Database queries, GPS tracking, payment processing — all happening while Call Stack is already handling new requests."
+              "text": "When the Call Stack hands off Raj's payment — Node APIs take over and process it silently in the background. The Razorpay API call, seat inventory lock, GST calculation — all happening while the Call Stack is already handling new requests."
             },
             {
               "type": "step",
-              "title": "Step 4 — Database query runs in background",
-              "desc": "Node APIs take Raj's database query and run it silently. Call Stack has no idea — it's already on its 500th request."
+              "title": "Step 4 — Payment API call runs in background",
+              "desc": "Node APIs take Raj's Razorpay request and fire it to the payment gateway. The Call Stack has no idea — it's already processing its 500th booking request. Raj's payment is sitting with the bank, waiting for approval."
             },
             {
               "type": "step",
-              "title": "Step 5 — GPS tracking runs in background",
-              "desc": "At the same time — Priya's driver location is being tracked, payments are being processed, surge pricing is being calculated. All in background. All parallel."
+              "title": "Step 5 — Multiple things happen in parallel",
+              "desc": "At the same time — Priya's seat is being locked in Air India's inventory, Sara's refund is being processed by the bank, coupon validations for 200 users are running. All in the background. All parallel. None of them blocking each other."
             },
             {
               "type": "info-callout",
-              "text": "💡 Node APIs = Uber's backend team. Dispatcher handed them the work and walked away. They'll call back when done."
+              "text": "💡 Node APIs = MakeMyTrip's backend payment team. The booking agent handed them Raj's payment request and walked away. They'll call back once the bank approves or declines."
             },
             {
               "type": "heading",
@@ -5598,21 +5795,21 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "When background work finishes — the response doesn't jump straight back in. It lines up in the Callback Queue and waits for the Call Stack to be free."
+              "text": "When the payment gateway responds — the result doesn't jump straight back in. It lines up in the Callback Queue and waits for the Call Stack to be free."
             },
             {
               "type": "step",
-              "title": "Step 6 — Driver found for Raj",
-              "desc": "Database found 3 drivers near Raj. This response moves into the Callback Queue — it waits in line patiently."
+              "title": "Step 6 — Razorpay responds for Raj",
+              "desc": "Razorpay responds — 'Payment of ₹4,599 successful, transaction ID RZP_8821'. This response moves into the Callback Queue — it waits in line patiently. It doesn't interrupt whatever the Call Stack is currently doing."
             },
             {
               "type": "step",
-              "title": "Step 7 — Driver found for Priya",
-              "desc": "Database found 2 drivers near Priya. Also moves into Callback Queue — right behind Raj's response. In order, no jumping."
+              "title": "Step 7 — Bank responds for Priya",
+              "desc": "Priya's payment also clears — ₹7,200 for her Goa flight. Also moves into the Callback Queue — right behind Raj's response. In order, no jumping, no cutting the queue."
             },
             {
               "type": "info-callout",
-              "text": "💡 Callback Queue = Completed ride matches sitting in a waiting room — in order, ready to be confirmed when the dispatcher is free."
+              "text": "💡 Callback Queue = Completed payment confirmations sitting in a waiting room — in order, ready to be processed and turned into booking confirmations when the agent is free."
             },
             {
               "type": "heading",
@@ -5620,21 +5817,21 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Not everything waits in the same line. Promises — like payment confirmations — go into the Microtask Queue. And they always jump ahead of the regular Callback Queue. Because payments are more critical than a ride notification."
+              "text": "Not everything waits in the same line. Critical operations like locking the seat in airline inventory use Promises — and Promises go into the Microtask Queue. They always jump ahead of the regular Callback Queue. Because locking a seat is more critical than sending a booking email."
             },
             {
               "type": "step",
-              "title": "Step 8 — Raj's payment confirms",
-              "desc": "Payment promise resolves. Instead of joining the regular Callback Queue — it goes into Microtask Queue. VIP lane."
+              "title": "Step 8 — Raj's seat lock Promise resolves",
+              "desc": "The moment Raj's payment is confirmed, a Promise fires to lock seat 14B on IndiGo 6E-201. Instead of joining the regular Callback Queue — this Promise goes into the Microtask Queue. VIP lane. Nobody else can grab that seat while this is pending."
             },
             {
               "type": "step",
               "title": "Step 9 — Microtask runs first",
-              "desc": "Event Loop checks — Microtask Queue has Raj's payment. Processes it first before any regular callbacks. Payment confirmed. Ride locked in."
+              "desc": "Event Loop checks — Microtask Queue has Raj's seat lock. Processes it first before any regular callbacks. Seat 14B is locked against Raj's PNR. Only now does the Event Loop move to the regular Callback Queue for lower-priority tasks like sending the confirmation email."
             },
             {
               "type": "info-callout",
-              "text": "💡 Microtask Queue = Uber's priority lane. Payments and critical confirmations go first. Notifications and updates wait their turn."
+              "text": "💡 Microtask Queue = MakeMyTrip's priority lane. Seat locks and payment confirmations go first — so two users can never accidentally book the same seat. Emails and SMS notifications wait their turn."
             },
             {
               "type": "heading",
@@ -5642,40 +5839,41 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The Event Loop is the manager watching all four pieces. It keeps checking — is the Call Stack free? Is anything in Microtask Queue? Is anything in Callback Queue? It never stops. It never sleeps."
+              "text": "The Event Loop is the manager watching all four pieces. It keeps checking — is the Call Stack free? Is anything in Microtask Queue? Is anything in Callback Queue? It never stops. It never sleeps. It's what ensures Raj's ₹4,599 payment always results in a confirmed PNR."
             },
             {
               "type": "step",
               "title": "Step 10 — Event Loop checks Microtask Queue",
-              "desc": "Call Stack is free. Event Loop checks Microtask Queue first — payment confirmation is there. Sends it to Call Stack. Processed immediately."
+              "desc": "Call Stack is free. Event Loop checks Microtask Queue first — Raj's seat lock Promise is there. Sends it to Call Stack. Seat 14B locked against PNR MMT8821. Processed immediately."
             },
             {
               "type": "step",
               "title": "Step 11 — Event Loop checks Callback Queue",
-              "desc": "Microtask Queue is empty. Event Loop now checks Callback Queue — Raj's driver match is there. Sends it to Call Stack. Raj gets his driver confirmation."
+              "desc": "Microtask Queue is empty. Event Loop now checks Callback Queue — Raj's Razorpay payment confirmation is there. Sends it to Call Stack. Booking confirmed, PNR generated, ticket PDF created."
             },
             {
               "type": "step",
               "title": "Step 12 — Loop continues forever",
-              "desc": "Event Loop goes back to checking. New requests coming in. New responses arriving. It never stops — which is exactly why Uber never misses a single request."
+              "desc": "Event Loop goes back to checking. Priya's payment confirmation is next. Then Sara's refund. Then 200 coupon validations. It never stops — which is exactly why MakeMyTrip never misses a single payment or double-books a seat."
             },
             {
               "type": "code",
-              "code": "// Full Event Loop flow — Raj's ride in one picture\n\nRaj books ride        → Call Stack picks up\nDB query needed       → Handed to Node APIs → Call Stack free\nPriya's request       → Call Stack picks up immediately\nDB responds for Raj   → Sits in Callback Queue\nPayment confirms      → Sits in Microtask Queue (VIP)\nEvent Loop checks     → Microtask first → Payment done ✅\nEvent Loop checks     → Callback next → Driver confirmed ✅\n\n// Nobody waited. Nobody was missed."
+              "code": "// Full Event Loop flow — Raj's flight payment in one picture\n\nRaj clicks Pay Now      → Call Stack picks up\nRazorpay API needed     → Handed to Node APIs → Call Stack free\nPriya's booking         → Call Stack picks up immediately\nRazorpay responds       → Sits in Callback Queue\nSeat lock Promise       → Sits in Microtask Queue (VIP)\nEvent Loop checks       → Microtask first → Seat 14B locked ✅\nEvent Loop checks       → Callback next  → PNR MMT8821 confirmed ✅\nConfirmation email      → Callback Queue → SMS + email sent ✅\n\n// Nobody waited. Nobody's seat was double-booked."
             },
             {
               "type": "success-callout",
-              "text": "✅ Call Stack runs tasks. Node APIs handle slow work in background. Microtask Queue handles priority responses first. Callback Queue handles the rest. Event Loop connects all four — non stop, forever. That's how Uber handles millions of rides on a single thread."
+              "text": "✅ Call Stack processes the payment request. Node APIs call Razorpay in the background. Microtask Queue locks the seat with top priority. Callback Queue handles confirmation and email after. Event Loop connects all four — non stop, forever. That's how MakeMyTrip handles lakhs of payments during a Big Billion Sale without double-booking a single seat."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Now you know how Node.js never misses a request. But what happens when Node.js has to handle something extremely heavy — like calculating surge pricing for an entire city at once? That's where it struggles. And that's what we cover next."
+              "text": "⚠️ Now you know how MakeMyTrip never misses a payment. But what happens when Node.js has to handle something extremely heavy — like recalculating prices for every flight on the platform at once? That's where it struggles. And that's what we cover next."
             }
           ],
+
           "Call Stack": [
             {
               "type": "paragraph",
-              "text": "Uber's matchmaking logic is a series of function calls — receiveRideRequest() calls findNearbyDrivers() which calls calculateDistance() which calls applyHaversineFormula(). Each function call is placed on a stack, executed, and removed when it's done. This is the Call Stack — the place where JavaScript code actually runs."
+              "text": "When Raj clicks Pay Now on MakeMyTrip, the server runs a series of function calls — handlePayment() calls validateBooking() which calls checkSeatAvailability() which calls queryAirlineInventory(). Each function call is placed on a stack, executed, and removed when done. This is the Call Stack — the place where JavaScript code actually executes."
             },
             {
               "type": "heading",
@@ -5683,66 +5881,67 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The Call Stack works like a stack of plates at a restaurant. You add plates on top (push). You take plates from the top (pop). In JavaScript, every time a function is called, it's pushed onto the stack. When the function returns, it's popped off. The Event Loop can only run code when the Call Stack is empty — that's the rule. If something is running on the stack, everything else waits."
+              "text": "The Call Stack works like a stack of boarding passes at a counter. You add passes on top (push). You take passes from the top (pop). In JavaScript, every time a function is called, it's pushed onto the stack. When it returns, it's popped off. The Event Loop can only run code when the Call Stack is empty — that's the rule. If a payment function is running on the stack, everything else waits."
             },
             {
               "type": "code",
-              "code": "function applyHaversineFormula(lat1, lng1, lat2, lng2) {\n  return Math.sqrt(Math.pow(lat2-lat1, 2) + Math.pow(lng2-lng1, 2));\n}\n\nfunction calculateDistance(driver, rider) {\n  return applyHaversineFormula(driver.lat, driver.lng, rider.lat, rider.lng);\n}\n\nfunction findNearbyDrivers(riderLocation) {\n  return drivers.map(d => calculateDistance(d, riderLocation));\n}\n\nfunction receiveRideRequest(request) {\n  const distances = findNearbyDrivers(request.location);\n  return distances;\n}\n\nreceiveRideRequest(request); // This starts it all"
+              "code": "function queryAirlineInventory(flightId, seatClass) {\n  return inventory[flightId][seatClass].available;\n}\n\nfunction checkSeatAvailability(flightId, passengers) {\n  return queryAirlineInventory(flightId, passengers.seatClass);\n}\n\nfunction validateBooking(bookingData) {\n  return checkSeatAvailability(bookingData.flightId, bookingData.passengers);\n}\n\nfunction handlePayment(request) {\n  const isAvailable = validateBooking(request.booking);\n  return isAvailable;\n}\n\nhandlePayment(request); // Raj's Pay Now click starts here"
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Call Stack in Action for an Uber Match"
+              "text": "Step-by-Step — Call Stack in Action for Raj's Payment"
             },
             {
               "type": "step",
-              "title": "Step 1 — receiveRideRequest() is called",
-              "desc": "Event Loop picks up the ride request. Pushes receiveRideRequest onto the Call Stack. Stack: [receiveRideRequest]. This function starts executing."
+              "title": "Step 1 — handlePayment() is called",
+              "desc": "Event Loop picks up Raj's payment request. Pushes handlePayment onto the Call Stack. Stack: [handlePayment]. This function starts executing — it reads the booking amount (₹4,599), the flight details (6E-201), and the passenger count."
             },
             {
               "type": "step",
-              "title": "Step 2 — findNearbyDrivers() is called inside it",
-              "desc": "receiveRideRequest calls findNearbyDrivers. This gets pushed on top. Stack: [receiveRideRequest, findNearbyDrivers]. findNearbyDrivers is now running — receiveRideRequest is paused, waiting."
+              "title": "Step 2 — validateBooking() is called inside it",
+              "desc": "handlePayment calls validateBooking to confirm the booking is still valid. Pushed on top. Stack: [handlePayment, validateBooking]. validateBooking is now running — checking if the coupon is still valid, if the fare hasn't changed, if the flight is still operating."
             },
             {
               "type": "step",
-              "title": "Step 3 — calculateDistance() is called for each driver",
-              "desc": "findNearbyDrivers calls calculateDistance for Driver_1. Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance]. Then inside that, applyHaversineFormula is called. Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance, applyHaversineFormula]."
+              "title": "Step 3 — checkSeatAvailability() is called",
+              "desc": "validateBooking calls checkSeatAvailability to confirm seat 14B is still free. Stack: [handlePayment, validateBooking, checkSeatAvailability]. Then inside that, queryAirlineInventory is called to hit the airline's live inventory. Stack: [handlePayment, validateBooking, checkSeatAvailability, queryAirlineInventory]."
             },
             {
               "type": "step",
               "title": "Step 4 — Functions complete and pop off",
-              "desc": "applyHaversineFormula returns the distance and pops off. calculateDistance uses that result, returns, and pops off. This repeats for each driver. Eventually findNearbyDrivers returns the full list and pops off. receiveRideRequest finishes with the distances."
+              "desc": "queryAirlineInventory returns 'seat available' and pops off. checkSeatAvailability uses that result, returns true, and pops off. validateBooking confirms the booking is valid and pops off. handlePayment now has everything it needs to fire the Razorpay API call."
             },
             {
               "type": "step",
               "title": "Step 5 — Call Stack is empty",
-              "desc": "receiveRideRequest pops off. Stack is now empty: []. Event Loop can now process the next item — maybe a GPS update that was waiting, or a timer that fired. The stack being empty is what ALLOWS the Event Loop to keep running."
+              "desc": "handlePayment hands off the Razorpay API call to Node APIs (non-blocking) and pops off. Stack is now empty: []. Event Loop can now process the next item — maybe Priya's booking that was waiting, or a price update from Air India. The stack being empty is what ALLOWS the Event Loop to keep running."
             },
             {
               "type": "code",
-              "code": "Call Stack visualization:\n\n→ receiveRideRequest(req) called\n  Stack: [receiveRideRequest]\n\n→ findNearbyDrivers(location) called inside it\n  Stack: [receiveRideRequest, findNearbyDrivers]\n\n→ calculateDistance(driver1, rider) called\n  Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance]\n\n→ applyHaversineFormula() called\n  Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance, applyHaversineFormula]\n\n← applyHaversineFormula returns 1.2km\n  Stack: [receiveRideRequest, findNearbyDrivers, calculateDistance]\n\n← calculateDistance returns 1.2km\n  Stack: [receiveRideRequest, findNearbyDrivers]\n\n← findNearbyDrivers returns [1.2km, 2.1km, 0.8km]\n  Stack: [receiveRideRequest]\n\n← receiveRideRequest returns closest driver\n  Stack: []  ← EMPTY! Event Loop can run next task."
+              "code": "Call Stack — Raj's payment step by step:\n\n→ handlePayment(request) called\n  Stack: [handlePayment]\n\n→ validateBooking(bookingData) called\n  Stack: [handlePayment, validateBooking]\n\n→ checkSeatAvailability(flightId, passengers) called\n  Stack: [handlePayment, validateBooking, checkSeatAvailability]\n\n→ queryAirlineInventory(flightId, seatClass) called\n  Stack: [handlePayment, validateBooking, checkSeatAvailability, queryAirlineInventory]\n\n← queryAirlineInventory returns 'seat 14B available'\n  Stack: [handlePayment, validateBooking, checkSeatAvailability]\n\n← checkSeatAvailability returns true\n  Stack: [handlePayment, validateBooking]\n\n← validateBooking returns 'booking valid'\n  Stack: [handlePayment]\n\n← handlePayment fires Razorpay API (non-blocking) → returns\n  Stack: []  ← EMPTY! Event Loop picks up Priya's booking next."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Here's the critical rule: if a function on the Call Stack takes too long — like a complex loop or a synchronous database call — NOTHING ELSE CAN RUN. The Event Loop is blocked. For Uber, this means no GPS updates, no new ride requests, nothing — until that function finishes. This is called 'blocking the event loop' and it's the #1 performance mistake in Node.js."
+              "text": "⚠️ Here's the critical rule: if a function on the Call Stack takes too long — like synchronously checking seat availability for all 500 flights at once — NOTHING ELSE CAN RUN. No payments process, no bookings confirm, no prices update — until that function finishes. This is called 'blocking the event loop' and during a Big Billion Sale, even 100ms of blocking means thousands of users see a frozen screen."
             },
             {
               "type": "code",
-              "code": "// BAD — blocks the Call Stack for 5 seconds!\nfunction processAllRides() {\n  // Imagine this takes 5 seconds to compute\n  for (let i = 0; i < 1000000000; i++) {\n    calculateComplexSurgeAlgorithm(i);\n  }\n}\n// During these 5 seconds: NO GPS updates processed,\n// NO new ride requests handled, NO payments confirmed.\n// Uber's server is frozen for 5 seconds.\n\n// GOOD — hand heavy work off to a worker thread\nworker.postMessage({ task: 'calculateSurge', data: rideData });\n// Main thread is free immediately — Event Loop keeps spinning."
+              "code": "// BAD — blocks the Call Stack, freezes MakeMyTrip\nfunction recalculateAllFlightPrices() {\n  // Loops through every flight, every date, every class\n  for (let i = 0; i < 10000000; i++) {\n    applyDynamicPricingAlgorithm(flights[i]);\n  }\n}\n// During this loop: NO payments processed,\n// NO bookings confirmed, NO seat locks issued.\n// Every user on MakeMyTrip sees a frozen screen.\n\n// GOOD — hand heavy work off to a worker thread\nworker.postMessage({ task: 'recalculatePrices', data: flightData });\n// Main thread is free immediately — payments keep flowing."
             },
             {
               "type": "success-callout",
-              "text": "✅ The Call Stack is where JavaScript executes — one function at a time, top of the stack. For Uber's Node.js server, keeping functions short and non-blocking is critical. Heavy computation goes to worker threads. Fast I/O goes through libuv. The Call Stack should never be held up for long."
+              "text": "✅ The Call Stack is where JavaScript executes — one function at a time, top of the stack. For MakeMyTrip's payment flow, keeping functions short and non-blocking is critical. Heavy price recalculations go to worker threads. Fast seat checks and payment validations run synchronously. The Call Stack should never be held up for long — every millisecond it's blocked is a payment not being processed."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ The Call Stack handles synchronous code. But what about the database queries, file reads, and API calls — the stuff that takes time? Those go through Node APIs. Where do they live while they're running?"
+              "text": "⚠️ The Call Stack handles fast synchronous checks. But the actual Razorpay API call — the one that talks to the bank and takes 200-400ms — can't live here. That goes through Node APIs. Where does it live while it's waiting for the bank to respond?"
             }
           ],
+
           "Web APIs / Node APIs": [
             {
               "type": "paragraph",
-              "text": "When Uber's server receives a ride request and needs to query the database for nearby drivers, it can't put that 50ms database operation on the Call Stack — that would freeze everything for 50ms. Instead, Node.js has a set of background APIs — powered by libuv — that handle all time-consuming operations outside the Call Stack. These are called Node APIs (the server-side equivalent of browser Web APIs)."
+              "text": "When MakeMyTrip's server receives Raj's payment request and needs to call Razorpay's API, it can't put that 300ms bank call on the Call Stack — that would freeze every other booking for 300ms. Instead, Node.js has a set of background APIs — powered by libuv — that handle all time-consuming operations outside the Call Stack. These are called Node APIs."
             },
             {
               "type": "heading",
@@ -5750,66 +5949,63 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "When your JavaScript code hits an async operation — like a database query, reading a file, making an HTTP request, or a timer — Node.js doesn't execute it on the Call Stack. Instead, it HANDS IT OFF to the Node API layer (libuv). The Call Stack is immediately freed to handle other work. When the operation completes, libuv places the callback in a queue, and the Event Loop eventually picks it up."
+              "text": "When MakeMyTrip's payment code hits an async operation — calling Razorpay, locking a seat in airline inventory, reading fare rules from a file, or setting a payment timeout — Node.js doesn't execute it on the Call Stack. It HANDS IT OFF to the Node API layer (libuv). The Call Stack is immediately freed to process Priya's booking, Sara's refund, and 500 other users. When Razorpay responds, libuv places the callback in a queue and the Event Loop picks it up."
             },
             {
               "type": "code",
-              "code": "Uber's Node.js uses these Node APIs constantly:\n\ndb.query('SELECT * FROM drivers WHERE distance < 2')  → Database API (libuv thread pool)\nfs.readFile('/config/surge-zones.json', callback)     → File System API (libuv thread pool)\nhttps.get('https://maps.googleapis.com/...')          → Network API (OS kernel)\nsetTimeout(() => recalculateSurge(), 5000)           → Timer API\nfetch('https://api.stripe.com/charges')              → HTTP Client API (OS kernel)\n\nAll of these LEAVE the Call Stack immediately.\nlibuv handles them in the background.\nCallbacks come back when they're done."
+              "code": "MakeMyTrip's payment flow uses these Node APIs constantly:\n\nrazorpay.createOrder(paymentData, callback)          → HTTP API (OS kernel)\ndb.query('LOCK seat 14B for PNR MMT8821')            → Database API (libuv thread pool)\nfs.readFile('/config/fare-rules.json', callback)     → File System API (libuv thread pool)\nsetTimeout(() => expireBookingSession(), 600000)     → Timer API (10 min payment window)\nairlineAPI.confirmTicket(pnr, callback)              → HTTP API (OS kernel)\n\nAll of these LEAVE the Call Stack immediately.\nlibuv handles them in the background.\nCallbacks come back when Razorpay/airline/DB responds."
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Uber's Ride Request Using Node APIs"
-            },
-            {
-              "type": "paragraph",
-              "text": "Here's a complete trace of what happens to async operations when Uber processes a ride request — showing exactly when things leave the Call Stack and when they come back:"
+              "text": "Step-by-Step — Raj's ₹4,599 Payment Through Node APIs"
             },
             {
               "type": "step",
-              "title": "Step 1 — Ride request hits Node.js (on Call Stack)",
-              "desc": "function handleRideRequest(req) runs on the Call Stack. It parses the request data (synchronous — stays on stack). It prepares the database query. Stack: [handleRideRequest]."
+              "title": "Step 1 — Payment request hits Node.js (on Call Stack)",
+              "desc": "handlePayment(req) runs on the Call Stack. It validates the booking synchronously — checks amount ₹4,599, flight 6E-201, passenger details. All fast, all synchronous. Stack: [handlePayment]."
             },
             {
               "type": "step",
-              "title": "Step 2 — DB query handed off to Node API",
-              "desc": "handleRideRequest calls: db.query('SELECT nearby drivers', callback). This line runs on the Call Stack for a microsecond — but it immediately hands the actual database work to libuv's thread pool. The Call Stack doesn't wait. handleRideRequest continues and finishes. Stack empties."
+              "title": "Step 2 — Razorpay API call handed off to Node API",
+              "desc": "handlePayment calls razorpay.createOrder(paymentData, onPaymentResponse). This line runs on the Call Stack for a microsecond — but it immediately hands the actual HTTP call to libuv. The Call Stack doesn't wait for Razorpay to respond. handlePayment finishes and pops off. Stack empties."
             },
             {
               "type": "step",
-              "title": "Step 3 — While DB query runs in background (libuv), other things happen",
-              "desc": "The DB query is now running in libuv's thread pool — completely outside the Call Stack. While it's running, the Event Loop handles 50 other things: GPS pings, payment webhooks, driver status updates. The main thread is free."
+              "title": "Step 3 — While Razorpay processes (300ms), MakeMyTrip handles everything else",
+              "desc": "Razorpay is now running in libuv — completely outside the Call Stack. During these 300ms, the Event Loop handles 50 other bookings: Priya's seat lock, Sara's refund request, coupon validations, hotel check-ins. The main thread never blocked."
             },
             {
               "type": "step",
-              "title": "Step 4 — DB query completes. Callback enters the queue.",
-              "desc": "50ms later, the database responds with nearby drivers. libuv takes the callback function (the one with the results) and places it in the Callback Queue. It's ready to run — but waits for the Event Loop to pick it up."
+              "title": "Step 4 — Razorpay responds. Callback enters the queue.",
+              "desc": "300ms later, Razorpay responds — 'Payment of ₹4,599 approved, transaction ID RZP_8821'. libuv takes the onPaymentResponse callback and places it in the Callback Queue. It's ready to run — but waits for the Event Loop to pick it up."
             },
             {
               "type": "step",
               "title": "Step 5 — Event Loop picks up the callback",
-              "desc": "Event Loop sees the callback waiting in the queue. Call Stack is currently empty. Event Loop pushes the callback onto the Call Stack. It runs: process the drivers list, pick the closest, send push notification. Done."
+              "desc": "Event Loop sees the payment callback waiting. Call Stack is empty. Event Loop pushes onPaymentResponse onto the Call Stack. It runs: confirms the PNR, locks seat 14B, generates the ticket PDF, triggers the confirmation email and SMS to Raj. Done."
             },
             {
               "type": "code",
-              "code": "Complete flow — async DB query in Uber's server:\n\nCALL STACK          NODE API (libuv)      CALLBACK QUEUE\n─────────────────   ─────────────────     ──────────────\nhandleRequest()\n  → db.query()   ─→ [DB query running]         -\n  → (returns)    \n[EMPTY]                [DB query...]             -\n\n(50 other things      [DB query...]             -\n processed here)\n\n[EMPTY]             [DB query done!]  ─→ [onDriversFound]\n\nonDriversFound()    ─────────────────     [EMPTY]\n  → matchDriver()\n  → sendPush()\n[EMPTY]\n\n✅ The Call Stack was never blocked.\n   The DB ran in the background.\n   Callback ran when it was ready."
+              "code": "Complete flow — Raj's ₹4,599 payment:\n\nCALL STACK             NODE API (libuv)           CALLBACK QUEUE\n────────────────────   ─────────────────────────  ──────────────\nhandlePayment()\n  → razorpay.pay()  ─→ [Razorpay HTTP call...]         -\n  → (returns)\n[EMPTY]                [Razorpay processing...]          -\n\n(Priya's booking,       [Razorpay processing...]          -\n Sara's refund,\n 48 other bookings)\n\n[EMPTY]              [Razorpay: ₹4,599 approved] ─→ [onPaymentResponse]\n\nonPaymentResponse()    ──────────────────────────  [EMPTY]\n  → confirmPNR()\n  → lockSeat('14B')\n  → sendTicketEmail()\n[EMPTY]\n\n✅ Call Stack was never blocked for 300ms.\n   Razorpay ran in the background.\n   Callback ran the moment it was ready."
             },
             {
               "type": "info-callout",
-              "text": "🏢 Think of Node APIs as Uber's outsourcing departments. When Uber HQ (Call Stack) gets a complex task that takes time (database query, file read, API call), they outsource it to a specialist department (Node API / libuv). HQ is immediately free to handle the next task. When the outsourced work is done, the result comes back to HQ's inbox (Callback Queue)."
+              "text": "🏢 Think of Node APIs as MakeMyTrip's outsourced payment processing team. When the booking agent (Call Stack) gets Raj's payment, they hand the actual bank communication to Razorpay's team (Node API / libuv). The agent is immediately free to handle Priya's booking. When Razorpay clears Raj's payment, the result lands in the agent's inbox (Callback Queue) and gets processed next."
             },
             {
               "type": "success-callout",
-              "text": "✅ Node APIs (backed by libuv) are what make async programming possible in Node.js. Every time Uber's server queries a database, reads a file, or calls an external API — it uses Node APIs, stays non-blocking, and keeps the Event Loop free."
+              "text": "✅ Node APIs (backed by libuv) are what make MakeMyTrip's payment flow non-blocking. Every Razorpay call, every seat lock database query, every airline ticket confirmation — all handed off to Node APIs, all running in the background, all coming back as callbacks. The Call Stack stays free to keep taking new bookings."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Callbacks from Node APIs go into a queue — but they have to wait their turn. That queue is called the Callback Queue (or Task Queue). And there's a separate queue with higher priority: the Microtask Queue (Promises). Let's see how they work."
+              "text": "⚠️ Payment callbacks from Razorpay go into a queue — but they have to wait their turn. That queue is the Callback Queue. And there's a separate queue with higher priority — the Microtask Queue — where seat lock Promises go. Understanding who goes first is what prevents double-booking. Let's see how they work."
             }
           ],
+
           "Callback Queue (Task Queue)": [
             {
               "type": "paragraph",
-              "text": "Uber's server just finished three async operations at the same time: a database query came back with nearby drivers, a setTimeout for surge price recalculation fired, and a file read for zone config completed. All three callbacks are ready to run — but the Call Stack can only execute one thing at a time. They line up in the Callback Queue and the Event Loop processes them in order."
+              "text": "MakeMyTrip's server just finished three async operations at the same time: Razorpay confirmed Raj's ₹4,599 payment, a 10-minute booking session timer expired for an abandoned cart, and Air India's inventory API responded with updated seat availability. All three callbacks are ready to run — but the Call Stack can only do one thing at a time. They line up in the Callback Queue and the Event Loop processes them in order."
             },
             {
               "type": "heading",
@@ -5817,71 +6013,72 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The Callback Queue (also called the Task Queue or Macrotask Queue) is a waiting room for callbacks that are ready to run. When a Node API operation completes — a database query finishes, a setTimeout fires, a network request returns — its callback is placed here. The Event Loop checks this queue at the end of each tick. If the Call Stack is empty, it takes one callback from the queue, pushes it to the Call Stack, and runs it."
+              "text": "The Callback Queue is a waiting room for callbacks that are ready to run. When Razorpay responds, when a booking timer expires, when an airline API returns seat data — the callback is placed here. The Event Loop checks this queue at the end of each tick. If the Call Stack is empty, it takes one callback from the front, pushes it to the Call Stack, and runs it."
             },
             {
               "type": "code",
-              "code": "What fills the Callback Queue:\n→ setTimeout callbacks (when timer expires)\n→ setInterval callbacks (on each interval tick)\n→ I/O callbacks (database result, file read done)\n→ HTTP response callbacks\n→ setImmediate callbacks (next iteration of event loop)\n\nWhat does NOT go in the Callback Queue:\n→ Promise .then() callbacks    ← these go to Microtask Queue (higher priority!)\n→ async/await resumes         ← also Microtask Queue\n→ process.nextTick()          ← also Microtask Queue"
+              "code": "What fills MakeMyTrip's Callback Queue:\n→ Razorpay / PayU payment response callbacks\n→ Airline API response callbacks (seat availability, PNR status)\n→ setTimeout callbacks (booking session expiry, price lock timers)\n→ setInterval callbacks (flight status refresh every 30 seconds)\n→ Database I/O callbacks (booking records, user history)\n\nWhat does NOT go in the Callback Queue:\n→ Promise .then() callbacks    ← Microtask Queue (higher priority!)\n→ async/await continuations   ← Microtask Queue\n→ process.nextTick()          ← Microtask Queue"
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Three Uber Callbacks Arrive Simultaneously"
+              "text": "Step-by-Step — Three MakeMyTrip Callbacks Arrive at Once"
             },
             {
               "type": "paragraph",
-              "text": "It's surge hour. Uber's server just triggered three operations at the same time. All three complete within microseconds of each other. Here's how the Callback Queue handles them:"
+              "text": "It's peak sale hour. MakeMyTrip's server triggered three operations simultaneously. All three complete within milliseconds of each other. Here's exactly how the Callback Queue handles them:"
             },
             {
               "type": "step",
               "title": "Setup — Three async operations were started",
-              "desc": "At t=0ms: db.query('SELECT nearby drivers', cb1) — started 50ms ago. setTimeout(() => recalculateSurge(), 5000) — timer set 5 seconds ago. fs.readFile('zones.json', cb3) — started 20ms ago. All three complete at approximately the same time."
+              "desc": "At t=0ms: razorpay.createOrder(paymentData, cb1) — Raj's payment sent to Razorpay 300ms ago. setTimeout(() => expireSession(), 600000, cb2) — Priya's 10-minute booking session timer set 10 minutes ago. airlineAPI.getSeats('6E-201', cb3) — Air India seat refresh started 150ms ago. All three complete at approximately the same time."
             },
             {
               "type": "step",
-              "title": "t=50ms — All three callbacks arrive in the Callback Queue",
-              "desc": "libuv notifies the Event Loop: the DB query, the setTimeout, and the file read all completed. All three callbacks are placed in the Callback Queue: Queue: [cb1_dbResult, cb2_surgeRecalc, cb3_fileRead]. They arrived in this order, so they'll be processed in this order."
+              "title": "t=300ms — All three callbacks arrive in the Callback Queue",
+              "desc": "Razorpay approves Raj's payment. Priya's session timer expires. Air India responds with seat data. All three callbacks are placed in the Callback Queue: Queue: [cb1_paymentApproved, cb2_sessionExpired, cb3_seatData]. They arrived in this order, so they'll be processed in this order."
             },
             {
               "type": "step",
-              "title": "t=50ms — Event Loop checks: Call Stack empty?",
-              "desc": "Event Loop looks at the Call Stack. It's empty — the previous synchronous code finished. Event Loop takes cb1_dbResult from the front of the queue and pushes it to the Call Stack."
+              "title": "t=300ms — Event Loop checks: Call Stack empty?",
+              "desc": "Event Loop looks at the Call Stack. It's empty — the previous booking code finished. Event Loop also checks Microtask Queue first — nothing there. Now it takes cb1_paymentApproved from the front of the Callback Queue and pushes it to the Call Stack."
             },
             {
               "type": "step",
-              "title": "t=50ms — cb1 runs: process nearby drivers",
-              "desc": "cb1_dbResult runs on the Call Stack: it receives the list of nearby drivers, sorts by distance, picks Driver_87 as the best match, fires a push notification (which goes to Node API / libuv — non-blocking). cb1 finishes and pops off the stack."
+              "title": "t=300ms — cb1 runs: Raj's payment confirmed",
+              "desc": "cb1_paymentApproved runs: confirms ₹4,599 received, generates PNR MMT8821, fires a Promise to lock seat 14B in IndiGo's system (goes to Microtask Queue immediately), triggers confirmation email (goes to Node API — non-blocking). cb1 finishes and pops off the stack."
             },
             {
               "type": "step",
-              "title": "t=51ms — cb2 runs: surge price recalculation",
-              "desc": "Call Stack is empty again. Event Loop takes cb2_surgeRecalc from the queue. Runs it: calculates new surge multiplier (1.8x), updates the in-memory surge map. Finishes, pops off."
+              "title": "t=301ms — cb2 runs: Priya's session expires",
+              "desc": "Call Stack is empty. Event Loop checks Microtask Queue — seat lock Promise from cb1 is there. Runs it first (seat 14B locked for Raj). Then takes cb2_sessionExpired: releases the seats Priya had held, marks her booking as abandoned, sends a 'Complete your booking' push notification. Finishes."
             },
             {
               "type": "step",
-              "title": "t=52ms — cb3 runs: zone config file loaded",
-              "desc": "cb3_fileRead runs: parses the JSON zone data, updates the server's zone boundaries. Finishes. Queue is now empty. Event Loop loops again — waiting for the next thing."
+              "title": "t=302ms — cb3 runs: Air India seat data refreshed",
+              "desc": "cb3_seatData runs: updates MakeMyTrip's in-memory seat map for flight 6E-201, marks 3 newly available seats, triggers a price recalculation (non-blocking). Queue is now empty. Event Loop loops again — waiting for the next payment, the next booking, the next API response."
             },
             {
               "type": "code",
-              "code": "Callback Queue processing timeline:\n\nt=0ms   db.query() started\nt=0ms   setTimeout(5000) started\nt=0ms   fs.readFile() started\n\nt=50ms  DB query done → cb1 enters queue\nt=50ms  Timer fired  → cb2 enters queue\nt=50ms  File read done → cb3 enters queue\n\nCallback Queue: [cb1_dbResult, cb2_surge, cb3_file]\n\nEvent Loop:\n  → Stack empty? YES → take cb1 → run it → stack empty\n  → Stack empty? YES → take cb2 → run it → stack empty\n  → Stack empty? YES → take cb3 → run it → stack empty\n  → Queue empty → wait for more...\n\nAll three handled. No blocking. No thread spawning."
+              "code": "Callback Queue — MakeMyTrip payment processing timeline:\n\nt=0ms    razorpay.createOrder() started — Raj's ₹4,599\nt=0ms    setTimeout(600000) started — Priya's session\nt=0ms    airlineAPI.getSeats() started — 6E-201 refresh\n\nt=300ms  Razorpay approved  → cb1 enters queue\nt=300ms  Session expired    → cb2 enters queue\nt=300ms  Seat data arrived  → cb3 enters queue\n\nCallback Queue: [cb1_payment, cb2_session, cb3_seats]\n\nEvent Loop:\n  → Microtask empty? YES → take cb1 → run → PNR MMT8821 generated\n  → Microtask has seat lock! → run it → seat 14B locked for Raj\n  → take cb2 → run → Priya's session released\n  → take cb3 → run → seat map updated\n  → Queue empty → wait...\n\nAll three handled. Raj has his ticket. Priya's seats released. No double-booking."
             },
             {
               "type": "info-callout",
-              "text": "⏰ Important: setTimeout(fn, 0) does NOT run immediately. It goes through the Callback Queue. Even with 0ms delay, it waits for: (1) the Call Stack to empty, (2) all microtasks (Promises) to run, THEN it runs. This surprises many developers."
+              "text": "⏰ Important: setTimeout(fn, 0) does NOT run immediately — even with 0ms delay. It goes through the Callback Queue and waits for: (1) Call Stack to empty, (2) ALL Microtask Queue Promises to run, THEN it runs. For MakeMyTrip, this means a booking session expiry timer (even set to 0ms) will always run after all pending payment Promises complete."
             },
             {
               "type": "success-callout",
-              "text": "✅ The Callback Queue is the waiting room for completed async operations. Uber's GPS callbacks, timer callbacks, and file system callbacks all queue here. The Event Loop processes them one by one — in order, without blocking."
+              "text": "✅ The Callback Queue is the waiting room for completed async operations. MakeMyTrip's payment confirmations, session timeouts, and airline API responses all queue here. The Event Loop processes them one by one — in order, without blocking — ensuring every rupee is accounted for and every seat is correctly assigned."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ There's a second queue that runs BEFORE the Callback Queue on every tick — the Microtask Queue. This is where Promise callbacks go. And it has strict priority over the Callback Queue. Understanding this priority order explains some surprising Node.js behavior."
+              "text": "⚠️ There's a second queue that runs BEFORE the Callback Queue on every tick — the Microtask Queue. This is where Promise callbacks go. And it has strict priority. Understanding this priority is exactly what prevents two users from booking the same seat at the same time."
             }
           ],
+
           "Microtask Queue (Promises)": [
             {
               "type": "paragraph",
-              "text": "Uber's server just processed a ride request using Promises (modern async/await style). A Promise resolved — the nearby drivers result is ready. At the same time, a setTimeout callback is waiting in the Callback Queue for the same tick. Which one runs first? The Promise. Always. The Microtask Queue is processed completely before the Callback Queue is even touched. This priority order matters enormously for getting correct behavior in Node.js."
+              "text": "Raj and Priya click 'Pay Now' for the same last seat on IndiGo 6E-201 at exactly the same millisecond. Raj's payment clears first. A Promise fires to lock seat 14B. At the same time, a setTimeout callback is waiting in the Callback Queue for a session expiry check. Which one runs first? The Promise. Always. The Microtask Queue is processed completely before the Callback Queue is touched. This is what prevents double-booking — and understanding it is critical for writing correct payment flows in Node.js."
             },
             {
               "type": "heading",
@@ -5889,88 +6086,69 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The Microtask Queue holds callbacks from Promises (.then(), .catch(), .finally()), async/await continuations, and process.nextTick(). The Event Loop has a strict rule: after every item from the Call Stack runs, drain the entire Microtask Queue before picking up the next item from the Callback Queue. Even if 1,000 microtasks arrive, ALL of them run before the next setTimeout callback."
+              "text": "The Microtask Queue holds callbacks from Promises (.then(), .catch(), .finally()), async/await continuations, and process.nextTick(). The Event Loop has a strict rule: after every item from the Call Stack runs, drain the entire Microtask Queue before picking up the next item from the Callback Queue. Even if 1,000 seat-lock Promises arrive, ALL of them run before the next timer callback."
             },
             {
               "type": "code",
-              "code": "Priority order (highest to lowest):\n1. process.nextTick()  → Microtask Queue (very high priority)\n2. Promise callbacks   → Microtask Queue\n3. setTimeout/I/O      → Callback Queue (lower priority)\n4. setImmediate        → Check Queue\n\nRule: Empty the Microtask Queue COMPLETELY\n      before touching the Callback Queue."
+              "code": "Priority order in MakeMyTrip's Node.js server (highest to lowest):\n1. process.nextTick()    → Microtask Queue (highest priority)\n2. Promise callbacks     → Microtask Queue\n3. setTimeout/API calls  → Callback Queue (lower priority)\n4. setImmediate          → Check Queue\n\nRule: Empty the Microtask Queue COMPLETELY\n      before touching the Callback Queue.\n\nFor MakeMyTrip: seat locks (Promises) ALWAYS run\nbefore session timers (setTimeout). No exceptions."
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Promise vs setTimeout in Uber's Ride Matching"
+              "text": "Step-by-Step — Why the Last Seat Goes to Raj and Not Priya"
             },
             {
-              "type": "paragraph",
-              "text": "Uber's matchmaking code uses both Promises and a setTimeout. Let's trace exactly which order they execute in — and why:"
+              "type": "step",
+              "title": "Step 1 — Raj and Priya pay at the same millisecond",
+              "desc": "Both payments hit MakeMyTrip's server at t=0ms. Both are sent to Razorpay simultaneously. Raj's bank approves first — 280ms. Priya's bank approves second — 285ms. A 5ms difference. That's all it takes."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Raj's payment callback fires a Promise",
+              "desc": "Raj's Razorpay callback runs. Inside it, a Promise fires: lockSeat('14B', 'MMT8821'). This Promise goes into the Microtask Queue immediately — not the Callback Queue. It's at the front of the VIP lane."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Event Loop checks Microtask Queue FIRST",
+              "desc": "Before touching anything else — before Priya's payment callback, before any timer, before any other operation — the Event Loop drains the Microtask Queue. Raj's seat lock Promise runs: seat 14B is now locked against PNR MMT8821 in IndiGo's inventory."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Now Priya's payment callback runs",
+              "desc": "Microtask Queue is empty. Event Loop picks up Priya's payment confirmation from the Callback Queue. But when it tries to lock seat 14B — it's already locked. MakeMyTrip immediately refunds Priya's ₹4,599 and shows her a 'Sorry, this seat was just booked' message with alternative options."
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — Why this matters beyond just seat locking",
+              "desc": "Every critical operation in MakeMyTrip's payment flow uses Promises — seat locks, PNR generation, payment confirmations. By using the Microtask Queue, they're guaranteed to complete before any lower-priority work (analytics logging, email triggers, session updates) runs. The critical path always finishes first."
             },
             {
               "type": "code",
-              "code": "// Uber's ride request handler (simplified)\nconsole.log('1 - Ride request received');\n\nsetTimeout(() => {\n  console.log('4 - Timer: surge price check (setTimeout)');\n}, 0);\n\nPromise.resolve().then(() => {\n  console.log('3 - Promise: driver found (microtask)');\n});\n\nconsole.log('2 - Processing request...');\n\n// Output:\n// 1 - Ride request received\n// 2 - Processing request...\n// 3 - Promise: driver found (microtask)     ← BEFORE setTimeout!\n// 4 - Timer: surge price check (setTimeout) ← AFTER Promise!"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Synchronous code runs first (Call Stack)",
-              "desc": "console.log('1') runs. setTimeout is registered — its callback goes to a timer, NOT the queue yet. Promise.resolve().then() is registered — its callback goes to the Microtask Queue immediately (Promise is already resolved). console.log('2') runs. Call Stack is now empty."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Event Loop checks Microtask Queue FIRST",
-              "desc": "Before touching the Callback Queue, Event Loop checks the Microtask Queue. There's a Promise callback there. Runs it: console.log('3 - Promise: driver found'). Microtask Queue is now empty."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Now Event Loop checks Callback Queue",
-              "desc": "Microtask Queue is empty. NOW the Event Loop checks the Callback Queue. The setTimeout(fn, 0) callback is there (timer expired). Runs it: console.log('4 - Timer: surge price check'). Done."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Why this matters for Uber's code",
-              "desc": "If Uber's matchmaking uses async/await (which is built on Promises), it runs in the Microtask Queue. It's guaranteed to complete before any setTimeout-based operations (like logging, analytics). This ensures the driver match result is processed and sent to the rider BEFORE lower-priority tasks run."
+              "code": "// MakeMyTrip's seat booking — Promise priority in action\nconsole.log('1 - Payment received for Raj');\n\nsetTimeout(() => {\n  console.log('4 - Update analytics dashboard (setTimeout)');\n}, 0);\n\nPromise.resolve()\n  .then(() => lockSeat('14B', 'MMT8821'))\n  .then(() => {\n    console.log('3 - Seat 14B locked for Raj (Promise)');\n  });\n\nconsole.log('2 - Firing Razorpay confirmation...');\n\n// Output:\n// 1 - Payment received for Raj\n// 2 - Firing Razorpay confirmation...\n// 3 - Seat 14B locked for Raj (Promise)       ← BEFORE setTimeout!\n// 4 - Update analytics dashboard (setTimeout) ← AFTER seat is locked!"
             },
             {
               "type": "code",
-              "code": "Real Uber ride-matching with async/await:\n\nasync function handleRideRequest(req) {\n  console.log('Received request');\n\n  // This fires a DB query — non-blocking\n  const drivers = await db.query('SELECT nearby drivers');\n  // ↑ Everything after 'await' is a microtask (Promise)\n\n  console.log('Drivers found:', drivers.length);\n  const match = selectBestDriver(drivers);\n  await sendPushNotification(match.deviceToken);\n  console.log('Driver notified!');\n}\n\n// When 'await' completes:\n// → The continuation goes to Microtask Queue\n// → Runs before any setTimeout/setInterval callbacks\n// → Ensures driver notification happens with highest priority"
+              "code": "// MakeMyTrip's complete payment flow with async/await\nasync function processPayment(paymentRequest) {\n  console.log('Processing payment for:', paymentRequest.userId);\n\n  // Calls Razorpay — handed to Node API, non-blocking\n  const paymentResult = await razorpay.confirmPayment(paymentRequest);\n  // Everything after 'await' is a Promise continuation → Microtask Queue\n\n  // These run in Microtask Queue — BEFORE any setTimeout callbacks\n  const pnr = await generatePNR(paymentResult.transactionId);\n  await lockSeatInAirlineInventory(pnr, paymentRequest.seatId);\n  await updateBookingDatabase(pnr, paymentRequest);\n\n  console.log('Booking confirmed:', pnr); // e.g. MMT8821\n  // Only NOW does the Event Loop check the Callback Queue\n  // for lower-priority tasks like analytics, email triggers\n}"
             },
             {
               "type": "table",
-              "headers": [
-                "Queue",
-                "What goes here",
-                "Priority",
-                "Uber example"
-              ],
+              "headers": ["Queue", "What goes here", "Priority", "MakeMyTrip example"],
               "rows": [
-                [
-                  "Microtask Queue",
-                  "Promise .then(), async/await, process.nextTick()",
-                  "HIGH — runs first",
-                  "Driver match result, payment confirmation"
-                ],
-                [
-                  "Callback Queue",
-                  "setTimeout, setInterval, I/O callbacks",
-                  "NORMAL — runs after microtasks",
-                  "Surge timer, GPS batch write"
-                ],
-                [
-                  "Call Stack",
-                  "Synchronous code",
-                  "IMMEDIATE — blocks everything else",
-                  "Request parsing, math calculations"
-                ]
+                ["Microtask Queue", "Promise .then(), async/await, process.nextTick()", "HIGH — runs first, always", "Seat lock, PNR generation, payment confirmation"],
+                ["Callback Queue", "setTimeout, setInterval, API response callbacks", "NORMAL — runs after all microtasks", "Session expiry timer, analytics update, email trigger"],
+                ["Call Stack", "Synchronous code", "IMMEDIATE — blocks everything", "Coupon validation, amount calculation, request parsing"]
               ]
             },
             {
               "type": "info-callout",
-              "text": "⚠️ One trap: if you create an infinite loop of Promises (each .then() creates another Promise), the Microtask Queue NEVER empties — and the Callback Queue never runs. This starves timers and I/O callbacks. In production (like Uber's servers), this would freeze GPS updates and ride matching. Always make sure Promise chains eventually resolve."
+              "text": "⚠️ One real trap: if MakeMyTrip's code creates an infinite chain of Promises (each .then() creates another Promise), the Microtask Queue never empties — and the Callback Queue never runs. This means session expiry timers stop firing, analytics never update, email triggers never run. In production, always ensure Promise chains eventually resolve — infinite microtask loops are a silent performance killer."
             },
             {
               "type": "success-callout",
-              "text": "✅ The Microtask Queue (Promises, async/await) runs before the Callback Queue (setTimeout, I/O) on every Event Loop tick. For Uber, this means async/await-based ride matching, payment processing, and driver notifications always take priority over timer-based operations. Understanding this queue priority prevents subtle bugs in production Node.js code."
+              "text": "✅ The Microtask Queue (Promises, async/await) runs before the Callback Queue (setTimeout, API callbacks) on every Event Loop tick. For MakeMyTrip, this means seat locks and PNR generation always complete before session timers or analytics callbacks run — ensuring nobody ever gets double-booked and every rupee lands in the right place."
             },
             {
               "type": "info-callout",
-              "text": "🎯 Full Event Loop picture — The Call Stack executes code (one thing at a time). Node APIs (libuv) handle slow async work in the background. Completed async work goes to the Callback Queue. Promise callbacks go to the higher-priority Microtask Queue. The Event Loop orchestrates all of this — check microtasks → check callbacks → repeat. This is how Uber's server stays responsive while handling millions of async operations per second."
+              "text": "🎯 Full picture — Call Stack runs payment validation code. Node APIs call Razorpay in the background. Seat lock Promises go to the high-priority Microtask Queue. Payment response callbacks go to the Callback Queue. Event Loop connects all four — drain microtasks first, then callbacks, repeat forever. This is how MakeMyTrip processes lakhs of payments during a sale without a single seat being double-booked."
             }
           ]
         }
@@ -5983,14 +6161,13 @@ export const roadmapData = [
           "Callbacks",
           "Promises",
           "Async / Await",
-          "Callback Hell & how to avoid it"
+          "Callback Hell & How to Avoid It"
         ],
         "topicDetails": {
-
           "Callbacks": [
             {
               "type": "paragraph",
-              "text": "You call a restaurant to order food. Instead of staying on hold for 40 minutes until your food is ready, you give them your phone number and say 'call me back when it's ready.' That phone number is a callback. In Node.js, a callback is a function you pass to an async operation — 'here's what to do when you're done.'"
+              "text": "You book a hotel on MakeMyTrip. The moment you click 'Confirm Booking', MakeMyTrip's server needs to do something slow — call the hotel's reservation system and wait for them to confirm your room. That could take 2-3 seconds. Should the entire server freeze for 2-3 seconds while waiting? Obviously not. So instead, MakeMyTrip says — 'here's what to do when the hotel responds' — and passes a function. That function is a callback."
             },
             {
               "type": "heading",
@@ -5998,57 +6175,98 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "In Node.js, the callback pattern is the foundation of async programming. You call a function that does something slow (database query, file read), and you pass it another function as an argument. When the slow operation completes, your callback function is called with the result. Node.js uses a specific convention: the first argument of a callback is always an error (null if no error), and the second is the result."
+              "text": "A callback is simply a function you pass to another function, saying 'run this when you're done.' In Node.js, this is the foundation of async programming. You call a slow operation — a hotel API, a payment gateway, a database write — and you hand it a callback. The slow operation runs in the background. When it finishes, it calls your function with the result. You don't sit and wait. You move on."
+            },
+            {
+              "type": "paragraph",
+              "text": "Node.js has a specific convention for callbacks: the first argument is always an error object (null if everything went fine), and the second argument is the result. This is called the 'error-first callback' pattern — and every built-in Node.js API follows it. If you see (err, result) as the callback signature, you're looking at a Node.js callback."
             },
             {
               "type": "code",
-              "code": "// Node.js callback convention: (error, result)\n// If error is null → success. If error exists → failure.\n\n// Uber: Find nearby drivers (callback style)\ndb.query('SELECT * FROM drivers WHERE distance < 2', (error, drivers) => {\n  if (error) {\n    console.log('DB error:', error.message);\n    return; // stop here\n  }\n  // Success — drivers contains the results\n  console.log('Found', drivers.length, 'nearby drivers');\n  matchRiderToDriver(drivers);\n});"
+              "code": "// Node.js callback convention: (error, result)\n// error is null if success. error has a message if something went wrong.\n\n// MakeMyTrip: Confirm hotel booking (callback style)\nhotelAPI.confirmRoom(bookingDetails, (error, confirmation) => {\n  if (error) {\n    console.log('Hotel API error:', error.message);\n    return; // stop processing, don't proceed\n  }\n  // Success — confirmation has the hotel's booking reference\n  console.log('Room confirmed:', confirmation.referenceId);\n  sendConfirmationEmail(userId, confirmation);\n});"
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Complete Ride Request Using Callbacks"
+              "text": "Where Callbacks Work Well"
             },
             {
-              "type": "step",
-              "title": "Step 1 — Rider requests a ride",
-              "desc": "Server receives the request. Needs to: (1) find nearby drivers, (2) check rider's payment method, (3) calculate fare estimate. Each is an async operation. With callbacks, you nest them."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Find nearby drivers (async)",
-              "desc": "Call db.query() with a callback. The callback receives (error, drivers). If no error, we have our drivers. Inside this callback, we start the next operation."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Check payment method (async, inside previous callback)",
-              "desc": "Inside the drivers callback, call stripeAPI.getPaymentMethod(riderId, callback). This callback receives (error, paymentMethod). Inside that callback, start the next operation."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Calculate fare (async, inside previous callback)",
-              "desc": "Inside the payment callback, call fareAPI.estimate(distance, callback). This callback receives (error, fare). Now we have everything we need to complete the match."
+              "type": "paragraph",
+              "text": "Callbacks are a perfect fit when you have a single async operation and you just want to do something when it's done. Reading a config file when the server starts. Sending a single email after a booking confirms. Writing a log entry to disk. These are simple, one-step operations — you fire them, you handle the result, you're done. No chaining needed."
             },
             {
               "type": "code",
-              "code": "// Complete ride request with callbacks:\ndb.query('SELECT nearby drivers', (err, drivers) => {\n  if (err) return handleError(err);\n\n  stripe.getPaymentMethod(riderId, (err, payment) => {\n    if (err) return handleError(err);\n\n    fareAPI.estimate(distance, (err, fare) => {\n      if (err) return handleError(err);\n\n        matchDriver(drivers[0], payment, fare, (err, match) => {\n          if (err) return handleError(err);\n\n          sendNotification(match.driverId, (err) => {\n            if (err) return handleError(err);\n            console.log('Driver notified!');\n          });\n        });\n    });\n  });\n});\n// This is Callback Hell — each operation\n// is nested inside the previous one."
+              "code": "// GOOD USE of callbacks — single operations, no chaining needed\n\n// 1. Reading fare config when MakeMyTrip server starts\nfs.readFile('/config/fare-rules.json', (err, data) => {\n  if (err) throw err;\n  fareConfig = JSON.parse(data);\n  console.log('Fare config loaded');\n});\n\n// 2. Logging a booking to disk\nfs.appendFile('/logs/bookings.log', bookingEntry, (err) => {\n  if (err) console.error('Log write failed:', err);\n});\n\n// 3. Sending a single SMS confirmation\nsmsService.send(phoneNumber, message, (err, receipt) => {\n  if (err) console.error('SMS failed:', err);\n  else console.log('SMS sent, receipt:', receipt.id);\n});"
+            },
+            {
+              "type": "heading",
+              "text": "Where Callbacks Break Down"
+            },
+            {
+              "type": "paragraph",
+              "text": "The moment you need to do multiple async operations in sequence — where each step depends on the result of the previous one — callbacks start creating problems. Because each async operation needs its own callback, and if the next operation starts inside that callback, and the one after that starts inside that callback, you end up with functions nested inside functions nested inside functions. The code grows to the right instead of downward."
+            },
+            {
+              "type": "paragraph",
+              "text": "Consider MakeMyTrip's hotel booking flow: first confirm the room with the hotel API, then charge the customer's card, then generate the voucher, then send the confirmation email, then update the user's booking history. Five steps. Five callbacks. Each nested inside the previous one. This is the beginning of Callback Hell — and we'll see the full picture in the next topic."
+            },
+            {
+              "type": "heading",
+              "text": "Step-by-Step — Hotel Booking Confirmation Using Callbacks"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — User confirms hotel booking",
+              "desc": "Server receives the request with hotel ID, check-in date, number of guests, and payment details. The first async operation needed: confirm room availability with the hotel's reservation API. This takes 1-2 seconds — a real hotel system responding in real time."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Hotel API confirms room (callback fires)",
+              "desc": "hotelAPI.confirmRoom() is called with a callback. When the hotel responds, the callback fires with (err, confirmation). If err is null, we have a room reference number. Now the next step can start — but it starts inside this callback."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Charge the card (nested inside previous callback)",
+              "desc": "Inside the hotel confirmation callback, razorpay.charge() is called with another callback. This callback receives (err, payment). The card processing takes another 300ms. While it's running, the original callback is still on the stack, waiting."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Generate voucher (nested inside payment callback)",
+              "desc": "Inside the payment callback, voucherService.generate() is called with yet another callback. This hits a database write. Another level of nesting. We're now three functions deep just to get a voucher."
+            },
+            {
+              "type": "code",
+              "code": "// MakeMyTrip hotel booking — callbacks chained:\nhotelAPI.confirmRoom(bookingDetails, (err, confirmation) => {\n  if (err) return handleError(err);\n\n  razorpay.charge(userId, fare, (err, payment) => {\n    if (err) return handleError(err);\n\n    voucherService.generate(confirmation, (err, voucher) => {\n      if (err) return handleError(err);\n\n      emailService.send(userId, voucher, (err) => {\n        if (err) return handleError(err);\n\n        db.updateBookingHistory(userId, confirmation, (err) => {\n          if (err) return handleError(err);\n          console.log('Booking complete!');\n          // 5 levels deep. This is Callback Hell.\n        });\n      });\n    });\n  });\n});"
             },
             {
               "type": "info-callout",
-              "text": "📞 Callbacks work — they're the foundation of async Node.js. But as the code above shows, chaining multiple async operations creates deeply nested code. This is called 'Callback Hell' — pyramid-shaped code that's hard to read, debug, and maintain. Uber's engineering team encountered this immediately. That's why Promises were invented."
+              "text": "💡 Notice the shape of that code — it grows to the right like a staircase. Each async step adds another level of indentation. The actual logic (confirm, charge, generate, send, update) is buried inside error checks. Adding a 6th step means inserting inside 5 existing functions. This is exactly the problem Promises were invented to solve."
+            },
+            {
+              "type": "heading",
+              "text": "When to Use Callbacks — and When Not To"
+            },
+            {
+              "type": "paragraph",
+              "text": "Use callbacks when the operation is a single async step with no follow-up async work. Reading a config file on startup. Writing a log entry. Sending a one-off notification. They're perfect for fire-and-forget situations where you don't need to chain the result into another async call."
+            },
+            {
+              "type": "paragraph",
+              "text": "Avoid callbacks the moment you need to chain two or more async operations sequentially. As soon as Step 2 depends on the result of Step 1 — and Step 3 depends on Step 2 — you're heading into nested hell. That's when Promises or async/await will serve you much better. A simple rule: if you ever find yourself writing a callback inside a callback, switch to Promises."
             },
             {
               "type": "success-callout",
-              "text": "✅ Callbacks are the original async pattern in Node.js — pass a function, get called when done. They work, but sequential async operations create deeply nested, hard-to-read code. Understanding callbacks is essential because all of Node.js's async foundations are built on them — Promises and async/await are abstractions on top of callbacks."
+              "text": "✅ Callbacks are the foundation of async Node.js — every Promise and every async/await is built on top of them. They work perfectly for single async operations. They become painful for sequential multi-step flows. Understanding callbacks deeply is essential — because when something breaks in an async flow, understanding the callback underneath helps you debug it."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Callback Hell is real and painful. Uber's codebase would be unmaintainable with deeply nested callbacks. Promises were created specifically to solve this — flatten the nesting, make error handling cleaner, make async code readable again."
+              "text": "⚠️ Callback Hell is the reason Promises were invented. Five levels of nesting, error handling copy-pasted in every callback, impossible to add a new step without restructuring the entire pyramid. That's the problem Promises solve — and that's what we cover next."
             }
           ],
+
           "Promises": [
             {
               "type": "paragraph",
-              "text": "Uber books you a ride. Instead of making you wait on hold (callback), they give you a ticket — a Promise. 'This ticket represents your future ride. When a driver is confirmed, the ticket resolves with their details. If no driver is available, the ticket rejects with a reason.' You can do other things while holding the ticket. When it resolves or rejects, you handle it. That's a Promise."
+              "text": "You book a train ticket on MakeMyTrip. Instead of making you stand at the counter while the system checks availability, prints the ticket, and processes the payment — they hand you a token. 'Come back when your number is called.' That token is a Promise. It represents something that will either be ready (fulfilled) or unavailable (rejected) in the future. You can plan around it without knowing the result yet."
             },
             {
               "type": "heading",
@@ -6056,64 +6274,89 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "A Promise object represents an operation that hasn't completed yet but will in the future. It exists in one of three states: Pending (operation in progress), Fulfilled (operation completed successfully — with a value), or Rejected (operation failed — with a reason). Once a Promise moves from Pending to either Fulfilled or Rejected, it stays there forever — you can't un-fulfill a Promise."
-            },
-            {
-              "type": "code",
-              "code": "// Promise states:\nconst ridePromise = findNearbyDriver(location);\n// State: PENDING (DB query is running)\n\nridePromise\n  .then(driver => {\n    // State: FULFILLED — DB returned a driver\n    console.log('Driver found:', driver.name);\n  })\n  .catch(error => {\n    // State: REJECTED — DB error or no drivers found\n    console.log('No driver available:', error.message);\n  })\n  .finally(() => {\n    // Runs regardless of success or failure\n    console.log('Ride matching attempt complete');\n  });"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Uber Ride Request Rewritten With Promises"
+              "text": "A Promise object represents a value that doesn't exist yet but will in the future. It always exists in one of three states. Pending means the async operation is still running — the train booking system is checking seat availability. Fulfilled means the operation succeeded — seats confirmed, here's your PNR. Rejected means it failed — no seats available, or the payment gateway timed out."
             },
             {
               "type": "paragraph",
-              "text": "Here's the same 5-step ride request from the Callbacks section — but rewritten with Promises. Notice how the deeply nested pyramid becomes a flat chain:"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — findNearbyDrivers() returns a Promise",
-              "desc": "Instead of accepting a callback, findNearbyDrivers returns a Promise object. The database query runs in the background. When it completes, the Promise fulfills with the drivers list."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Chain .then() calls",
-              "desc": "Each .then() receives the result of the previous step and returns a new Promise. findNearbyDrivers() → .then(matchDriver) → .then(getPayment) → .then(calculateFare) → .then(sendNotification). It reads top to bottom — like synchronous code."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — One .catch() handles all errors",
-              "desc": "Instead of checking 'if (err)' inside every single callback, one .catch() at the end handles errors from ANY step in the chain. If findNearbyDrivers fails, OR getPayment fails, OR calculateFare fails — they all fall to the same .catch()."
+              "text": "The critical rule: once a Promise moves from Pending to either Fulfilled or Rejected, it is permanently in that state. You cannot un-fulfill a Promise. You cannot retry a rejected Promise — you create a new one. This immutability is what makes Promises reliable in a payment flow. A payment Promise that resolves with a transaction ID is forever resolved with that ID."
             },
             {
               "type": "code",
-              "code": "// Callback version (nested pyramid):\nfindDrivers(location, (err, drivers) => {\n  getPayment(riderId, (err, payment) => {\n    calcFare(distance, (err, fare) => {\n      matchDriver(drivers[0], (err, match) => {\n        notifyDriver(match, (err) => {\n          // 5 levels deep\n        });\n      });\n    });\n  });\n});\n\n// Promise version (flat chain):\nfindDrivers(location)\n  .then(drivers => matchBestDriver(drivers))\n  .then(match => getPaymentMethod(match))\n  .then(paymentDetails => calculateFare(paymentDetails))\n  .then(fare => notifyDriver(fare))\n  .then(() => console.log('Driver notified!'))\n  .catch(error => console.log('Something failed:', error.message));\n\n// Same logic. Flat. Readable. One error handler."
+              "code": "// Promise states:\nconst bookingPromise = confirmTrainSeat(pnrDetails);\n// State: PENDING (IRCTC API is running)\n\nbookingPromise\n  .then(confirmation => {\n    // State: FULFILLED — seat confirmed\n    console.log('PNR:', confirmation.pnr);\n    return generateTicketPDF(confirmation);\n  })\n  .catch(error => {\n    // State: REJECTED — no seats or API error\n    console.log('Booking failed:', error.message);\n    offerAlternateTrains(pnrDetails.route);\n  })\n  .finally(() => {\n    // Runs regardless of success or failure\n    releaseTemporarySeatHold(pnrDetails.seatId);\n    console.log('Seat hold released');\n  });"
             },
             {
               "type": "heading",
-              "text": "Promise.all — Uber Running Multiple Queries Simultaneously"
+              "text": "Where Promises Work Better Than Callbacks"
             },
             {
               "type": "paragraph",
-              "text": "Sometimes Uber needs to run multiple independent async operations at the same time and wait for ALL of them. For example: when completing a ride, update the driver's earnings AND update the rider's ride history AND calculate the new driver rating — all at the same time, not one by one."
+              "text": "Promises shine the moment you have sequential async operations — where each step depends on the result of the previous one. The .then() chain reads top to bottom, like a recipe. Each .then() receives the result of the Promise returned by the previous .then(). If any step fails, the error falls all the way down to a single .catch() — no more duplicating error checks at every level."
+            },
+            {
+              "type": "paragraph",
+              "text": "They also work exceptionally well when you need to run multiple independent async operations at the same time and wait for all of them. Promise.all() fires all of them simultaneously and resolves when every one of them is done. This is how MakeMyTrip refreshes hotel prices, checks room availability, and loads user preferences all in parallel when you open a hotel page — not one by one."
+            },
+            {
+              "type": "heading",
+              "text": "Step-by-Step — Train Booking Rewritten With Promises"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — confirmTrainSeat() returns a Promise",
+              "desc": "Instead of accepting a callback, confirmTrainSeat returns a Promise object immediately. The IRCTC API call runs in the background. The Call Stack is free. When the API responds, the Promise fulfills with the seat confirmation details — coach, berth number, PNR."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Chain .then() for each next step",
+              "desc": "Each .then() receives the resolved value from the previous Promise and returns a new Promise. The chain reads exactly like the logical sequence: confirm seat → charge card → generate ticket → send to user. Flat. No indentation pyramid."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — One .catch() handles every failure",
+              "desc": "If the IRCTC API fails, OR the card charge fails, OR the ticket PDF generation fails — the error skips all remaining .then() calls and falls directly to .catch(). One handler. No copy-pasting error logic at every step. This single change makes debugging train booking failures dramatically easier."
             },
             {
               "type": "code",
-              "code": "// Sequential (slow — one by one):\nawait updateDriverEarnings(driverId);\nawait updateRiderHistory(riderId);\nawait updateDriverRating(driverId);\n// Total: ~150ms (50ms each)\n\n// Parallel with Promise.all (fast — all at once):\nawait Promise.all([\n  updateDriverEarnings(driverId),\n  updateRiderHistory(riderId),\n  updateDriverRating(driverId)\n]);\n// Total: ~50ms (all run simultaneously)\n// 3x faster for Uber's post-ride processing!"
+              "code": "// Callback version — nested pyramid:\nconfirmTrainSeat(details, (err, seat) => {\n  if (err) return handleError(err);\n  chargeCard(userId, fare, (err, payment) => {\n    if (err) return handleError(err);\n    generateTicket(seat, (err, ticket) => {\n      if (err) return handleError(err);\n      sendToUser(userId, ticket, (err) => {\n        if (err) return handleError(err);\n        console.log('Ticket sent!'); // 4 levels deep\n      });\n    });\n  });\n});\n\n// Promise version — flat chain:\nconfirmTrainSeat(details)\n  .then(seat => chargeCard(userId, fare))\n  .then(payment => generateTicket(seat, payment))\n  .then(ticket => sendToUser(userId, ticket))\n  .then(() => console.log('Ticket sent!'))\n  .catch(err => handleError(err));\n\n// Same logic. Zero nesting. ONE error handler."
+            },
+            {
+              "type": "heading",
+              "text": "Promise.all — Loading a Hotel Page in Parallel"
+            },
+            {
+              "type": "paragraph",
+              "text": "When you open a hotel listing on MakeMyTrip, the page needs three things: the hotel's room prices for your dates, the user's loyalty points balance, and the list of active promo codes. These three are completely independent of each other — there's no reason to fetch them one by one. Promise.all fires all three simultaneously and waits for all three to finish."
+            },
+            {
+              "type": "code",
+              "code": "// Sequential — slow, wasteful (each waits for previous)\nconst prices = await hotelAPI.getRoomPrices(hotelId, dates);   // 400ms\nconst points = await loyaltyAPI.getPoints(userId);              // 200ms\nconst promos = await promoAPI.getActiveCodes(userId);           // 150ms\n// Total: 750ms — user waits 3/4 of a second\n\n// Promise.all — all three run simultaneously\nconst [prices, points, promos] = await Promise.all([\n  hotelAPI.getRoomPrices(hotelId, dates),   // 400ms ─┐\n  loyaltyAPI.getPoints(userId),              // 200ms  ├─ all running at once\n  promoAPI.getActiveCodes(userId)            // 150ms ─┘\n]);\n// Total: 400ms — as fast as the slowest one\n// Hotel page loads almost 2x faster."
+            },
+            {
+              "type": "heading",
+              "text": "When to Use Promises — and When Not To"
+            },
+            {
+              "type": "paragraph",
+              "text": "Use Promises when you have sequential async operations that need to chain — booking confirmation flowing into payment flowing into voucher generation. Use Promise.all when you have multiple independent async operations that can run simultaneously. Use Promise.race when you want the result of whichever finishes first — for example, querying two different hotel inventory databases and taking whichever responds faster."
+            },
+            {
+              "type": "paragraph",
+              "text": "Avoid raw Promises when the chain gets long and complex — more than four or five .then() calls starts to feel abstract again. When a .then() receives data from two previous steps (not just the immediately previous one), you have to resort to tricks like outer variable assignment or restructuring, which defeats the readability benefit. That's the moment to move to async/await, which solves the variable-scope problem cleanly."
             },
             {
               "type": "success-callout",
-              "text": "✅ Promises flatten callback hell, provide clean error handling with .catch(), and enable powerful patterns like Promise.all() for parallel operations. Uber's modern Node.js code uses Promises extensively — and its even cleaner sugar syntax: async/await."
+              "text": "✅ Promises flatten callback hell, provide clean error handling with a single .catch(), and unlock powerful parallel execution with Promise.all. MakeMyTrip uses Promises extensively — especially for independent data loading where multiple API calls can run simultaneously. But for long sequential flows where each step uses data from multiple previous steps, async/await is cleaner."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Promises are great, but .then().then().then() chains can still feel unnatural. What if you could write async code that LOOKS synchronous? Like writing Python or Java? That's what async/await gives you."
+              "text": "⚠️ Promises are great but .then().then().then() chains can still feel disconnected — especially when step 4 needs a variable from step 1. async/await solves this completely. It lets you write async code that reads exactly like synchronous code, with all variables in the same scope."
             }
           ],
+
           "Async / Await": [
             {
               "type": "paragraph",
-              "text": "Uber's engineering team uses async/await throughout their Node.js codebase. Instead of chaining .then().then().then(), async/await lets you write code that reads like a step-by-step synchronous recipe — but behaves asynchronously under the hood. It's built on top of Promises — just with cleaner syntax."
+              "text": "MakeMyTrip's bus booking flow has six steps: check seat availability, apply loyalty points, charge the card, issue the bus operator's ticket, generate the PDF, and notify the user. Written as a Promise chain, step 4 might need data from step 1 and step 3 — which means juggling variables across .then() calls in ways that get messy. async/await solves this by letting all six steps live in the same function, same scope, reading top to bottom like a synchronous recipe."
             },
             {
               "type": "heading",
@@ -6121,11 +6364,15 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The 'async' keyword before a function means: 'this function always returns a Promise.' The 'await' keyword inside an async function means: 'pause HERE and wait for this Promise to resolve — but don't block the entire thread, let other code run while waiting.' Every place you see 'await', execution pauses for that one async operation, then resumes. It's the promise chain written vertically."
+              "text": "The 'async' keyword before a function does one thing: it makes that function always return a Promise. The 'await' keyword inside an async function pauses that function at that line and waits for the Promise to resolve — but critically, it doesn't block the server. While this function is paused, the Event Loop is free to handle every other request that comes in."
+            },
+            {
+              "type": "paragraph",
+              "text": "This is the breakthrough: 'await' pauses ONE function, not the entire Node.js server. Every other user's request keeps being handled normally. The paused function picks up exactly where it left off the moment its awaited Promise resolves. The result feels like synchronous code but behaves entirely asynchronously."
             },
             {
               "type": "code",
-              "code": "// Promise chain version:\nfunction processRideRequest(req) {\n  return findDrivers(req.location)\n    .then(drivers => selectBest(drivers))\n    .then(driver => getPaymentMethod(req.riderId))\n    .then(payment => calculateFare(req.distance))\n    .then(fare => notifyDriver(driver, fare))\n    .catch(err => handleError(err));\n}\n\n// async/await version — same logic, reads like synchronous:\nasync function processRideRequest(req) {\n  try {\n    const drivers = await findDrivers(req.location);\n    const driver = selectBest(drivers);\n    const payment = await getPaymentMethod(req.riderId);\n    const fare = await calculateFare(req.distance);\n    await notifyDriver(driver, fare);\n    console.log('Ride confirmed!');\n  } catch (err) {\n    handleError(err);\n  }\n}"
+              "code": "// Promise chain version — variable scoping gets awkward:\nfunction completeBusBooking(bookingId) {\n  let savedSeat; // need to declare outside to share across .then()\n  return checkSeatAvailability(bookingId)\n    .then(seat => { savedSeat = seat; return applyLoyaltyPoints(userId); })\n    .then(discount => chargeCard(userId, fare - discount))\n    .then(payment => issueBusTicket(savedSeat, payment)) // needs savedSeat from step 1!\n    .then(ticket => generatePDF(ticket))\n    .catch(err => handleError(err));\n}\n\n// async/await version — all variables in same scope, reads naturally:\nasync function completeBusBooking(bookingId) {\n  try {\n    const seat = await checkSeatAvailability(bookingId);\n    const discount = await applyLoyaltyPoints(userId);\n    const payment = await chargeCard(userId, fare - discount);\n    const ticket = await issueBusTicket(seat, payment); // seat is right here!\n    const pdf = await generatePDF(ticket);\n    await notifyUser(userId, pdf);\n    console.log('Bus booking complete!');\n  } catch (err) {\n    handleError(err);\n  }\n}"
             },
             {
               "type": "heading",
@@ -6133,66 +6380,91 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "When Uber's server hits an 'await', what exactly happens? Let's trace it precisely:"
+              "text": "When you look at an 'await' line, it feels synchronous — like the code just pauses and waits. But under the hood, something more precise is happening. The function is suspended, the Call Stack is freed, and the Event Loop continues running everything else. Here's the exact sequence:"
             },
             {
               "type": "step",
-              "title": "Step 1 — async function starts running",
-              "desc": "processRideRequest() is called. It runs synchronously until it hits the first 'await'."
+              "title": "Step 1 — async function starts running on the Call Stack",
+              "desc": "completeBusBooking() is called. It executes synchronously — reads the bookingId, logs whatever needs logging — until it hits the first 'await' line. Everything before the first await runs immediately, blocking nothing."
             },
             {
               "type": "step",
-              "title": "Step 2 — 'await findDrivers()' is hit",
-              "desc": "findDrivers() is called — it returns a Promise. The 'await' keyword sees the Promise, PAUSES the execution of processRideRequest, and returns control to the Event Loop. processRideRequest is NOT on the Call Stack anymore — it's waiting. The Event Loop is FREE to handle other requests."
+              "title": "Step 2 — 'await checkSeatAvailability()' is hit",
+              "desc": "checkSeatAvailability() is called — it fires an API call to the bus operator's system and returns a Promise. The 'await' keyword sees that Promise is still Pending. It suspends completeBusBooking() and removes it from the Call Stack. The Event Loop is now free."
             },
             {
               "type": "step",
-              "title": "Step 3 — While awaiting, other requests are handled",
-              "desc": "The Event Loop handles other incoming requests, GPS updates, payment webhooks — anything else that's ready. processRideRequest is paused but the server is not frozen. This is the key: 'await' pauses ONE function, not the entire server."
+              "title": "Step 3 — Server handles hundreds of other requests while waiting",
+              "desc": "While the bus operator API takes its 200ms to respond, the Event Loop handles other work: someone searching for hotels, someone checking flight prices, someone cancelling a booking. None of them are aware that completeBusBooking is paused. The server isn't frozen — one function is paused."
             },
             {
               "type": "step",
-              "title": "Step 4 — findDrivers() resolves",
-              "desc": "The database query completes. The Promise resolves with the drivers list. This callback goes to the Microtask Queue (because it's a Promise resolution). Event Loop picks it up."
+              "title": "Step 4 — Bus operator responds. Promise resolves.",
+              "desc": "The API comes back with seat availability. The Promise resolves. This resolution goes into the Microtask Queue (because it's a Promise). Event Loop picks it up immediately on the next tick."
             },
             {
               "type": "step",
-              "title": "Step 5 — processRideRequest RESUMES from where it paused",
-              "desc": "Execution resumes after the 'await findDrivers()' line. The 'drivers' variable now has the result. Code continues to the next line: 'const driver = selectBest(drivers)'. Runs synchronously (no await). Then hits 'await getPaymentMethod()' — pauses again. Cycle repeats."
+              "title": "Step 5 — completeBusBooking() RESUMES from where it paused",
+              "desc": "The function is restored to the Call Stack. The 'seat' variable is now populated with the availability data. Execution continues to the next line: 'await applyLoyaltyPoints()'. The cycle repeats — pause, other work happens, resume."
             },
             {
               "type": "code",
-              "code": "async function processRideRequest(req) {\n  console.log('A: Starting');\n\n  const drivers = await findDrivers(req.location);\n  // ↑ PAUSES HERE. Event loop handles other work.\n  // ↓ RESUMES HERE when findDrivers resolves (~50ms)\n  console.log('B: Drivers found', drivers.length);\n\n  const fare = await calculateFare(req.distance);\n  // ↑ PAUSES HERE again. Event loop handles other work.\n  // ↓ RESUMES HERE when fare calculated (~10ms)\n  console.log('C: Fare:', fare);\n\n  await notifyDriver(drivers[0].token, fare);\n  console.log('D: Driver notified');\n}\n\n// Other requests continue while this is awaiting:\n// A is printed... (50ms of other work happens)...\n// B is printed... (10ms of other work happens)...\n// C is printed... (5ms of other work happens)...\n// D is printed"
+              "code": "async function completeBusBooking(bookingId) {\n  console.log('A: Starting bus booking');\n\n  const seat = await checkSeatAvailability(bookingId);\n  // ↑ PAUSES. Event Loop handles ~40 other requests.\n  // ↓ RESUMES when bus operator responds (~200ms)\n  console.log('B: Seat confirmed —', seat.number);\n\n  const payment = await chargeCard(userId, fare);\n  // ↑ PAUSES. Razorpay processing — ~300ms.\n  // ↓ RESUMES when card is charged.\n  console.log('C: Payment done — ₹', payment.amount);\n\n  const ticket = await issueBusTicket(seat, payment);\n  // ↑ PAUSES. Operator issues ticket reference.\n  // ↓ RESUMES with ticket data.\n  console.log('D: Ticket issued —', ticket.referenceId);\n}\n\n// What the server does during those pauses:\n// Someone opens MakeMyTrip app → handled\n// Someone checks hotel prices → handled\n// Someone cancels a flight → handled\n// None of them waited for this function."
+            },
+            {
+              "type": "heading",
+              "text": "When to Use async/await — and When Not To"
+            },
+            {
+              "type": "paragraph",
+              "text": "async/await is the right choice for sequential multi-step flows where later steps need data from earlier steps. The bus booking flow above is a perfect example — issueBusTicket needs both the seat AND the payment. With async/await, both are just local variables in scope. It's also the right choice when you want readable, debuggable code — stack traces in async/await are far cleaner than in raw Promise chains."
+            },
+            {
+              "type": "paragraph",
+              "text": "Where async/await needs help: parallel operations. If you write 'await A; await B; await C;' — those run one by one even if they're independent of each other. For parallel operations, combine async/await with Promise.all: 'const [a, b, c] = await Promise.all([A(), B(), C()])'. This gives you clean syntax AND parallel execution — the best of both."
+            },
+            {
+              "type": "code",
+              "code": "// DON'T do this — sequential when parallel would be faster:\nasync function loadHotelPage(hotelId, userId) {\n  const prices = await hotelAPI.getRoomPrices(hotelId);  // 400ms\n  const reviews = await reviewAPI.getReviews(hotelId);   // 300ms\n  const wishlist = await db.getUserWishlist(userId);      // 150ms\n  // Total: 850ms — all waiting in line for no reason\n}\n\n// DO this — parallel with Promise.all inside async/await:\nasync function loadHotelPage(hotelId, userId) {\n  const [prices, reviews, wishlist] = await Promise.all([\n    hotelAPI.getRoomPrices(hotelId),   // all three\n    reviewAPI.getReviews(hotelId),     // run at\n    db.getUserWishlist(userId)         // the same time\n  ]);\n  // Total: 400ms — as fast as the slowest one\n  // Hotel page loads in half the time.\n}"
             },
             {
               "type": "success-callout",
-              "text": "✅ async/await is how modern Uber-scale Node.js applications are written. It's Promises with clean syntax — code reads top to bottom like synchronous code, errors are handled with familiar try/catch, but the server never blocks. It's the best of both worlds."
+              "text": "✅ async/await is how modern Node.js applications are written. It's Promises with readable syntax — code reads top to bottom, variables are in scope where you need them, errors are caught with familiar try/catch. For MakeMyTrip's multi-step booking flows, it's the clear winner over nested callbacks or raw Promise chains."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ We saw Callback Hell briefly earlier. It's worth fully understanding the problem — because even with async/await, you can still create complex, hard-to-maintain async code if you don't structure it well. Let's look at what Callback Hell actually looks like and the patterns that eliminate it."
+              "text": "⚠️ Even with async/await, you can still write messy, hard-to-maintain code if you don't structure it well. The original problem — Callback Hell — is worth fully understanding, because its root cause (poor async structure) can creep back in disguised form. Let's look at what Callback Hell actually looks like and all three ways to escape it."
             }
           ],
-          "Callback Hell & how to avoid it": [
+
+          "Callback Hell & How to Avoid It": [
             {
               "type": "paragraph",
-              "text": "Imagine Uber's ride completion flow: get ride details → verify driver rating → process payment → update driver earnings → send receipt email → update rider stats → close the ride. Seven sequential async operations. Written with callbacks, this creates a staircase of doom — code that starts at column 0 and ends at column 70, with error handling copy-pasted in 7 places. This is Callback Hell, and it destroyed many early Node.js codebases."
+              "text": "MakeMyTrip's holiday package booking flow has seven steps: check flight availability, check hotel availability, apply loyalty points, charge the card, issue flight tickets, confirm hotel voucher, and send the complete itinerary. Every single step is async. Written with callbacks — the way early Node.js code was written — this creates a staircase of doom that starts at column 0 and ends at column 70, with error handling copy-pasted seven times."
             },
             {
               "type": "heading",
               "text": "What Callback Hell Looks Like"
             },
             {
+              "type": "paragraph",
+              "text": "The shape of Callback Hell is a pyramid growing to the right. Each async step opens a new callback, indenting everything inside it another level. The actual business logic — the part that actually matters — is buried inside layers of error checks and closing braces. New engineers joining the team can't figure out what the code is doing without tracing the nesting manually. Debugging a failed booking at 2am means mentally unwinding seven layers of callbacks to find which one failed."
+            },
+            {
               "type": "code",
-              "code": "// Uber ride completion — Callback Hell version\ngetRideDetails(rideId, (err, ride) => {\n  if (err) return handleError(err);\n\n  verifyDriverRating(ride.driverId, (err, rating) => {\n    if (err) return handleError(err);\n\n    processPayment(ride.riderId, ride.fare, (err, payment) => {\n      if (err) return handleError(err);\n\n      updateDriverEarnings(ride.driverId, ride.fare, (err) => {\n        if (err) return handleError(err);\n\n        sendReceiptEmail(ride.riderId, payment, (err) => {\n          if (err) return handleError(err);\n\n          updateRiderStats(ride.riderId, (err) => {\n            if (err) return handleError(err);\n\n            closeRide(rideId, (err) => {\n              if (err) return handleError(err);\n              console.log('Ride completed!'); // 7 levels deep!\n            });\n          });\n        });\n      });\n    });\n  });\n});\n// 7 levels of indentation. 7 copies of error handling.\n// Try debugging this at 3am during an outage."
+              "code": "// MakeMyTrip holiday package booking — Callback Hell:\nflightAPI.checkAvailability(route, dates, (err, flight) => {\n  if (err) return handleError(err);\n\n  hotelAPI.checkAvailability(city, dates, (err, hotel) => {\n    if (err) return handleError(err);\n\n    loyaltyAPI.applyPoints(userId, (err, discount) => {\n      if (err) return handleError(err);\n\n      razorpay.charge(userId, totalFare - discount, (err, payment) => {\n        if (err) return handleError(err);\n\n        flightAPI.issueTicket(flight, payment, (err, ticket) => {\n          if (err) return handleError(err);\n\n          hotelAPI.confirmVoucher(hotel, payment, (err, voucher) => {\n            if (err) return handleError(err);\n\n            emailService.sendItinerary(userId, ticket, voucher, (err) => {\n              if (err) return handleError(err);\n              console.log('Package booked!'); // 7 levels deep\n            });\n          });\n        });\n      });\n    });\n  });\n});\n// 7 levels. 7 error checks.\n// Try adding a fraud detection step in the middle of this."
             },
             {
               "type": "heading",
-              "text": "Why Callback Hell is Dangerous for Uber"
+              "text": "Why Callback Hell is Dangerous at Scale"
             },
             {
               "type": "paragraph",
-              "text": "It's not just about aesthetics. Callback Hell creates real engineering problems at Uber's scale. When a bug is found in production, debugging means tracing through 7 levels of nested callbacks — with no clear stack trace. Adding a new step (like fraud detection) means inserting into the middle of the pyramid. Testing individual steps is nearly impossible — they're all entangled. Error handling is duplicated and often inconsistent."
+              "text": "It's not just aesthetics. Callback Hell creates serious engineering problems when a platform like MakeMyTrip is handling lakhs of bookings. When a payment fails in production, the error could come from any of the seven steps — but the stack trace points you to the deepest callback and you have to unwind the nesting manually to understand the full context. Adding a new step (say, an IRCTC API call for train tickets joining the flow) means inserting into the middle of the pyramid and re-indenting everything below it."
+            },
+            {
+              "type": "paragraph",
+              "text": "Testing is also near-impossible. Every step is entangled with the ones above and below it. To test whether the hotel voucher confirmation works, you have to set up mocks for every step above it — flight availability, loyalty points, card charge — just to reach the code you actually want to test. Error handling is inconsistent because each developer who touched a different callback level wrote the error check slightly differently."
             },
             {
               "type": "heading",
@@ -6200,78 +6472,48 @@ export const roadmapData = [
             },
             {
               "type": "step",
-              "title": "Solution 1 — Named functions (flatten the structure)",
-              "desc": "Instead of anonymous callbacks nested inside each other, give each callback a name and define them separately. The call chain stays flat — each step explicitly calls the next by name."
+              "title": "Solution 1 — Named Functions (flatten without changing the pattern)",
+              "desc": "The simplest fix: instead of anonymous functions nested inside each other, give each callback a name and define it at the top level. The pyramid disappears because each function is defined separately. Each one is independently testable. The flow reads as a flat sequence of function calls. This doesn't require changing to Promises — it just restructures existing callback code."
             },
             {
               "type": "code",
-              "code": "// Solution 1: Named functions\nfunction onRideDetails(err, ride) {\n  if (err) return handleError(err);\n  verifyDriverRating(ride.driverId, onRatingVerified);\n}\n\nfunction onRatingVerified(err, rating) {\n  if (err) return handleError(err);\n  processPayment(riderId, fare, onPaymentProcessed);\n}\n\nfunction onPaymentProcessed(err, payment) {\n  if (err) return handleError(err);\n  // ... continues...\n}\n\n// Start the chain:\ngetRideDetails(rideId, onRideDetails);\n// Flat! Each function is testable independently."
+              "code": "// Solution 1: Named functions — same callbacks, flat structure\nfunction onFlightAvailable(err, flight) {\n  if (err) return handleError(err);\n  hotelAPI.checkAvailability(city, dates, onHotelAvailable);\n}\n\nfunction onHotelAvailable(err, hotel) {\n  if (err) return handleError(err);\n  loyaltyAPI.applyPoints(userId, onPointsApplied);\n}\n\nfunction onPointsApplied(err, discount) {\n  if (err) return handleError(err);\n  razorpay.charge(userId, totalFare - discount, onPaymentDone);\n}\n\nfunction onPaymentDone(err, payment) {\n  if (err) return handleError(err);\n  // ... continues at the same indent level\n}\n\n// Start the chain:\nflightAPI.checkAvailability(route, dates, onFlightAvailable);\n\n// Flat! Each function can be tested in isolation.\n// Adding fraud detection = add one new named function."
             },
             {
               "type": "step",
-              "title": "Solution 2 — Promises (chain .then())",
-              "desc": "Convert each callback-based function to return a Promise. Chain them with .then(). One .catch() handles all errors. Flat. Readable."
+              "title": "Solution 2 — Promises (.then() chain)",
+              "desc": "Convert each step to return a Promise instead of accepting a callback. Chain them with .then(). The entire seven-step flow becomes seven lines of flat code with one .catch() at the end. Error handling is no longer copy-pasted — one handler catches failures from any step. This is the industry standard for medium-complexity async flows."
             },
             {
               "type": "code",
-              "code": "// Solution 2: Promises\ngetRideDetails(rideId)\n  .then(ride => verifyDriverRating(ride.driverId))\n  .then(rating => processPayment(riderId, fare))\n  .then(payment => updateDriverEarnings(driverId, fare))\n  .then(() => sendReceiptEmail(riderId, payment))\n  .then(() => updateRiderStats(riderId))\n  .then(() => closeRide(rideId))\n  .then(() => console.log('Ride completed!'))\n  .catch(err => handleError(err));\n// 7 steps. Still flat. ONE error handler."
+              "code": "// Solution 2: Promises — flat chain\nflightAPI.checkAvailability(route, dates)\n  .then(flight => hotelAPI.checkAvailability(city, dates))\n  .then(hotel => loyaltyAPI.applyPoints(userId))\n  .then(discount => razorpay.charge(userId, totalFare - discount))\n  .then(payment => flightAPI.issueTicket(flight, payment))\n  .then(ticket => hotelAPI.confirmVoucher(hotel, payment))\n  .then(voucher => emailService.sendItinerary(userId, ticket, voucher))\n  .then(() => console.log('Package booked!'))\n  .catch(err => handleError(err));\n\n// 7 steps. Perfectly flat. ONE error handler.\n// Adding fraud detection = add one .then() line."
             },
             {
               "type": "step",
-              "title": "Solution 3 — async/await (reads like synchronous)",
-              "desc": "The cleanest solution. Each step is a line of code with 'await'. try/catch handles all errors in one place. Reads like a recipe."
+              "title": "Solution 3 — async/await (the MakeMyTrip engineering team's choice)",
+              "desc": "The cleanest solution for complex flows. Each step is a single line with 'await'. All variables are in the same scope — flight, hotel, discount, payment are all accessible at any step below them without tricks. One try/catch handles everything. Adding a step means adding one line. Reading the function tells the exact story of what happens when a user books a holiday package."
             },
             {
               "type": "code",
-              "code": "// Solution 3: async/await — the Uber engineering team's choice\nasync function completeRide(rideId) {\n  try {\n    const ride = await getRideDetails(rideId);\n    const rating = await verifyDriverRating(ride.driverId);\n    const payment = await processPayment(ride.riderId, ride.fare);\n    await updateDriverEarnings(ride.driverId, ride.fare);\n    await sendReceiptEmail(ride.riderId, payment);\n    await updateRiderStats(ride.riderId);\n    await closeRide(rideId);\n    console.log('Ride completed!');\n  } catch (err) {\n    handleError(err);\n  }\n}\n\n// 7 steps. Perfectly flat. ONE try/catch.\n// Each line is readable. Easy to debug.\n// Easy to add a new step (just add a new 'await' line).\n// Easy to test each function in isolation."
+              "code": "// Solution 3: async/await — clean, readable, maintainable\nasync function bookHolidayPackage(userId, route, city, dates) {\n  try {\n    const flight = await flightAPI.checkAvailability(route, dates);\n    const hotel = await hotelAPI.checkAvailability(city, dates);\n    const discount = await loyaltyAPI.applyPoints(userId);\n    const payment = await razorpay.charge(userId, totalFare - discount);\n    const ticket = await flightAPI.issueTicket(flight, payment);\n    const voucher = await hotelAPI.confirmVoucher(hotel, payment);\n    await emailService.sendItinerary(userId, ticket, voucher);\n    console.log('Holiday package booked!');\n  } catch (err) {\n    handleError(err);\n  }\n}\n\n// 7 steps. Zero nesting. ONE try/catch.\n// flight, hotel, discount all in scope — no hacks.\n// New step = new 'await' line. Testing each step = trivial.\n// Reading this = reading a recipe. Crystal clear."
             },
             {
               "type": "table",
-              "headers": [
-                "Approach",
-                "Nesting",
-                "Error Handling",
-                "Readability",
-                "Uber uses?"
-              ],
+              "headers": ["Approach", "Nesting", "Error Handling", "Variable Scope", "Readability", "Best For"],
               "rows": [
-                [
-                  "Nested Callbacks",
-                  "Deep pyramid",
-                  "Duplicate in each callback",
-                  "Poor",
-                  "Legacy only"
-                ],
-                [
-                  "Named Functions",
-                  "Flat",
-                  "Still manual checks",
-                  "Better",
-                  "Rare"
-                ],
-                [
-                  "Promises",
-                  "Flat chain",
-                  "One .catch()",
-                  "Good",
-                  "Some places"
-                ],
-                [
-                  "async/await",
-                  "None",
-                  "One try/catch",
-                  "Excellent",
-                  "Primary choice"
-                ]
+                ["Nested Callbacks", "Deep pyramid", "Copy-pasted at each level", "Trapped inside each callback", "Poor", "Nothing new — avoid"],
+                ["Named Functions", "Flat", "Still manual per function", "Still scoped per function", "Better", "Legacy code cleanup"],
+                ["Promises .then()", "Flat chain", "One .catch()", "Needs outer vars for sharing", "Good", "Parallel ops, simple chains"],
+                ["async/await", "None", "One try/catch", "All in same scope", "Excellent", "Sequential multi-step flows"]
               ]
             },
             {
               "type": "success-callout",
-              "text": "✅ Callback Hell is solved by async/await (or Promises). Uber's modern Node.js codebase uses async/await throughout — flat code, single error handling, easy to read, easy to debug. The evolution from callbacks → Promises → async/await represents the maturation of async programming in JavaScript."
+              "text": "✅ Callback Hell is solved by restructuring — named functions, Promises, or async/await. MakeMyTrip's engineering team uses async/await for all complex booking flows where multiple steps share data, and Promise.all inside async/await for independent parallel operations. The evolution from callbacks to async/await represents how the JavaScript ecosystem learned to write async code properly."
             },
             {
               "type": "info-callout",
-              "text": "🎯 Full picture of Async Programming — Synchronous code blocks, async code doesn't. Callbacks were the original async pattern but created pyramid code. Promises flattened the chain and unified error handling. async/await made async code look synchronous. All three are built on the same Event Loop foundation. Master these patterns and you can write any async Node.js code Uber needs."
+              "text": "🎯 Full picture of Async Programming in Node.js — Callbacks are the foundation: pass a function, get called when done. Promises flatten the chain and give you parallel execution with Promise.all. async/await gives you synchronous-looking code with full async behavior. All three are built on the same Event Loop. Use callbacks for single fire-and-forget operations. Use Promise.all for parallel independent calls. Use async/await for any multi-step sequential flow where later steps need earlier data."
             }
           ]
         }
@@ -6281,141 +6523,43 @@ export const roadmapData = [
         "title": "Non-Blocking I/O & libuv",
         "level": "freshers",
         "topics": [
-          "What is Blocking vs Non-Blocking I/O?",
-          "What is libuv?",
-          "Thread Pool in libuv",
-          "How Node.js handles file & network operations"
+          "What is libuv & Thread Pool"
         ],
         "topicDetails": {
-          "What is Blocking vs Non-Blocking I/O?": [
+          "What is libuv & Thread Pool": [
             {
               "type": "paragraph",
-              "text": "Uber's server needs to read a configuration file — the surge pricing zones for Mumbai. Option A (blocking): read the file, freeze everything, wait for the file to load, then continue. Option B (non-blocking): start reading the file, immediately handle the 500 incoming ride requests in the queue, and process the file contents when they arrive. Option A is how a bad server works. Option B is how Node.js works."
+              "text": "When MakeMyTrip's Node.js server says 'query the database' and immediately moves on — who is actually running that database query? Not the main JavaScript thread. That's libuv: a C library that ships with Node.js, handles all async operations in the background, and notifies the Event Loop when work is done."
             },
             {
               "type": "heading",
-              "text": "I/O — The Bottleneck of Every Server"
-            },
-            {
-              "type": "paragraph",
-              "text": "I/O stands for Input/Output — any operation that involves communicating with something outside the CPU. Reading a file from disk, querying a database, making an HTTP request to Google Maps API, reading from a socket. These operations are SLOW compared to CPU execution. A CPU can execute a billion instructions per second. A database query takes 10-50 milliseconds. A disk read takes 5-10ms. A network call can take 100-500ms. The question is: what does your server DO during those 50ms of waiting?"
+              "text": "Where libuv Sits in Node.js"
             },
             {
               "type": "code",
-              "code": "Speed comparison — CPU vs I/O:\nCPU executes an instruction     → 0.0000003ms\nAccess RAM                       → 0.0001ms\nRead from SSD (local disk)       → 0.1ms\nDatabase query (same datacenter) → 10-50ms\nHTTP request to Google Maps API  → 100-300ms\nHTTP request to another country  → 200-500ms\n\nDuring a 50ms DB query, the CPU could have\nexecuted 166,000,000 instructions.\nBlocking means all of those cycles are WASTED."
-            },
-            {
-              "type": "heading",
-              "text": "Blocking I/O — The Server Freezes"
+              "code": "┌──────────────────────────────────────────┐\n│          YOUR APPLICATION CODE           │  ← JavaScript\n│   (hotel booking, payment processing)    │\n├──────────────────────────────────────────┤\n│               NODE.JS CORE               │  ← JavaScript\n│       (http, fs, crypto modules)         │\n├──────────────────────────────────────────┤\n│                V8 ENGINE                 │  ← C++\n│         (executes JavaScript)            │\n├──────────────────────────────────────────┤\n│                  LIBUV                   │  ← C\n│   (async I/O, event loop, thread pool)   │\n├──────────────────────────────────────────┤\n│             OPERATING SYSTEM             │\n│    (Linux epoll / macOS kqueue / Win)    │\n└──────────────────────────────────────────┘"
             },
             {
               "type": "paragraph",
-              "text": "In blocking I/O, when a thread initiates an I/O operation, it suspends itself and waits until the operation completes. The thread is frozen — consuming memory, holding its position in the thread pool, doing absolutely nothing useful. Traditional web servers using blocking I/O (like Apache with PHP) needed a new thread per request — because each thread would block waiting for its I/O."
-            },
-            {
-              "type": "code",
-              "code": "// Blocking I/O (NOT how Node.js works — for illustration)\nconst data = fs.readFileSync('/config/surge-zones.json');\n// ↑ Server is FROZEN here — doing nothing\n// While frozen:\n//   GPS pings: waiting in queue\n//   Ride requests: waiting in queue\n//   Payment webhooks: waiting in queue\n// Duration: 5-10ms for a file read\n// At 10,000 requests/second, this is catastrophic"
+              "text": "libuv sits between Node.js and the operating system. It implements the Event Loop, manages a thread pool for heavy background tasks, and uses the OS's native async mechanisms for network operations. Every async operation on MakeMyTrip's server — hotel API calls, payment processing, config file reads — eventually goes through libuv."
             },
             {
               "type": "heading",
-              "text": "Non-Blocking I/O — The Server Keeps Running"
-            },
-            {
-              "type": "paragraph",
-              "text": "In non-blocking I/O, when a thread initiates an I/O operation, it registers a callback and immediately moves on. The I/O happens in the background. When it completes, the callback is triggered. The thread is never frozen — it keeps handling other work the entire time."
-            },
-            {
-              "type": "code",
-              "code": "// Non-blocking I/O — how Node.js actually works\nfs.readFile('/config/surge-zones.json', (err, data) => {\n  // This runs LATER when the file is loaded\n  updateSurgeZones(JSON.parse(data));\n});\n// ↑ Returns IMMEDIATELY — file read is in background\n// Server keeps running:\n//   GPS pings: processed ✅\n//   Ride requests: processed ✅\n//   Payment webhooks: processed ✅\n// File loading happens in parallel with all of this"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Same Surge Zone Config Load, Two Approaches"
+              "text": "Two Ways libuv Handles Work"
             },
             {
               "type": "step",
-              "title": "Blocking approach — 100 requests queued",
-              "desc": "Server starts reading surge-zones.json. Freezes for 8ms. During those 8ms, 100 ride requests arrive and pile up in queue. File loaded. Now processes request 1... 2... 3... by the time request 100 is handled, 80ms have passed. Riders see 80ms delay. For a 10K QPS server, this is a death spiral."
+              "title": "Network I/O — directly through the OS kernel",
+              "desc": "Razorpay API calls, hotel API requests, database queries over the network — these use the OS's native async capabilities (epoll on Linux). The OS kernel monitors thousands of connections simultaneously and tells libuv when data arrives. No threads needed. This is how MakeMyTrip handles lakhs of simultaneous users with minimal resources."
             },
             {
               "type": "step",
-              "title": "Non-blocking approach — 100 requests handled freely",
-              "desc": "Server calls fs.readFile() — hands the work to libuv. Immediately processes ride request 1, 2, 3... 100. All 100 handled in parallel while the file is loading. After 8ms, file is ready — callback fires, surge zones updated. No requests were delayed waiting for the file read."
+              "title": "File system & DNS — through libuv's thread pool",
+              "desc": "Reading fare config files, DNS lookups for internal services, password hashing with crypto — the OS doesn't always provide a non-blocking interface for these. So libuv runs them on background threads from its pool. The main JavaScript thread stays free."
             },
             {
               "type": "code",
-              "code": "Timeline — non-blocking beats blocking:\n\nBlocking I/O:\n[t=0ms]   Start readFile\n[t=0-8ms] SERVER FROZEN — 100 requests queued\n[t=8ms]   File loaded, start processing queue\n[t=88ms]  All 100 requests handled\n\nNon-Blocking I/O:\n[t=0ms]   Start readFile (async) → goes to libuv\n[t=0-8ms] Server FREELY handles all 100 requests\n[t=8ms]   File loaded, callback fires, zones updated\n[t=8ms]   All 100 requests already handled ✅\n\nNon-blocking: 8ms total. Blocking: 88ms total."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Non-blocking I/O is the reason Uber's Node.js server can handle millions of concurrent operations. Every I/O operation — database queries, file reads, API calls — runs in the background without freezing the server. The secret weapon that makes this possible: libuv."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Non-blocking sounds simple — but who actually does the I/O work in the background while the main thread is free? Node.js doesn't do it by magic. There's a C library called libuv doing the heavy lifting."
-            }
-          ],
-          "What is libuv?": [
-            {
-              "type": "paragraph",
-              "text": "When Uber's Node.js server says 'query the database' and immediately moves on — WHO is actually running that database query? It's not the main JavaScript thread. It's libuv: a C library that ships with Node.js, handles all async I/O operations, maintains a thread pool for heavy tasks, and notifies the Event Loop when work completes. libuv is the engine room below Node.js's deck."
-            },
-            {
-              "type": "heading",
-              "text": "libuv — The C Powerhouse Under Node.js"
-            },
-            {
-              "type": "paragraph",
-              "text": "libuv (lib-u-v, 'unicorn velociraptor' jokingly) was created by the Node.js team specifically to handle async I/O across all operating systems — Linux, macOS, Windows. Each OS has a different API for async I/O (epoll on Linux, kqueue on macOS, IOCP on Windows). libuv abstracts all of this — Node.js code works the same everywhere because libuv handles the OS-specific details."
-            },
-            {
-              "type": "code",
-              "code": "Node.js architecture (who handles what):\n\n┌────────────────────────────────────────┐\n│         YOUR APPLICATION CODE          │  ← JavaScript\n│  (ride matching, fare calculation)     │\n├────────────────────────────────────────┤\n│              NODE.JS CORE              │  ← JavaScript\n│    (http, fs, crypto modules)          │\n├────────────────────────────────────────┤\n│               V8 ENGINE                │  ← C++\n│    (executes JavaScript code)          │\n├────────────────────────────────────────┤\n│                 LIBUV                  │  ← C\n│  (async I/O, event loop, thread pool)  │\n├────────────────────────────────────────┤\n│            OPERATING SYSTEM            │\n│   (Linux epoll / macOS kqueue / Win)   │\n└────────────────────────────────────────┘"
-            },
-            {
-              "type": "heading",
-              "text": "What libuv Actually Does"
-            },
-            {
-              "type": "paragraph",
-              "text": "libuv has two main mechanisms. For network I/O (TCP connections, HTTP requests, WebSockets) — it uses the OS's native async capabilities (epoll/kqueue). These are truly non-blocking — the OS kernel handles them and notifies libuv when data is ready. For file system I/O and DNS lookups — the OS doesn't always provide a non-blocking interface, so libuv uses a thread pool to run them on separate threads, freeing the main thread."
-            },
-            {
-              "type": "step",
-              "title": "libuv responsibility 1 — Event Loop implementation",
-              "desc": "libuv implements the Event Loop itself. The phases of the loop (timers, I/O callbacks, idle, poll, check, close callbacks) are all managed by libuv. When Node.js starts, libuv's event loop starts running. It's the heartbeat."
-            },
-            {
-              "type": "step",
-              "title": "libuv responsibility 2 — Thread Pool for file system and DNS",
-              "desc": "libuv maintains a default pool of 4 threads (configurable via UV_THREADPOOL_SIZE environment variable). When your code calls fs.readFile() or dns.lookup(), libuv assigns the work to one of these background threads. The main thread is free. When the thread finishes, it notifies the event loop."
-            },
-            {
-              "type": "step",
-              "title": "libuv responsibility 3 — Non-blocking network I/O via OS",
-              "desc": "For TCP connections, UDP, and pipes — libuv uses the OS's native non-blocking mechanisms (epoll on Linux). These don't use the thread pool. The OS kernel itself monitors thousands of sockets simultaneously and tells libuv when data arrives. This is how Uber's server handles 100,000+ simultaneous GPS connections with minimal threads."
-            },
-            {
-              "type": "code",
-              "code": "Uber server — what goes where in libuv:\n\nGPS socket receives data           → OS epoll (no threads needed)\nHTTP request from rider's app      → OS epoll (no threads needed)\ndb.query() result arrives          → OS epoll (no threads needed)\n\nfs.readFile('surge-zones.json')    → libuv thread pool (thread 1)\ndns.lookup('database.uber.internal') → libuv thread pool (thread 2)\ncrypto.pbkdf2('password', ...)     → libuv thread pool (thread 3)\n\nsetTimeout(fn, 5000)               → libuv timer (no I/O needed)\n\nEverything async ultimately flows through libuv."
-            },
-            {
-              "type": "info-callout",
-              "text": "🔧 libuv is to Node.js what an engine is to a car. You drive the car (write JavaScript), but you don't interact with the engine directly (libuv). The engine handles the complex mechanical work invisibly. Without libuv, Node.js would not exist — it's that foundational."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ libuv is the C library that makes Node.js non-blocking. It implements the Event Loop, maintains a thread pool for file and DNS operations, and uses OS-native async mechanisms for network I/O. Every async operation in Uber's Node.js server eventually goes through libuv."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ libuv has a thread pool — but it defaults to only 4 threads. What happens when Uber's server needs to run 1,000 simultaneous file reads? Do 996 of them wait for a thread? Let's look at the thread pool in detail."
-            }
-          ],
-          "Thread Pool in libuv": [
-            {
-              "type": "paragraph",
-              "text": "Uber's server receives a surge in file-heavy operations — 20 simultaneous requests each needing to read a configuration file. libuv's thread pool has 4 threads by default. So 4 file reads start immediately. What about the other 16? They wait in a queue for a thread to become free. This is libuv's thread pool in action — a finite number of worker threads, shared across all file and DNS operations."
+              "code": "// MakeMyTrip server — what goes where:\n\nrazorpay.charge(userId, fare)          → OS kernel (no threads)\nhotelAPI.confirmRoom(bookingDetails)   → OS kernel (no threads)\ndb.query('SELECT * FROM bookings')     → OS kernel (no threads)\n\nfs.readFile('/config/fare-rules.json') → libuv thread pool\ndns.lookup('internal.makemytrip.com')  → libuv thread pool\ncrypto.pbkdf2(password, salt, ...)     → libuv thread pool\n\nsetTimeout(() => expireSession(), 600000) → libuv timer"
             },
             {
               "type": "heading",
@@ -6423,194 +6567,28 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "By default, libuv creates 4 threads in its pool (configurable up to 1024 via the UV_THREADPOOL_SIZE environment variable). These threads handle operations that don't have OS-level async support — primarily file system operations, DNS lookups, and some crypto operations. When a task arrives, it's assigned to an available thread. When all 4 threads are busy, new tasks queue and wait."
+              "text": "libuv creates 4 threads by default (configurable up to 1024 via the UV_THREADPOOL_SIZE environment variable). When a file read or DNS lookup arrives, it's assigned to an available thread. If all 4 are busy, the task waits in a queue. The main JavaScript thread never touches this work — it stays free to handle bookings, payments, and everything else."
+            },
+            {
+              "type": "step",
+              "title": "Scenario — MakeMyTrip loads 8 config files at startup",
+              "desc": "Server starts and calls fs.readFile() 8 times. libuv has 4 threads. First 4 files start immediately on threads 1-4. Files 5-8 wait in queue. When the first 4 complete (~10ms), their callbacks go to the Event Loop. The 4 freed threads immediately pick up files 5-8. All 8 files loaded in ~20ms. With blocking I/O, it would have taken 80ms sequentially."
             },
             {
               "type": "code",
-              "code": "// See the thread pool at work:\n// Run 8 file reads simultaneously\nconst startTime = Date.now();\nlet completed = 0;\n\nfor (let i = 0; i < 8; i++) {\n  fs.readFile('/app/config/zone-' + i + '.json', () => {\n    completed++;\n    console.log(`File ${i} done at ${Date.now() - startTime}ms`);\n    if (completed === 8) console.log('All done!');\n  });\n}\n\n// Output (default 4 threads):\n// File 2 done at 10ms   ← first batch (4 threads)\n// File 0 done at 11ms   ← of 4 started together\n// File 1 done at 12ms\n// File 3 done at 12ms\n// File 6 done at 22ms   ← second batch (4 freed threads)\n// File 4 done at 23ms   ← started after first 4 finished\n// File 5 done at 23ms\n// File 7 done at 24ms"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Thread Pool During Uber Startup"
-            },
-            {
-              "type": "paragraph",
-              "text": "When Uber's Node.js server starts up, it loads configuration files for 10 different microservices — all simultaneously. Here's how the thread pool handles it:"
-            },
-            {
-              "type": "step",
-              "title": "t=0ms — 10 config file reads triggered simultaneously",
-              "desc": "Server startup code calls fs.readFile() 10 times in rapid succession. All 10 tasks are handed to libuv. libuv has 4 threads in the pool."
-            },
-            {
-              "type": "step",
-              "title": "t=0ms — First 4 files assigned to threads",
-              "desc": "Thread 1 gets surge-zones.json. Thread 2 gets driver-config.json. Thread 3 gets payment-config.json. Thread 4 gets maps-config.json. The other 6 files join the queue — waiting."
-            },
-            {
-              "type": "step",
-              "title": "t=0ms to t=10ms — Threads work, main thread is FREE",
-              "desc": "All 4 threads are reading files from disk. The main JavaScript thread? It's free — handling incoming requests, running business logic, processing anything else in the Event Loop. The file reads happen in true parallel in the background."
-            },
-            {
-              "type": "step",
-              "title": "t=10ms — First 4 files complete",
-              "desc": "All 4 threads finish. They each place their callbacks in the Event Loop's callback queue. Event Loop runs them: processes surge zones, driver config, payment config, maps config. Threads are now FREE again."
-            },
-            {
-              "type": "step",
-              "title": "t=10ms — Next 4 files picked up by free threads",
-              "desc": "The 4 newly freed threads grab the next 4 files from the queue. Files 5, 6, 7, 8 start loading. File 9 waits for the next free thread."
-            },
-            {
-              "type": "step",
-              "title": "t=20ms — Second batch complete. File 9 starts.",
-              "desc": "4 more threads free up. File 9 is last in queue, gets assigned. All configs eventually loaded. Total time: ~25ms for 10 file reads. With blocking I/O, it would have been 100ms (10 × 10ms sequentially)."
-            },
-            {
-              "type": "code",
-              "code": "Thread pool utilization — Uber startup:\n\nThread 1: [surge-zones]____[rider-config]_____[analytics]\nThread 2: [driver-config]__[payment-v2]_______[email-tmpl]\nThread 3: [payment-cfg]___[maps-config]_______[waiting...]\nThread 4: [maps-config]___[fraud-rules]_______[waiting...]\nQueue:    [surge-v2, rider-prefs, analytics, email-templates, fraud]\n\nMain JS Thread: [handling requests][handling requests][handling requests]...\n                ← NEVER TOUCHES the file work ↑\n\nFour threads doing I/O. Main thread free.\nThis is how Uber loads configs without slowing down the server."
+              "code": "Thread pool — MakeMyTrip server startup:\n\nThread 1: [fare-rules.json]_______[hotel-config.json]\nThread 2: [payment-config.json]___[airline-config.json]\nThread 3: [promo-rules.json]______[bus-config.json]\nThread 4: [loyalty-config.json]___[train-config.json]\n\nMain JS Thread: [handling bookings][handling payments][handling searches]\n                ← NEVER touches the file work above\n\n8 files loaded in ~20ms. Main thread never blocked."
             },
             {
               "type": "info-callout",
-              "text": "⚙️ Uber's engineering teams set UV_THREADPOOL_SIZE in production. The right value depends on the workload — how many concurrent file system operations are expected. For a server doing mostly database queries (network I/O, uses OS kernel not thread pool), the default 4 is fine. For a server doing heavy file processing, bumping to 16 or 32 might be appropriate."
+              "text": "💡 Think of libuv as MakeMyTrip's back office. The booking agents (main thread) never go fetch documents themselves — they hand requests to the back office (libuv) and immediately take the next customer. The back office has 4 staff (thread pool) for paperwork-heavy tasks, and uses the postal system (OS kernel) for anything that involves external communication."
             },
             {
               "type": "success-callout",
-              "text": "✅ libuv's thread pool (default 4, up to 1024) handles file system, DNS, and crypto operations in the background. Tasks queue if all threads are busy. The main JavaScript thread is always free. Understanding the thread pool helps you tune Node.js performance for Uber-scale file-heavy workloads."
+              "text": "✅ libuv is what makes Node.js non-blocking. Network calls go through the OS kernel — no threads needed. File reads and DNS go through the 4-thread pool. The main JavaScript thread stays free for MakeMyTrip's booking logic. Every single async operation — hotel confirmation, payment, config loading — flows through libuv."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Thread pool handles files and DNS. But what about the most common Uber operations — database queries, GPS socket connections, HTTP calls to Google Maps? These don't use the thread pool. They use the OS kernel directly. That's the final piece."
-            }
-          ],
-          "How Node.js handles file & network operations": [
-            {
-              "type": "paragraph",
-              "text": "Uber's Node.js server does two categories of I/O all day long: network operations (driver GPS sockets, database connections, Google Maps API calls, Stripe payment API calls) and file operations (reading config files, writing logs). These two categories are handled completely differently by Node.js and libuv — and understanding this difference explains why Node.js can scale to Uber's traffic levels."
-            },
-            {
-              "type": "heading",
-              "text": "Network Operations — OS Kernel Does the Work"
-            },
-            {
-              "type": "paragraph",
-              "text": "When Uber's server handles 100,000 simultaneous GPS socket connections, it doesn't use 100,000 threads. It uses one OS mechanism: epoll (Linux), kqueue (macOS), or IOCP (Windows). These are kernel-level APIs that let a single thread monitor thousands of network connections at once. Node.js registers all its sockets with the OS kernel. The kernel watches them all and tells Node.js the moment data arrives on any of them. No polling. No threads. Just efficient kernel notifications."
-            },
-            {
-              "type": "code",
-              "code": "How 100,000 GPS connections are monitored:\n\nNOT like this (bad):\nwhile (true) {\n  for each of 100,000 sockets {\n    if (socket.hasData()) processIt(); // polling — CPU wasting\n  }\n}\n\nACTUAL mechanism (epoll on Linux):\nepoll.register(socket_1, socket_2, ... socket_100000);\n// ONE kernel call monitors ALL 100,000 sockets\n\nepoll.wait(); // kernel goes to sleep\n// OS kernel WAKES UP only when data arrives\n// Tells Node.js exactly WHICH socket has data\n// Zero CPU wasted polling empty sockets"
-            },
-            {
-              "type": "heading",
-              "text": "File Operations — libuv Thread Pool"
-            },
-            {
-              "type": "paragraph",
-              "text": "File system operations (readFile, writeFile, appendFile, stat) go through libuv's thread pool because most file system operations don't have efficient async OS APIs everywhere. libuv uses threads to run them in the background. Your JavaScript code calls fs.readFile() — libuv picks a thread from the pool, that thread does the blocking file read, and when done, the callback is placed in the Event Loop queue."
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Complete Uber GPS Ping Handling"
-            },
-            {
-              "type": "paragraph",
-              "text": "Here's the full journey of one GPS ping from Driver_87 — showing exactly which part of Node.js handles each step:"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Driver_87's phone sends GPS data over TCP",
-              "desc": "Driver_87's Uber app sends: { driverId: 87, lat: 12.97, lng: 77.59, speed: 45 }. This data arrives at Uber's server over a TCP connection. The OS kernel (via epoll) detects data on Driver_87's socket. Notifies libuv."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — libuv triggers the data callback (Network I/O path)",
-              "desc": "libuv puts the 'socket has data' event into the Event Loop. This is a network I/O callback — NOT a thread pool operation. The Event Loop picks it up. Calls Node.js's net module. JavaScript callback fires: (socket, data) => processGPS(data)."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — JavaScript processes the GPS data",
-              "desc": "On the Call Stack: parse the GPS JSON, validate coordinates, check if driver is in a surge zone, update the in-memory driver map. This is pure JavaScript/CPU work — V8 executes it. Takes ~0.5ms."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Write GPS to database (network I/O path again)",
-              "desc": "JavaScript calls: db.insert(gpsData). This is a database call — a network connection to Uber's database server. Goes through Node.js's net module → libuv → OS kernel (epoll monitors the DB socket). NOT a thread pool operation. Main thread is free immediately."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — Write GPS to log file (thread pool path)",
-              "desc": "JavaScript also calls: fs.appendFile('gps.log', logEntry). This is a file operation — goes to libuv's thread pool. A thread picks it up, writes to disk. Main thread is free. Callback fires when done."
-            },
-            {
-              "type": "step",
-              "title": "Step 6 — Send updated position to rider (network I/O)",
-              "desc": "JavaScript finds the rider whose trip has Driver_87. Writes the new GPS position to the rider's WebSocket connection. OS kernel handles the socket write. Rider's phone receives the updated driver position. Car moves on their map."
-            },
-            {
-              "type": "code",
-              "code": "One GPS ping — which system handles each operation:\n\nOperation                          │ Handled By\n───────────────────────────────────┼──────────────────────────\nReceive TCP data from driver       │ OS epoll → libuv → JS callback\nParse GPS JSON                     │ V8 (JS execution, Call Stack)\nCheck surge zone                   │ V8 (JS execution, Call Stack)\nWrite GPS to database              │ OS epoll → libuv (network I/O)\nWrite GPS to log file              │ libuv thread pool (file I/O)\nPush position to rider WebSocket   │ OS epoll → libuv (network I/O)\n\nMain thread blocking time: ~0ms\nTotal operations: 6\nOperations in background: 3 (DB write, file write, socket write)\nTime to respond to next GPS ping: immediate"
-            },
-            {
-              "type": "table",
-              "headers": [
-                "Operation Type",
-                "Uber Example",
-                "Handled By",
-                "Threads Used"
-              ],
-              "rows": [
-                [
-                  "TCP/Network receive",
-                  "GPS ping arrives",
-                  "OS epoll + libuv",
-                  "0 (kernel handles)"
-                ],
-                [
-                  "TCP/Network send",
-                  "Push to rider app",
-                  "OS epoll + libuv",
-                  "0 (kernel handles)"
-                ],
-                [
-                  "Database query",
-                  "Find nearby drivers",
-                  "OS epoll + libuv",
-                  "0 (network I/O)"
-                ],
-                [
-                  "File read",
-                  "Load config file",
-                  "libuv thread pool",
-                  "1 from pool"
-                ],
-                [
-                  "File write",
-                  "Write GPS log",
-                  "libuv thread pool",
-                  "1 from pool"
-                ],
-                [
-                  "DNS lookup",
-                  "Resolve DB hostname",
-                  "libuv thread pool",
-                  "1 from pool"
-                ],
-                [
-                  "CPU computation",
-                  "Calculate surge price",
-                  "V8 (main thread)",
-                  "0 (main thread)"
-                ]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Network I/O (GPS sockets, DB connections, API calls) uses the OS kernel's async mechanisms — zero extra threads, scales to 100,000+ concurrent connections. File I/O uses libuv's thread pool — background threads handle disk work. Your JavaScript code is never frozen by either. This two-track system is how Uber's Node.js server handles millions of operations per second."
-            },
-            {
-              "type": "info-callout",
-              "text": "🎯 Full picture of Non-Blocking I/O & libuv — Blocking I/O freezes the server; non-blocking keeps it free. libuv is the C library that makes non-blocking possible in Node.js. Its thread pool handles file and DNS operations. The OS kernel (epoll/kqueue) handles network operations with zero threads. Together, these systems let a single Node.js process at Uber handle more concurrent connections than a Java server running hundreds of threads — with less memory and better performance."
+              "text": "⚠️ The thread pool defaults to 4 threads. For MakeMyTrip servers doing heavy file processing, tuning UV_THREADPOOL_SIZE matters. For servers doing mostly database and API calls (network I/O), the default is fine — those bypass the thread pool entirely and go straight through the OS kernel."
             }
           ]
         }
@@ -6620,16 +6598,15 @@ export const roadmapData = [
         "title": "Worker Threads & Child Processes",
         "level": "freshers",
         "topics": [
-          "Why Node.js needs Worker Threads",
-          "worker_threads module",
+          "Why Node.js Needs Worker Threads & How to Use Them",
           "Child Processes (spawn, fork, exec)",
-          "CPU Intensive tasks in Node.js"
+          "CPU Intensive Tasks in Node.js"
         ],
         "topicDetails": {
-          "Why Node.js needs Worker Threads": [
+          "Why Node.js Needs Worker Threads & How to Use Them": [
             {
               "type": "paragraph",
-              "text": "Uber's surge pricing algorithm just got complex. Instead of a simple multiplier, it now runs a machine learning model — analyzing 50 variables per ride request: weather, events, historical patterns, driver supply curves. This calculation takes 200ms of pure CPU work. On Node.js's single thread, every 200ms spent on that calculation means 200ms where no GPS pings are processed, no ride requests are handled, no payments confirmed. The entire server freezes. This is the CPU problem in Node.js — and Worker Threads are the solution."
+              "text": "MakeMyTrip's dynamic pricing engine just got complex. Instead of a simple formula, it now runs an algorithm analyzing 40+ variables per search: season, route popularity, remaining seats, competitor prices, historical booking patterns. This takes 200ms of pure CPU work. On Node.js's single thread, those 200ms mean nobody's hotel search loads, no payments process, no bookings confirm. The entire server freezes. This is the CPU problem in Node.js — and Worker Threads are the solution."
             },
             {
               "type": "curious-callout",
@@ -6637,113 +6614,78 @@ export const roadmapData = [
             },
             {
               "type": "heading",
-              "text": "The Problem — CPU Work Blocks Everything"
+              "text": "Why the Event Loop Freezes on CPU Work"
             },
             {
               "type": "paragraph",
-              "text": "Node.js's single-threaded Event Loop is brilliant for I/O-heavy work — it never blocks waiting for databases or network calls. But CPU-heavy work is different. When JavaScript code is actively computing — running a loop, processing an image, running an ML model — it sits on the Call Stack the entire time. The Event Loop cannot move on. Everything freezes until the computation finishes."
+              "text": "Node.js's single-threaded Event Loop handles I/O brilliantly — it never blocks waiting for a database or API. But CPU work is different. When JavaScript is actively computing — running a pricing algorithm, processing a large dataset — it sits on the Call Stack the entire time. The Event Loop cannot move. Everything waits until the computation finishes."
             },
             {
               "type": "code",
-              "code": "// This FREEZES Uber's server for ~200ms:\nfunction calculateSurgeML(rideData) {\n  // Complex ML calculation — 200ms of CPU work\n  let result = 0;\n  for (let i = 0; i < 100_000_000; i++) {\n    result += complexMath(rideData[i % rideData.length]);\n  }\n  return result;\n}\n\n// When this runs:\n// t=0ms:   calculateSurgeML() starts on Call Stack\n// t=0-200ms: EVENT LOOP IS FROZEN\n//   → GPS pings: queued, not processed\n//   → Ride requests: queued, not processed\n//   → Payment webhooks: queued, not processed\n// t=200ms: function returns, Event Loop resumes\n// Riders experienced 200ms of complete server freeze"
+              "code": "// This FREEZES MakeMyTrip's server for ~200ms:\nfunction calculateDynamicPricing(searchData) {\n  let result = 0;\n  for (let i = 0; i < 100_000_000; i++) {\n    result += complexPricingModel(searchData[i % searchData.length]);\n  }\n  return result;\n}\n\n// When this runs on the main thread:\n// t=0ms:    Priya searches MUM→DEL. calculateDynamicPricing() starts.\n// t=0-200ms: EVENT LOOP IS FROZEN\n//   → Rahul's hotel search: queued, not processed\n//   → Amit's payment of ₹12,000: queued, not processed\n//   → Sneha's flight booking: queued, not processed\n// t=200ms:  function returns, Event Loop resumes\n// Every user felt 200ms of complete server freeze."
+            },
+            {
+              "type": "paragraph",
+              "text": "You might wonder — can't libuv's thread pool handle this? No. libuv's thread pool runs C-level operations like file reads and DNS lookups. Your JavaScript pricing algorithm can only run in a V8 engine instance — and by default, there's only one: the main thread. Worker Threads solve this by creating additional V8 instances that can run JavaScript in parallel."
+            },
+            {
+              "type": "code",
+              "code": "Without Worker Threads:\n┌──────────────────────────────────────────────────────────┐\n│  Main Thread                                             │\n│  [Priya:search] [FROZEN 200ms — Rahul, Amit, Sneha wait] │\n└──────────────────────────────────────────────────────────┘\n\nWith Worker Threads:\n┌──────────────────────────────────────────────────────────┐\n│  Main Thread                                             │\n│  [Priya:search] [Rahul:hotel] [Amit:pay] [Sneha:booking] │  ← smooth\n└──────────────────────────────────────────────────────────┘\n┌──────────────────────────────────────────────────────────┐\n│  Worker Thread                                           │\n│  [pricing algorithm for Priya's MUM→DEL — 200ms]        │  ← isolated\n└──────────────────────────────────────────────────────────┘"
             },
             {
               "type": "heading",
-              "text": "Why libuv Thread Pool Doesn't Help Here"
+              "text": "Using Worker Threads — The worker_threads Module"
             },
             {
               "type": "paragraph",
-              "text": "You might think: 'libuv has a thread pool — can't it run CPU work there?' No. libuv's thread pool is designed for I/O operations — file reads, DNS lookups. It runs C-level operations. Your JavaScript code — the surge pricing algorithm, the ML model — cannot run in libuv's threads. JavaScript can only run in a V8 engine instance, and by default, there's only one: the main thread."
-            },
-            {
-              "type": "step",
-              "title": "The gap Worker Threads fill",
-              "desc": "Worker Threads create additional V8 engine instances — each with their own JavaScript runtime, their own Event Loop, their own memory heap. They can run JavaScript code in parallel with the main thread. The main thread stays free for I/O. Workers handle CPU work. They communicate via message passing."
+              "text": "The worker_threads module has a simple pattern: the main thread creates a Worker, passes data in via workerData, and listens for a message back. The worker file receives the data, does the CPU work, and sends the result back via parentPort. They don't share scope — all communication is message passing."
             },
             {
               "type": "code",
-              "code": "Node.js without Worker Threads:\n┌─────────────────────────────────┐\n│  Main Thread                    │\n│  [GPS ping][FROZEN 200ms][ping] │  ← server stutters\n└─────────────────────────────────┘\n\nNode.js with Worker Threads:\n┌─────────────────────────────────┐\n│  Main Thread                    │\n│  [GPS ping][ping][ping][ping]   │  ← smooth, never blocks\n└─────────────────────────────────┘\n┌─────────────────────────────────┐\n│  Worker Thread                  │\n│  [ML surge calc 200ms........]  │  ← CPU work isolated here\n└─────────────────────────────────┘"
+              "code": "// pricing-worker.js — runs in the Worker Thread\nconst { workerData, parentPort } = require('worker_threads');\n\nconst { route, date, seatsLeft, competitors } = workerData;\n\n// 200ms of CPU work — isolated in its own thread\n// Priya searched MUM→DEL, Dec 15 — worker calculates her price\nfunction calculateDynamicPricing({ route, date, seatsLeft, competitors }) {\n  let basePrice = 3200; // MUM→DEL base fare\n  basePrice *= getSeasonMultiplier(date);     // Dec 15 = peak: +30%\n  basePrice *= getScarcityMultiplier(seatsLeft); // 12 seats left: +15%\n  basePrice = matchCompetitorPrice(basePrice, competitors); // IndiGo at ₹4,100\n  return Math.round(basePrice);\n}\n\nconst price = calculateDynamicPricing({ route, date, seatsLeft, competitors });\n\n// Send Priya's price back to main thread\nparentPort.postMessage({ price, route });"
             },
             {
-              "type": "info-callout",
-              "text": "🧵 Worker Threads were added to Node.js in v10 (stable in v12) specifically because the community needed a way to run CPU-intensive JavaScript without blocking the Event Loop. Before Worker Threads, the only options were Child Processes (expensive) or rewriting CPU code in C++ (very hard)."
+              "type": "code",
+              "code": "// main-server.js — main thread never freezes\nconst { Worker } = require('worker_threads');\n\nfunction getDynamicPrice(searchParams) {\n  return new Promise((resolve, reject) => {\n    const worker = new Worker('./pricing-worker.js', {\n      workerData: searchParams\n    });\n    worker.on('message', result => resolve(result.price));\n    worker.on('error', reject);\n  });\n}\n\nasync function handleFlightSearch(req) {\n  // Priya's request: MUM→DEL, Dec 15, 1 adult\n  const searchParams = {\n    route: req.route,       // 'MUM-DEL'\n    date: req.date,         // '2024-12-15'\n    seatsLeft: 12,\n    competitors: await getCompetitorPrices(req.route, req.date)\n  };\n\n  // Worker calculates Priya's price — main thread handles Rahul, Amit, Sneha\n  const price = await getDynamicPrice(searchParams);\n  console.log(`MUM→DEL price for ${req.date}: ₹${price}`);\n  // Output: MUM→DEL price for 2024-12-15: ₹4299\n}"
+            },
+            {
+              "type": "heading",
+              "text": "Step-by-Step — Worker Thread Lifecycle"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Priya searches MUM→DEL, main thread creates the Worker",
+              "desc": "Priya opens MakeMyTrip and searches MUM→DEL for Dec 15. The main thread receives her request and immediately calls new Worker('./pricing-worker.js', { workerData: { route: 'MUM-DEL', date: '2024-12-15', seatsLeft: 12, competitors: [...] } }). Node.js spawns a new OS thread with its own V8 engine. The main thread does not wait — it moves on instantly to handle Rahul's hotel search and Amit's payment confirmation."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Worker calculates Priya's price while the server keeps running",
+              "desc": "The worker runs calculateDynamicPricing() — analyzing 40+ variables: Dec 15 is peak holiday season (+30%), only 12 seats left (+15%), IndiGo is pricing at ₹4,100 on the same route. This takes 200ms of pure CPU. During those 200ms, the main thread is fully free — Rahul's hotel results load, Amit's ₹12,000 payment confirms, Sneha books her Goa flight. Nobody waits for Priya's pricing."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Worker sends ₹4,299 back, Priya sees her price",
+              "desc": "After 200ms, the worker calls parentPort.postMessage({ price: 4299, route: 'MUM-DEL' }). The message is queued on the main thread. The worker.on('message') callback fires, the Promise resolves, and MakeMyTrip's server returns Priya's search result — MUM→DEL for ₹4,299. Total wait: just 200ms for the algorithm. Rahul, Amit, and Sneha's requests were all handled in parallel during that time."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Worker Pool handles Sunday evening peak traffic",
+              "desc": "It's Sunday 8pm — MakeMyTrip's busiest hour. 500 users are searching simultaneously. If a new worker spawned per request, that's 500 OS threads — the server crashes. Instead, MakeMyTrip pre-creates a pool of 4 workers (one per CPU core). Worker 1 prices Priya's MUM→DEL, Worker 2 prices Rahul's BLR→HYD, Worker 3 prices Sneha's DEL→GOA, Worker 4 prices Amit's CCU→BOM — all in parallel. The remaining 496 requests queue and get picked up as workers finish. No crash, no spawning cost each time."
             },
             {
               "type": "success-callout",
-              "text": "✅ Node.js needs Worker Threads because the single-threaded Event Loop freezes during CPU-intensive work. Worker Threads provide real parallelism for JavaScript code — each worker has its own V8 instance and Event Loop. Uber uses them to run complex surge pricing calculations without ever freezing the main server thread."
+              "text": "✅ Worker Threads give Node.js real parallelism for JavaScript code. MakeMyTrip's pricing algorithm, fraud scoring, and PDF booking confirmations can all run in Worker Threads — main thread stays free for I/O, workers handle CPU work. Added in Node.js v10, stable in v12."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Worker Threads exist — but how do you actually use them? The worker_threads module gives you the API to create workers, pass data in, and receive results back."
+              "text": "⚠️ Worker Threads are for JavaScript CPU work. But what if MakeMyTrip needs to run a Python ML model to predict Priya's flight delay, or compress last night's booking logs, or talk to a separate fraud detection service? That's where Child Processes come in — entirely separate OS processes, any language."
             }
           ],
-          "worker_threads module": [
-            {
-              "type": "paragraph",
-              "text": "Uber's ML-based surge pricing needs to run without freezing the server. The solution: the worker_threads module. It lets you spin up a new JavaScript thread, send it the ride data, let it crunch numbers for 200ms, and receive the surge multiplier back — all while the main thread keeps processing GPS pings and ride requests without interruption."
-            },
-            {
-              "type": "heading",
-              "text": "The worker_threads API"
-            },
-            {
-              "type": "paragraph",
-              "text": "The worker_threads module has two key classes: Worker (used in the main thread to create and communicate with a worker) and the workerData / parentPort pattern (used inside the worker file to receive input and send output). Workers run a separate JavaScript file — they don't share scope with the main thread. All communication is via message passing."
-            },
-            {
-              "type": "code",
-              "code": "// surge-worker.js — runs in the Worker Thread\nconst { workerData, parentPort } = require('worker_threads');\n\n// workerData contains what the main thread sent\nconst { rideData, driverSupply } = workerData;\n\n// Do the heavy CPU work here — 200ms, but isolated\nfunction calculateSurgeMultiplier(rideData, driverSupply) {\n  let demand = 0;\n  for (let i = 0; i < rideData.length; i++) {\n    demand += complexMLCalculation(rideData[i]);\n  }\n  return Math.min(demand / driverSupply, 5.0); // max 5x surge\n}\n\nconst surgeMultiplier = calculateSurgeMultiplier(rideData, driverSupply);\n\n// Send result back to main thread\nparentPort.postMessage({ surgeMultiplier });"
-            },
-            {
-              "type": "code",
-              "code": "// main-server.js — the main thread\nconst { Worker } = require('worker_threads');\n\nfunction getSurgeMultiplier(rideData, driverSupply) {\n  return new Promise((resolve, reject) => {\n    // Spin up the worker, pass data via workerData\n    const worker = new Worker('./surge-worker.js', {\n      workerData: { rideData, driverSupply }\n    });\n\n    // Listen for the result\n    worker.on('message', (result) => {\n      resolve(result.surgeMultiplier);\n    });\n\n    worker.on('error', reject);\n\n    worker.on('exit', (code) => {\n      if (code !== 0) reject(new Error(`Worker exited with code ${code}`));\n    });\n  });\n}\n\n// Usage — main thread never freezes!\nasync function handleRideRequest(req) {\n  const surge = await getSurgeMultiplier(req.rideData, req.driverSupply);\n  // While worker was calculating (200ms), main thread handled other requests\n  console.log('Surge multiplier:', surge);\n}"
-            },
-            {
-              "type": "heading",
-              "text": "Step-by-Step — Worker Thread Lifecycle for Surge Pricing"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Main thread creates a Worker",
-              "desc": "new Worker('./surge-worker.js', { workerData: {...} }) is called. Node.js spawns a new OS thread, creates a fresh V8 instance inside it, and loads surge-worker.js. The main thread is NOT blocked — it immediately moves on."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Worker runs independently",
-              "desc": "The worker thread starts executing surge-worker.js. It has its own Call Stack, its own Event Loop, its own memory heap. It's doing the 200ms ML calculation completely independently. Main thread is handling GPS pings, new ride requests, payments — all at the same time."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Worker sends result via parentPort",
-              "desc": "Worker completes the calculation. Calls parentPort.postMessage({ surgeMultiplier: 2.3 }). This message is serialized and sent to the main thread's message queue."
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Main thread receives the message",
-              "desc": "The worker.on('message') callback fires in the main thread. The Promise resolves with the surge multiplier. The awaited getSurgeMultiplier() call returns. The ride request handling continues with the correct surge price."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — Worker exits",
-              "desc": "surge-worker.js finishes executing. The worker thread is terminated. The OS thread is freed. For performance in production, Uber would use a Worker Pool — a set of pre-created workers that are reused for each surge calculation instead of being created and destroyed for each request."
-            },
-            {
-              "type": "code",
-              "code": "// Production pattern — Worker Pool for Uber\n// Reuse workers instead of creating new ones per request\nconst { Worker } = require('worker_threads');\n\nclass SurgeWorkerPool {\n  constructor(size = 4) {\n    this.workers = [];\n    this.queue = [];\n    for (let i = 0; i < size; i++) {\n      this.addWorker();\n    }\n  }\n\n  addWorker() {\n    const worker = new Worker('./surge-worker.js');\n    worker.on('message', (result) => {\n      const { resolve } = this.queue.shift();\n      resolve(result);\n      // Worker is free — will handle next queued task\n    });\n    this.workers.push(worker);\n  }\n\n  runTask(data) {\n    return new Promise((resolve, reject) => {\n      this.queue.push({ resolve, reject });\n      // Send to next available worker\n      this.workers[this.queue.length % this.workers.length]\n        .postMessage(data);\n    });\n  }\n}\n\nconst surgePool = new SurgeWorkerPool(4); // 4 workers for 4 CPU cores"
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ The worker_threads module lets Uber run CPU-heavy JavaScript (ML surge pricing, route optimization, fraud detection) on separate threads while the main thread stays free for I/O. Workers communicate via message passing. In production, Worker Pools reuse threads for maximum efficiency."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Worker Threads share the same process but run in separate threads. Child Processes are different — they're entirely separate OS processes. Sometimes you need a full process, not just a thread. That's where spawn, fork, and exec come in."
-            }
-          ],
+
           "Child Processes (spawn, fork, exec)": [
             {
               "type": "paragraph",
-              "text": "Uber needs to run a Python machine learning service to predict ETAs. They need to execute a shell command to compress log files. They need to run another Node.js microservice for fraud detection. None of these are JavaScript Worker Threads — they're completely separate programs. Node.js's child_process module lets you spawn, fork, and exec these external programs from within your Node.js application."
+              "text": "MakeMyTrip's Node.js server can't do everything alone. Their ML team built a Python model that predicts flight delay probability for every search result. Their ops team runs nightly shell scripts to compress booking logs. Their fraud team runs a separate Node.js service that scores every transaction. None of these are Worker Threads — they're completely separate programs in different languages. The child_process module lets Node.js launch and talk to these external programs without blocking the main thread."
             },
             {
               "type": "heading",
@@ -6751,133 +6693,130 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Node.js provides three main functions in the child_process module, each for different use cases. spawn() runs a command and streams its output. exec() runs a command, buffers all output, and returns it at once. fork() is a special version of spawn specifically for Node.js scripts — it sets up an IPC (inter-process communication) channel automatically."
+              "text": "exec() runs a shell command and buffers the complete output — use it for short commands with small output. spawn() runs a command and streams output as it arrives — use it for long-running processes or large outputs. fork() is spawn specifically for Node.js scripts — it automatically sets up a two-way communication channel (IPC) between parent and child."
             },
             {
               "type": "step",
-              "title": "exec() — Run a command, get the output",
-              "desc": "exec() is for short commands where you want the complete output at once. Uber uses it for things like compressing log files, running one-off scripts, or getting system information. It buffers the entire output in memory — so avoid it for large outputs."
+              "title": "exec() — Compress last night's booking logs",
+              "desc": "Every night at 2am, MakeMyTrip's server compresses the previous day's booking logs to free up disk space. This is a one-off shell command with small output — exactly what exec() is built for. The main thread fires the command and moves on. When gzip finishes, the callback runs. No blocking, no streams needed."
             },
             {
               "type": "code",
-              "code": "const { exec } = require('child_process');\n\n// Uber: compress yesterday's GPS logs\nexec('gzip /logs/gps-2024-01-15.log', (error, stdout, stderr) => {\n  if (error) {\n    console.error('Compression failed:', error.message);\n    return;\n  }\n  console.log('Log compressed successfully:', stdout);\n});\n\n// Main thread is NOT blocked — exec runs in background\n// Callback fires when command completes\nconsole.log('Compression started, continuing to handle requests...');"
+              "code": "const { exec } = require('child_process');\n\n// 2am cron: compress yesterday's booking logs\n// Jan 15 had 1.2 million bookings — log file is 4.3GB\nexec('gzip /logs/bookings-2024-01-15.log', (error, stdout, stderr) => {\n  if (error) {\n    // Alert ops team — disk space at risk\n    console.error('Log compression failed:', error.message);\n    notifyOpsTeam('Log compression failed for 2024-01-15');\n    return;\n  }\n  // 4.3GB → 380MB. Disk space recovered.\n  console.log('Booking logs compressed: 4.3GB → 380MB');\n  updateDashboard({ logsCompressed: true, date: '2024-01-15' });\n});\n\n// Main thread continues — doesn't wait for gzip\nconsole.log('Compression started. Handling early morning searches...');"
             },
             {
               "type": "step",
-              "title": "spawn() — Stream output from a long-running command",
-              "desc": "spawn() is for long-running processes or large outputs. It streams stdout and stderr as events — you don't wait for the whole output. Uber uses it to run the Python ML model for ETA prediction, streaming predictions back as they're generated."
+              "title": "spawn() — Run the Python flight delay prediction model",
+              "desc": "When Priya searches MUM→DEL for Dec 15, MakeMyTrip doesn't just show price — it shows delay probability too. Their ML team built this model in Python (scikit-learn + historical DGCA data). Node.js can't run Python directly, so it spawns the process, sends Priya's flight data, and streams the prediction back as it arrives — no need to wait for the process to fully finish."
             },
             {
               "type": "code",
-              "code": "const { spawn } = require('child_process');\n\n// Uber: run Python ML model for ETA prediction\nconst pythonProcess = spawn('python3', [\n  './models/eta_predictor.py',\n  '--input', JSON.stringify(rideData)\n]);\n\n// Stream output as it comes in\npythonProcess.stdout.on('data', (data) => {\n  const prediction = JSON.parse(data.toString());\n  console.log('ETA prediction:', prediction.eta, 'minutes');\n});\n\npythonProcess.stderr.on('data', (data) => {\n  console.error('Python error:', data.toString());\n});\n\npythonProcess.on('close', (code) => {\n  console.log('Python process exited with code:', code);\n});\n\n// Main thread continues — Python runs as a separate process"
+              "code": "const { spawn } = require('child_process');\n\n// Priya searched MUM→DEL, IndiGo 6E-204, Dec 15\n// Predict delay probability using Python ML model\nconst flightData = {\n  route: 'MUM-DEL',\n  airline: 'IndiGo',\n  flight: '6E-204',\n  date: '2024-12-15',\n  departureTime: '06:30',\n  historicalDelayRate: 0.23\n};\n\nconst pythonProcess = spawn('python3', [\n  './models/delay_predictor.py',\n  '--flight', JSON.stringify(flightData)\n]);\n\npythonProcess.stdout.on('data', (data) => {\n  const prediction = JSON.parse(data.toString());\n  // { delayChance: 34, expectedDelay: 22, confidence: 0.87 }\n  console.log(`IndiGo 6E-204: ${prediction.delayChance}% chance of delay`);\n  // Show Priya: \"34% delay probability — avg 22 min late\"\n  sendToClient(prediction);\n});\n\npythonProcess.on('close', (code) => {\n  console.log('Delay prediction complete, exit code:', code);\n});\n\n// Python model runs as a separate OS process\n// Main thread: serving Rahul's hotel search simultaneously"
             },
             {
               "type": "step",
-              "title": "fork() — Spawn another Node.js process with IPC",
-              "desc": "fork() is specifically for running another Node.js script as a child process. It automatically sets up a two-way IPC channel using process.send() and process.on('message'). Uber uses it to run the fraud detection microservice as a child process that can receive ride data and send back fraud scores."
+              "title": "fork() — Score Amit's ₹85,000 booking with the fraud detection service",
+              "desc": "Amit tries to book 5 Goa tickets for ₹85,000 in one transaction — unusually large for his account. MakeMyTrip's fraud detection runs as a separate Node.js process (it has its own ML model, its own DB connections, its own memory). The main server forks it and sends Amit's booking data. The fraud service responds with a risk score. If high risk, the booking goes to manual review. This two-way messaging is exactly what fork() is built for."
             },
             {
               "type": "code",
-              "code": "// fraud-detector.js — the child process\nprocess.on('message', (rideData) => {\n  // Run fraud detection algorithm\n  const fraudScore = analyzeFraudPatterns(rideData);\n  const isHighRisk = fraudScore > 0.85;\n\n  // Send result back to parent\n  process.send({ fraudScore, isHighRisk });\n});\n\nconsole.log('Fraud detector ready');\n\n\n// main-server.js — the parent process\nconst { fork } = require('child_process');\n\nconst fraudDetector = fork('./fraud-detector.js');\n\n// Send ride data to fraud detector process\nfraudDetector.send({ riderId: 'u42', fare: 850, route: [...] });\n\n// Receive result\nfraudDetector.on('message', (result) => {\n  if (result.isHighRisk) {\n    flagRideForReview(result.fraudScore);\n  } else {\n    confirmRide();\n  }\n});"
+              "code": "// fraud-detector.js — child process\n// Runs as a separate Node.js program with its own ML model\nprocess.on('message', (bookingData) => {\n  // Amit's booking: ₹85,000, 5 tickets, new device, Mumbai IP\n  const riskScore = analyzeBookingPatterns({\n    userId: bookingData.userId,\n    amount: bookingData.amount,       // ₹85,000 — 8x his avg booking\n    ticketCount: bookingData.tickets, // 5 — unusual\n    deviceId: bookingData.deviceId,   // new device, first time seen\n    ipLocation: bookingData.ip        // matches account home city ✓\n  });\n\n  const isHighRisk = riskScore > 0.85;\n  process.send({ riskScore, isHighRisk, userId: bookingData.userId });\n});\n\n\n// main-server.js — parent process\nconst { fork } = require('child_process');\n\nconst fraudDetector = fork('./fraud-detector.js');\n\n// Amit clicks 'Confirm Booking' — send to fraud service\nfraudDetector.send({\n  userId: 'u42-amit-sharma',\n  amount: 85000,\n  tickets: 5,\n  route: 'MUM-GOA',\n  deviceId: 'device-new-xyz',\n  ip: '103.21.xx.xx'\n});\n\nfraudDetector.on('message', (result) => {\n  if (result.isHighRisk) {\n    // Score: 0.91 — hold for manual review\n    holdBookingForReview(result.userId, result.riskScore);\n    sendSMSToAmit('Your booking is under review. We\\'ll confirm within 2 hours.');\n  } else {\n    confirmBooking();\n    sendConfirmationEmail(result.userId);\n  }\n});"
             },
             {
               "type": "table",
-              "headers": ["Method", "Use Case", "Output", "IPC Channel", "Uber Example"],
+              "headers": ["Method", "Use Case", "Output Style", "IPC", "MakeMyTrip Example"],
               "rows": [
-                ["exec()", "Short commands, small output", "Buffered (all at once)", "No", "Compress log files"],
-                ["spawn()", "Long-running, large output", "Streamed", "No", "Run Python ML model"],
-                ["fork()", "Another Node.js script", "Streamed + IPC", "Yes (automatic)", "Fraud detection service"],
-                ["execFile()", "Run a binary directly", "Buffered", "No", "Run C++ route optimizer"]
+                ["exec()", "Short shell commands", "Buffered (all at once)", "No", "Compress nightly booking logs (4.3GB → 380MB)"],
+                ["spawn()", "Long-running, any language", "Streamed", "No", "Python model: predict IndiGo 6E-204 delay for Priya"],
+                ["fork()", "Another Node.js script", "Streamed + messaging", "Yes (automatic)", "Fraud score Amit's ₹85,000 Goa booking"]
               ]
             },
             {
               "type": "info-callout",
-              "text": "🔀 Child Processes vs Worker Threads: Child Processes are completely separate OS processes — separate memory, separate Node.js runtime, can run ANY language (Python, Go, Ruby). Worker Threads are threads within the same process — shared memory possible, JavaScript only, lighter weight. For Uber's Python ML model: Child Process. For Uber's JS surge algorithm: Worker Thread."
+              "text": "💡 Worker Threads vs Child Processes: Worker Threads live inside the same Node.js process — lighter, JS only, share memory if needed. Child Processes are fully separate OS programs — any language, isolated memory. MakeMyTrip's Python delay model needs a Child Process. MakeMyTrip's JS pricing algorithm needs a Worker Thread."
             },
             {
               "type": "success-callout",
-              "text": "✅ Child Processes let Uber's Node.js server orchestrate work across multiple programs and languages — running Python ML models with spawn(), compressing logs with exec(), and communicating with Node.js microservices with fork(). The main thread stays non-blocking while child processes do their work independently."
+              "text": "✅ Child Processes let MakeMyTrip's Node.js server orchestrate work across languages and programs — Python ML predictions with spawn(), nightly log compression with exec(), and real-time fraud scoring with fork(). The main thread stays free while each child does its job independently."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ When should you use Worker Threads vs Child Processes vs just async code? The answer depends on what kind of work you're doing. CPU-intensive work in Node.js has specific patterns and anti-patterns — let's look at them."
+              "text": "⚠️ When should you use Worker Threads vs Child Processes vs just async/await? The answer depends on what kind of work you're doing. Let's look at four concrete strategies — from the lightest fix to the heaviest solution."
             }
           ],
-          "CPU Intensive tasks in Node.js": [
+
+          "CPU Intensive Tasks in Node.js": [
             {
               "type": "paragraph",
-              "text": "Uber's backend handles three types of CPU-intensive tasks: surge pricing ML calculations (complex math), route optimization (graph algorithms), and fraud detection (pattern matching across millions of records). Each freezes the Event Loop if run on the main thread. Knowing WHEN to offload CPU work — and HOW — is one of the most important skills for Node.js engineers at Uber's scale."
+              "text": "MakeMyTrip's backend handles three kinds of CPU-intensive work every second: dynamic pricing (analyzing 40+ variables per flight search), itinerary optimization (finding the best flight + hotel + cab combination across thousands of options), and fraud detection (pattern matching Amit's ₹85,000 booking against millions of past transactions). Each one freezes the Event Loop if run unchecked on the main thread. Knowing when to offload — and how — is one of the most important skills for any Node.js engineer."
             },
             {
               "type": "heading",
-              "text": "Identifying CPU-Intensive Work"
+              "text": "How to Spot CPU-Intensive Work"
             },
             {
               "type": "paragraph",
-              "text": "CPU-intensive work is any code that keeps the CPU busy for an extended time without any I/O waits. The key distinction: if your function calls await or has callbacks, it's probably I/O-heavy and Node.js handles it fine. If your function runs a tight loop, does heavy math, processes large data in memory, or runs a complex algorithm — it's CPU-intensive and needs special handling."
+              "text": "Simple test: if your function has await or callbacks, it's I/O-heavy — Node.js handles it fine. If it runs a tight loop, processes a large dataset in memory, or runs a complex algorithm with no pauses — it's CPU-intensive and needs special handling. The longer it runs without yielding, the more users are left waiting."
             },
             {
               "type": "code",
-              "code": "// I/O bound — Node.js handles perfectly, no issue:\nasync function findNearbyDrivers(location) {\n  const drivers = await db.query('SELECT...');\n  return drivers.filter(d => distance(d, location) < 2);\n  // Most time spent WAITING for DB → non-blocking ✅\n}\n\n// CPU bound — WILL freeze Event Loop, needs offloading:\nfunction optimizeDriverRoutes(drivers, orders) {\n  // Travelling Salesman-style optimization\n  // O(n!) complexity — runs for 500ms with 15 drivers\n  let bestRoute = null;\n  for (const permutation of generatePermutations(drivers)) {\n    const cost = calculateRouteCost(permutation, orders);\n    if (!bestRoute || cost < bestRoute.cost) {\n      bestRoute = { route: permutation, cost };\n    }\n  }\n  return bestRoute;\n  // 500ms of pure CPU → freezes Event Loop ❌\n}"
+              "code": "// I/O bound — Node.js handles perfectly:\nasync function searchHotels(city, checkIn, checkOut) {\n  // Priya also wants a hotel in Delhi\n  const hotels = await db.query(\n    'SELECT * FROM hotels WHERE city = ? AND available_date = ?',\n    [city, checkIn]\n  );\n  return hotels.filter(h => h.rating >= 4.0);\n  // Most time: WAITING for DB response → Event Loop is free ✅\n  // While waiting, Rahul's flight search and Amit's payment run fine\n}\n\n// CPU bound — WILL freeze Event Loop:\nfunction optimizeItinerary(flights, hotels, cabs, preferences) {\n  // Find the best MUM→DEL flight + Delhi hotel + airport cab combo\n  // 50 flights × 200 hotels × 10 cab options = 100,000 combinations\n  let bestPlan = null;\n  for (const flight of flights) {\n    for (const hotel of hotels) {\n      for (const cab of cabs) {\n        const score = scoreTrip(flight, hotel, cab, preferences);\n        if (!bestPlan || score > bestPlan.score) {\n          bestPlan = { flight, hotel, cab, score };\n        }\n      }\n    }\n  }\n  return bestPlan;\n  // 400ms of pure CPU → Rahul, Sneha, 500 others all wait ❌\n}"
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Four Strategies for CPU Work at Uber"
+              "text": "Four Strategies — Lightest to Heaviest"
             },
             {
               "type": "step",
-              "title": "Strategy 1 — Break work into chunks (setTimeout trick)",
-              "desc": "For moderately CPU-heavy work, break it into small chunks and yield control to the Event Loop between chunks using setImmediate() or setTimeout(fn, 0). This prevents a single long block — instead of one 500ms freeze, you get many 5ms pauses that the Event Loop can work around."
+              "title": "Strategy 1 — Batch price refresh with setImmediate()",
+              "desc": "Every 15 minutes, MakeMyTrip refreshes prices for all 5,000 active routes. Running this in one go freezes the server for seconds. Instead, they process 50 routes at a time and yield to the Event Loop between each batch using setImmediate(). Priya's live search, Rahul's hotel booking, and Amit's payment all go through between batches. No single freeze is longer than ~4ms. No new threads, no new processes — just smart scheduling."
             },
             {
               "type": "code",
-              "code": "// Breaking CPU work into chunks for Uber surge calculation\nasync function calculateSurgeChunked(allZones) {\n  const results = [];\n  const chunkSize = 100; // process 100 zones at a time\n\n  for (let i = 0; i < allZones.length; i += chunkSize) {\n    const chunk = allZones.slice(i, i + chunkSize);\n\n    // Process this chunk synchronously\n    for (const zone of chunk) {\n      results.push(calculateZoneSurge(zone));\n    }\n\n    // Yield to Event Loop between chunks!\n    await new Promise(resolve => setImmediate(resolve));\n    // ↑ Event Loop gets a chance to handle GPS pings,\n    //   ride requests, etc. between each chunk\n  }\n\n  return results;\n}\n// 10,000 zones → 100 chunks of 100 → Event Loop yields 100 times\n// Each chunk ~5ms → no single freeze longer than 5ms ✅"
+              "code": "// Every 15 minutes: refresh prices for all 5000 MakeMyTrip routes\nasync function recalculateAllPrices(allRoutes) {\n  const results = [];\n  const chunkSize = 50; // 50 routes per batch\n\n  for (let i = 0; i < allRoutes.length; i += chunkSize) {\n    const chunk = allRoutes.slice(i, i + chunkSize);\n\n    // Process this batch — e.g. MUM-DEL, BLR-HYD, DEL-GOA...\n    for (const route of chunk) {\n      results.push(calculateRoutePrice(route));\n    }\n\n    // Yield to Event Loop between batches\n    await new Promise(resolve => setImmediate(resolve));\n    // Priya's live search, Rahul's payment, Sneha's booking\n    // all get processed here between each batch ✅\n  }\n\n  return results;\n}\n// 5000 routes → 100 batches of 50\n// Each batch: ~4ms. Between each: Event Loop runs.\n// Total: ~400ms spread out — no user ever feels it."
             },
             {
               "type": "step",
-              "title": "Strategy 2 — Worker Threads (for JS CPU work)",
-              "desc": "For truly heavy CPU work written in JavaScript — ML inference, complex graph algorithms, image processing — move it to a Worker Thread. Main thread stays free. Worker runs the JS CPU code in parallel on a separate V8 instance."
+              "title": "Strategy 2 — Worker Thread for real-time fraud scoring",
+              "desc": "Every time a user clicks 'Confirm Booking', MakeMyTrip runs a fraud score in real time. For Amit's ₹85,000 Goa booking, this means pattern-matching his transaction against 50 million past bookings — pure JavaScript, heavy CPU, takes ~150ms. Too heavy to chunk (it's one atomic calculation), too frequent to be a microservice call. A Worker Thread is the right fit: JS code, runs in parallel, main thread stays free for everyone else booking simultaneously."
+            },
+            {
+              "type": "step",
+              "title": "Strategy 3 — Child Process for the Python delay prediction model",
+              "desc": "When Priya sees IndiGo 6E-204 in her search results, MakeMyTrip shows '34% delay probability'. This prediction comes from a Python scikit-learn model trained on 3 years of DGCA flight data — it cannot run inside Node.js. The server spawns a Python child process, sends Priya's flight details, and streams the prediction back. Completely isolated, any language, no impact on the main thread."
+            },
+            {
+              "type": "step",
+              "title": "Strategy 4 — Microservice for itinerary optimization",
+              "desc": "Priya clicks 'Holiday Packages' — MakeMyTrip finds the best combination of flight + hotel + cab across 100,000+ combinations, scores them against her preferences (budget, ratings, travel time), and ranks the top 10. This runs 24/7 at massive scale — not occasionally. So MakeMyTrip runs it as a dedicated Go microservice. Node.js makes a single non-blocking HTTP call, the Go service does all the heavy computation, and returns the ranked results. Node.js does zero CPU work."
             },
             {
               "type": "code",
-              "code": "// route-optimizer-worker.js\nconst { workerData, parentPort } = require('worker_threads');\nconst { drivers, orders } = workerData;\n\n// This 500ms computation runs in its own thread\nconst optimalRoute = optimizeDriverRoutes(drivers, orders);\nparentPort.postMessage({ optimalRoute });\n\n\n// main-server.js\nconst { Worker } = require('worker_threads');\n\nasync function getOptimalRoute(drivers, orders) {\n  return new Promise((resolve, reject) => {\n    const worker = new Worker('./route-optimizer-worker.js', {\n      workerData: { drivers, orders }\n    });\n    worker.on('message', resolve);\n    worker.on('error', reject);\n  });\n}\n// Main thread free for 500ms while worker optimizes ✅"
-            },
-            {
-              "type": "step",
-              "title": "Strategy 3 — Child Processes (for non-JS CPU work)",
-              "desc": "For CPU work in Python, C++, or other languages — use Child Processes. Uber's ML team writes models in Python/TensorFlow. The Node.js server spawns a Python process, sends ride data, receives the prediction. Completely separate process, completely isolated CPU usage."
-            },
-            {
-              "type": "step",
-              "title": "Strategy 4 — Dedicated microservice (for repeated heavy work)",
-              "desc": "For very CPU-intensive work that runs constantly, don't put it in the same Node.js process at all. Uber's route optimization and ML services run as completely separate microservices — often written in Go, Python, or C++ — that Node.js calls via HTTP or gRPC. The Node.js server makes an async API call and awaits the result without any CPU pressure on itself."
-            },
-            {
-              "type": "code",
-              "code": "// Strategy 4: Call a dedicated ML microservice\nasync function getSurgePrediction(rideData) {\n  // HTTP call to Uber's Python ML service\n  // This is I/O (network call) — non-blocking!\n  const response = await fetch('http://ml-service:8080/surge', {\n    method: 'POST',\n    body: JSON.stringify(rideData)\n  });\n  return response.json();\n  // Node.js does zero CPU work — the ML service handles it all\n  // Node.js just waits for the HTTP response (non-blocking I/O)\n}"
+              "code": "// Strategy 4: Call MakeMyTrip's Go itinerary optimization service\nasync function getBestHolidayPackages(searchParams) {\n  // Priya: MUM→DEL, Dec 15-20, budget ₹25,000, prefers 4★+ hotels\n  const payload = {\n    route: searchParams.route,          // 'MUM-DEL'\n    dates: searchParams.dates,          // ['2024-12-15', '2024-12-20']\n    budget: searchParams.budget,        // 25000\n    preferences: searchParams.prefs     // { hotelRating: 4, cabType: 'sedan' }\n  };\n\n  // HTTP call to Go microservice — just I/O for Node.js\n  const response = await fetch('http://itinerary-service:8080/optimize', {\n    method: 'POST',\n    headers: { 'Content-Type': 'application/json' },\n    body: JSON.stringify(payload)\n  });\n\n  const packages = await response.json();\n  // Go service evaluated 100,000+ combinations\n  // Returns top 10 ranked packages for Priya\n  // Node.js did ZERO CPU work — just sent and received\n  return packages;\n}"
             },
             {
               "type": "table",
-              "headers": ["Situation", "Strategy", "Uber Example"],
+              "headers": ["Situation", "Strategy", "MakeMyTrip Example"],
               "rows": [
-                ["Moderate CPU, JS code", "Chunk with setImmediate()", "Zone surge batch calc"],
-                ["Heavy CPU, JS code", "Worker Threads", "Fraud score calculation"],
-                ["Heavy CPU, Python/C++", "Child Process (spawn)", "ETA ML model"],
-                ["Constant heavy CPU", "Separate microservice", "Route optimization service"],
-                ["Light CPU mixed with I/O", "Just async/await", "Driver matching logic"]
+                ["Moderate CPU, JS", "Chunk with setImmediate()", "Refresh prices for 5,000 routes every 15 minutes"],
+                ["Heavy CPU, JS, per request", "Worker Threads", "Real-time fraud score on Amit's ₹85,000 booking"],
+                ["Heavy CPU, Python/Go", "Child Process (spawn)", "Predict IndiGo 6E-204 delay probability for Priya"],
+                ["Constant heavy CPU, any scale", "Separate microservice", "Holiday package optimizer — flight + hotel + cab combos"],
+                ["Light CPU + I/O", "Just async/await", "Search Delhi hotels for Priya's dates and rating filter"]
               ]
             },
             {
               "type": "success-callout",
-              "text": "✅ CPU-intensive tasks in Node.js must never run on the main thread unchecked. Uber's engineers use chunking for moderate work, Worker Threads for heavy JS computation, Child Processes for non-JS languages, and dedicated microservices for constant CPU-heavy workloads. The golden rule: keep the Event Loop free, always."
+              "text": "✅ CPU-intensive work must never run unchecked on Node.js's main thread. Use chunking for moderate batch work, Worker Threads for heavy per-request JS algorithms, Child Processes for other languages, and microservices for constant CPU load at scale. The rule never changes: keep the Event Loop free."
             },
             {
               "type": "info-callout",
-              "text": "🎯 Full picture of Worker Threads & Child Processes — Node.js is single-threaded by default, which freezes on CPU work. Worker Threads add parallel JS execution (same process, multiple V8 instances). Child Processes run external programs (any language, separate OS process). CPU-intensive work should always be offloaded using one of four strategies: chunking, Worker Threads, Child Processes, or microservices. Mastering these patterns is what separates junior Node.js developers from engineers who can build Uber-scale systems."
+              "text": "🎯 Full picture — Node.js single thread freezes on CPU work. Worker Threads add parallel JS execution (same process, separate V8 — Amit's fraud score). Child Processes run external programs in any language (Priya's Python delay model). Microservices handle constant heavy load (holiday package optimizer). Four strategies, one rule: the Event Loop must always stay free."
             }
           ]
         }
       },
+
       {
         "id": 6,
         "title": "Cluster Module",
@@ -6892,11 +6831,11 @@ export const roadmapData = [
           "What is Clustering?": [
             {
               "type": "paragraph",
-              "text": "Uber deploys their Node.js ride-matching server on a machine with 16 CPU cores. But Node.js is single-threaded — by default, the entire server runs on ONE core. 15 cores sit completely idle. The server handles 10,000 requests per second but the machine is capable of 160,000. This is the scaling problem clustering solves: run 16 Node.js processes simultaneously, one per core, all sharing port 80, multiplying throughput by up to 16x."
+              "text": "MakeMyTrip deploys their Node.js flight search server on a machine with 16 CPU cores. But Node.js is single-threaded — by default, the entire server runs on ONE core. 15 cores sit completely idle. When Priya, Rahul, Amit, and 10,000 other users search for flights simultaneously, only 1 core handles all of them. The other 15 watch. Clustering fixes this — it runs 16 Node.js processes simultaneously, one per core, all sharing port 3000, multiplying throughput by up to 16x."
             },
             {
               "type": "curious-callout",
-              "text": "❓ A single Node.js process only uses 1 CPU core. How does Uber use all 16 cores on their servers?"
+              "text": "❓ A single Node.js process only uses 1 CPU core. How does MakeMyTrip use all 16 cores when thousands of users search flights at the same time?"
             },
             {
               "type": "heading",
@@ -6904,11 +6843,11 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Modern servers have multiple CPU cores — 8, 16, 32, even 64. A Node.js application, by default, runs as a single OS process on a single core. The other cores are unused for that application. This means you're paying for a 16-core server but only utilizing 6% of its CPU capacity. For a company processing 15 million trips per day like Uber, this is an enormous waste."
+              "text": "It's December — peak holiday booking season. MakeMyTrip's servers get hit with 50,000 flight searches per minute. Priya searches MUM→DEL, Rahul searches BLR→GOA, Amit searches DEL→CCU — all at the same moment. Without clustering, all 50,000 requests queue up on 1 core. Users wait. Pages time out. Rahul switches to Cleartrip. Without clustering, MakeMyTrip is paying for a 16-core server but using only 6% of it."
             },
             {
               "type": "code",
-              "code": "Without clustering — single Node.js process:\n\nCPU Core 1:  [████████████████] 100% — running Node.js\nCPU Core 2:  [                ]   0% — idle\nCPU Core 3:  [                ]   0% — idle\nCPU Core 4:  [                ]   0% — idle\n...up to 16 cores, all idle except Core 1\n\nServer capacity used: 6.25% (1 of 16 cores)\n\nWith clustering — 16 Node.js processes:\n\nCPU Core 1:  [████████████████] 100% — Worker Process 1\nCPU Core 2:  [████████████████] 100% — Worker Process 2\nCPU Core 3:  [████████████████] 100% — Worker Process 3\n...all 16 cores active\n\nServer capacity used: 100% — 16x throughput!"
+              "code": "Without clustering — December peak traffic:\nCPU Core 1:  [████████████████] 100% — all 50,000 searches here\nCPU Core 2:  [                ]   0% — idle\nCPU Core 3:  [                ]   0% — idle\n...15 cores idle. Priya waits 8 seconds for results.\n\nWith clustering — 16 workers:\nCPU Core 1:  [████████████████] — Worker 1 handles Priya's MUM→DEL\nCPU Core 2:  [████████████████] — Worker 2 handles Rahul's BLR→GOA\nCPU Core 3:  [████████████████] — Worker 3 handles Amit's DEL→CCU\n...all 16 cores active. Everyone gets results in 200ms."
             },
             {
               "type": "heading",
@@ -6916,30 +6855,31 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Clustering runs multiple Node.js processes — called workers — that all share the same port (e.g., port 3000). Incoming requests are distributed across these workers. Each worker is a completely independent Node.js process with its own Event Loop, its own memory, and its own V8 instance. They don't share JavaScript memory — they're separate OS processes, just like Child Processes. One Master process manages them all."
+              "text": "Clustering runs multiple Node.js processes — called workers — that all share port 3000. Each worker is a completely independent Node.js process with its own Event Loop, its own memory, and its own V8 instance. One Master process manages them all — it forks the workers, distributes incoming flight search requests, and restarts any worker that crashes."
             },
             {
               "type": "step",
-              "title": "How Uber uses clustering",
-              "desc": "Uber's Node.js ride-matching service runs on servers with 32 cores. They start 32 worker processes using Node.js clustering. Each worker handles its share of incoming ride requests independently. If Core 5's worker crashes (from a bad request or bug), the master process detects it and spawns a replacement — the other 31 workers keep running. Zero downtime."
+              "title": "December 20th — MakeMyTrip's busiest day of the year",
+              "desc": "Schools close for Christmas holidays. 2 million users open MakeMyTrip to book flights home. Without clustering: 1 worker handles all searches. Server response time: 12 seconds. Users abandon. With clustering: 16 workers each handle their share. Worker 1 handles Priya's MUM→DEL search, Worker 2 handles Rahul's BLR→GOA, Worker 3 handles Sneha's DEL→JAI — all simultaneously. Response time stays at 200ms. No one switches to a competitor."
             },
             {
               "type": "code",
-              "code": "Clustering architecture for Uber's ride server:\n\n                [Port 3000]\n                     ↓\n           [Master Process]\n          /    |    |    \\    ...\n      [W1]  [W2]  [W3]  [W4]  → up to 32 workers\n       |     |     |     |\n    Core1 Core2 Core3 Core4  → one core per worker\n\nIncoming ride request → Master distributes to W2\nW2 handles it on Core2 → response sent\nMeanwhile W1, W3, W4 handle 3 other requests simultaneously\n32x throughput vs single-process Node.js"
+              "code": "MakeMyTrip's clustered flight search server:\n\n      [Port 3000 — all flight search requests]\n                       ↓\n             [Master Process]\n            /    |    |    \\\n         [W1]  [W2]  [W3] ... [W16]\n         Core1 Core2 Core3   Core16\n\nPriya's MUM→DEL search → W1 → Core1\nRahul's BLR→GOA search → W2 → Core2  (simultaneously)\nAmit's DEL→CCU search  → W3 → Core3  (simultaneously)\nAll 16 workers running — 16x throughput"
             },
             {
               "type": "success-callout",
-              "text": "✅ Clustering solves Node.js's single-core limitation by running one worker process per CPU core. All workers share the same port, requests are distributed among them, and the master restarts any crashed workers. Uber gets full utilization of their server hardware — all 32 cores working, not just one."
+              "text": "✅ Clustering gives MakeMyTrip full CPU utilization. Instead of 1 process struggling with 50,000 searches on 1 core, 16 workers split the load across 16 cores. All share port 3000. The master restarts any crashed worker automatically. MakeMyTrip handles December peak traffic without breaking a sweat."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Clustering sounds straightforward — but the implementation details matter. How does the master coordinate workers? How does one port serve multiple processes? The cluster module handles all of this."
+              "text": "⚠️ Clustering sounds straightforward — but how does one port serve 16 processes? How does the master distribute Priya's search to Worker 1 and Rahul's to Worker 2? The cluster module handles all of this."
             }
           ],
+
           "cluster module in Node.js": [
             {
               "type": "paragraph",
-              "text": "Node.js ships with a built-in cluster module that implements the multi-process pattern. With about 20 lines of code, Uber can transform their single-process ride server into a 32-worker cluster that uses every CPU core on the machine. The cluster module handles the fork, the port sharing, and the inter-process signals — you just write the logic."
+              "text": "Node.js ships with a built-in cluster module. With about 20 lines of code, MakeMyTrip transforms their single-process flight search server into a 16-worker cluster that uses every CPU core on the machine. The same server file runs in both master and worker mode — cluster.isMaster tells the process which role it plays."
             },
             {
               "type": "heading",
@@ -6947,124 +6887,122 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "The cluster module works by detecting whether the current process is the master or a worker. The same file runs in both contexts — cluster.isMaster tells you which one you are. In master context: fork workers. In worker context: start the HTTP server. All workers bind to the same port — the OS routes connections to whichever worker is available."
+              "text": "The cluster module runs the same file in two contexts. When Node.js first starts, cluster.isMaster is true — this is the master. It calls cluster.fork() once per CPU core. Each forked process runs the same file again, but cluster.isMaster is now false — so it starts the HTTP server instead. All workers bind to port 3000, but the master holds the actual port and routes each incoming flight search to a worker."
             },
             {
               "type": "code",
-              "code": "// uber-server.js — same file runs as master AND workers\nconst cluster = require('cluster');\nconst http = require('http');\nconst os = require('os');\n\nconst NUM_CPUS = os.cpus().length; // e.g., 16 on Uber's servers\n\nif (cluster.isMaster) {\n  // ===== MASTER PROCESS =====\n  console.log(`Master ${process.pid} starting ${NUM_CPUS} workers`);\n\n  // Fork one worker per CPU core\n  for (let i = 0; i < NUM_CPUS; i++) {\n    cluster.fork();\n  }\n\n  // Restart crashed workers automatically\n  cluster.on('exit', (worker, code, signal) => {\n    console.log(`Worker ${worker.process.pid} died. Restarting...`);\n    cluster.fork(); // spawn a replacement immediately\n  });\n\n} else {\n  // ===== WORKER PROCESS =====\n  // Each worker runs a full HTTP server on the SAME port\n  http.createServer((req, res) => {\n    // Handle Uber ride requests\n    handleRideRequest(req, res);\n  }).listen(3000);\n\n  console.log(`Worker ${process.pid} started on port 3000`);\n}\n\n// Output when started:\n// Master 1234 starting 16 workers\n// Worker 1235 started on port 3000\n// Worker 1236 started on port 3000\n// ... (16 workers, all on port 3000)"
+              "code": "// makemytrip-server.js — same file, master and worker\nconst cluster = require('cluster');\nconst http = require('http');\nconst os = require('os');\n\nif (cluster.isMaster) {\n  // Fork one worker per CPU core\n  for (let i = 0; i < os.cpus().length; i++) cluster.fork();\n\n  // Restart crashed workers automatically\n  cluster.on('exit', (worker) => {\n    console.log(`Worker ${worker.id} crashed. Restarting...`);\n    cluster.fork();\n  });\n} else {\n  // Each worker handles flight search requests\n  http.createServer((req, res) => {\n    handleFlightSearch(req, res);\n  }).listen(3000);\n\n  console.log(`Worker ${process.pid} ready on port 3000`);\n}"
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Uber Server Starting Up With Clustering"
+              "text": "Step-by-Step — MakeMyTrip Server Starting Up"
             },
             {
               "type": "step",
-              "title": "Step 1 — Node.js starts uber-server.js",
-              "desc": "The OS starts Node.js. cluster.isMaster is true — this is the master. It reads os.cpus().length — finds 16 cores. Calls cluster.fork() 16 times."
+              "title": "Step 1 — MakeMyTrip deploys makemytrip-server.js, Master process starts",
+              "desc": "The ops team deploys the server. Node.js starts. cluster.isMaster is true — this process is the master. It reads os.cpus().length — finds 16 cores on the server. Calls cluster.fork() 16 times. The master's startup job is done. It will never handle a flight search directly — that is entirely the workers' job."
             },
             {
               "type": "step",
-              "title": "Step 2 — cluster.fork() creates 16 worker processes",
-              "desc": "Each fork() call creates a new OS process running the same uber-server.js file. But in these processes, cluster.isMaster is false — so they take the else branch and start HTTP servers."
+              "title": "Step 2 — 16 Workers fork and start HTTP servers",
+              "desc": "Each fork() creates a new OS process running the same makemytrip-server.js. But in these processes, cluster.isMaster is false — so they enter the else branch. Each worker starts an HTTP server on port 3000 and logs 'Worker ready'. All 16 workers are now alive, all on port 3000, all waiting for flight search requests."
             },
             {
               "type": "step",
-              "title": "Step 3 — All 16 workers bind to port 3000",
-              "desc": "Normally, only one process can bind to a port. The cluster module uses a special trick: the master holds the actual port binding and distributes accepted connections to workers. Workers think they're listening on port 3000 — but the master is actually the one accepting connections and routing them."
+              "title": "Step 3 — Priya searches MUM→DEL, her request hits Worker 3",
+              "desc": "Priya opens MakeMyTrip on her phone and searches Mumbai to Delhi for Dec 25. Her request hits port 3000. The master receives it and hands it to Worker 3 (round-robin). Worker 3 queries the flight database, fetches available seats on IndiGo, Air India, and SpiceJet, calculates prices, and sends Priya her results — all on its own. Meanwhile Workers 1, 2, 4–16 are simultaneously handling Rahul, Amit, Sneha, and 12 more users."
             },
             {
               "type": "step",
-              "title": "Step 4 — Ride requests arrive and get distributed",
-              "desc": "A wave of 16,000 ride requests hits port 3000. The master's OS accepts them. Distributes them round-robin to workers (or using OS-level load balancing on Linux). Worker 1 gets requests 1, 17, 33... Worker 2 gets requests 2, 18, 34... All 16 workers process simultaneously."
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — A worker crashes",
-              "desc": "Worker 7 crashes — a malformed GPS coordinate triggered an unhandled exception. The master's cluster.on('exit') fires. It logs the crash and calls cluster.fork() immediately. A new worker 7 spins up and joins the pool within milliseconds. The other 15 workers never stopped."
+              "title": "Step 4 — Worker 7 crashes on a bad search request",
+              "desc": "A user sends a search with an invalid date format — December 32nd. Worker 7 hits an unhandled exception and crashes. The master's cluster.on('exit') fires immediately. It calls cluster.fork() — a new Worker 7 spins up within milliseconds and joins the pool. The other 15 workers never paused. Priya, Rahul, and Amit's searches all completed without interruption."
             },
             {
               "type": "code",
-              "code": "// Production Uber cluster with graceful shutdown\nif (cluster.isMaster) {\n  const workers = [];\n\n  for (let i = 0; i < NUM_CPUS; i++) {\n    workers.push(cluster.fork());\n  }\n\n  // Auto-restart crashed workers\n  cluster.on('exit', (worker, code) => {\n    if (code !== 0) { // 0 means intentional shutdown\n      console.log(`Worker ${worker.id} crashed. Replacing...`);\n      cluster.fork();\n    }\n  });\n\n  // Graceful shutdown — finish existing requests before dying\n  process.on('SIGTERM', () => {\n    console.log('Master shutting down gracefully...');\n    for (const worker of Object.values(cluster.workers)) {\n      worker.send('shutdown'); // tell workers to stop accepting\n    }\n  });\n}"
+              "code": "// Master auto-restarts crashed workers:\ncluster.on('exit', (worker, code) => {\n  if (code !== 0) { // 0 = intentional shutdown, not a crash\n    console.log(`Worker ${worker.id} crashed. Replacing...`);\n    cluster.fork(); // new worker joins pool in milliseconds\n  }\n});"
             },
             {
               "type": "success-callout",
-              "text": "✅ The cluster module transforms a single-core Node.js server into a multi-core powerhouse with ~20 lines of code. One master process manages N worker processes (one per CPU core). All workers share the port. Crashed workers are auto-restarted. Uber runs this in production across hundreds of servers, squeezing full CPU utilization from every machine."
+              "text": "✅ The cluster module transforms MakeMyTrip's single-core flight server into a 16-worker powerhouse with ~20 lines of code. One master forks 16 workers (one per CPU core). All workers share port 3000. Crashed workers are auto-restarted. MakeMyTrip gets full CPU utilization on every server in their fleet."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Master and Worker are roles — but what exactly does each do, and how do they communicate? The master-worker relationship has important implications for state management and inter-process communication in Uber's architecture."
+              "text": "⚠️ Master and Worker have very different responsibilities. What exactly does each do — and what happens when Worker 1 updates flight prices but Worker 2 still shows the old price to Priya?"
             }
           ],
+
           "Master & Worker processes": [
             {
               "type": "paragraph",
-              "text": "In Uber's clustered Node.js deployment, the Master process is the manager — it forks workers, monitors their health, handles signals, and routes connections. Workers are the servers — each independently handles ride requests, GPS updates, and payments. They don't share memory or state. Understanding this relationship reveals why clustered Node.js apps need external state management like Redis."
+              "text": "In MakeMyTrip's clustered deployment, the Master process is the manager — it forks workers, watches their health, distributes connections, and coordinates config. Workers are the actual flight search servers — each independently handles searches, price lookups, and booking confirmations. They don't share memory or variables. This creates a critical problem: if Worker 1 updates IndiGo's MUM→DEL price to ₹4,299, Worker 2 still shows the old price of ₹3,800 to Priya."
             },
             {
               "type": "heading",
-              "text": "The Master Process — Manager, Not Handler"
+              "text": "The Master Process — Coordinator, Not Handler"
             },
             {
               "type": "paragraph",
-              "text": "The master process does NOT handle HTTP requests directly. Its job is purely operational: fork the right number of workers, keep them alive, distribute connections, and relay signals (like SIGTERM for graceful shutdown). The master is the control plane. Workers are the data plane. In a healthy Uber cluster, the master is lightly loaded — almost all CPU work happens in workers."
+              "text": "The master never handles a single flight search request. Its entire job is coordination: fork workers, keep them alive, send config updates, collect metrics. In a healthy MakeMyTrip cluster, the master is lightly loaded — all real CPU work happens in workers. Think of the master as MakeMyTrip's operations center: it doesn't search flights, it keeps the searchers running."
             },
             {
               "type": "code",
-              "code": "// Master process responsibilities:\nif (cluster.isMaster) {\n  // 1. Fork workers\n  for (let i = 0; i < NUM_CPUS; i++) cluster.fork();\n\n  // 2. Monitor health\n  cluster.on('exit', (worker) => {\n    console.log(`Worker ${worker.id} died, restarting`);\n    cluster.fork();\n  });\n\n  // 3. Communicate with workers via IPC\n  cluster.on('online', (worker) => {\n    console.log(`Worker ${worker.id} is online`);\n    worker.send({ type: 'config', surgeZones: loadSurgeZones() });\n  });\n\n  // 4. Receive metrics from workers\n  Object.values(cluster.workers).forEach(worker => {\n    worker.on('message', (msg) => {\n      if (msg.type === 'metrics') {\n        updateDashboard(msg.requestCount, msg.avgLatency);\n      }\n    });\n  });\n  // Master never touches HTTP requests — that's workers' job\n}"
+              "code": "if (cluster.isMaster) {\n  // Fork workers and send airline config on startup\n  for (let i = 0; i < NUM_CPUS; i++) {\n    const worker = cluster.fork();\n    worker.send({ type: 'config', airlines: loadAirlineConfig() });\n  }\n\n  // Collect search metrics from all workers\n  Object.values(cluster.workers).forEach(worker => {\n    worker.on('message', (msg) => {\n      if (msg.type === 'metrics') updateDashboard(msg);\n    });\n  });\n  // Master never touches a flight search — workers do that\n}"
             },
             {
               "type": "heading",
-              "text": "Worker Processes — Independent Servers"
+              "text": "Worker Processes — Independent Flight Search Servers"
             },
             {
               "type": "paragraph",
-              "text": "Each worker is a completely independent Node.js process. It has its own heap, its own Event Loop, its own module cache. Workers do NOT share JavaScript variables with each other or with the master. If Worker 1 sets a variable surgeMultiplier = 2.5, Worker 2 has no idea — it has its own copy of surgeMultiplier. This is a critical architectural point that trips up many Node.js developers."
+              "text": "Each worker is a completely independent Node.js process with its own heap, its own Event Loop, and its own copy of every variable. Workers do NOT share JavaScript memory with each other or with the master. This is the most important thing to understand about clustering — and the most common source of bugs in MakeMyTrip-scale applications."
             },
             {
               "type": "code",
-              "code": "// THE KEY INSIGHT — workers don't share memory:\n\n// Worker 1 handles a surge update:\nlet surgeMultiplier = 1.0;\napp.post('/update-surge', (req, res) => {\n  surgeMultiplier = req.body.multiplier; // sets to 2.5\n  res.json({ ok: true });\n});\n\n// Worker 2 handles a rider checking surge price:\napp.get('/surge-price', (req, res) => {\n  res.json({ surge: surgeMultiplier }); // returns 1.0 !!!\n  // Worker 2 NEVER saw Worker 1's update\n  // Each worker has its own surgeMultiplier variable\n});\n\n// FIX — Use Redis (shared external state):\napp.post('/update-surge', async (req, res) => {\n  await redis.set('surgeMultiplier', req.body.multiplier);\n  res.json({ ok: true });\n});\n\napp.get('/surge-price', async (req, res) => {\n  const surge = await redis.get('surgeMultiplier'); // reads 2.5 ✅\n  res.json({ surge });\n});\n// Redis is the single source of truth across all workers"
+              "code": "// THE BUG — workers don't share memory:\nlet mumDelPrice = 3800; // IndiGo MUM→DEL base price\n\n// Airline API updates price — hits Worker 1:\napp.post('/update-price', (req, res) => {\n  mumDelPrice = 4299; // only Worker 1 knows this ❌\n});\n\n// Priya checks price — her request hits Worker 5:\napp.get('/flight-price', (req, res) => {\n  res.json({ price: mumDelPrice }); // returns ₹3800 — wrong! ❌\n});\n\n// THE FIX — shared prices live in Redis:\napp.post('/update-price', async (req, res) => {\n  await redis.set('MUM-DEL-IndiGo', 4299); // all workers read this\n});\napp.get('/flight-price', async (req, res) => {\n  const price = await redis.get('MUM-DEL-IndiGo'); // ₹4299 ✅\n  res.json({ price });\n});"
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Master-Worker Communication at Uber"
+              "text": "Step-by-Step — Master-Worker Flow at MakeMyTrip"
             },
             {
               "type": "step",
-              "title": "Step 1 — Master sends config to all workers on startup",
-              "desc": "Master loads surge zone configurations from disk. Sends them to each worker via IPC: worker.send({ type: 'config', zones: surgeZones }). Each worker receives and caches the config in its own memory. Avoids all workers doing disk reads simultaneously."
+              "title": "Step 1 — Master sends airline config to all workers on startup",
+              "desc": "MakeMyTrip's server starts on December 1st — the start of holiday booking season. The master loads airline configurations from disk: IndiGo base fares, Air India routes, SpiceJet schedules. It sends this config to all 16 workers via IPC: worker.send({ type: 'config', airlines: airlineConfig }). Each worker caches it locally. Now all 16 workers can answer Priya's MUM→DEL search without each doing a slow disk read independently."
             },
             {
               "type": "step",
-              "title": "Step 2 — Workers handle requests independently",
-              "desc": "Ride request hits Worker 3. Worker 3 queries the database (async, non-blocking), matches a driver, sends notification. Worker 3 never needs to talk to Worker 1 or Worker 2 during this — it handles the request completely independently."
+              "title": "Step 2 — Priya's flight search hits Worker 4, handled completely independently",
+              "desc": "Priya searches MUM→DEL for Dec 25. Her request routes to Worker 4. Worker 4 uses its local airline config, queries the flight availability database (async), fetches real-time seat counts from IndiGo and Air India APIs (async), applies pricing rules, and returns 12 flight options to Priya — all on its own. Worker 4 never needs to talk to Worker 1, 3, or the master. It has everything it needs."
             },
             {
               "type": "step",
-              "title": "Step 3 — Workers report metrics to Master",
-              "desc": "Every 10 seconds, each worker sends a metrics message to master: process.send({ type: 'metrics', requestCount: 1247, avgLatency: 23 }). Master aggregates metrics from all workers and sends to Uber's monitoring dashboard."
+              "title": "Step 3 — IndiGo raises MUM→DEL fare, Worker 9 updates Redis",
+              "desc": "At 2pm, IndiGo's API pushes a price update — MUM→DEL Dec 25 is now ₹4,299, up from ₹3,800. This update hits Worker 9. Worker 9 writes the new price to Redis: redis.set('MUM-DEL-IndiGo-Dec25', 4299). Now when Rahul's price check hits Worker 12, Worker 12 reads ₹4,299 from Redis and shows him the correct fare. If Worker 9 had only updated its local variable, Rahul and every other user who hit a different worker would still see ₹3,800 — wrong price, lost trust."
             },
             {
               "type": "step",
-              "title": "Step 4 — Master detects crashed worker",
-              "desc": "Worker 7 crashes (unhandled exception). Master's cluster.on('exit') fires. Code: 1 (error). Master immediately forks a replacement. New Worker 7 starts, loads config, starts handling requests. Total downtime for that worker: ~100ms. The other 15 workers never paused."
+              "title": "Step 4 — Workers send search metrics to master every 10 seconds",
+              "desc": "Every 10 seconds, each worker reports to the master: process.send({ type: 'metrics', searchCount: 3241, avgResponseTime: 180, topRoute: 'MUM-DEL' }). The master aggregates from all 16 workers — total searches: 51,856, avg response time: 176ms, most searched route today: MUM-DEL. This goes to MakeMyTrip's monitoring dashboard so the ops team can watch peak traffic in real time."
             },
             {
-              "type": "code",
-              "code": "// Complete Master-Worker communication pattern:\n\n// In Master:\ncluster.on('online', (worker) => {\n  // Send startup config\n  worker.send({ type: 'init', config: serverConfig });\n});\n\nObject.values(cluster.workers).forEach(w => {\n  w.on('message', ({ type, data }) => {\n    if (type === 'metrics') aggregateMetrics(data);\n    if (type === 'alert') notifyOpsTeam(data);\n  });\n});\n\n// In Worker:\nprocess.on('message', ({ type, config }) => {\n  if (type === 'init') {\n    initializeServer(config); // configure this worker\n  }\n});\n\n// Worker reports metrics to master\nsetInterval(() => {\n  process.send({\n    type: 'metrics',\n    data: { requests: requestCount, latency: avgLatency }\n  });\n  requestCount = 0; // reset for next interval\n}, 10000);"
+              "type": "step",
+              "title": "Step 5 — Worker 11 crashes on a bad airline API response, master replaces it in 100ms",
+              "desc": "SpiceJet's API returns malformed JSON for a GOA flight. Worker 11 hits an unhandled JSON parse error and crashes. The master's cluster.on('exit') fires — exit code is 1 (crash, not intentional). Master immediately calls cluster.fork(). New Worker 11 starts, receives the airline config from master, and joins the pool. Total gap: ~100ms. Priya, Rahul, Sneha, and Amit's searches all continued on the other 15 workers without any interruption."
             },
             {
               "type": "success-callout",
-              "text": "✅ Master manages, workers serve. Master handles forking, health monitoring, and IPC. Workers handle HTTP requests independently on separate CPU cores. Critical insight: workers don't share memory — Uber uses Redis for shared state like surge multipliers, active ride counts, and session data that all workers need to read and write consistently."
+              "text": "✅ Master coordinates, workers serve. Master handles forking, health monitoring, config distribution, and metrics aggregation. Workers handle all flight search requests independently on separate CPU cores. Shared state like flight prices, seat availability, and active booking sessions lives in Redis — the single source of truth that all 16 workers read and write consistently."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Workers run in parallel — but how does incoming traffic get distributed across them? The load balancing mechanism determines how evenly work is spread, and it has platform-specific behavior that affects Uber's performance tuning."
+              "text": "⚠️ Workers run in parallel — but how does incoming traffic get split across them? The load balancing mechanism determines whether each worker gets a fair share, or whether Worker 1 gets overwhelmed with 10,000 searches while Worker 16 handles only 200."
             }
           ],
+
           "Load balancing across CPU cores": [
             {
               "type": "paragraph",
-              "text": "Uber's cluster has 16 workers. 16,000 ride requests per second hit port 3000 simultaneously. How do requests get distributed — does Worker 1 get overloaded while Worker 16 sits idle? Or does each worker get a fair share? This is load balancing in a Node.js cluster — and the answer depends on the operating system and cluster configuration."
+              "text": "MakeMyTrip's cluster has 16 workers. During December peak, 50,000 flight searches per minute hit port 3000. How do searches get split — does Worker 1 get crushed with 30,000 while Worker 16 handles 2,000? Or does each worker get exactly 3,125? This is load balancing in a Node.js cluster — and it determines whether MakeMyTrip's December traffic kills the server or gets handled gracefully."
             },
             {
               "type": "heading",
@@ -7072,83 +7010,82 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Node.js cluster supports two load balancing strategies. On Linux/macOS, the default is round-robin managed by the master process — the master accepts connections and distributes them to workers in order. On Windows, the OS handles load balancing — each worker competes to accept() connections from the shared port. Node.js strongly recommends round-robin (the default) because OS-level balancing can be uneven."
+              "text": "Node.js cluster uses round-robin by default on Linux and macOS — the master accepts each incoming connection and hands it to the next worker in sequence. On Windows, the OS itself distributes connections, which can be uneven. Node.js strongly recommends round-robin because it guarantees equal distribution — critical for MakeMyTrip's traffic where one slow worker can cascade into timeouts for thousands of users."
             },
             {
               "type": "code",
-              "code": "// Force round-robin scheduling (recommended):\nconst cluster = require('cluster');\ncluster.schedulingPolicy = cluster.SCHED_RR; // Round Robin\n// (This is the default on Linux/macOS)\n\n// Alternative — let OS decide (not recommended):\ncluster.schedulingPolicy = cluster.SCHED_NONE;\n// OS-level balancing — can be uneven"
+              "code": "// Force round-robin (recommended, default on Linux/macOS):\ncluster.schedulingPolicy = cluster.SCHED_RR;\n\n// Let OS decide (can be uneven — not recommended):\ncluster.schedulingPolicy = cluster.SCHED_NONE;"
             },
             {
               "type": "heading",
-              "text": "Round-Robin — How Uber Distributes 16,000 Req/s"
+              "text": "Round-Robin — How MakeMyTrip Splits 50,000 Searches"
             },
             {
               "type": "paragraph",
-              "text": "In round-robin, the master process accepts each incoming connection and passes it to the next worker in sequence. Request 1 → Worker 1, Request 2 → Worker 2... Request 16 → Worker 16, Request 17 → Worker 1 again. This ensures each worker receives an equal number of connections over time — no worker is overloaded while others are idle."
+              "text": "In round-robin, the master hands each new connection to the next worker in sequence — Priya's search to Worker 1, Rahul's to Worker 2, Amit's to Worker 3, and so on up to Worker 16, then loops back. Every worker gets the same number of searches over time. No worker starves. No worker drowns."
             },
             {
               "type": "code",
-              "code": "Round-robin distribution — Uber at peak surge:\n\nIncoming requests (1000/sec):\nReq 001 → Worker 1\nReq 002 → Worker 2\nReq 003 → Worker 3\n...\nReq 016 → Worker 16\nReq 017 → Worker 1  (loops back)\nReq 018 → Worker 2\n...\n\nResult after 1 second:\nWorker  1: ~62 requests handled\nWorker  2: ~62 requests handled\nWorker  3: ~63 requests handled\n...\nWorker 16: ~63 requests handled\n\nPerfectly balanced. No single worker overwhelmed."
+              "code": "MakeMyTrip — December peak, 50,000 searches/minute:\n\nSearch 001 → Worker 1  (Priya: MUM→DEL, Dec 25)\nSearch 002 → Worker 2  (Rahul: BLR→GOA, Dec 24)\nSearch 003 → Worker 3  (Amit: DEL→CCU, Dec 26)\n...\nSearch 016 → Worker 16 (Sneha: HYD→JAI, Dec 25)\nSearch 017 → Worker 1  (loops back)\n...\nAfter 1 minute: each worker handled exactly 3,125 searches.\nAll 16 cores at 100%. No user waited more than 200ms."
             },
             {
               "type": "heading",
-              "text": "Step-by-Step — Load Balancing During Uber Concert Surge"
+              "text": "Step-by-Step — MakeMyTrip December 20th Peak Traffic"
             },
             {
               "type": "paragraph",
-              "text": "A concert in Mumbai ends. 80,000 people open the Uber app simultaneously. Here's how the clustered server handles the surge:"
+              "text": "December 20th — schools close, offices wind down. MakeMyTrip's biggest traffic day of the year. 2 million users open the app within 2 hours. Here's exactly how the clustered server handles it:"
             },
             {
               "type": "step",
-              "title": "t=0ms — 80,000 connections hit port 3000",
-              "desc": "The OS delivers all incoming connections to the master process's socket. The master begins accepting them as fast as possible."
+              "title": "t=0ms — 2 million users hit port 3000 within 2 hours",
+              "desc": "From 10am to 12pm, 2 million flight searches pour in. The OS delivers all incoming connections to the master's port 3000 socket. The master starts accepting and distributing as fast as it can. Without clustering, this kills the server — 1 core, 2 million searches, multi-minute wait times. With clustering, the master immediately begins splitting the load across 16 workers."
             },
             {
               "type": "step",
-              "title": "t=1ms — Master distributes round-robin",
-              "desc": "Master hands connections to workers in sequence. Each of the 16 workers receives approximately 5,000 connections. Each worker immediately starts processing its share — querying databases, matching drivers, sending notifications."
+              "title": "t=1ms — Master distributes round-robin to 16 workers",
+              "desc": "Priya's MUM→DEL search goes to Worker 1. Rahul's BLR→GOA goes to Worker 2. Amit's DEL→CCU goes to Worker 3. The cycle repeats — 16 workers each receive their equal share. Within 1ms, all 16 workers have received thousands of searches and are immediately processing them — querying flight databases, fetching seat availability from airline APIs, calculating prices."
             },
             {
               "type": "step",
-              "title": "t=1ms to t=200ms — 16 workers process in parallel",
-              "desc": "All 16 workers are simultaneously handling their 5,000 connections. Each worker's Event Loop is spinning — firing database queries (async), receiving GPS data, sending push notifications. 16 cores at 100%. True parallel processing."
+              "title": "t=1ms to t=200ms — 16 cores process searches in parallel",
+              "desc": "All 16 workers run simultaneously on 16 cores. Worker 1 is fetching IndiGo seat data for Priya (async). Worker 2 is querying SpiceJet fares for Rahul (async). Worker 3 is calculating multi-stop options for Amit (async). None block each other. 16 independent servers, 16 CPU cores, all at 100%. 2 million searches processed across 2 hours — peak response time stays at 200ms."
             },
             {
               "type": "step",
-              "title": "t=200ms — Responses stream back",
-              "desc": "Database queries complete (async), push notifications sent, responses go back to 80,000 users. Workers are never blocked — they processed requests asynchronously and kept their Event Loops spinning the entire time. 80,000 users matched with drivers in ~200ms."
+              "title": "t=200ms — Priya, Rahul, and Amit all see their results",
+              "desc": "Flight database queries return (async). Airline API responses arrive (async). Pricing calculations complete. All 16 workers send their results back to users simultaneously. Priya sees 12 MUM→DEL flights. Rahul sees BLR→GOA options with prices. Amit sees DEL→CCU availability. Response time: 200ms across the board. Without clustering, they'd still be waiting 4 minutes."
             },
             {
               "type": "step",
-              "title": "Worker 9 gets overwhelmed",
-              "desc": "Due to bad luck in round-robin, Worker 9 received several very slow database queries simultaneously — its response time spikes to 500ms while others respond in 50ms. The cluster module doesn't auto-rebalance in-flight requests. Mitigation: use a reverse proxy like NGINX in front of the cluster, which has smarter load balancing (least connections, response time based)."
+              "title": "Worker 6 slows down — NGINX steps in",
+              "desc": "During peak, Worker 6 got unlucky — it received several searches that triggered slow Air India API calls simultaneously. Worker 6's response time spikes to 3 seconds while other workers respond in 200ms. The cluster module's round-robin doesn't rebalance in-flight requests. This is why MakeMyTrip runs NGINX in front of the cluster — NGINX uses least-connections balancing and automatically stops sending new searches to Worker 6 until it recovers."
             },
             {
               "type": "code",
-              "code": "// Production Uber setup — NGINX + Node.js Cluster\n// NGINX handles public load balancing across multiple servers\n// Cluster handles per-server core distribution\n\n// nginx.conf for Uber's ride service:\nupstream uber_ride_servers {\n  least_conn; // route to server with fewest active connections\n  server ride-server-01:3000;\n  server ride-server-02:3000;\n  server ride-server-03:3000;\n  # Each server runs 32 Node.js cluster workers internally\n}\n\n// Total: 3 servers × 32 workers = 96 parallel Node.js processes\n// All handling ride requests simultaneously\n// NGINX balances across servers, cluster balances across cores"
+              "code": "# nginx.conf — MakeMyTrip production setup:\nupstream makemytrip_flight_servers {\n  least_conn; # route to worker with fewest active connections\n  server flight-server-01:3000;\n  server flight-server-02:3000;\n  server flight-server-03:3000;\n  # Each server runs 16 Node.js cluster workers internally\n}\n# Total: 3 servers × 16 workers = 48 parallel Node.js processes\n# NGINX balances across servers, cluster balances across cores"
             },
             {
               "type": "table",
-              "headers": ["Layer", "Tool", "Balances Across", "Uber Usage"],
+              "headers": ["Layer", "Tool", "Balances Across", "MakeMyTrip Usage"],
               "rows": [
-                ["Global", "AWS Load Balancer", "Data centers worldwide", "Mumbai, London, NYC servers"],
-                ["Server", "NGINX", "Multiple server machines", "ride-server-01 to ride-server-10"],
-                ["Process", "Node.js Cluster", "CPU cores per machine", "32 workers per server"],
-                ["Thread", "Worker Threads", "CPU cores (for CPU tasks)", "Surge ML calculations"]
+                ["Global", "AWS Load Balancer", "Data centers worldwide", "Mumbai, Singapore, US servers"],
+                ["Server", "NGINX", "Multiple server machines", "flight-server-01 to flight-server-10"],
+                ["Process", "Node.js Cluster", "CPU cores per machine", "16 workers per server"],
+                ["Thread", "Worker Threads", "CPU cores (for CPU tasks)", "Dynamic pricing calculations"]
               ]
             },
             {
               "type": "success-callout",
-              "text": "✅ Node.js cluster load balancing (round-robin by default) evenly distributes connections across all worker processes. Combined with NGINX at the server level and a cloud load balancer globally, Uber achieves true horizontal scaling — from one process on one core to hundreds of processes across dozens of servers, all sharing load automatically."
+              "text": "✅ Node.js cluster's round-robin load balancing evenly splits MakeMyTrip's 50,000 searches/minute across all 16 workers. Combined with NGINX at the server level and AWS globally, MakeMyTrip handles December peak traffic — 2 million searches in 2 hours — with 200ms response times across the board."
             },
             {
               "type": "info-callout",
-              "text": "🎯 Full picture of Cluster Module — Clustering solves Node.js's single-core limitation by running one worker process per CPU core. The cluster module implements this with a master-worker pattern. The master manages workers and distributes connections via round-robin. Workers independently handle requests on separate cores. Shared state (like surge multipliers) lives in Redis, not in-process memory. NGINX sits in front for server-level balancing. Together, this stack lets Uber scale a single Node.js application to handle millions of concurrent users across their global infrastructure."
+              "text": "🎯 Full picture — Clustering solves Node.js's single-core limitation by running one worker per CPU core. The master coordinates and distributes via round-robin. Workers handle Priya's flight searches, Rahul's price checks, and Amit's bookings independently. Shared state (flight prices, seat availability) lives in Redis. NGINX handles server-level load balancing. Together, this stack is what keeps MakeMyTrip running smoothly on December 20th — their highest traffic day of the year."
             }
           ]
         }
-      },
-
+      }
 
 
 

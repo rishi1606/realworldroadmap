@@ -1,18 +1,100 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { createPortal } from 'react-dom';
-import { FiShare2, FiMap, FiFolder, FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX } from 'react-icons/fi';
+import { FiShare2, FiMap, FiFolder, FiZap, FiLock, FiSettings, FiLayers, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox, FiX, FiCheck, FiBell } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
 import { ShareModal } from '../common/ShareModal';
+import { notifyAPI } from '../../api/client';
 
 const NODE_ICONS = [FiSettings, FiLayers, FiZap, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox];
+
+// ─── Notify Modal Component ───────────────────────────────────────────────────
+function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscribeSuccess }) {
+  const [email, setEmail] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const handleNotify = async () => {
+    const emailToUse = email || user?.email;
+    if (!emailToUse?.trim()) return toast.error('Please enter your email');
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) return toast.error('Invalid email');
+    setLoading(true);
+    try {
+      await notifyAPI.subscribe(emailToUse, roadmapId, 'all');
+      onSubscribeSuccess();
+      toast.success('Successfully subscribed!');
+      setTimeout(() => onClose(), 1000);
+    } catch (e) {
+      toast.error(e.response?.data?.message || 'Something went wrong.');
+    } finally { setLoading(false); }
+  };
+
+  if (!isOpen || !mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-black/40 backdrop-blur-md font-sans">
+      <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-8 relative animate-in fade-in zoom-in-95 duration-200 border border-slate-200">
+        <button onClick={onClose} className="absolute top-4 right-4 text-slate-400 hover:text-slate-700 transition-colors">
+          <FiX className="w-5 h-5" />
+        </button>
+        <div className="flex flex-col items-center text-center">
+          <div className="w-12 h-12 rounded-full bg-[#F4F4F5] flex items-center justify-center mb-4">
+            <FiLock className="w-6 h-6 text-slate-500" />
+          </div>
+          <h3 className="text-[22px] font-bold text-slate-900 mb-2">Get Notified</h3>
+          <p className="text-[14px] text-slate-500 mb-8 px-2 leading-relaxed">
+            Enter your email to be the first to know when the advanced modules are released.
+          </p>
+
+          {isSubscribed ? (
+            <div className="w-full bg-green-50 border border-green-200 rounded-lg py-3 text-green-700 text-[14px] font-semibold flex items-center justify-center gap-2">
+              <FiCheck className="w-5 h-5" /> You're on the list!
+            </div>
+          ) : (
+            <div className="w-full flex flex-col gap-4">
+              <div className="flex flex-col gap-1.5 text-left w-full">
+                <input
+                  autoFocus
+                  type="email"
+                  value={email || user?.email || ''}
+                  onChange={e => setEmail(e.target.value)}
+                  onKeyDown={e => e.key === 'Enter' && handleNotify()}
+                  placeholder="your@email.com"
+                  className="flex h-10 w-full rounded-md border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                />
+              </div>
+              <button
+                onClick={handleNotify}
+                disabled={loading}
+                className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors disabled:opacity-50 disabled:pointer-events-none bg-slate-900 text-white hover:bg-slate-800 h-11 px-4 py-2 w-full shadow-sm"
+              >
+                {loading ? "Subscribing..." : (
+                  <>
+                    <FiBell className="w-4 h-4" />
+                    Notify Me
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>,
+    document.body
+  );
+}
 
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
 export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic }) {
   const { user } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [showNotify, setShowNotify] = useState(false);
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [isNotifyLoading, setIsNotifyLoading] = useState(true);
   const [activeLevel, setActiveLevel] = useState('all');
   const [shareUrl, setShareUrl] = useState('');
 
@@ -21,6 +103,19 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
     setShareUrl(window.location.href);
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    if (mounted) {
+      if (user?.email && roadmap?._id) {
+        notifyAPI.check(user.email, roadmap._id, 'all')
+          .then(res => setIsSubscribed(res.data.isSubscribed))
+          .catch(() => {})
+          .finally(() => setIsNotifyLoading(false));
+      } else {
+        setIsNotifyLoading(false);
+      }
+    }
+  }, [mounted, user, roadmap]);
 
   const nodesWithLevels = useMemo(() =>
     (data || []).map(n => ({ ...n, _level: n.level || 'freshers' })), [data]);
@@ -34,7 +129,7 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
   const showComingSoon = activeLevel === 'all' || activeLevel === 'comingSoon';
 
   const handleNotifyClick = () => {
-    if (!requireAuth()) return;
+    if (!user) return toast.error('Please login to subscribe');
     setShowNotify(true);
   };
 
@@ -116,6 +211,22 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
               <FiFolder className="w-4 h-4" /> Projects
             </span>
           </div>
+
+          {!isNotifyLoading && !isSubscribed && (
+            <button
+              onClick={handleNotifyClick}
+              className="flex items-center gap-1.5 text-[12px] font-bold text-blue-600 hover:text-blue-800 transition-colors pb-2"
+            >
+              <FiBell className="w-3.5 h-3.5" />
+              Notify Me
+            </button>
+          )}
+          {!isNotifyLoading && isSubscribed && (
+            <div className="flex items-center gap-1 text-[12px] font-bold text-emerald-600 pb-2">
+              <FiCheck className="w-3.5 h-3.5" />
+              Notified
+            </div>
+          )}
         </div>
 
         {/* ── Filter chips */}
@@ -213,6 +324,15 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
 
 
       </div>
+
+      <NotifyModal
+        roadmapId={roadmap?._id}
+        user={user}
+        isOpen={showNotify}
+        onClose={() => setShowNotify(false)}
+        isSubscribed={isSubscribed}
+        onSubscribeSuccess={() => setIsSubscribed(true)}
+      />
 
       <ShareModal
         isOpen={isShareOpen}

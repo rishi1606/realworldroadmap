@@ -11,7 +11,11 @@ import {
   FiCheck,
   FiChevronDown,
   FiChevronUp,
+  FiLock,
+  FiBell
 } from "react-icons/fi";
+import { notifyAPI } from "../../api/client";
+import toast from "react-hot-toast";
 
 // ─── Block Renderers ────────────────────────────────────────────────────────
 
@@ -164,6 +168,75 @@ function RenderBlock({ block, index }) {
   return renderer ? renderer({ block, index }) : null;
 }
 
+// ─── Locked Overlay with Email Subscription ─────────────────────────────────
+
+function LockedOverlay({ roadmapId, nodeLevel }) {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [subscribed, setSubscribed] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
+
+  const handleNotify = async () => {
+    if (!email.trim()) return toast.error("Please enter your email address");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return toast.error("Please enter a valid email");
+    
+    setLoading(true);
+    try {
+      const { data } = await notifyAPI.subscribe(email, roadmapId, nodeLevel);
+      toast.success(data.message || "Subscribed successfully!");
+      setSubscribed(true);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Something went wrong.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (!mounted) return null;
+
+  return createPortal(
+    <div className="fixed inset-0 z-[10000] flex flex-col items-center justify-center bg-black/40 backdrop-blur-md font-sans">
+      <div className="bg-white p-8 rounded-2xl shadow-xl border border-slate-200 flex flex-col items-center text-center max-w-[400px] mx-4 animate-in fade-in zoom-in-95 duration-200">
+        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center mb-4">
+          <FiLock className="w-6 h-6 text-slate-500" />
+        </div>
+        <h3 className="text-[22px] font-bold text-slate-900 mb-2">Get Notified</h3>
+        <p className="text-slate-500 mb-8 text-[14px] px-2 leading-relaxed">
+          Enter your email to be the first to know when the advanced modules are released.
+        </p>
+
+        {subscribed ? (
+          <div className="w-full bg-green-50 border border-green-200 rounded-lg px-4 py-3 text-green-700 text-[14px] font-semibold flex items-center gap-2 justify-center">
+            <FiCheck className="w-4 h-4" />
+            You're subscribed! We'll notify you.
+          </div>
+        ) : (
+          <div className="w-full flex flex-col gap-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onKeyDown={(e) => e.key === "Enter" && handleNotify()}
+              placeholder="your@email.com"
+              className="flex h-10 w-full rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            />
+            <button
+              onClick={handleNotify}
+              disabled={loading}
+              className="inline-flex items-center justify-center gap-2 rounded-md text-[15px] font-bold transition-colors disabled:opacity-50 disabled:pointer-events-none bg-slate-900 text-white hover:bg-slate-800 h-11 px-4 py-2 w-full"
+            >
+              {loading ? "Subscribing..." : <><FiBell className="w-4 h-4" /> Notify Me</>}
+            </button>
+          </div>
+        )}
+      </div>
+    </div>,
+    document.body
+  );
+}
+
 
 
 // ─── Main RoadmapContent Component ───────────────────────────────────────────
@@ -196,11 +269,15 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
     return true;
   });
 
+  const nodeLevel = selectedNode?._level || selectedNode?.level || 'freshers';
+  const isLocked = nodeLevel === 'intermediate' || nodeLevel === 'experienced';
+
   return (
     <div id="roadmap-content" className="w-full md:w-[80%] md:h-full md:overflow-y-auto bg-white relative flex flex-col custom-scrollbar">
-      <div className="transition-all duration-300 flex-1">
-        <div className="flex justify-between p-4 border-b border-slate-200 items-center flex-wrap gap-4 bg-white sticky top-0 z-10">
-        </div>
+      {isLocked && <LockedOverlay roadmapId={roadmap?._id} nodeLevel={nodeLevel} />}
+      
+      <div className={isLocked ? "opacity-30 blur-md pointer-events-none select-none transition-all duration-300 flex-1 flex flex-col" : "transition-all duration-300 flex-1 flex flex-col"}>
+
 
         <div className="p-8 md:p-12 w-full flex-1">
           <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">

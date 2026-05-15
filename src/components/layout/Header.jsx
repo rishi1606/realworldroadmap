@@ -10,6 +10,7 @@ export function Header() {
   const { user, logout } = useAuth();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [imgError, setImgError] = useState(false);
 
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -54,10 +55,6 @@ export function Header() {
           <div className="flex items-center gap-1 border-l border-border-subtle pl-3">
 
             {/* Theme Toggle placeholder */}
-            <button className="text-[#71717A] hover:text-text-main hover:bg-gray-100/50 transition-colors p-1.5 rounded-md hidden sm:block mr-2">
-              <FiMoon className="w-[18px] h-[18px]" />
-            </button>
-
             {!user ? (
               <Link to="/login" className="bg-text-main text-[#FAFAFA] hover:bg-text-main/90 transition-colors text-[13px] font-medium h-8 px-4 rounded-md inline-flex items-center justify-center">
                 Sign In
@@ -69,8 +66,13 @@ export function Header() {
                   className="relative h-8 w-8 rounded-full overflow-hidden border border-gray-200/50 outline-none hover:ring-2 hover:ring-gray-200 hover:ring-offset-2 transition-all focus:ring-2 focus:ring-gray-200 focus:ring-offset-2 bg-border-subtle"
                 >
                   <div className="flex h-full w-full items-center justify-center bg-[#F4F4F5] text-[13px] text-text-main font-medium uppercase">
-                    {user.picture && !user.picture.includes('ui-avatars') ? (
-                      <img src={user.picture} alt={user.name} className="h-full w-full object-cover" />
+                    {user.picture && !user.picture.includes('ui-avatars') && !imgError ? (
+                      <img 
+                        src={user.picture} 
+                        alt={user.name} 
+                        className="h-full w-full object-cover" 
+                        onError={() => setImgError(true)}
+                      />
                     ) : (
                       user.name?.charAt(0) || 'U'
                     )}

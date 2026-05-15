@@ -8,7 +8,7 @@
   --color-brand-subtle: #f8fafc;
 
   --color-accent: #2563eb;
-  
+
   --color-bg-base: #ffffff;
   --color-bg-surface: #ffffff;
   --color-bg-subtle: #f9fafb;
@@ -31,12 +31,12 @@
   }
 
   /* Global Cursor Pointer for all interactive elements */
-  button, 
-  a, 
-  input[type="button"], 
-  input[type="submit"], 
-  input[type="checkbox"], 
-  input[type="radio"], 
+  button,
+  a,
+  input[type="button"],
+  input[type="submit"],
+  input[type="checkbox"],
+  input[type="radio"],
   select,
   [role="button"],
   .cursor-pointer,
@@ -53,7 +53,10 @@
   }
 
   /* Typography refinement */
-  h1, h2, h3, h4 {
+  h1,
+  h2,
+  h3,
+  h4 {
     letter-spacing: -0.01em;
     @apply font-semibold;
   }
@@ -76,4 +79,14 @@
 .custom-scrollbar {
   scrollbar-width: thin;
   scrollbar-color: #e2e8f0 transparent;
+}
+
+/* Lightbox scrollbar — hidden but scrollable */
+.lightbox-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.lightbox-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

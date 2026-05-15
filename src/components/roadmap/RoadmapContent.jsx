@@ -182,13 +182,10 @@ function RenderBlock({ block, index, onZoom }) {
   return renderer ? renderer({ block, index, onZoom }) : null;
 }
 
-// ─── Image Lightbox with Scroll Zoom & Drag Pan ─────────────────────────────
+// ─── Image Lightbox with Scrollable Zoom ────────────────────────────────────
 
 function ImageLightbox({ src, onClose }) {
-  const [scale, setScale] = useState(1);
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isDragging, setIsDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const [scale, setScale] = useState(0.75);
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -202,64 +199,55 @@ function ImageLightbox({ src, onClose }) {
     };
   }, [onClose]);
 
-  const handleWheel = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setScale(prev => {
-      const delta = e.deltaY > 0 ? -0.15 : 0.15;
-      const next = Math.min(Math.max(prev + delta, 0.5), 5);
-      // Reset position when zooming back to 1
-      if (next <= 1) setPosition({ x: 0, y: 0 });
-      return next;
-    });
+  const zoomIn = useCallback(() => {
+    setScale(prev => Math.min(prev + 0.25, 5));
   }, []);
 
-  const handleMouseDown = useCallback((e) => {
-    if (scale <= 1) return;
-    e.preventDefault();
-    setIsDragging(true);
-    setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
-  }, [scale, position]);
+  const zoomOut = useCallback(() => {
+    setScale(prev => Math.max(prev - 0.25, 0.5));
+  }, []);
 
-  const handleMouseMove = useCallback((e) => {
-    if (!isDragging) return;
-    setPosition({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y });
-  }, [isDragging, dragStart]);
-
-  const handleMouseUp = useCallback(() => {
-    setIsDragging(false);
+  const handleReset = useCallback(() => {
+    setScale(1);
   }, []);
 
   const handleDoubleClick = useCallback((e) => {
     e.stopPropagation();
-    if (scale > 1) {
-      setScale(1);
-      setPosition({ x: 0, y: 0 });
-    } else {
-      setScale(2.5);
-    }
-  }, [scale]);
-
-  const handleReset = useCallback(() => {
-    setScale(1);
-    setPosition({ x: 0, y: 0 });
+    setScale(prev => prev > 1 ? 1 : 2.5);
   }, []);
 
   return createPortal(
     <div
-      className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
+      className="fixed inset-0 z-[10000] flex flex-col bg-black/70 backdrop-blur-sm animate-in fade-in duration-200"
       onClick={onClose}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
-      style={{ cursor: isDragging ? 'grabbing' : 'default' }}
     >
       {/* Top bar */}
       <div className="absolute top-4 right-4 flex items-center gap-2 z-10" onClick={(e) => e.stopPropagation()}>
+        {/* Zoom out */}
+        <button
+          onClick={zoomOut}
+          className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-slate-200 hover:bg-white transition-all cursor-pointer"
+          title="Zoom out"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
         {/* Zoom percentage */}
-        <span className="text-white/80 text-xs font-mono bg-black/40 backdrop-blur-sm px-2.5 py-1.5 rounded-lg">
+        <span className="text-white/80 text-xs font-mono bg-black/40 backdrop-blur-sm px-2.5 py-1.5 rounded-lg min-w-[48px] text-center">
           {Math.round(scale * 100)}%
         </span>
+        {/* Zoom in */}
+        <button
+          onClick={zoomIn}
+          className="w-9 h-9 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-slate-200 hover:bg-white transition-all cursor-pointer"
+          title="Zoom in"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#334155" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19" />
+            <line x1="5" y1="12" x2="19" y2="12" />
+          </svg>
+        </button>
         {/* Reset zoom */}
         {scale !== 1 && (
           <button
@@ -285,30 +273,21 @@ function ImageLightbox({ src, onClose }) {
         </button>
       </div>
 
-      {/* Zoom hint */}
-      {scale === 1 && (
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-white/60 text-xs font-medium bg-black/30 backdrop-blur-sm px-3 py-1.5 rounded-full z-10 pointer-events-none">
-          Scroll to zoom · Double-click to zoom in
-        </div>
-      )}
-
-      {/* Image container */}
+      {/* Scrollable image container */}
       <div
-        className="w-[96vw] h-[96vh] flex items-center justify-center overflow-hidden"
+        className="flex-1 overflow-auto lightbox-scrollbar flex justify-center p-6 pt-16"
         onClick={(e) => e.stopPropagation()}
-        onWheel={handleWheel}
-        onMouseDown={handleMouseDown}
         onDoubleClick={handleDoubleClick}
-        style={{ cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'zoom-in' }}
       >
         <img
           src={src}
           alt="Zoomed view"
-          className="max-w-full max-h-full object-contain rounded-xl shadow-2xl select-none"
+          className="rounded-xl shadow-2xl select-none object-contain h-fit"
           draggable={false}
           style={{
-            transform: `scale(${scale}) translate(${position.x / scale}px, ${position.y / scale}px)`,
-            transition: isDragging ? 'none' : 'transform 0.2s ease-out',
+            width: `${scale * 100}%`,
+            maxWidth: 'none',
+            transition: 'width 0.2s ease-out',
           }}
         />
       </div>

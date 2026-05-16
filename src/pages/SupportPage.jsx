@@ -128,7 +128,7 @@ export function SupportPage() {
                 marginBottom: '12px',
               }}
             >
-              Hi! I'm the author and sole developer of this platform. For over a year I've been building TechPaths solo – no team, no investors. My goal is to create the best platform for real-world tech learning and career preparation.
+              Hi! I'm the author and sole developer of this platform. For over a year I've been building realworlddev.io solo – no team, no investors. My goal is to create the best platform for real-world tech learning and career preparation.
             </p>
             <p
               style={{
@@ -365,9 +365,9 @@ export function SupportPage() {
                   flex: 1,
                 }}
               >
-                TECHPATHS DEVELOPER
+                realworlddev.io DEVELOPER
               </span>
-              <CopyButton text="TECHPATHS DEVELOPER" />
+              <CopyButton text="realworlddev.io DEVELOPER" />
             </div>
           </div>
 
@@ -477,9 +477,9 @@ export function SupportPage() {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  techpaths@upi
+                  realworlddev.io@upi
                 </span>
-                <CopyButton text="techpaths@upi" />
+                <CopyButton text="realworlddev.io@upi" />
               </div>
             </div>
           </div>

@@ -23,7 +23,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">1. Terms</h2>
             <p>
-              The following terms and conditions govern all use of the TechPaths website and its sub domains. This website is owned and operated by TechPaths ("Us", "We", or "Our"). By using the Service, you ("You", "Yourself" or "Your") agree to these terms of use in full. If You disagree with these terms of use, or any part of these terms of use, or any part of these terms of use, You must not use the Service.
+              The following terms and conditions govern all use of the realworlddev.io website and its sub domains. This website is owned and operated by realworlddev.io ("Us", "We", or "Our"). By using the Service, you ("You", "Yourself" or "Your") agree to these terms of use in full. If You disagree with these terms of use, or any part of these terms of use, or any part of these terms of use, You must not use the Service.
             </p>
           </section>
 
@@ -45,7 +45,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">3. Disclaimer</h2>
             <p>
-              All the materials on TechPaths's Website are provided "as is". TechPaths makes no warranties, may it be expressed or implied, therefore negates all other warranties. Furthermore, TechPaths does not make any representations concerning the accuracy or reliability of the use of the materials on its Website or otherwise relating to such materials or any sites linked to this Website.
+              All the materials on realworlddev.io's Website are provided "as is". realworlddev.io makes no warranties, may it be expressed or implied, therefore negates all other warranties. Furthermore, realworlddev.io does not make any representations concerning the accuracy or reliability of the use of the materials on its Website or otherwise relating to such materials or any sites linked to this Website.
             </p>
           </section>
 
@@ -53,7 +53,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">4. Limitations</h2>
             <p>
-              TechPaths or its suppliers will not be held accountable for any damages that will arise with the use or inability to use the materials on TechPaths's Website, even if TechPaths or an authorized representative of this Website has been notified, orally or written, of the possibility of such damage. Some jurisdictions do not allow limitations on implied warranties, or limitations of liability for incidental damages, these limitations may not apply to you.
+              realworlddev.io or its suppliers will not be held accountable for any damages that will arise with the use or inability to use the materials on realworlddev.io's Website, even if realworlddev.io or an authorized representative of this Website has been notified, orally or written, of the possibility of such damage. Some jurisdictions do not allow limitations on implied warranties, or limitations of liability for incidental damages, these limitations may not apply to you.
             </p>
           </section>
 
@@ -61,7 +61,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">5. Accuracy of Materials</h2>
             <p>
-              The materials appearing on TechPaths's Website may include technical, typographical, or photographic errors. TechPaths will not promise that any of the materials in this Website are accurate, complete, or current. TechPaths may change the materials contained on its Website at any time without notice. TechPaths does not make any commitment to update the materials.
+              The materials appearing on realworlddev.io's Website may include technical, typographical, or photographic errors. realworlddev.io will not promise that any of the materials in this Website are accurate, complete, or current. realworlddev.io may change the materials contained on its Website at any time without notice. realworlddev.io does not make any commitment to update the materials.
             </p>
           </section>
 
@@ -69,7 +69,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">6. Links</h2>
             <p>
-              TechPaths has not reviewed all of the sites linked to its Website and is not responsible for the contents of any such linked site. The presence of any link does not imply endorsement by TechPaths of the site. The use of any linked website is at the user's own risk.
+              realworlddev.io has not reviewed all of the sites linked to its Website and is not responsible for the contents of any such linked site. The presence of any link does not imply endorsement by realworlddev.io of the site. The use of any linked website is at the user's own risk.
             </p>
           </section>
 
@@ -77,7 +77,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">7. Site Terms of Use Modifications</h2>
             <p>
-              TechPaths may revise these Terms of Use for its Website at any time without prior notice. By using this Website, you are agreeing to be bound by the current version of these Terms and Conditions.
+              realworlddev.io may revise these Terms of Use for its Website at any time without prior notice. By using this Website, you are agreeing to be bound by the current version of these Terms and Conditions.
             </p>
           </section>
 
@@ -85,10 +85,10 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">8. User Content</h2>
             <p>
-              In these terms and conditions, "Your Content" shall mean any audio, video, text, images or other material you choose to display on this Website. By displaying Your Content, you grant TechPaths a non-exclusive, worldwide, irrevocable, royalty-free, sublicensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.
+              In these terms and conditions, "Your Content" shall mean any audio, video, text, images or other material you choose to display on this Website. By displaying Your Content, you grant realworlddev.io a non-exclusive, worldwide, irrevocable, royalty-free, sublicensable license to use, reproduce, adapt, publish, translate and distribute it in any and all media.
             </p>
             <p>
-              Your Content must be your own and must not be infringing on any third party's rights. TechPaths reserves the right to remove any of Your Content from this Website at any time, and for any reason, without notice.
+              Your Content must be your own and must not be infringing on any third party's rights. realworlddev.io reserves the right to remove any of Your Content from this Website at any time, and for any reason, without notice.
             </p>
           </section>
 
@@ -96,7 +96,7 @@ export function TermsPage() {
           <section className="space-y-4">
             <h2 className="text-xl font-bold text-text-main">9. Intellectual Property</h2>
             <p>
-              Other than content you own, which you may have opted to include on this Website, under these terms, TechPaths and/or its licensors own all rights to the intellectual property and material contained in this Website, and all such rights are reserved.
+              Other than content you own, which you may have opted to include on this Website, under these terms, realworlddev.io and/or its licensors own all rights to the intellectual property and material contained in this Website, and all such rights are reserved.
             </p>
             <p>
               You are granted a limited license only, subject to the restrictions provided in these terms, for purposes of viewing the material contained on this Website.
@@ -126,7 +126,7 @@ export function TermsPage() {
               If you have any questions about these Terms and Conditions, You can contact us:
             </p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>By email: <a href="mailto:contact@techpaths.com" className="text-brand hover:underline">contact@techpaths.com</a></li>
+              <li>By email: <a href="mailto:contact@realworlddev.io.com" className="text-brand hover:underline">contact@realworlddev.io.com</a></li>
               <li>By visiting the <a href="/contact" className="text-brand hover:underline">Contact Us</a> page on our website</li>
             </ul>
           </section>

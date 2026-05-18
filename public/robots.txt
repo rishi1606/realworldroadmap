@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Host
+Host: https://bytebytetech.com
+
+# Sitemaps
+Sitemap: https://bytebytetech.com/sitemap.xml

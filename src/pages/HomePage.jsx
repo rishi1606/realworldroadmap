@@ -4,6 +4,7 @@ import { FiLayers } from 'react-icons/fi';
 import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { useRoadmaps } from '../context/RoadmapContext';
 import { RoadmapCard } from '../components/common/RoadmapCard';
+import { SEO } from '../components/common/SEO';
 
 export function HomePage() {
   const { roadmaps, fetchAllRoadmaps } = useRoadmaps();
@@ -18,8 +19,41 @@ export function HomePage() {
     init();
   }, [fetchAllRoadmaps, roadmaps.length]);
 
+  const homeSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://bytebytetech.com/#website",
+        "url": "https://bytebytetech.com/",
+        "name": "ByteByteTech",
+        "description": "Interactive Developer Roadmaps & System Design Scenarios",
+        "publisher": {
+          "@id": "https://bytebytetech.com/#organization"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://bytebytetech.com/#organization",
+        "name": "ByteByteTech",
+        "url": "https://bytebytetech.com/",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://bytebytetech.com/favicon.svg"
+        },
+        "description": "Interactive developer roadmaps and real-world system design scenario guides for modern developers."
+      }
+    ]
+  };
+
   return (
     <div className="bg-bg-base text-text-main font-sans flex-1 overflow-x-hidden">
+      <SEO 
+        title="Interactive Developer Roadmaps & System Design Scenarios"
+        description="Master real-world tech engineering with interactive developer roadmaps, real-world case studies, and practical system design guides. Learn system design, database scaling, caching, and load balancing."
+        keywords="developer roadmaps, system design course, software engineering guides, learn caching, load balancing explain, backend scenarios, learn system design"
+        schema={homeSchema}
+      />
 
       {/* Hero Section */}
       <div className="relative overflow-hidden bg-bg-surface border-b border-border-subtle">

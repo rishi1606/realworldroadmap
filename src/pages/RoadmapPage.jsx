@@ -6,6 +6,7 @@ import { SkeletonLoader } from '../components/common/SkeletonLoader';
 import { useAuth } from '../context/AuthContext';
 import { useRoadmaps } from '../context/RoadmapContext';
 import { progressAPI } from '../api/client';
+import { SEO } from '../components/common/SEO';
 
 export function RoadmapPage() {
   const { title } = useParams();
@@ -168,8 +169,30 @@ export function RoadmapPage() {
     );
   }
 
+  const seoTitle = activeRoadmap ? `${activeRoadmap.title} Roadmap & Scenario Guide` : "Developer Roadmap";
+  const seoDesc = activeRoadmap ? `Step-by-step ${activeRoadmap.title} roadmap details. ${activeRoadmap.description || 'Master this system concept through real-world scenario architecture learning.'}` : "Master system architecture, backend flows, and frontend designs.";
+  const seoKeywords = activeRoadmap ? `${activeRoadmap.title.toLowerCase()} roadmap, learn ${activeRoadmap.title.toLowerCase()}, developer roadmap, system design learning, software design scenarios` : "developer roadmaps, system design, system scaling";
+
+  const courseSchema = activeRoadmap ? {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    "name": activeRoadmap.title,
+    "description": activeRoadmap.description || `Master ${activeRoadmap.title} through real-world developer scenarios and system architecture guides.`,
+    "provider": {
+      "@type": "Organization",
+      "name": "ByteByteTech",
+      "sameAs": "https://bytebytetech.com"
+    }
+  } : null;
+
   return (
     <div className="w-full bg-white text-slate-900 font-sans flex justify-center border-t border-slate-200 overflow-hidden">
+      <SEO 
+        title={seoTitle}
+        description={seoDesc}
+        keywords={seoKeywords}
+        schema={courseSchema}
+      />
       <div className="max-w-[1600px] mx-auto w-full flex flex-col md:flex-row md:h-[calc(100vh-65px)] md:overflow-hidden">
         <RoadmapSidebar
           roadmap={activeRoadmap}

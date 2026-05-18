@@ -1,8 +1,14 @@
 import React from 'react';
+import { SEO } from '../components/common/SEO';
 
 export function PrivacyPolicyPage() {
   return (
     <div className="min-h-screen bg-bg-base">
+      <SEO 
+        title="Privacy Policy"
+        description="Privacy policy and data protection terms for ByteByteTech. Learn how we securely protect and handle your roadmap progress data."
+        keywords="privacy policy, data security, data deletion, bytebytetech privacy"
+      />
       {/* Header */}
       <div className="border-b border-border-subtle bg-bg-surface py-12 md:py-16">
         <div className="max-w-[800px] mx-auto px-4 md:px-8 text-center">

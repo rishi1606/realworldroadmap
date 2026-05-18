@@ -2,9 +2,19 @@ export const roadmapData = [
   {
     id: "authentication-nodejs",
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png",
-    title: "How Flipkart Authenticates Millions of Users",
-    description: "Master authentication from scratch — covering password hashing with bcrypt, JWT access & refresh tokens, session management with cookies, and secure login flows used by platforms like Flipkart at scale.",
-    tags: ["JWT", "Session", "Cookies", "OAuth"],
+    title: "Learn Authentication Through Flipkart-like Scenarios",
+    description:
+      "Learn authentication from scratch — including password hashing with bcrypt, JWT access & refresh tokens, sessions, cookies, and secure login flows through large-scale ecommerce scenarios.",
+    tags: [
+      "JWT",
+      "Refresh Tokens",
+      "bcrypt",
+      "Sessions",
+      "Cookies",
+      "Authentication",
+      "Authorization",
+      "Security"
+    ],
     nodes: [
 
       {
@@ -1013,9 +1023,10 @@ export const roadmapData = [
   {
     id: "caching-netflix",
     image: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png",
-    title: "How Netflix Caches Content for 200M+ Users",
-    description: "Understand how Netflix serves 230M+ users without melting its database — from in-memory caching with Redis, cache-aside & read-through strategies, CDN edge caching, to cache invalidation patterns used in production.",
-    tags: ["Redis", "CDN", "Cache Invalidation"],
+    title: "Learn Caching Through Netflix-style Architectures",
+    description:
+      "Learn caching concepts using Redis, CDN edge caching, cache invalidation, and read-through strategies through streaming-platform inspired scenarios.",
+    tags: ["Redis", "Cache Eviction", "Cache Invalidation"],
     nodes: [
 
       {
@@ -3475,9 +3486,10 @@ export const roadmapData = [
   {
     id: "loadbalancer-booking",
     image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Icon_2022.svg",
-    title: "How Booking.com Handles Millions of Users",
-    description: "Explore how Booking.com handles massive traffic spikes — from round-robin & least-connections algorithms, NGINX reverse proxy setup, health checks, sticky sessions, to auto-scaling load balancers in cloud environments.",
-    tags: ["NGINX", "Load Balancer", "Reverse Proxy"],
+    title: "Load Balancing Explained with Booking Platform Examples",
+    description:
+      "Explore load balancing concepts including NGINX reverse proxies, health checks, sticky sessions, and traffic distribution in high-traffic booking scenarios.",
+    tags: ["NGINX", "Load Balancer", "Health Checks", "Sticky Sessions"],
     nodes: [
 
       {
@@ -5211,11 +5223,12 @@ export const roadmapData = [
   // },
   ,
   {
-    id: "nodejs-internals-uber",
-    image: "https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png",
-    title: "Understand How Node.js Works through Uber",
-    description: "Discover why Uber chose Node.js — deep dive into the event loop, call stack, microtask queue, async/await internals, libuv thread pool, non-blocking I/O, and how Node.js handles thousands of concurrent ride requests.",
-    tags: ["Event Loop", "libuv", "V8 Engine"],
+    id: "nodejs-internals-makemytrip",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Makemytrip_logo.svg/1280px-Makemytrip_logo.svg.png?utm_source=commons.wikimedia.org&utm_campaign=index&utm_content=thumbnail",
+    title: "Understand Node.js Internals through MakeMyTrip Examples",
+    description:
+      "Understand Node.js internals through real-world booking scenarios — covering the event loop, call stack, microtasks, async I/O, libuv thread pool, and non-blocking architecture.",
+    tags: ["Event Loop", "Single bs Multi Threaded", "Worked Threads", "Synchronous vs Asynchronous"],
     nodes: [
 
       // FRESHERS - Core Internals

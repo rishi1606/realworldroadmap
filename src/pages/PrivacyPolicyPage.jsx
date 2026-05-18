@@ -9,8 +9,8 @@ export function PrivacyPolicyPage() {
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-text-main">
             Privacy Policy
           </h1>
-          <p className="mt-3 text-text-muted text-sm">
-            Last updated: September 24, 2025
+          <p className="mt-3 text-text-muted text-sm font-medium">
+            Last updated: May 2026
           </p>
         </div>
       </div>
@@ -21,267 +21,76 @@ export function PrivacyPolicyPage() {
 
           {/* Intro */}
           <div className="space-y-4">
-            <p>
-              This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
-            </p>
-            <p>
-              We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the Privacy Policy Generator.
+            <p className="font-medium text-slate-700">
+              <strong className="text-text-main font-bold">ByteByteTech</strong> (bytebytetech.com) is a solo project for real-world tech learning and system architecture preparation, created and maintained by one person. This policy explains what data is collected, why, and how it is handled.
             </p>
           </div>
 
-          {/* Interpretation and Definitions */}
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Interpretation and Definitions
+          {/* Section 1 */}
+          <section className="space-y-4">
+            <h2 className="text-xl font-bold text-text-main tracking-tight">
+              1. What data we collect
             </h2>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-main">Interpretation</h3>
-              <p>
-                The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-main">Definitions</h3>
-              <p>For the purposes of this Privacy Policy:</p>
-              <ul className="list-disc pl-6 space-y-3">
-                <li>
-                  <strong className="text-text-main">Account</strong> means a unique account created for You to access our Service or parts of our Service.
-                </li>
-                <li>
-                  <strong className="text-text-main">Affiliate</strong> means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.
-                </li>
-                <li>
-                  <strong className="text-text-main">Company</strong> (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to ByteByteTech.
-                </li>
-                <li>
-                  <strong className="text-text-main">Cookies</strong> are small files that are placed on Your computer, mobile device or any other device by a website, containing the details of Your browsing history on that website among its many uses.
-                </li>
-                <li>
-                  <strong className="text-text-main">Country</strong> refers to India.
-                </li>
-                <li>
-                  <strong className="text-text-main">Device</strong> means any device that can access the Service such as a computer, a cellphone or a digital tablet.
-                </li>
-                <li>
-                  <strong className="text-text-main">Personal Data</strong> is any information that relates to an identified or identifiable individual.
-                </li>
-                <li>
-                  <strong className="text-text-main">Service</strong> refers to the Website.
-                </li>
-                <li>
-                  <strong className="text-text-main">Service Provider</strong> means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.
-                </li>
-                <li>
-                  <strong className="text-text-main">Usage Data</strong> refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).
-                </li>
-                <li>
-                  <strong className="text-text-main">Website</strong> refers to ByteByteTech, accessible from this domain.
-                </li>
-                <li>
-                  <strong className="text-text-main">You</strong> means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.
-                </li>
-              </ul>
-            </div>
-          </section>
-
-          {/* Collecting and Using Your Personal Data */}
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Collecting and Using Your Personal Data
-            </h2>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-text-main">Types of Data Collected</h3>
-
-              <h4 className="text-base font-semibold text-text-main">Personal Data</h4>
-              <p>
-                While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:
-              </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>Email address</li>
-                <li>First name and last name</li>
-                <li>Usage Data</li>
-              </ul>
-
-              <h4 className="text-base font-semibold text-text-main mt-6">Usage Data</h4>
-              <p>
-                Usage Data is collected automatically when using the Service.
-              </p>
-              <p>
-                Usage Data may include information such as Your Device's Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.
-              </p>
-              <p>
-                When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.
-              </p>
-            </div>
-
-            <div className="space-y-4">
-              <h4 className="text-base font-semibold text-text-main">Tracking Technologies and Cookies</h4>
-              <p>
-                We use Cookies and similar tracking technologies to track the activity on Our Service and store certain information. Tracking technologies used are beacons, tags, and scripts to collect and track information and to improve and analyze Our Service. The technologies We use may include:
-              </p>
-              <ul className="list-disc pl-6 space-y-2">
-                <li>
-                  <strong className="text-text-main">Cookies or Browser Cookies.</strong> A cookie is a small file placed on Your Device. You can instruct Your browser to refuse all Cookies or to indicate when a Cookie is being sent. However, if You do not accept Cookies, You may not be able to use some parts of our Service.
-                </li>
-                <li>
-                  <strong className="text-text-main">Web Beacons.</strong> Certain sections of our Service and our emails may contain small electronic files known as web beacons that permit the Company, for example, to count users who have visited those pages or opened an email and for other related website statistics.
-                </li>
-              </ul>
-              <p>
-                Cookies can be "Persistent" or "Session" Cookies. Persistent Cookies remain on Your personal computer or mobile device when You go offline, while Session Cookies are deleted as soon as You close Your web browser.
-              </p>
-            </div>
-          </section>
-
-          {/* Use of Your Personal Data */}
-          <section className="space-y-6">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Use of Your Personal Data
-            </h2>
-            <p>The Company may use Personal Data for the following purposes:</p>
+            <p>We only collect data necessary to run the platform:</p>
             <ul className="list-disc pl-6 space-y-3">
               <li>
-                <strong className="text-text-main">To provide and maintain our Service</strong>, including to monitor the usage of our Service.
+                <strong className="text-text-main font-semibold">Account data</strong> — Email address, name, and profile picture — provided during registration or via external authentication services.
               </li>
               <li>
-                <strong className="text-text-main">To manage Your Account:</strong> to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.
+                <strong className="text-text-main font-semibold">Password</strong> — If you register with email, your password is stored as a cryptographic hash. Plaintext passwords are never stored.
               </li>
               <li>
-                <strong className="text-text-main">For the performance of a contract:</strong> the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.
+                <strong className="text-text-main font-semibold">Usage data</strong> — Information about your progress (such as completed roadmap modules) and content you interact with, necessary for the platform's features to work.
               </li>
               <li>
-                <strong className="text-text-main">To contact You:</strong> To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application's push notifications regarding updates or informative communications related to the functionalities, products or contracted services.
-              </li>
-              <li>
-                <strong className="text-text-main">To provide You</strong> with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.
-              </li>
-              <li>
-                <strong className="text-text-main">To manage Your requests:</strong> To attend and manage Your requests to Us.
-              </li>
-              <li>
-                <strong className="text-text-main">For business transfers:</strong> We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets.
-              </li>
-              <li>
-                <strong className="text-text-main">For other purposes:</strong> We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.
+                <strong className="text-text-main font-semibold">Technical data</strong> — Tokens and cookies required to maintain your login session.
               </li>
             </ul>
           </section>
 
-          {/* Retention */}
+          {/* Section 2 */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Retention of Your Personal Data
+            <h2 className="text-xl font-bold text-text-main tracking-tight">
+              2. Analytics
             </h2>
             <p>
-              The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations, resolve disputes, and enforce our legal agreements and policies.
-            </p>
-            <p>
-              The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods.
+              We use analytics tools to understand how the platform is used. This data helps us improve the service, optimize real-world concept guides, and enhance user experience. No personal data is ever sold or shared with advertisers.
             </p>
           </section>
 
-          {/* Transfer */}
+          {/* Section 3 */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Transfer of Your Personal Data
+            <h2 className="text-xl font-bold text-text-main tracking-tight">
+              3. Third-party services
             </h2>
             <p>
-              Your information, including Personal Data, is processed at the Company's operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.
-            </p>
-            <p>
-              Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer.
-            </p>
-            <p>
-              The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.
+              Your data is processed on secure infrastructure provided by cloud hosting, database, and authentication service providers. All voluntary support contributions are handled through external secure payment platforms — ByteByteTech does not collect or store your card, bank, or wallet details.
             </p>
           </section>
 
-          {/* Delete */}
+          {/* Section 4 */}
           <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Delete Your Personal Data
+            <h2 className="text-xl font-bold text-text-main tracking-tight">
+              4. Your rights and data retention
             </h2>
-            <p>
-              You have the right to delete or request that We assist in deleting the Personal Data that We have collected about You.
-            </p>
-            <p>
-              Our Service may give You the ability to delete certain information about You from within the Service.
-            </p>
-            <p>
-              You may update, amend, or delete Your information at any time by signing in to Your Account, if you have one, and visiting the account settings section that allows you to manage Your personal information. You may also contact Us to request access to, correct, or delete any personal information that You have provided to Us.
-            </p>
-            <p>
-              Please note, however, that We may need to retain certain information when we have a legal obligation or lawful basis to do so.
-            </p>
-          </section>
-
-          {/* Security */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Security of Your Personal Data
-            </h2>
-            <p>
-              The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.
-            </p>
-          </section>
-
-          {/* Children's Privacy */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Children's Privacy
-            </h2>
-            <p>
-              Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.
-            </p>
-            <p>
-              If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent's consent before We collect and use that information.
-            </p>
-          </section>
-
-          {/* Links to Other Websites */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Links to Other Websites
-            </h2>
-            <p>
-              Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party's site. We strongly advise You to review the Privacy Policy of every site You visit.
-            </p>
-            <p>
-              We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.
-            </p>
-          </section>
-
-          {/* Changes */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Changes to this Privacy Policy
-            </h2>
-            <p>
-              We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.
-            </p>
-            <p>
-              We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the "Last updated" date at the top of this Privacy Policy.
-            </p>
-            <p>
-              You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.
-            </p>
-          </section>
-
-          {/* Contact Us */}
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold text-text-main tracking-tight">
-              Contact Us
-            </h2>
-            <p>
-              If you have any questions about this Privacy Policy, You can contact us:
-            </p>
+            <p>Your data is stored as long as your account exists. You can at any time:</p>
             <ul className="list-disc pl-6 space-y-2">
-              <li>By email: <a href="mailto:contact@ByteByteTech.com" className="text-brand hover:underline">contact@ByteByteTech.com</a></li>
-              <li>By visiting this page on our website</li>
+              <li>Request correction or export of your data.</li>
+              <li>Fully delete your account and all associated progress data.</li>
             </ul>
+            <p>
+              To exercise these rights, you can email us at <a href="mailto:contact@bytebytetech.com" className="text-blue-600 hover:underline font-semibold">contact@bytebytetech.com</a>. Requests are processed within 7 days.
+            </p>
+          </section>
+
+          {/* Section 5 */}
+          <section className="space-y-4">
+            <h2 className="text-xl font-bold text-text-main tracking-tight">
+              5. Changes to this policy
+            </h2>
+            <p>
+              This policy may be updated as the platform evolves. The current revision date is always shown at the top of this page.
+            </p>
           </section>
 
         </div>

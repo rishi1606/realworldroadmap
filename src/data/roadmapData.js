@@ -4084,6 +4084,7 @@ export const roadmapData = [
               type: "paragraph",
               text: "You're at the final step on Booking.com — payment page. You've entered your card details. The system is processing. At this exact moment, the Load Balancer sends your next request to a different server. That server has no memory of your payment flow. The transaction breaks. ₹12,000 gone. Booking lost."
             },
+            { type: "image", src: "stick.png" },
             {
               type: "curious-callout",
               text: "❓ What if we could tell the Load Balancer — once a user lands on a server, keep them there for the entire session?"

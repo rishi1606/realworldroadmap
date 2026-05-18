@@ -368,7 +368,7 @@ function LockedOverlay({ roadmapId, nodeLevel }) {
 
 // ─── Main RoadmapContent Component ───────────────────────────────────────────
 
-export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, topicStatus, updateStatus }) {
+export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectTopic, topicStatus, updateStatus, isProgressLoading }) {
   const [viewMode, setViewMode] = useState("concept");
   const [zoomedImage, setZoomedImage] = useState(null);
   const navigate = useNavigate();
@@ -427,14 +427,23 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
             {/* Status Toggle Button */}
             <button
               onClick={() => updateStatus(selectedTopic._id)}
-              className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${topicStatus[selectedTopic._id] === 'done'
-                  ? 'bg-emerald-500 text-white shadow-emerald-100 hover:bg-emerald-600 border-transparent'
-                  : !user
-                    ? 'bg-white text-[#2563eb] hover:bg-blue-50/50 border-[#2563eb]/20 hover:border-[#2563eb]/40'
-                    : 'bg-white text-slate-600 hover:bg-slate-50 border-slate-200 hover:border-slate-300'
-                }`}
+              disabled={isProgressLoading}
+              className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${
+                isProgressLoading
+                  ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed shadow-none'
+                  : topicStatus[selectedTopic._id] === 'done'
+                    ? 'bg-emerald-500 text-white shadow-emerald-100 hover:bg-emerald-600 border-transparent'
+                    : !user
+                      ? 'bg-white text-[#2563eb] hover:bg-blue-50/50 border-[#2563eb]/20 hover:border-[#2563eb]/40'
+                      : 'bg-white text-slate-600 hover:bg-slate-50 border-slate-200 hover:border-slate-300'
+              }`}
             >
-              {!user ? (
+              {isProgressLoading ? (
+                <>
+                  <div className="w-3.5 h-3.5 border-2 border-slate-400 border-t-transparent rounded-full animate-spin shrink-0" />
+                  <span>Loading...</span>
+                </>
+              ) : !user ? (
                 <>
                   <FiLock className="w-3.5 h-3.5" />
                   <span>Sign in to track progress</span>

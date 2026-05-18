@@ -19,6 +19,7 @@ export function RoadmapPage() {
   const [selectedTopic, setSelectedTopic] = useState(null);
   const [loading, setLoading] = useState(false);
   const [topicStatus, setTopicStatus] = useState({});
+  const [isProgressLoading, setIsProgressLoading] = useState(false);
 
   // 1. Initial Data Resolution
   useEffect(() => {
@@ -91,6 +92,7 @@ export function RoadmapPage() {
     if (activeRoadmap && user) {
       const fetchProgress = async () => {
         try {
+          setIsProgressLoading(true);
           const { data } = await progressAPI.get(activeRoadmap._id);
           const statusMap = {};
           if (data.completedTopics) {
@@ -101,6 +103,8 @@ export function RoadmapPage() {
           setTopicStatus(statusMap);
         } catch (error) {
           console.error("Failed to fetch progress", error);
+        } finally {
+          setIsProgressLoading(false);
         }
       };
       fetchProgress();
@@ -211,6 +215,7 @@ export function RoadmapPage() {
           onSelectTopic={setSelectedTopic}
           topicStatus={topicStatus}
           updateStatus={updateStatus}
+          isProgressLoading={isProgressLoading}
         />
       </div>
     </div>

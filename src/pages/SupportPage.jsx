@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const CopyIcon = () => (
   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -128,7 +129,7 @@ export function SupportPage() {
                 marginBottom: '12px',
               }}
             >
-              Hi! I'm the author and sole developer of this platform. For over a year I've been building ByteByteTech solo – no team, no investors. My goal is to create the best platform for real-world tech learning and career preparation.
+              Hi! I'm Rishi, the author and sole developer of this platform. For over a year I've been building ByteByteTech solo – no team, no investors. My goal is to create the best platform for real-world tech learning and career preparation.
             </p>
             <p
               style={{
@@ -365,9 +366,9 @@ export function SupportPage() {
                   flex: 1,
                 }}
               >
-                ByteByteTech DEVELOPER
+                Rishi Shah
               </span>
-              <CopyButton text="ByteByteTech DEVELOPER" />
+              <CopyButton text="Rishi Shah" />
             </div>
           </div>
 
@@ -411,32 +412,22 @@ export function SupportPage() {
                 flexWrap: 'wrap',
               }}
             >
-              {/* QR Code placeholder */}
+              {/* QR Code */}
               <div
                 style={{
                   width: '80px',
                   height: '80px',
                   borderRadius: '8px',
-                  background: '#f8fafc',
+                  background: '#ffffff',
                   border: '1px solid #e2e8f0',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
+                  padding: '6px',
                 }}
               >
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                  <rect x="8" y="8" width="8" height="8" rx="1" fill="#94a3b8" />
-                  <rect x="28" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                  <rect x="32" y="8" width="8" height="8" rx="1" fill="#94a3b8" />
-                  <rect x="4" y="28" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none" />
-                  <rect x="8" y="32" width="8" height="8" rx="1" fill="#94a3b8" />
-                  <rect x="28" y="28" width="4" height="4" rx="1" fill="#94a3b8" />
-                  <rect x="36" y="28" width="4" height="4" rx="1" fill="#94a3b8" />
-                  <rect x="28" y="36" width="4" height="4" rx="1" fill="#94a3b8" />
-                  <rect x="36" y="36" width="8" height="8" rx="1" fill="#94a3b8" />
-                </svg>
+                <QRCodeSVG value="upi://pay?pa=rishishahsr4-1@oksbi&pn=Rishi%20Shah&cu=INR" size={68} />
               </div>
 
               {/* UPI ID */}
@@ -477,9 +468,9 @@ export function SupportPage() {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  ByteByteTech@upi
+                  rishishahsr4-1@oksbi
                 </span>
-                <CopyButton text="ByteByteTech@upi" />
+                <CopyButton text="rishishahsr4-1@oksbi" />
               </div>
             </div>
           </div>

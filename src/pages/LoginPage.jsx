@@ -44,13 +44,16 @@ export function LoginPage() {
   };
 
   const handleForgotPassword = async (e) => {
-    e.preventDefault();
+    if (e && typeof e.preventDefault === 'function') {
+      e.preventDefault();
+    }
     try {
       setLoading(true);
       setError('');
+      setSuccess('');
       await authAPI.forgotPassword(email);
       setMode('otp');
-      setSuccess('OTP sent to your email');
+      setSuccess('OTP resent successfully to your email!');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to send OTP. Please check your email.');
     } finally {
@@ -165,10 +168,11 @@ export function LoginPage() {
             </button>
             <button 
               type="button"
-              onClick={() => setMode('forgot')}
-              className="text-xs text-text-muted hover:text-text-main transition-colors text-center"
+              disabled={loading}
+              onClick={() => handleForgotPassword()}
+              className="text-xs text-text-muted hover:text-text-main transition-colors text-center disabled:opacity-50 disabled:pointer-events-none"
             >
-              Resend OTP
+              {loading ? 'Resending...' : 'Resend OTP'}
             </button>
           </form>
         );

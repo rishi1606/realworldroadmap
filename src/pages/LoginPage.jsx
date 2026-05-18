@@ -8,6 +8,7 @@ export function LoginPage() {
   const navigate = useNavigate();
   const { user, login } = useAuth();
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   
@@ -47,17 +48,26 @@ export function LoginPage() {
     if (e && typeof e.preventDefault === 'function') {
       e.preventDefault();
     }
-    try {
+    const isResend = mode === 'otp';
+    if (isResend) {
+      setResending(true);
+    } else {
       setLoading(true);
+    }
+    try {
       setError('');
       setSuccess('');
       await authAPI.forgotPassword(email);
       setMode('otp');
-      setSuccess('OTP resent successfully to your email!');
+      setSuccess(isResend ? 'OTP resent successfully to your email!' : 'OTP sent to your email');
     } catch (err) {
       setError(err.response?.data?.message || 'Failed to send OTP. Please check your email.');
     } finally {
-      setLoading(false);
+      if (isResend) {
+        setResending(false);
+      } else {
+        setLoading(false);
+      }
     }
   };
 
@@ -168,11 +178,11 @@ export function LoginPage() {
             </button>
             <button 
               type="button"
-              disabled={loading}
+              disabled={resending}
               onClick={() => handleForgotPassword()}
               className="text-xs text-text-muted hover:text-text-main transition-colors text-center disabled:opacity-50 disabled:pointer-events-none"
             >
-              {loading ? 'Resending...' : 'Resend OTP'}
+              {resending ? 'Resending...' : 'Resend OTP'}
             </button>
           </form>
         );

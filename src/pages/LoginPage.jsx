@@ -76,6 +76,7 @@ export function LoginPage() {
     try {
       setLoading(true);
       setError('');
+      setSuccess('');
       await authAPI.verifyOTP(email, otp);
       setMode('reset');
       setSuccess('OTP verified. Set your new password.');
@@ -89,11 +90,13 @@ export function LoginPage() {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     if (newPassword !== confirmPassword) {
-      return setError('Passwords do not match');
+      setError('Passwords do not match');
+      return;
     }
     try {
       setLoading(true);
       setError('');
+      setSuccess('');
       await authAPI.resetPassword(email, otp, newPassword);
       setMode('login');
       setSuccess('Password reset successfully. Please login.');

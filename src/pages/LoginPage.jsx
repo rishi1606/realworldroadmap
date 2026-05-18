@@ -31,6 +31,7 @@ export function LoginPage() {
     try {
       setLoading(true);
       setError('');
+      setSuccess('');
       
       const res = await authAPI.login(email, password);
 
@@ -112,6 +113,7 @@ export function LoginPage() {
     try {
       setLoading(true);
       setError('');
+      setSuccess('');
       
       const res = await authAPI.loginWithGoogle(credentialResponse.credential);
 

@@ -17,8 +17,14 @@ function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscri
 
   useEffect(() => setMounted(true), []);
 
+  useEffect(() => {
+    if (isOpen) {
+      setEmail(user?.email || '');
+    }
+  }, [isOpen, user]);
+
   const handleNotify = async () => {
-    const emailToUse = email || user?.email;
+    const emailToUse = email;
     if (!emailToUse?.trim()) return;
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailToUse)) return;
     setLoading(true);
@@ -58,7 +64,7 @@ function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscri
                 <input
                   autoFocus
                   type="email"
-                  value={email || user?.email || ''}
+                  value={email}
                   onChange={e => setEmail(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && handleNotify()}
                   placeholder="your@email.com"

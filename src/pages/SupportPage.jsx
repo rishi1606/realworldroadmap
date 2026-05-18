@@ -128,7 +128,7 @@ export function SupportPage() {
                 marginBottom: '12px',
               }}
             >
-              Hi! I'm the author and sole developer of this platform. For over a year I've been building realworlddev.io solo – no team, no investors. My goal is to create the best platform for real-world tech learning and career preparation.
+              Hi! I'm the author and sole developer of this platform. For over a year I've been building ByteByteTech solo – no team, no investors. My goal is to create the best platform for real-world tech learning and career preparation.
             </p>
             <p
               style={{
@@ -365,9 +365,9 @@ export function SupportPage() {
                   flex: 1,
                 }}
               >
-                realworlddev.io DEVELOPER
+                ByteByteTech DEVELOPER
               </span>
-              <CopyButton text="realworlddev.io DEVELOPER" />
+              <CopyButton text="ByteByteTech DEVELOPER" />
             </div>
           </div>
 
@@ -477,9 +477,9 @@ export function SupportPage() {
                     textOverflow: 'ellipsis',
                   }}
                 >
-                  realworlddev.io@upi
+                  ByteByteTech@upi
                 </span>
-                <CopyButton text="realworlddev.io@upi" />
+                <CopyButton text="ByteByteTech@upi" />
               </div>
             </div>
           </div>

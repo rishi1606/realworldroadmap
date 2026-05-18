@@ -15,7 +15,7 @@ export function Footer() {
               rel="noreferrer"
               className="font-medium text-text-main underline-offset-4 hover:underline"
             >
-              RealWorldDev.io
+              ByteByteTech
             </a>
             {/* . The source code is available on{" "} */}
             {/* <a

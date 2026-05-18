@@ -194,7 +194,7 @@ export function ContactPage() {
             <div className="relative w-full max-w-sm rounded-xl overflow-hidden shadow-sm border border-border-subtle">
               <img
                 src="/contact-profile.png"
-                alt="realworlddev.io Team"
+                alt="ByteByteTech Team"
                 className="w-full aspect-[4/5] object-cover"
               />
               <div className="absolute bottom-3 left-1/2 -translate-x-1/2">
@@ -207,7 +207,7 @@ export function ContactPage() {
 
             {/* Name & Role */}
             <div className="text-center">
-              <h2 className="text-xl font-bold text-text-main">realworlddev.io Team</h2>
+              <h2 className="text-xl font-bold text-text-main">ByteByteTech Team</h2>
               <p className="text-sm text-text-muted mt-0.5 flex items-center justify-center gap-1.5">
                 <span className="w-1 h-1 rounded-full bg-text-muted/50"></span>
                 Developers & Educators

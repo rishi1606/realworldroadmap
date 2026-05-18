@@ -41,7 +41,7 @@ export function HomePage() {
           </h1>
 
           <p className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
-            <span className="text-slate-900 font-semibold">realworlddev.io</span> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
+            <span className="text-slate-900 font-semibold">ByteByteTech</span> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
           </p>
 
         </div>

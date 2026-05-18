@@ -166,7 +166,7 @@ export function SearchModal({ isOpen, onClose }) {
             </div>
           </div>
 
-          <div>realworlddev.io Search</div>
+          <div>ByteByteTech Search</div>
         </div>
 
       </div>

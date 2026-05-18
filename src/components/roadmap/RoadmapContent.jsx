@@ -427,18 +427,17 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
             {/* Status Toggle Button */}
             <button
               onClick={() => updateStatus(selectedTopic._id)}
-              className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${
-                topicStatus[selectedTopic._id] === 'done'
+              className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${topicStatus[selectedTopic._id] === 'done'
                   ? 'bg-emerald-500 text-white shadow-emerald-100 hover:bg-emerald-600 border-transparent'
                   : !user
                     ? 'bg-white text-[#2563eb] hover:bg-blue-50/50 border-[#2563eb]/20 hover:border-[#2563eb]/40'
                     : 'bg-white text-slate-600 hover:bg-slate-50 border-slate-200 hover:border-slate-300'
-              }`}
+                }`}
             >
               {!user ? (
                 <>
                   <FiLock className="w-3.5 h-3.5" />
-                  <span>Sign in to mark as done</span>
+                  <span>Sign in to track progress</span>
                 </>
               ) : topicStatus[selectedTopic._id] === 'done' ? (
                 <>

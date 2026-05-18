@@ -426,16 +426,16 @@ export function SupportPage() {
                 }}
               >
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none"/>
-                  <rect x="8" y="8" width="8" height="8" rx="1" fill="#94a3b8"/>
-                  <rect x="28" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none"/>
-                  <rect x="32" y="8" width="8" height="8" rx="1" fill="#94a3b8"/>
-                  <rect x="4" y="28" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none"/>
-                  <rect x="8" y="32" width="8" height="8" rx="1" fill="#94a3b8"/>
-                  <rect x="28" y="28" width="4" height="4" rx="1" fill="#94a3b8"/>
-                  <rect x="36" y="28" width="4" height="4" rx="1" fill="#94a3b8"/>
-                  <rect x="28" y="36" width="4" height="4" rx="1" fill="#94a3b8"/>
-                  <rect x="36" y="36" width="8" height="8" rx="1" fill="#94a3b8"/>
+                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  <rect x="8" y="8" width="8" height="8" rx="1" fill="#94a3b8" />
+                  <rect x="28" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  <rect x="32" y="8" width="8" height="8" rx="1" fill="#94a3b8" />
+                  <rect x="4" y="28" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none" />
+                  <rect x="8" y="32" width="8" height="8" rx="1" fill="#94a3b8" />
+                  <rect x="28" y="28" width="4" height="4" rx="1" fill="#94a3b8" />
+                  <rect x="36" y="28" width="4" height="4" rx="1" fill="#94a3b8" />
+                  <rect x="28" y="36" width="4" height="4" rx="1" fill="#94a3b8" />
+                  <rect x="36" y="36" width="8" height="8" rx="1" fill="#94a3b8" />
                 </svg>
               </div>
 
@@ -484,118 +484,6 @@ export function SupportPage() {
             </div>
           </div>
 
-          {/* USDT Crypto */}
-          <div
-            style={{
-              border: '1px solid var(--color-border-subtle)',
-              borderRadius: '12px',
-              padding: '20px 24px',
-              background: 'var(--color-bg-surface)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '16px' }}>💰</span>
-              <span
-                style={{
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  color: 'var(--color-text-main)',
-                }}
-              >
-                USDT (Crypto)
-              </span>
-            </div>
-            <p
-              style={{
-                fontSize: '13px',
-                color: 'var(--color-text-muted)',
-                marginBottom: '16px',
-                marginTop: 0,
-              }}
-            >
-              USDT cryptocurrency. TRC-20 network.
-            </p>
-
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '16px',
-                flexWrap: 'wrap',
-              }}
-            >
-              {/* QR Code placeholder */}
-              <div
-                style={{
-                  width: '80px',
-                  height: '80px',
-                  borderRadius: '8px',
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  flexShrink: 0,
-                }}
-              >
-                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <rect x="4" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none"/>
-                  <rect x="8" y="8" width="8" height="8" rx="1" fill="#94a3b8"/>
-                  <rect x="28" y="4" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none"/>
-                  <rect x="32" y="8" width="8" height="8" rx="1" fill="#94a3b8"/>
-                  <rect x="4" y="28" width="16" height="16" rx="2" stroke="#94a3b8" strokeWidth="2" fill="none"/>
-                  <rect x="8" y="32" width="8" height="8" rx="1" fill="#94a3b8"/>
-                  <rect x="28" y="28" width="4" height="4" rx="1" fill="#94a3b8"/>
-                  <rect x="36" y="28" width="4" height="4" rx="1" fill="#94a3b8"/>
-                  <rect x="28" y="36" width="4" height="4" rx="1" fill="#94a3b8"/>
-                  <rect x="36" y="36" width="8" height="8" rx="1" fill="#94a3b8"/>
-                </svg>
-              </div>
-
-              {/* Crypto Address */}
-              <div
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  padding: '10px 14px',
-                  borderRadius: '8px',
-                  background: '#f8fafc',
-                  border: '1px solid #e2e8f0',
-                  flex: 1,
-                  minWidth: '200px',
-                  flexWrap: 'wrap',
-                }}
-              >
-                <span
-                  style={{
-                    fontSize: '11px',
-                    fontWeight: 600,
-                    color: '#059669',
-                    background: '#ecfdf5',
-                    padding: '2px 8px',
-                    borderRadius: '4px',
-                  }}
-                >
-                  TRC-20
-                </span>
-                <span
-                  style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: '13px',
-                    fontWeight: 500,
-                    color: 'var(--color-text-main)',
-                    flex: 1,
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis',
-                  }}
-                >
-                  TPdJx1TELHDgSCyiUAbtlS3x...
-                </span>
-                <CopyButton text="TPdJx1TELHDgSCyiUAbtlS3xYourFullAddressHere" />
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Footer Note */}

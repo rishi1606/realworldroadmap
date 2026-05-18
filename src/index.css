@@ -21,6 +21,10 @@
   --font-mono: 'IBM Plex Mono', monospace;
 }
 
+html {
+  scrollbar-gutter: stable;
+}
+
 @layer base {
   body {
     background-color: var(--color-bg-base);

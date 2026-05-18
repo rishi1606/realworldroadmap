@@ -146,7 +146,7 @@ export function SignupPage() {
 
       {/* Terms */}
       <div className="mt-6 text-center text-[13px] text-text-muted leading-relaxed max-w-[360px] relative z-10 px-4">
-        By continuing, you agree to our <a href="#" className="underline underline-offset-4 hover:text-text-main">Terms of Service</a> and <a href="#" className="underline underline-offset-4 hover:text-text-main">Privacy Policy</a>.
+        By continuing, you agree to our <Link to="/privacy-policy" className="underline underline-offset-4 hover:text-text-main">Privacy Policy</Link>.
       </div>
     </div>
   );

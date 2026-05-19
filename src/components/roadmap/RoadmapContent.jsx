@@ -390,7 +390,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
       ? selectedNode.topics[currentTopicIndex + 1]
       : null;
 
-  const topicBlocks = selectedTopic.contentBlocks || [];
+  const topicBlocks = (selectedTopic.contentBlocks || []).filter(Boolean);
 
   const hasImages = topicBlocks.some(b => b.type === 'image');
 

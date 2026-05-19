@@ -1900,7 +1900,7 @@ export const roadmapData = [
       {
         id: 11,
         title: "Advanced Cache Patterns",
-        level: "experienced",
+        level: "intermediate",
         topics: [
           "Multi-Layer Caching (L1, L2, L3)",
           "Cache Warming & Pre-population",
@@ -2048,34 +2048,128 @@ export const roadmapData = [
           "HTTP Methods (GET, POST, PUT, DELETE, PATCH)": [
             {
               type: "paragraph",
-              text: "Every request you make on IRCTC has an intent. Searching trains is different from booking a ticket. Cancelling a ticket is different from updating passenger details. HTTP Methods tell the server exactly what action you want to perform."
+              text: "IRCTC's backend handles millions of actions every day — searching trains, booking tickets, updating passenger names, cancelling bookings. But how does the server know WHAT action you want to perform? That's the job of HTTP methods. The URL identifies the resource. The HTTP method tells the server what to do with it."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ You click 'Book Ticket' in IRCTC. Another user clicks 'Cancel Ticket'. Both actions hit the same /bookings endpoint. How does the server know one request should create a booking while the other should delete it?"
             },
             {
               type: "heading",
-              text: "The 5 Core HTTP Methods"
+              text: "GET — Fetch Data"
             },
             {
-              type: "table",
-              headers: ["Method", "What it does", "IRCTC Example"],
-              rows: [
-                ["GET", "Fetch data — no changes", "Search trains from Mumbai to Delhi"],
-                ["POST", "Create something new", "Book a new ticket"],
-                ["PUT", "Replace entire record", "Update all passenger details"],
-                ["PATCH", "Update part of a record", "Update only the passenger name"],
-                ["DELETE", "Remove something", "Cancel a booked ticket"]
-              ]
+              type: "paragraph",
+              text: "GET requests are used to READ data from the server. They should never change anything in the database. Searching trains, viewing bookings, checking passenger status — all of these use GET."
             },
             {
               type: "code",
-              code: "GET    /trains?from=Mumbai&to=Delhi   → Search trains\nPOST   /bookings                        → Book a ticket\nPUT    /bookings/123                    → Replace full booking\nPATCH  /bookings/123                    → Update passenger name only\nDELETE /bookings/123                    → Cancel ticket"
+              code: "GET /trains?from=Mumbai&to=Delhi\nGET /bookings/PNR123\nGET /passengers/1"
             },
             {
               type: "info-callout",
-              text: "💡 PUT vs PATCH — PUT replaces the entire object. PATCH updates only the fields you send. If you PATCH a booking with just a new name — only the name changes. If you PUT — you must send all fields or the rest get wiped."
+              text: "💡 GET requests are safe — refreshing the page won't create duplicate bookings because GET should never modify data."
+            },
+            {
+              type: "heading",
+              text: "POST — Create New Data"
+            },
+            {
+              type: "paragraph",
+              text: "POST creates a new resource. When you book a ticket, the frontend sends a POST request to IRCTC's backend. The server creates a new booking record in the database."
+            },
+            {
+              type: "code",
+              code: "POST /bookings\n\n{\n  \"trainId\": 12951,\n  \"passengerName\": \"Rahul Sharma\",\n  \"class\": \"3A\"\n}"
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ POST is NOT idempotent. If the same POST request is accidentally sent twice — maybe because the user double-clicked 'Pay Now' — two bookings may be created."
+            },
+            {
+              type: "heading",
+              text: "PUT — Replace Entire Resource"
+            },
+            {
+              type: "paragraph",
+              text: "PUT completely replaces an existing resource. You send ALL fields again — even unchanged ones. Missing fields may get overwritten."
+            },
+            {
+              type: "code",
+              code: "PUT /passengers/1\n\n{\n  \"name\": \"Rahul Sharma\",\n  \"age\": 26,\n  \"seatPreference\": \"Window\"\n}"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Think of PUT like replacing an entire form. Whatever you don't send may disappear."
+            },
+            {
+              type: "heading",
+              text: "PATCH — Update Specific Fields Only"
+            },
+            {
+              type: "paragraph",
+              text: "PATCH updates only specific fields instead of replacing the whole resource. If the passenger only wants to change their seat preference, IRCTC doesn't need the full passenger object again."
+            },
+            {
+              type: "code",
+              code: "PATCH /passengers/1\n\n{\n  \"seatPreference\": \"Upper\"\n}"
+            },
+            {
+              type: "table",
+              headers: ["", "PUT", "PATCH"],
+              rows: [
+                ["Purpose", "Replace entire resource", "Update specific fields only"],
+                ["Send all fields?", "✅ Yes", "❌ No"],
+                ["Risk", "Can overwrite missing fields", "Safer for partial updates"],
+                ["IRCTC Example", "Replace passenger profile", "Change only seat preference"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "DELETE — Remove Data"
+            },
+            {
+              type: "paragraph",
+              text: "DELETE removes a resource from the server. Cancelling a booking, deleting saved passengers, removing payment methods — all use DELETE requests."
+            },
+            {
+              type: "code",
+              code: "DELETE /bookings/PNR123"
+            },
+            {
+              type: "heading",
+              text: "Idempotency — Why Some Methods Are Safer"
+            },
+            {
+              type: "paragraph",
+              text: "An idempotent request produces the same result no matter how many times you repeat it. This matters a LOT in real systems where users refresh pages, retry requests, or networks fail."
+            },
+            {
+              type: "table",
+              headers: ["Method", "Idempotent?", "Why"],
+              rows: [
+                ["GET", "✅ Yes", "Fetching data repeatedly changes nothing"],
+                ["PUT", "✅ Yes", "Replacing same data repeatedly gives same result"],
+                ["DELETE", "✅ Yes", "Deleting already deleted booking changes nothing"],
+                ["POST", "❌ No", "Multiple requests may create multiple bookings"],
+                ["PATCH", "Depends", "Partial updates may behave differently"]
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ During Tatkal booking rush, network retries are common. Without idempotency protections, users could accidentally create duplicate payments or bookings."
+            },
+            {
+              type: "heading",
+              text: "Real IRCTC Flow"
+            },
+            {
+              type: "code",
+              code: "// Search trains\nGET /trains?from=Mumbai&to=Delhi\n\n// Create booking\nPOST /bookings\n\n// Update passenger meal preference\nPATCH /bookings/PNR123/passengers/1\n\n// Fetch booking details\nGET /bookings/PNR123\n\n// Cancel booking\nDELETE /bookings/PNR123"
             },
             {
               type: "success-callout",
-              text: "✅ Same URL — different method — completely different action. /bookings with POST creates a ticket. /bookings/123 with DELETE cancels it. The method is the verb."
+              text: "✅ HTTP methods are the language of APIs. The URL tells the server WHAT resource you're talking about. The HTTP method tells the server WHAT ACTION to perform on it."
             }
           ],
 

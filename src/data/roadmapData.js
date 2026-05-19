@@ -1929,6 +1929,984 @@ export const roadmapData = [
     ]
 
   },
+  {
+    id: "api-irctc",
+    image: "https://upload.wikimedia.org/wikipedia/en/thumb/4/45/IRCTC_Logo.svg/1280px-IRCTC_Logo.svg.png",
+    title: "Learn APIs Through IRCTC-style Architecture",
+    description:
+      "Learn API concepts — REST, HTTP Methods, Authentication, Webhooks, WebSockets and more — through India's most used and most crashed booking platform.",
+    tags: ["REST", "HTTP", "Authentication", "Webhooks", "API Design"],
+    nodes: [
+      {
+        id: 1,
+        title: "API Basics",
+        level: "freshers",
+        topics: [
+          "What is an API & how it works",
+          "REST vs HTTP",
+          "HTTP Methods (GET, POST, PUT, DELETE, PATCH)",
+          "Status Codes (200, 201, 400, 401, 403, 404, 500)",
+          "Query Params vs Path Params vs Body",
+          "JSON & XML"
+        ],
+        topicDetails:
+
+
+        {
+          "What is an API & how it works": [
+            {
+              type: "paragraph",
+              text: "You open IRCTC, type 'Mumbai to Delhi', hit Search. Within 2 seconds you see 14 trains, timings, available seats, prices. The app doesn't store any of this. The mobile app doesn't store it either. Something in the middle fetched it and gave it back. That something is an API."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ You're on the IRCTC app. Train data lives on a railway server. How does your app talk to that server and get data back instantly?"
+            },
+            {
+              type: "heading",
+              text: "What is an API?"
+            },
+            {
+              type: "paragraph",
+              text: "API stands for Application Programming Interface. Think of it as a waiter in a restaurant. You (the app) don't walk into the kitchen (database/server) yourself. You tell the waiter (API) what you want. The waiter goes to the kitchen, gets it, and brings it back. Clean. Controlled. Secure."
+            },
+            {
+              type: "step",
+              title: "You search Mumbai to Delhi",
+              desc: "The app sends a request to IRCTC's API — 'Give me all trains from Mumbai to Delhi on 25th May'."
+            },
+            {
+              type: "step",
+              title: "API receives the request",
+              desc: "IRCTC's API server gets your request and understands what you're asking for."
+            },
+            {
+              type: "step",
+              title: "API fetches from the database",
+              desc: "The API queries the railway database — gets all matching trains, seats, timings."
+            },
+            {
+              type: "step",
+              title: "API sends back the response",
+              desc: "API returns the data to your app. App displays it. You see the train list."
+            },
+            {
+              type: "code",
+              code: "App → API Request → IRCTC Server → Database\nDatabase → API Response → App → You see trains ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Paytm, MakeMyTrip, ixigo all show IRCTC train data — because IRCTC exposes an API. One API. Many apps. That's the power of APIs."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ APIs follow a set of rules to communicate. The most common set of rules is called REST — and it runs on top of HTTP. Let's understand what that means."
+            }
+          ],
+
+          "REST vs HTTP": [
+            {
+              type: "paragraph",
+              text: "When IRCTC's app talks to the server — it uses HTTP to send and receive data. But HTTP is just the transport layer — like roads. REST is the set of rules about how to use those roads. REST tells you how to structure your requests, how to name your URLs, how to use the right methods."
+            },
+            {
+              type: "heading",
+              text: "HTTP — The Transport"
+            },
+            {
+              type: "paragraph",
+              text: "HTTP is the protocol your browser and apps use to communicate over the internet. Every time IRCTC's app sends a request to the server — it's an HTTP request. HTTP defines how messages are formatted and transmitted."
+            },
+            {
+              type: "heading",
+              text: "REST — The Rules"
+            },
+            {
+              type: "paragraph",
+              text: "REST (Representational State Transfer) is a set of guidelines built on top of HTTP. It tells developers how to design APIs in a clean, predictable, standard way. Not every HTTP API is a REST API — but most modern APIs are."
+            },
+            {
+              type: "table",
+              headers: ["", "HTTP", "REST"],
+              rows: [
+                ["What it is", "A communication protocol", "A set of design rules"],
+                ["Role", "Carries the request/response", "Defines how to structure them"],
+                ["Required?", "Yes — mandatory transport", "No — a convention, not a law"],
+                ["Example", "GET /trains HTTP/1.1", "Use GET to fetch, POST to create"],
+              ]
+            },
+            {
+              type: "code",
+              code: "// HTTP Request to IRCTC\nGET /trains?from=Mumbai&to=Delhi HTTP/1.1\nHost: api.irctc.co.in\n\n// REST rule being followed:\n// → GET is used to fetch data ✅\n// → URL is clean and readable ✅\n// → No side effects on server ✅"
+            },
+            {
+              type: "success-callout",
+              text: "✅ HTTP is the road. REST is the traffic rules. IRCTC's API uses both — HTTP to carry requests, REST rules to design them cleanly."
+            }
+          ],
+
+          "HTTP Methods (GET, POST, PUT, DELETE, PATCH)": [
+            {
+              type: "paragraph",
+              text: "Every request you make on IRCTC has an intent. Searching trains is different from booking a ticket. Cancelling a ticket is different from updating passenger details. HTTP Methods tell the server exactly what action you want to perform."
+            },
+            {
+              type: "heading",
+              text: "The 5 Core HTTP Methods"
+            },
+            {
+              type: "table",
+              headers: ["Method", "What it does", "IRCTC Example"],
+              rows: [
+                ["GET", "Fetch data — no changes", "Search trains from Mumbai to Delhi"],
+                ["POST", "Create something new", "Book a new ticket"],
+                ["PUT", "Replace entire record", "Update all passenger details"],
+                ["PATCH", "Update part of a record", "Update only the passenger name"],
+                ["DELETE", "Remove something", "Cancel a booked ticket"]
+              ]
+            },
+            {
+              type: "code",
+              code: "GET    /trains?from=Mumbai&to=Delhi   → Search trains\nPOST   /bookings                        → Book a ticket\nPUT    /bookings/123                    → Replace full booking\nPATCH  /bookings/123                    → Update passenger name only\nDELETE /bookings/123                    → Cancel ticket"
+            },
+            {
+              type: "info-callout",
+              text: "💡 PUT vs PATCH — PUT replaces the entire object. PATCH updates only the fields you send. If you PATCH a booking with just a new name — only the name changes. If you PUT — you must send all fields or the rest get wiped."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Same URL — different method — completely different action. /bookings with POST creates a ticket. /bookings/123 with DELETE cancels it. The method is the verb."
+            }
+          ],
+
+          "Status Codes (200, 201, 400, 401, 403, 404, 500)": [
+            {
+              type: "paragraph",
+              text: "You book a train ticket on IRCTC. Did it work? Did it fail? Was the train not found? Were you not logged in? The server doesn't just send back data — it always sends back a 3-digit number that tells you exactly what happened. These are HTTP Status Codes."
+            },
+            {
+              type: "heading",
+              text: "Status Code Groups"
+            },
+            {
+              type: "table",
+              headers: ["Range", "Meaning", "Think of it as"],
+              rows: [
+                ["2xx", "Success", "All good ✅"],
+                ["4xx", "Client error", "You did something wrong ❌"],
+                ["5xx", "Server error", "IRCTC's server crashed 💀"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "The Most Common Ones"
+            },
+            {
+              type: "table",
+              headers: ["Code", "Meaning", "IRCTC Example"],
+              rows: [
+                ["200", "OK — success", "Train search returned results"],
+                ["201", "Created — new resource made", "Ticket booked successfully"],
+                ["400", "Bad Request — invalid input", "You sent wrong date format"],
+                ["401", "Unauthorized — not logged in", "Session expired, login again"],
+                ["403", "Forbidden — logged in but no access", "Trying to cancel someone else's ticket"],
+                ["404", "Not Found", "Train number doesn't exist"],
+                ["500", "Internal Server Error", "IRCTC server crashed under load"]
+              ]
+            },
+            {
+              type: "info-callout",
+              text: "💡 401 vs 403 — 401 means you're not logged in at all. 403 means you're logged in but you don't have permission. IRCTC returns 401 when your session expires, 403 when you try to access another user's booking."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Status codes are the server's way of communicating the outcome. Always check the status code first — before reading the response body."
+            }
+          ],
+
+          "Query Params vs Path Params vs Body": [
+            {
+              type: "paragraph",
+              text: "You search for trains on IRCTC — you pass source, destination, date. You view a specific booking — you pass the booking ID. You create a new booking — you pass passenger details. All three are sending data to the server — but in three completely different ways."
+            },
+            {
+              type: "heading",
+              text: "Path Params — Identifying a Specific Resource"
+            },
+            {
+              type: "paragraph",
+              text: "Path params are part of the URL itself. They identify which specific resource you're talking about."
+            },
+            {
+              type: "code",
+              code: "GET /bookings/123\n//          ^^^ this is a path param\n// Means: give me booking number 123 specifically"
+            },
+            {
+              type: "heading",
+              text: "Query Params — Filtering or Searching"
+            },
+            {
+              type: "paragraph",
+              text: "Query params come after a ? in the URL. They filter, sort, or search within a resource."
+            },
+            {
+              type: "code",
+              code: "GET /trains?from=Mumbai&to=Delhi&date=2025-05-25\n//          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n// Means: search trains with these filters"
+            },
+            {
+              type: "heading",
+              text: "Request Body — Sending Complex Data"
+            },
+            {
+              type: "paragraph",
+              text: "Body is used in POST and PUT/PATCH requests to send data that's too complex for a URL — like passenger details when booking a ticket."
+            },
+            {
+              type: "code",
+              code: "POST /bookings\nBody: {\n  trainId: 'RAJ123',\n  passengers: [\n    { name: 'Rahul', age: 28, seat: 'A1' }\n  ],\n  paymentMethod: 'UPI'\n}"
+            },
+            {
+              type: "table",
+              headers: ["Type", "Where", "Used for", "IRCTC Example"],
+              rows: [
+                ["Path Param", "In the URL", "Identify a specific resource", "/bookings/123"],
+                ["Query Param", "After ? in URL", "Filter, search, sort", "?from=Mumbai&to=Delhi"],
+                ["Body", "Request payload", "Send complex/sensitive data", "Passenger details on booking"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Path param = which one. Query param = filter/search. Body = complex data to create or update. IRCTC uses all three in every user flow."
+            }
+          ],
+
+          "JSON & XML": [
+            {
+              type: "paragraph",
+              text: "IRCTC's API fetched your train data. Now it needs to send it back to your app. But data needs a format — a structure both the server and the app agree on. Two formats have been used historically — XML (older) and JSON (modern standard)."
+            },
+            {
+              type: "heading",
+              text: "XML — The Old Way"
+            },
+            {
+              type: "code",
+              code: "<train>\n  <number>RAJ123</number>\n  <from>Mumbai</from>\n  <to>Delhi</to>\n  <seats>42</seats>\n</train>"
+            },
+            {
+              type: "heading",
+              text: "JSON — The Modern Standard"
+            },
+            {
+              type: "code",
+              code: "{\n  \"number\": \"RAJ123\",\n  \"from\": \"Mumbai\",\n  \"to\": \"Delhi\",\n  \"seats\": 42\n}"
+            },
+            {
+              type: "table",
+              headers: ["", "JSON", "XML"],
+              rows: [
+                ["Readability", "Clean, easy to read", "Verbose, harder to scan"],
+                ["Size", "Lightweight", "Heavy — lots of tags"],
+                ["Parsing", "Native in JavaScript", "Needs extra parsing"],
+                ["Used by", "99% of modern APIs", "Legacy systems, SOAP APIs"],
+                ["IRCTC uses", "✅ JSON for modern APIs", "Legacy railway systems still use XML"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ JSON is the default for all modern APIs. Lightweight, readable, natively supported in every language. If you're building or consuming any API today — you're working with JSON."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Now you know what an API is, how HTTP methods work, what status codes mean, and how data is formatted. But how exactly is a request structured when it leaves your app — and what does the response look like in detail? That's next."
+            }
+          ]
+        }
+
+
+
+      },
+      {
+        id: 2,
+        title: "API Request & Response",
+        level: "freshers",
+        topics: [
+          "Request structure (method, headers, body)",
+          "Response structure (status codes, body)",
+
+        ],
+        topicDetails: {
+          "Request structure (method, headers, body)": [
+            {
+              type: "paragraph",
+              text: "Every time you search trains or book a ticket on IRCTC, your app sends a request to the server. That request isn't just a random message — it has a precise structure. Three parts: Method, Headers, Body. Miss any one of them and the server either rejects your request or gives you garbage back."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ You tap 'Book Ticket' on IRCTC. What exactly leaves your phone and travels to the IRCTC server? What does that message look like?"
+            },
+            {
+              type: "heading",
+              text: "The 3 Parts of Every HTTP Request"
+            },
+            {
+              type: "table",
+              headers: ["Part", "What it is", "IRCTC Example"],
+              rows: [
+                ["Method", "The action you want to perform", "POST — because you're creating a new booking"],
+                ["Headers", "Metadata about the request", "Authorization token, content type, device info"],
+                ["Body", "The actual data you're sending", "Passenger name, train ID, seat, payment method"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Part 1 — Method"
+            },
+            {
+              type: "paragraph",
+              text: "The method tells the server what you want to do. Booking a ticket? POST. Searching trains? GET. Cancelling? DELETE. The method is the very first word in every HTTP request — the server reads it before anything else."
+            },
+            {
+              type: "code",
+              code: "POST /bookings HTTP/1.1\n^^^\nMethod — tells server: 'I want to CREATE something'"
+            },
+            {
+              type: "heading",
+              text: "Part 2 — Headers"
+            },
+            {
+              type: "paragraph",
+              text: "Headers are key-value pairs that carry metadata — context about who you are, what format you're sending, and what format you expect back. IRCTC's server reads your Authorization header to confirm you're logged in before it even looks at your booking data."
+            },
+            {
+              type: "code",
+              code: "POST /bookings HTTP/1.1\nHost: api.irctc.co.in\nAuthorization: Bearer eyJhbGciOiJSUzI1NiJ9...   ← your login token\nContent-Type: application/json                    ← I'm sending JSON\nAccept: application/json                          ← I want JSON back\nX-Device-ID: android-9f3kd92                      ← which device"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Authorization header carries your session token — a long encrypted string IRCTC gave you when you logged in. Every request sends this. If it's missing or expired — 401 Unauthorized. No ticket for you."
+            },
+            {
+              type: "heading",
+              text: "Part 3 — Body"
+            },
+            {
+              type: "paragraph",
+              text: "The body is the payload — the actual data you're sending. Only POST, PUT, and PATCH requests have a body. GET and DELETE don't — they don't need to send data, they just reference what they want via the URL."
+            },
+            {
+              type: "code",
+              code: "POST /bookings HTTP/1.1\nHost: api.irctc.co.in\nAuthorization: Bearer eyJhbGciOiJSUzI1NiJ9...\nContent-Type: application/json\n\n{\n  \"trainId\": \"12951\",\n  \"journeyDate\": \"2025-05-25\",\n  \"class\": \"3A\",\n  \"passengers\": [\n    {\n      \"name\": \"Rahul Sharma\",\n      \"age\": 28,\n      \"gender\": \"M\",\n      \"berthPreference\": \"LB\"\n    }\n  ],\n  \"paymentMethod\": \"UPI\",\n  \"upiId\": \"rahul@okaxis\"\n}"
+            },
+            {
+              type: "step",
+              title: "Method is read first",
+              desc: "Server sees POST — knows you want to create a booking. Routes your request to the booking handler."
+            },
+            {
+              type: "step",
+              title: "Headers are validated",
+              desc: "Server checks Authorization header. Valid token? You're logged in. Proceeds. Expired token? Stops here — returns 401."
+            },
+            {
+              type: "step",
+              title: "Body is parsed",
+              desc: "Server reads Content-Type: application/json — knows how to parse your body. Extracts trainId, passengers, payment details."
+            },
+            {
+              type: "step",
+              title: "Request is processed",
+              desc: "Server checks seat availability, processes payment via UPI, creates booking record in database."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Method = what to do. Headers = who you are + how the data is packaged. Body = the actual data. All three together form one complete HTTP request. IRCTC's server needs all three to successfully book your ticket."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Your request just left your phone. Now IRCTC's server processes it and fires something back. That something is the HTTP Response — and it has its own structure you need to understand."
+            }
+          ],
+
+          "Response structure (status codes, body)": [
+            {
+              type: "paragraph",
+              text: "IRCTC's server got your booking request. It processed it. Now it sends something back. That something is the HTTP Response. Just like the request had a structure — Method, Headers, Body — the response has its own structure: Status Line, Headers, Body. You need to read all three correctly, or your app won't know if the ticket was actually booked."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ You hit 'Confirm Booking' on IRCTC. The server processes it. How does your app know the ticket was booked? How does it know if payment failed? How does it know if the server crashed?"
+            },
+            {
+              type: "heading",
+              text: "The 3 Parts of Every HTTP Response"
+            },
+            {
+              type: "table",
+              headers: ["Part", "What it is", "IRCTC Example"],
+              rows: [
+                ["Status Line", "3-digit code + message telling you what happened", "201 Created — ticket booked successfully"],
+                ["Headers", "Metadata about the response", "Content-Type, rate limit info, server details"],
+                ["Body", "The actual data the server is returning", "PNR number, seat details, booking confirmation"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Part 1 — Status Line"
+            },
+            {
+              type: "paragraph",
+              text: "The status line is the first thing your app reads. It's a 3-digit code that tells you exactly what happened — before you even touch the body. Your app must check this first. A 200 body and a 400 body look similar — the status code tells you which one to trust."
+            },
+            {
+              type: "table",
+              headers: ["Status Code", "Meaning", "When IRCTC sends it"],
+              rows: [
+                ["200 OK", "Request succeeded, data returned", "Train search returned results"],
+                ["201 Created", "New resource was created", "Ticket booked, PNR generated"],
+                ["400 Bad Request", "Your request had invalid data", "journeyDate sent as '25-05-2025' instead of '2025-05-25'"],
+                ["401 Unauthorized", "Not logged in / session expired", "Authorization token missing or expired"],
+                ["403 Forbidden", "Logged in but not allowed", "Trying to cancel someone else's ticket"],
+                ["404 Not Found", "Resource doesn't exist", "Train number 99999 doesn't exist"],
+                ["409 Conflict", "Resource conflict", "Trying to book an already-cancelled PNR"],
+                ["500 Internal Server Error", "IRCTC's server broke", "Server crash during Tatkal rush hour"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Part 2 — Response Headers"
+            },
+            {
+              type: "paragraph",
+              text: "Response headers carry metadata about what the server is sending back. IRCTC's server tells you what format the body is in, how long to cache the data, and whether you're hitting rate limits."
+            },
+            {
+              type: "code",
+              code: "HTTP/1.1 201 Created\nContent-Type: application/json          ← body is JSON\nX-RateLimit-Remaining: 47               ← 47 API calls left this minute\nX-Request-ID: req_8f3kd92lp             ← unique ID for this request (for debugging)\nCache-Control: no-store                 ← don't cache booking data\nDate: Sat, 25 May 2025 10:32:41 GMT"
+            },
+            {
+              type: "heading",
+              text: "Part 3 — Response Body"
+            },
+            {
+              type: "paragraph",
+              text: "The body is what your app actually displays to you. For a successful booking, it's your PNR, seat details, and fare breakdown. For an error, it's a message explaining exactly what went wrong. Always check the status code before reading the body — a 400 body is an error object, not booking data."
+            },
+            {
+              type: "heading",
+              text: "Successful Booking — 201 Response"
+            },
+            {
+              type: "code",
+              code: "HTTP/1.1 201 Created\nContent-Type: application/json\n\n{\n  \"status\": \"CONFIRMED\",\n  \"pnr\": \"4851937620\",\n  \"trainId\": \"12951\",\n  \"trainName\": \"Mumbai Rajdhani\",\n  \"journeyDate\": \"2025-05-25\",\n  \"class\": \"3A\",\n  \"passengers\": [\n    {\n      \"name\": \"Rahul Sharma\",\n      \"seat\": \"B2/32\",\n      \"berth\": \"Lower\",\n      \"status\": \"CNF\"\n    }\n  ],\n  \"fare\": {\n    \"base\": 1245,\n    \"gst\": 62,\n    \"total\": 1307\n  },\n  \"bookedAt\": \"2025-05-20T10:32:41Z\"\n}"
+            },
+            {
+              type: "heading",
+              text: "Failed Booking — 400 Response"
+            },
+            {
+              type: "code",
+              code: "HTTP/1.1 400 Bad Request\nContent-Type: application/json\n\n{\n  \"error\": {\n    \"code\": \"INVALID_DATE_FORMAT\",\n    \"message\": \"journeyDate must be in YYYY-MM-DD format\",\n    \"field\": \"journeyDate\",\n    \"received\": \"25-05-2025\",\n    \"expected\": \"2025-05-25\"\n  }\n}"
+            },
+            {
+              type: "heading",
+              text: "Server Crash — 500 Response"
+            },
+            {
+              type: "code",
+              code: "HTTP/1.1 500 Internal Server Error\nContent-Type: application/json\n\n{\n  \"error\": {\n    \"code\": \"INTERNAL_ERROR\",\n    \"message\": \"An unexpected error occurred. Please try again.\",\n    \"requestId\": \"req_8f3kd92lp\"\n  }\n}\n\n// requestId lets IRCTC engineers trace\n// exactly what went wrong on their server"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Always read responses in order: Status code first → Headers second → Body third. A 500 body might look exactly like a 200 body structurally. The status code is your source of truth — the body just gives you details."
+            },
+            {
+              type: "step",
+              title: "App receives the response",
+              desc: "Your IRCTC app gets the full HTTP response — status line, headers, and body all at once."
+            },
+            {
+              type: "step",
+              title: "App checks status code first",
+              desc: "201? Proceed to parse body as booking confirmation. 400? Show the error message. 401? Redirect to login. 500? Show 'Try again later'."
+            },
+            {
+              type: "step",
+              title: "App reads Content-Type header",
+              desc: "Content-Type: application/json — app knows to parse the body as JSON. If it were XML, it'd parse differently."
+            },
+            {
+              type: "step",
+              title: "App parses and displays body",
+              desc: "Extracts PNR, seat, fare from the JSON body. Displays your booking confirmation screen with PNR 4851937620."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Status code = what happened. Headers = how to read the body. Body = the actual data or error detail. Every app you've ever used — IRCTC, Paytm, Swiggy — reads HTTP responses in exactly this structure, every single time."
+            }
+          ]
+        }
+      },
+      {
+        id: 3,
+        title: "API Design",
+        level: "freshers",
+        topics: [
+          "REST API design principles",
+          "Versioning (v1, v2)",
+          "Pagination (offset vs cursor based)",
+          "Filtering, Sorting, Searching",
+          "CORS — what it is & why it matters"
+        ],
+        topicDetails: {
+          "REST API design principles": [
+            {
+              type: "paragraph",
+              text: "IRCTC has hundreds of engineers. Some build the mobile app, some build the website, some build the booking engine. They all talk to the same backend APIs. Without agreed-upon design rules, one engineer writes /getTrains, another writes /fetchAllTrainData, another writes /trains/list — and everything breaks. REST API design principles are those agreed-upon rules."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ IRCTC's API has endpoints for trains, bookings, passengers, payments, cancellations. How do you name them? How do you structure them so any developer — internal or external — can understand them instantly?"
+            },
+            {
+              type: "heading",
+              text: "Principle 1 — Use Nouns for URLs, Not Verbs"
+            },
+            {
+              type: "paragraph",
+              text: "The URL identifies a resource — a thing. The HTTP method describes the action. You never put the action in the URL. The method already does that job."
+            },
+            {
+              type: "table",
+              headers: ["❌ Wrong", "✅ Right", "Why"],
+              rows: [
+                ["/getTrains", "/trains", "GET method already says 'get'"],
+                ["/createBooking", "/bookings", "POST method already says 'create'"],
+                ["/cancelTicket/123", "/bookings/123", "DELETE method already says 'cancel'"],
+                ["/searchPassengers", "/passengers", "Query params handle the search"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Principle 2 — Use Plural Nouns for Collections"
+            },
+            {
+              type: "paragraph",
+              text: "Resources come in collections. Always use plural nouns for consistency — even for a single resource. It's /trains/123, not /train/123."
+            },
+            {
+              type: "code",
+              code: "GET  /trains          → list of all trains\nGET  /trains/12951    → specific train 12951\nGET  /bookings        → all bookings for this user\nGET  /bookings/PNR123 → specific booking"
+            },
+            {
+              type: "heading",
+              text: "Principle 3 — Nest Resources to Show Relationships"
+            },
+            {
+              type: "paragraph",
+              text: "When a resource belongs to another resource, reflect that in the URL. A passenger belongs to a booking. A booking belongs to a train journey. The hierarchy should be readable in the URL itself."
+            },
+            {
+              type: "code",
+              code: "GET  /bookings/PNR123/passengers        → passengers in booking PNR123\nGET  /bookings/PNR123/passengers/1      → specific passenger in that booking\nPOST /bookings/PNR123/cancellation      → cancel booking PNR123"
+            },
+            {
+              type: "heading",
+              text: "Principle 4 — Be Stateless"
+            },
+            {
+              type: "paragraph",
+              text: "Every request to IRCTC's API must contain all the information needed to process it. The server doesn't remember your previous request. No sessions stored on the server. This is why every IRCTC API call sends the Authorization header every single time — the server doesn't 'remember' you're logged in."
+            },
+            {
+              type: "code",
+              code: "// Every request is self-contained\nGET /bookings\nAuthorization: Bearer eyJhbGciOiJSUzI1NiJ9...\n\n// Server doesn't remember the previous request\n// Token must be sent EVERY time — not just on login"
+            },
+            {
+              type: "heading",
+              text: "Principle 5 — Use HTTP Methods Correctly"
+            },
+            {
+              type: "table",
+              headers: ["Method", "Use for", "IRCTC Example"],
+              rows: [
+                ["GET", "Read data — no side effects", "GET /trains?from=Mumbai&to=Delhi"],
+                ["POST", "Create a new resource", "POST /bookings"],
+                ["PUT", "Replace entire resource", "PUT /passengers/1 — send all fields"],
+                ["PATCH", "Update specific fields only", "PATCH /passengers/1 — send only name"],
+                ["DELETE", "Remove a resource", "DELETE /bookings/PNR123"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ REST design principles aren't laws enforced by any computer — they're conventions adopted by the entire industry. Follow them and any developer can use your API without reading a manual. Break them and your API becomes a puzzle no one wants to solve."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ IRCTC's API works fine today — but what happens in 6 months when they need to change how bookings work without breaking the 47 third-party apps already using it? That's where versioning comes in."
+            }
+          ],
+
+          "Versioning (v1, v2)": [
+            {
+              type: "paragraph",
+              text: "IRCTC launched their API. MakeMyTrip, ixigo, Paytm — they all integrated it. Six months later, IRCTC needs to change the booking response format — add new fields, rename some, remove one that was a bad idea. If they just change the API, every app that integrated breaks overnight. API versioning solves this."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ ixigo has 10 million users booking IRCTC tickets through their app. IRCTC needs to redesign their booking API completely. How do they upgrade without crashing ixigo's app at 2am on a Monday?"
+            },
+            {
+              type: "heading",
+              text: "What is API Versioning?"
+            },
+            {
+              type: "paragraph",
+              text: "Versioning means running multiple versions of your API simultaneously. v1 stays alive for existing apps. v2 launches with the new design. Apps migrate at their own pace. No one breaks. This is how every major API in the world — Stripe, Razorpay, Google Maps — handles evolution."
+            },
+            {
+              type: "heading",
+              text: "Method 1 — URL Versioning (Most Common)"
+            },
+            {
+              type: "paragraph",
+              text: "The version number lives directly in the URL path. It's explicit, easy to see in logs, easy to route on the server, and immediately obvious to any developer reading the code."
+            },
+            {
+              type: "code",
+              code: "GET https://api.irctc.co.in/v1/bookings/PNR123\nGET https://api.irctc.co.in/v2/bookings/PNR123\n\n// v1 response — old format\n{\n  \"pnr\": \"PNR123\",\n  \"passenger_name\": \"Rahul Sharma\",   ← snake_case\n  \"seat_number\": \"B2/32\"\n}\n\n// v2 response — new format\n{\n  \"pnr\": \"PNR123\",\n  \"passengerName\": \"Rahul Sharma\",    ← camelCase\n  \"seat\": { \"coach\": \"B2\", \"number\": 32 },  ← nested\n  \"journeyClass\": \"3A\"                ← new field added\n}"
+            },
+            {
+              type: "heading",
+              text: "Method 2 — Header Versioning"
+            },
+            {
+              type: "paragraph",
+              text: "The version is passed as a request header instead of the URL. The URL stays clean. Less common but used by some enterprise APIs."
+            },
+            {
+              type: "code",
+              code: "GET https://api.irctc.co.in/bookings/PNR123\nAPI-Version: 2\n\n// or\nAccept: application/vnd.irctc.v2+json"
+            },
+            {
+              type: "heading",
+              text: "How Versioning Works in Practice"
+            },
+            {
+              type: "step",
+              title: "v1 launches",
+              desc: "IRCTC releases v1. MakeMyTrip, ixigo, Paytm all integrate /v1/bookings into their apps."
+            },
+            {
+              type: "step",
+              title: "v2 is built alongside",
+              desc: "IRCTC engineers build the new v2 booking format. v1 keeps running untouched. Zero disruption."
+            },
+            {
+              type: "step",
+              title: "Migration window announced",
+              desc: "IRCTC tells partners: 'v2 is live. v1 will be deprecated in 6 months.' Partners migrate on their own schedule."
+            },
+            {
+              type: "step",
+              title: "v1 deprecated",
+              desc: "After 6 months, v1 returns 410 Gone. All apps are on v2. IRCTC can now remove v1 code entirely."
+            },
+            {
+              type: "table",
+              headers: ["", "URL Versioning", "Header Versioning"],
+              rows: [
+                ["Visibility", "Explicit in URL — easy to see", "Hidden in headers — less obvious"],
+                ["Browser testing", "Works directly in browser", "Needs tools like Postman"],
+                ["Caching", "Easy — URL is different", "Harder — same URL, different response"],
+                ["Industry usage", "Most common — Stripe, Razorpay, IRCTC", "GitHub, some enterprise APIs"],
+                ["Recommended?", "✅ Yes for most APIs", "Only if you need clean URLs"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Versioning is a promise to your API consumers — 'we will never break your integration without warning.' IRCTC can evolve their API as fast as they want, as long as they version correctly and give partners time to migrate."
+            }
+          ],
+
+          "Pagination (offset vs cursor based)": [
+            {
+              type: "paragraph",
+              text: "IRCTC has 14 million passengers a day. If you hit GET /bookings — do you get all 14 million records back? No. That response would be gigabytes of data, take minutes to load, and crash your app. Pagination breaks large datasets into small pages so your app only gets what it can actually display."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ An IRCTC admin queries all bookings for May 25th. There are 2.3 million records. How does the API return this without sending 2.3 million rows in one response and crashing everything?"
+            },
+            {
+              type: "heading",
+              text: "Method 1 — Offset-Based Pagination"
+            },
+            {
+              type: "paragraph",
+              text: "You tell the server: skip this many records, then give me the next N. It's like telling a book to 'start from page 50, show me 20 entries.' Simple to understand. Simple to implement. But it has a serious problem at scale."
+            },
+            {
+              type: "code",
+              code: "GET /bookings?limit=20&offset=0    → records 1–20   (page 1)\nGET /bookings?limit=20&offset=20   → records 21–40  (page 2)\nGET /bookings?limit=20&offset=40   → records 41–60  (page 3)\n\n// Response\n{\n  \"data\": [ ...20 bookings... ],\n  \"total\": 2300000,\n  \"limit\": 20,\n  \"offset\": 0,\n  \"hasMore\": true\n}"
+            },
+            {
+              type: "info-callout",
+              text: "💡 The offset problem — while you're reading page 50, someone new books a ticket. That new booking shifts every record after it by one position. When you load page 51, you either see a duplicate or skip a record entirely. At IRCTC scale with thousands of bookings per second, this is a real problem."
+            },
+            {
+              type: "heading",
+              text: "Method 2 — Cursor-Based Pagination"
+            },
+            {
+              type: "paragraph",
+              text: "Instead of 'skip N records', you use a cursor — a pointer to the last record you saw. You tell the server: 'give me 20 records after this specific booking ID.' New bookings being added don't affect your position at all. This is how IRCTC, Instagram, Twitter, and every high-scale API paginates."
+            },
+            {
+              type: "code",
+              code: "// First request — no cursor needed\nGET /bookings?limit=20\n\n// Response includes a cursor\n{\n  \"data\": [ ...20 bookings... ],\n  \"nextCursor\": \"bkg_01HX9F3KD92LP\",   ← ID of last record returned\n  \"hasMore\": true\n}\n\n// Next request — pass the cursor\nGET /bookings?limit=20&cursor=bkg_01HX9F3KD92LP\n\n// Server fetches records WHERE id > bkg_01HX9F3KD92LP\n// New bookings added meanwhile? Doesn't matter. Your cursor is fixed."
+            },
+            {
+              type: "table",
+              headers: ["", "Offset-Based", "Cursor-Based"],
+              rows: [
+                ["How it works", "Skip N, take M", "Start after this specific record"],
+                ["Jump to page", "✅ Easy — offset=200", "❌ Can't jump to arbitrary page"],
+                ["Real-time data", "❌ Duplicates/skips if data changes", "✅ Stable — cursor is fixed"],
+                ["Performance", "❌ Slow at high offsets (DB scans all rows)", "✅ Fast — indexed ID lookup"],
+                ["Complexity", "Simple to implement", "Slightly more complex"],
+                ["IRCTC uses it for", "Admin reports with fixed datasets", "Live booking feeds, passenger lists"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Offset pagination for simple, static data where you need page jumping. Cursor pagination for live feeds, high-scale data, or anything where records are being added in real time. IRCTC's live booking system is cursor-based — offset would break under 2 million daily bookings."
+            }
+          ],
+
+          "Filtering, Sorting, Searching": [
+            {
+              type: "paragraph",
+              text: "GET /trains returns every train in India — thousands of them. That's useless. You need Mumbai to Delhi trains, on May 25th, with available seats in 3A class, sorted by departure time. Filtering, sorting, and searching are how you turn a massive dataset into exactly the slice your user needs."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ IRCTC's database has 13,452 trains. You search 'Mumbai to Delhi on 25th May, 3A class, sort by departure time, only show trains with available seats.' How does the API handle all of that in one request?"
+            },
+            {
+              type: "heading",
+              text: "Filtering — Narrow Down by Conditions"
+            },
+            {
+              type: "paragraph",
+              text: "Filters let you specify exact conditions that records must match. They go as query parameters. Multiple filters are ANDed together — a train must match ALL conditions to be returned."
+            },
+            {
+              type: "code",
+              code: "GET /trains?from=Mumbai&to=Delhi&date=2025-05-25&class=3A&availableOnly=true\n\n// Breaking it down:\n// from=Mumbai         → only trains departing from Mumbai\n// to=Delhi            → only trains arriving at Delhi\n// date=2025-05-25     → only trains on this date\n// class=3A            → only trains with 3A class\n// availableOnly=true  → only trains with seats available"
+            },
+            {
+              type: "heading",
+              text: "Sorting — Order the Results"
+            },
+            {
+              type: "paragraph",
+              text: "Sorting controls the order in which results are returned. IRCTC lets you sort by departure time, arrival time, duration, or fare. The convention is sortBy for the field and order for direction."
+            },
+            {
+              type: "code",
+              code: "GET /trains?from=Mumbai&to=Delhi&sortBy=departureTime&order=asc\n// → trains sorted earliest departure first\n\nGET /trains?from=Mumbai&to=Delhi&sortBy=fare&order=asc\n// → cheapest trains first\n\nGET /trains?from=Mumbai&to=Delhi&sortBy=duration&order=asc\n// → fastest trains first"
+            },
+            {
+              type: "heading",
+              text: "Searching — Match by Text"
+            },
+            {
+              type: "paragraph",
+              text: "Search lets users find records by typing partial text. You search for 'Rajdhani' and get all trains with 'Rajdhani' in their name. The server runs a text match — usually against a search index for performance."
+            },
+            {
+              type: "code",
+              code: "GET /trains?q=Rajdhani\n// → returns Rajdhani Express, Mumbai Rajdhani, Howrah Rajdhani...\n\nGET /trains?q=12951\n// → returns train by number\n\nGET /passengers?q=Rahul&bookingId=PNR123\n// → search passengers named 'Rahul' within a specific booking"
+            },
+            {
+              type: "heading",
+              text: "Combining All Three"
+            },
+            {
+              type: "paragraph",
+              text: "Real API calls combine filtering, sorting, and searching together with pagination. This is what IRCTC's train search actually sends under the hood when you hit that Search button."
+            },
+            {
+              type: "code",
+              code: "GET /trains\n  ?from=Mumbai          ← filter\n  &to=Delhi             ← filter\n  &date=2025-05-25      ← filter\n  &class=3A             ← filter\n  &availableOnly=true   ← filter\n  &q=Rajdhani           ← search\n  &sortBy=departureTime ← sort\n  &order=asc            ← sort direction\n  &limit=20             ← pagination\n  &cursor=trn_09GH7K    ← pagination\n\n// One clean URL. Server handles all of it."
+            },
+            {
+              type: "table",
+              headers: ["Concept", "Query Param", "What it does", "IRCTC Example"],
+              rows: [
+                ["Filter", "from, to, class, date", "Match exact conditions", "Only 3A class trains"],
+                ["Search", "q", "Partial text match", "q=Rajdhani → all Rajdhani trains"],
+                ["Sort field", "sortBy", "Which field to order by", "sortBy=fare"],
+                ["Sort direction", "order", "asc or desc", "order=asc → cheapest first"],
+                ["Pagination", "limit + cursor", "Control how many + where from", "limit=20&cursor=trn_09GH7K"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Filtering, sorting, and searching all live in query params. They're composable — stack as many as you need. The server processes them in order: filter first (narrow the dataset), then search (text match), then sort (order results), then paginate (slice the page)."
+            }
+          ],
+
+          "CORS — what it is & why it matters": [
+            {
+              type: "paragraph",
+              text: "You're building a travel app at mytravelapp.com. You write JavaScript that calls IRCTC's API at api.irctc.co.in. You open the browser, run your code, and get a red error: 'CORS policy blocked this request.' The API works fine in Postman. It works fine on your server. Only the browser blocks it. Why?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Your frontend at mytravelapp.com tries to call api.irctc.co.in from the browser. The same request works in Postman. The browser blocks it with a CORS error. What's happening and how do you fix it?"
+            },
+            {
+              type: "heading",
+              text: "The Same-Origin Policy"
+            },
+            {
+              type: "paragraph",
+              text: "Browsers have a built-in security rule called the Same-Origin Policy. A page at mytravelapp.com can only make API calls to mytravelapp.com. Not to api.irctc.co.in. Not to any other domain. This protects users — without it, any malicious website could silently make API calls to your bank using your stored cookies."
+            },
+            {
+              type: "code",
+              code: "// Same origin — ALLOWED ✅\nhttps://mytravelapp.com → https://mytravelapp.com/api\n\n// Different origin — BLOCKED ❌ by default\nhttps://mytravelapp.com → https://api.irctc.co.in/trains\n\n// Origin = protocol + domain + port\n// https://irctc.co.in and https://api.irctc.co.in are DIFFERENT origins\n// https://irctc.co.in and http://irctc.co.in are DIFFERENT origins (different protocol)"
+            },
+            {
+              type: "heading",
+              text: "What is CORS?"
+            },
+            {
+              type: "paragraph",
+              text: "CORS — Cross-Origin Resource Sharing — is the mechanism that lets servers say 'I trust requests from these other origins.' It's not a frontend fix. It's not something you configure in your JavaScript. CORS headers must be set by the server — in this case, IRCTC's API server."
+            },
+            {
+              type: "heading",
+              text: "How CORS Works — The Preflight Request"
+            },
+            {
+              type: "step",
+              title: "Your browser sends a preflight",
+              desc: "Before your actual API call, the browser sends an OPTIONS request to api.irctc.co.in asking: 'Will you accept a POST request from mytravelapp.com with these headers?'"
+            },
+            {
+              type: "step",
+              title: "IRCTC's server responds",
+              desc: "Server sends back CORS headers — listing which origins, methods, and headers are allowed. This is the server's permission slip."
+            },
+            {
+              type: "step",
+              title: "Browser checks the permission",
+              desc: "mytravelapp.com in the allowed origins list? Browser proceeds with the real request. Not in the list? Browser blocks it and shows the CORS error — never even sends your actual request."
+            },
+            {
+              type: "step",
+              title: "Real request goes through",
+              desc: "IRCTC's API processes your booking request normally and returns the response. CORS check is done — no further overhead."
+            },
+            {
+              type: "code",
+              code: "// IRCTC's server sets these response headers\nAccess-Control-Allow-Origin: https://mytravelapp.com\n// or\nAccess-Control-Allow-Origin: *   ← allow ALL origins (public APIs)\n\nAccess-Control-Allow-Methods: GET, POST, PUT, DELETE, PATCH\nAccess-Control-Allow-Headers: Authorization, Content-Type\nAccess-Control-Max-Age: 86400    ← cache preflight result for 24 hours"
+            },
+            {
+              type: "info-callout",
+              text: "💡 CORS errors in the browser don't mean the API is broken. Postman doesn't enforce CORS — it's not a browser. The API works fine. The CORS headers are just missing or wrong on the server. Fix: add the correct Access-Control-Allow-Origin header on IRCTC's API server."
+            },
+            {
+              type: "table",
+              headers: ["Scenario", "What happens", "Fix"],
+              rows: [
+                ["mytravelapp.com calls api.irctc.co.in, no CORS headers", "Browser blocks — CORS error", "IRCTC server adds Access-Control-Allow-Origin"],
+                ["IRCTC sets Access-Control-Allow-Origin: *", "All origins allowed — works everywhere", "Fine for public read APIs, risky for write APIs"],
+                ["IRCTC sets specific origin: mytravelapp.com", "Only mytravelapp.com can call it from browser", "Right approach for partner integrations"],
+                ["Postman calls api.irctc.co.in", "Always works — Postman ignores CORS", "Nothing to fix — this is expected"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ CORS is a browser security feature, not an API bug. It's controlled entirely by the server via response headers. If you're seeing a CORS error — the fix is always on the server side, not in your frontend JavaScript. Never try to 'disable CORS' in your app — you'd be disabling a security feature protecting your users."
+            }
+          ]
+        }
+      },
+      {
+        id: 4,
+        title: "API Authentication & Security",
+        level: "intermediate",
+        topics: [
+          "How APIs are secured (overview only)",
+          "API Keys — what they are & how they work"
+        ]
+      },
+      {
+        id: 5,
+        title: "API Documentation",
+        level: "intermediate",
+        topics: [
+          "Swagger / OpenAPI spec",
+          "Writing good API docs"
+        ]
+      },
+      {
+        id: 6,
+        title: "API Communication Types",
+        level: "intermediate",
+        topics: [
+          "REST vs GraphQL",
+          "Webhooks",
+          "WebSockets Overview"
+        ]
+      },
+      {
+        id: 7,
+        title: "API Gateway",
+        level: "experienced",
+        topics: [
+          "What is API Gateway & why it's needed",
+          "Kong / AWS API Gateway"
+        ]
+      },
+      {
+        id: 8,
+        title: "API Performance",
+        level: "experienced",
+        topics: [
+          "Rate Limiting",
+          "Throttling",
+          "API Response compression (gzip)"
+        ]
+      },
+      {
+        id: 9,
+        title: "Advanced API Communication",
+        level: "experienced",
+        topics: [
+          "gRPC",
+          "Long Polling vs Short Polling vs SSE",
+          "REST vs gRPC vs GraphQL comparison"
+        ]
+      },
+      {
+        id: 10,
+        title: "API in Production",
+        level: "experienced",
+        topics: [
+          "API Monitoring & Logging",
+          "API Deprecation strategies",
+          "API Backward compatibility",
+          "API Testing strategies"
+        ]
+      }
+    ]
+  },
+
   // ,
   // {
   //   id: "websockets-gaming",

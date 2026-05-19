@@ -5221,6 +5221,641 @@ export const roadmapData = [
 
   //   ]
   // },
+  {
+    id: "cdn-zomato",
+    image: "https://crystalpng.com/wp-content/uploads/2025/12/Zomato-Logo.png",
+    title: "Understand CDN through Zomato",
+    description: "Learn how Zomato serves millions of concurrent users — from edge servers and cache hits, to geo-routing, CDN invalidation, DDoS protection, and multi-CDN strategies in production.",
+    tags: ["CDN", "Edge Computing", "Cloudflare"],
+    nodes: [
+
+      // FRESHERS
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "What is a CDN?",
+          "How CDN works (Edge Servers & PoPs)",
+          "CDN vs Direct Server Request",
+          "Static vs Dynamic content on CDN",
+
+        ],
+        topicDetails: {
+          "What is a CDN?": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "It's 1 PM on a Tuesday. You're starving. You open Zomato, search 'Biryani near me', and within 2 seconds — you see every restaurant, every menu image, every rating, crisp and fast. Now your friend in Bengaluru does the same thing. Same speed. Same app. But Zomato's main servers are sitting in Mumbai. So how is your friend in Bengaluru getting data that fast — from a server 1,000 km away?"
+            },
+            { type: "image", "src": "cdn.png" },
+
+            // 🔴 PROBLEM
+            {
+              type: "heading",
+              text: "The Problem — Distance Kills Speed"
+            },
+            {
+              type: "paragraph",
+              text: "The internet isn't magic. When you request something — a menu image, a restaurant page, a food photo — that request physically travels to a server, grabs the data, and travels back. And distance? Distance adds time. Every. Single. Time."
+            },
+            {
+              type: "error-callout",
+              title: "If Zomato had only ONE server in Mumbai:",
+              list: [
+                "A user in Delhi sends a request → travels 1,400 km to Mumbai → comes back 1,400 km",
+                "A user in Chennai → 1,300 km each way",
+                "A user in Kolkata → 2,000 km round trip",
+                "Every image, every menu, every rating — making that full journey every single time",
+                "App feels sluggish. Images load slowly. Users get frustrated and close the app."
+              ],
+              footer: "This is called High Latency — and it's the silent killer of user experience."
+            },
+
+            // 📐 REAL NUMBERS
+            {
+              type: "paragraph",
+              text: "Let's make this concrete. The time it takes for data to travel from point A to point B is called latency. And the numbers are very real:"
+            },
+            {
+              type: "code",
+              code: "Mumbai → Mumbai (same city)   ~5ms   ✅ Instant\nMumbai → Delhi                ~50ms  😐 Okay\nMumbai → Kolkata              ~80ms  😬 Noticeable\nMumbai → Chennai              ~60ms  😬 Noticeable\nMumbai → New York             ~200ms ❌ Painful\n\n(ms = milliseconds. Every ms adds up when you load 30 images on one page.)"
+            },
+            {
+              type: "paragraph",
+              text: "Now multiply that by every image on Zomato's homepage — restaurant logos, food photos, banners, icons. A single page can have 40–50 assets. All of them making that round trip. You do the math."
+            },
+
+            // 💡 SOLUTION
+            {
+              type: "heading",
+              text: "So What is a CDN?"
+            },
+            {
+              type: "paragraph",
+              text: "CDN stands for Content Delivery Network. The idea is beautifully simple — instead of serving everyone from one central server in Mumbai, you copy your content to dozens of servers spread across the country (and the world). Now when someone in Delhi opens Zomato, they're served from a server in Delhi — not Mumbai. Fast, close, instant."
+            },
+
+
+            // 🌍 WHAT EXACTLY GETS STORED
+            {
+              type: "heading",
+              text: "What Kind of Content Does a CDN Store?"
+            },
+            {
+              type: "paragraph",
+              text: "Not everything on Zomato needs a CDN. The CDN specifically handles content that doesn't change often — things every user sees, regardless of who they are. This is called static content."
+            },
+            {
+              type: "code",
+              code: "Stored on CDN ✅               NOT on CDN ❌\n─────────────────────────────────────────────\nRestaurant logo images         Your order history\nFood photos & banners          Your saved addresses  \nZomato app icons & fonts       Live delivery tracking\nCSS stylesheets                Your cart items\nJavaScript files               Restaurant stock status"
+            },
+            {
+              type: "paragraph",
+              text: "Basically — if it's the same for every single user, it goes on the CDN. If it's personal to you, it stays on the origin server."
+            },
+
+            // ⚙️ HOW IT WORKS STEP BY STEP
+            {
+              type: "heading",
+              text: "How Does It Actually Work? — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You open Zomato in Delhi",
+              desc: "You launch the app. Your phone starts loading the homepage — restaurant images, banners, logos, fonts. All of it needs to be fetched from somewhere."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Your request goes to the nearest CDN server",
+              desc: "Instead of travelling to Zomato's Mumbai origin server, your request is automatically redirected to the nearest CDN server — which is sitting right there in Delhi, just a few milliseconds away."
+            },
+            {
+              type: "code",
+              code: "Without CDN:  You (Delhi) ──────────────────→ Server (Mumbai) ~50ms\nWith CDN:     You (Delhi) ──→ CDN Delhi Server ~5ms ✅"
+            },
+            {
+              type: "step",
+              title: "Step 3 — CDN checks if it already has the content",
+              desc: "The CDN server in Delhi checks its local storage. Does it already have Burger King's logo? The Domino's banner image? Zomato's font files? If yes — it serves them instantly. No need to contact Mumbai at all."
+            },
+            {
+              type: "step",
+              title: "Step 4 — If not found, it fetches once from origin and caches",
+              desc: "First time a Delhi user requests a particular image, the CDN Delhi server doesn't have it yet. So it goes to Mumbai once, fetches it, stores a copy, and serves it to you. Every Delhi user after you? Served from Delhi's copy. Mumbai is never bothered again."
+            },
+            {
+              type: "code",
+              code: "First Delhi user:\nYou → CDN Delhi → ❌ Not found → Fetches from Mumbai → Stores copy → Serves you\n\nEvery Delhi user after:\nThem → CDN Delhi → ✅ Found! → Served instantly from Delhi"
+            },
+            {
+              type: "step",
+              title: "Step 5 — You see the full page in under a second",
+              desc: "All images, icons, and static files loaded from a nearby CDN server. Your personalized data — your cart, your address, your order history — that came from Mumbai's origin server. But you'd never notice the difference. It all loads together, lightning fast."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Delhi user loads from Delhi. Bengaluru user loads from Bengaluru. Mumbai user loads from Mumbai. Same app. Same content. Everyone gets the same blazing fast experience — regardless of where Zomato's actual servers are. That's a CDN doing its job."
+            },
+
+            // 🗺️ ZOMATO'S REAL CDN SETUP
+            {
+              type: "heading",
+              text: "What Zomato's CDN Actually Looks Like"
+            },
+            {
+              type: "paragraph",
+              text: "Zomato doesn't build and manage these servers themselves. They use a CDN provider — a company that already has servers planted across the globe. The big players are Cloudflare, AWS CloudFront, and Akamai. Zomato uploads their static content once, and the CDN provider handles spreading it across hundreds of servers worldwide."
+            },
+            {
+              type: "code",
+              code: "Zomato Origin Server (Mumbai)\n           │\n    CDN Provider (e.g., Cloudflare)\n           │\n  ┌────────┬────────┬────────┬────────┐\n  │ Delhi  │  BLR   │Chennai │Kolkata │  ← CDN Edge Servers (India)\n  └────────┴────────┴────────┴────────┘\n  ┌────────┬────────┬────────┬────────┐\n  │ Dubai  │ London │  NYC   │ Tokyo  │  ← CDN Edge Servers (Global)\n  └────────┴────────┴────────┴────────┘\n\n  Every user → served from their closest edge server"
+            },
+            // ⚠️ CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ But wait — how exactly does the CDN know which server is 'closest' to you? What happens when that nearby CDN server doesn't have the content yet? And how does content get updated across 200+ servers when Zomato changes a banner image? That's exactly what we're breaking down next — how CDN actually works under the hood with Edge Servers and Points of Presence."
+            }
+          ],
+          "How CDN works (Edge Servers & PoPs)": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "Last time, we said a CDN serves you from the 'nearest server'. But think about that for a second — how does the internet even know where you are? How does it decide which server is nearest? And what exactly IS that nearby server — is it a full data center? A single machine? A rack in someone's office? Let's open the black box."
+            },
+            { type: "image", "src": "cdnw.png" },
+
+            // 🔴 PROBLEM SETUP
+            {
+              type: "heading",
+              text: "The Problem — 'Nearest Server' Is More Complicated Than It Sounds"
+            },
+            {
+              type: "paragraph",
+              text: "When 5 crore Zomato users across India open the app simultaneously, you can't just have one backup server in Delhi and call it a day. Think about what that actually means at scale:"
+            },
+            {
+              type: "error-callout",
+              title: "The real challenges CDN needs to solve:",
+              list: [
+                "A user in Pune and a user in Nagpur — which server serves both of them?",
+                "What if that one Delhi server gets overloaded with 80 lakh Delhi users?",
+                "What happens when a CDN server doesn't have the content yet — who does it ask?",
+                "How does content get updated across 200+ servers when Zomato changes a banner?"
+              ],
+              footer: "One nearby server isn't enough. You need a structured, layered system. That system is built around two things — Edge Servers and Points of Presence (PoPs)."
+            },
+
+            // 💡 CONCEPT 1 — PoP
+            {
+              type: "heading",
+              text: "What is a Point of Presence (PoP)?"
+            },
+            {
+              type: "paragraph",
+              text: "A Point of Presence — or PoP — is a physical CDN location in a city. Not a single server. An entire facility packed with multiple servers, networking equipment, and storage — all working together as one unit, strategically placed close to a large population of users."
+            },
+            {
+              type: "info-callout",
+              text: "🏬 Think of a PoP like a Zomato regional warehouse. Not a tiny local outlet — a full-scale facility that manages and serves an entire region. Mumbai PoP handles Maharashtra. Delhi PoP handles North India. Bengaluru PoP handles South. Each PoP is a powerhouse, not just a single server."
+            },
+            {
+              type: "paragraph",
+              text: "Cloudflare — one of the world's biggest CDN providers — has PoPs in over 300 cities globally. In India alone, they have PoPs in Mumbai, Delhi, Chennai, Bengaluru, Kolkata, and Hyderabad. So when you open Zomato in Hyderabad, you're not hitting a server in Mumbai. You're hitting Cloudflare's Hyderabad PoP — which might be just 10–15ms away."
+            },
+            {
+              type: "code",
+              code: "India CDN PoP Locations (Cloudflare example):\n\n  🔴 Delhi PoP       → Serves North India (UP, Punjab, Haryana, Rajasthan)\n  🔴 Mumbai PoP      → Serves West India (Maharashtra, Gujarat)\n  🔴 Chennai PoP     → Serves Tamil Nadu, Kerala, Andhra\n  🔴 Bengaluru PoP   → Serves Karnataka, parts of South\n  🔴 Kolkata PoP     → Serves East India (Bengal, Odisha, Bihar)\n  🔴 Hyderabad PoP   → Serves Telangana, parts of South\n\n  Each PoP = multiple servers + storage + networking gear"
+            },
+
+            // 💡 CONCEPT 2 — EDGE SERVER
+            {
+              type: "heading",
+              text: "Concept 2 — What is an Edge Server?"
+            },
+            {
+              type: "paragraph",
+              text: "Inside every PoP, there are multiple Edge Servers. These are the actual machines that store cached content and directly respond to your requests. They're called 'edge' servers because they sit at the edge of the network — as close to the end user as possible, far from the central origin server."
+            },
+            {
+              type: "code",
+              code: "Mumbai PoP\n├── Edge Server 1   (handles 50,000 concurrent requests)\n├── Edge Server 2   (handles 50,000 concurrent requests)\n├── Edge Server 3   (handles 50,000 concurrent requests)\n├── Edge Server 4   (handles 50,000 concurrent requests)\n└── Edge Server 5   (handles 50,000 concurrent requests)\n\nTotal Mumbai PoP capacity: 2.5 lakh concurrent requests — from one PoP alone."
+            },
+            {
+              type: "paragraph",
+              text: "So when we say 'you're served from the nearest CDN server' — what we really mean is: you're served from an Edge Server inside the nearest PoP to your location. The PoP is the facility. The Edge Server is the machine inside that facility that actually talks to you."
+            },
+            {
+              type: "info-callout",
+              text: "🏪 PoP = The Zomato regional warehouse building. Edge Server = Each individual shelf and dispatch counter inside that warehouse. You interact with the counter (Edge Server). The counter lives inside the warehouse (PoP)."
+            },
+
+            // ⚙️ THE FULL FLOW
+            {
+              type: "heading",
+              text: "How It All Flows Together — Step by Step"
+            },
+            {
+              type: "paragraph",
+              text: "Let's trace exactly what happens when you open Zomato in Pune and load a restaurant's menu page — from the moment you tap the app to the moment you see the food photos."
+            },
+            {
+              type: "step",
+              title: "Step 1 — Your request leaves your phone",
+              desc: "You tap on 'Burger King, Koregaon Park'. Your phone sends a request for that restaurant's images, menu layout, and logo. But where does that request go first?"
+            },
+            {
+              type: "step",
+              title: "Step 2 — DNS routes you to the nearest PoP",
+              desc: "Here's the magic. CDN providers use a system called Anycast DNS. When your request goes out, the CDN's DNS system checks your IP address, figures out your rough location (Pune, Maharashtra), and points you to the nearest PoP — which is Mumbai, roughly 150 km away."
+            },
+            {
+              type: "code",
+              code: "Your phone (Pune) sends request\n        ↓\nDNS lookup: 'Where is zomato-cdn.com?'\n        ↓\nCDN DNS: 'You're in Pune → nearest PoP is Mumbai'\n        ↓\nRequest redirected → Mumbai PoP → Edge Server 3"
+            },
+            {
+              type: "step",
+              title: "Step 3 — Edge Server checks its local cache",
+              desc: "Edge Server 3 in Mumbai checks: 'Do I already have Burger King Koregaon Park's menu images?' Two things can happen here — and this is the most important part of understanding how CDNs work."
+            },
+
+            // CACHE HIT
+            {
+              type: "heading",
+              text: "Cache Hit — The Fast Path ✅"
+            },
+            {
+              type: "paragraph",
+              text: "If another Pune or Mumbai user already loaded that same Burger King page before you, the Edge Server already cached those images locally. It serves them directly to you — never contacting Zomato's origin server in Mumbai at all."
+            },
+            {
+              type: "code",
+              code: "You (Pune) → Mumbai Edge Server → ✅ Cache HIT\n                                    → Served in ~8ms\n                                    → Origin server never contacted\n                                    → Zomato's servers: completely unbothered 😎"
+            },
+
+            // CACHE MISS
+            {
+              type: "heading",
+              text: "Cache Miss — The Fetch Path ⚠️"
+            },
+            {
+              type: "paragraph",
+              text: "If nobody nearby has requested that content before — say it's a brand new restaurant that just went live — the Edge Server doesn't have it yet. So it reaches back to Zomato's origin server, fetches the content, stores a copy locally, and then serves you."
+            },
+            {
+              type: "code",
+              code: "You (Pune) → Mumbai Edge Server → ❌ Cache MISS\n                                    → Fetches from Zomato Origin (Mumbai)\n                                    → Stores copy in Edge Server cache\n                                    → Serves you ~40ms (one-time cost)\n\nNext user from Pune/Mumbai:\n  → Mumbai Edge Server → ✅ Cache HIT → Served in ~8ms ✅"
+            },
+            {
+              type: "paragraph",
+              text: "The cache miss only happens once per PoP. After that, every user in that region gets the fast cached version — until the content expires or Zomato pushes an update."
+            },
+
+            // FULL ARCHITECTURE
+            {
+              type: "heading",
+              text: "The Full Picture — Origin → PoP → Edge → You"
+            },
+            {
+              type: "paragraph",
+              text: "Here's the complete hierarchy of how content flows through a CDN. Think of it like a supply chain — from the factory to the warehouse to the counter to you."
+            },
+            {
+              type: "code",
+              code: "ZOMATO ORIGIN SERVER (Mumbai)\n— Single source of truth. All content lives here first.\n            │\n            │ (content pushed or pulled to CDN)\n            ▼\n┌─────────────────────────────────────────────────┐\n│              CDN NETWORK (Cloudflare)           │\n│                                                 │\n│  Delhi PoP          Mumbai PoP   Chennai PoP    │\n│  ├─ Edge Server 1   ├─ Edge S1   ├─ Edge S1     │\n│  ├─ Edge Server 2   ├─ Edge S2   ├─ Edge S2     │\n│  └─ Edge Server 3   └─ Edge S3   └─ Edge S3     │\n│                                                 │\n│  Bengaluru PoP      Kolkata PoP                 │\n│  ├─ Edge Server 1   ├─ Edge S1                  │\n│  └─ Edge Server 2   └─ Edge S2                  │\n└─────────────────────────────────────────────────┘\n            │\n            ▼\n     END USERS — each served from their nearest PoP"
+            },
+            // { type: "image", src: "cdn-architecture.png" },
+
+            // CONTENT UPDATE QUESTION
+            {
+              type: "heading",
+              text: "But What Happens When Zomato Updates a Banner Image?"
+            },
+            {
+              type: "paragraph",
+              text: "Great question. Zomato runs a new campaign — they change the homepage banner to a Republic Day offer. That new image is on the origin server. But all the Edge Servers across India are still caching the old image. How does the update reach everyone?"
+            },
+            {
+              type: "paragraph",
+              text: "Two ways this gets handled:"
+            },
+            {
+              type: "heading",
+              text: "Method 1 — TTL (Time To Live)"
+            },
+            {
+              type: "paragraph",
+              text: "Every cached file has an expiry time — called TTL — set by Zomato. Example: TTL = 24 hours. After 24 hours, Edge Servers automatically delete the old cached file. The next user who requests it triggers a fresh fetch from the origin. New banner cached. New banner served. All automatic, no manual work."
+            },
+            {
+              type: "heading",
+              text: "Method 2 — Cache Purge (Instant)"
+            },
+            {
+              type: "paragraph",
+              text: "For urgent updates, Zomato sends a 'purge' command directly to the CDN provider. Every Edge Server across India immediately deletes that specific file. The next request from any user — Delhi, Bengaluru, Chennai, anywhere — fetches the fresh version from origin. Old banner gone globally in under 30 seconds."
+            },
+            {
+              type: "info-callout",
+              text: "⚡ For time-sensitive campaigns — flash sales, cricket match offers, Republic Day deals — Zomato uses instant cache purge. For regular content that can wait, TTL handles it automatically on its own schedule."
+            },
+
+            ,
+
+            // ⚠️ CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ But here's something we've been assuming all along — that CDN is always faster than going directly to the origin server. Is that actually always true? When does it make sense to skip the CDN entirely and hit the server directly? That's exactly what CDN vs Direct Server Request breaks down — and the answer might surprise you."
+            }
+          ],
+          "CDN vs Direct Server Request": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "We've established that CDN is fast. But here's a question nobody asks — if CDN is so great, why doesn't Zomato serve EVERYTHING through it? Your order history, your saved addresses, your live delivery tracker — why do those still come directly from Zomato's origin server? Because CDN isn't always the right tool. Knowing when to use it and when to skip it — that's what separates a good system from a great one."
+            },
+            { type: "image", src: "cdnserver.png" },
+
+            // CORE DIFFERENCE
+            {
+              type: "heading",
+              text: "The Core Difference"
+            },
+            {
+              type: "paragraph",
+              text: "When you open Zomato and tap on a restaurant, two very different things happen behind the scenes — depending on what you're loading."
+            },
+            {
+              type: "paragraph",
+              text: "The restaurant's logo and food photos? Those fly to you from a CDN Edge Server sitting right there in your city. No long journey. No waiting. Just — boom, loaded."
+            },
+            {
+              type: "paragraph",
+              text: "But your past orders, your saved address, your live delivery pin moving on the map? That goes all the way to Zomato's actual server in Mumbai, gets your personal data from the database, and comes back. Every single time."
+            },
+            {
+              type: "code",
+              code: "Restaurant photo (CDN):    You → Delhi Edge Server → You     ~8ms  ✅\nYour order history (Direct): You → Mumbai Origin Server → You  ~80ms"
+            },
+            {
+              type: "info-callout",
+              text: "🍕 Think of it like this — Domino's has a standard menu poster. Every outlet in India displays the exact same poster. That's CDN — one piece of content, copied everywhere, served locally. But your custom order — extra cheese, no olives, deliver to 4th floor — that has to go to the actual kitchen. That's your direct server request."
+            },
+
+            // STEP BY STEP - CDN PATH
+            {
+              type: "heading",
+              text: "What Actually Happens — CDN Path"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You tap a restaurant on Zomato",
+              desc: "Your phone needs to load the restaurant's banner image, logo, and menu layout. These are the same files for every user who opens this restaurant page."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Request hits the nearest Edge Server",
+              desc: "Instead of going to Mumbai, your request lands on the CDN Edge Server in your city — say Pune. It's already sitting there, 10ms away."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Edge Server checks its cache",
+              desc: "Has another Pune user loaded this restaurant before? Yes? The files are already cached locally. Served to you instantly — origin server never involved, never bothered."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Restaurant photos, logos, menu layout — all loaded in under 10ms. Zomato's Mumbai server didn't receive a single request. That's CDN doing its job."
+            },
+
+            // STEP BY STEP - DIRECT PATH
+            {
+              type: "heading",
+              text: "What Actually Happens — Direct Server Path"
+            },
+            {
+              type: "step",
+              title: "Step 1 — You tap 'My Orders'",
+              desc: "Your phone requests your personal order history. This data is unique to you — nobody else's order history is the same. CDN has nothing to serve here."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Request travels to Zomato's origin server",
+              desc: "Goes all the way to Mumbai. The server receives your request, identifies your account, and queries the database for your specific order history."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Fresh data comes back to you",
+              desc: "Your latest order — placed 10 minutes ago — shows up correctly. If this had gone through CDN, you might have seen a cached version from 3 hours ago. Wrong and confusing."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Your personal data — accurate, real-time, fresh from the database. CDN could never do this. This is why direct server requests exist."
+            },
+
+            // HEAD TO HEAD TABLE
+            {
+              type: "heading",
+              text: "Head to Head"
+            },
+            {
+              type: "table",
+              headers: ["", "CDN", "Direct Server"],
+              rows: [
+                ["Speed", "✅ 5–15ms (served nearby)", "❌ 50–200ms (travels to origin)"],
+                ["Best for", "✅ Static content (images, fonts, CSS)", "✅ Dynamic content (orders, payments)"],
+                ["Server load", "✅ Origin barely touched", "❌ Every request hits origin"],
+                ["Personalisation", "❌ Same content for everyone", "✅ Unique response per user"],
+                ["Real-time data", "❌ Cached = possibly outdated", "✅ Always fresh from database"],
+                ["Cost", "❌ CDN provider charges per GB", "✅ Your own server, no extra cost"]
+              ]
+            },
+
+            // ZOMATO REAL SPLIT
+            {
+              type: "heading",
+              text: "How Zomato Splits This in Real Life"
+            },
+            {
+              type: "paragraph",
+              text: "Zomato's engineers make this decision for every single asset and API on the platform. It's not guesswork — there's a clean rule: if the content is identical for every user, CDN it. If it depends on who you are or what's happening right now, go direct."
+            },
+            {
+              type: "code",
+              code: "CDN ✅                          Direct to Origin ✅\n──────────────────────────────────────────────────────\nRestaurant photos & logos       Your past orders\nMenu layout & fonts             Live delivery tracking\nZomato app banners              Payment processing\nCSS and JavaScript files        Cart & saved addresses\nCity-level offer banners        Real-time stock updates"
+            },
+
+            {
+              type: "info-callout",
+              text: "🎯 CDN and Direct Server aren't competitors — they're teammates. CDN handles the heavy, repetitive, static lifting. Direct server handles everything personal and real-time. On a single Zomato page load, both are happening simultaneously — and you feel neither of them."
+            },
+
+            // ⚠️ CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ But wait — what about content that lives somewhere in between? Zomato's restaurant list for your city changes maybe once a day. It's not a personal order history. But it's also not a static logo. Should it go on CDN or direct? That grey area is exactly what Static vs Dynamic Content on CDN is all about — and it's up next."
+            }
+          ],
+          "Static vs Dynamic content on CDN": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "You open Zomato. The app loads in under a second — restaurant photos, banners, icons, all crisp and instant. Then you tap 'My Orders' — your last 10 orders show up, accurate to the minute. Same app. Same network. But two completely different journeys happening behind the scenes. The difference comes down to one thing — is the content Static or Dynamic?"
+            },
+            { type: "image", src: "static.png" },
+
+            // STATIC CONTENT
+            {
+              type: "heading",
+              text: "Static Content — Same for Everyone"
+            },
+            {
+              type: "paragraph",
+              text: "Static content is anything that doesn't change based on who's asking. Open Zomato in Delhi, open it in Chennai — you both see the same Burger King logo, the same app font, the same homepage banner. That content is identical for every single user. It was created once, uploaded once, and now just needs to be delivered — fast, everywhere."
+            },
+            {
+              type: "paragraph",
+              text: "This is exactly what CDN was built for. Zomato uploads these files to the origin server once. The CDN copies them to Edge Servers across every city. Now every user gets served locally — no origin server involved, no waiting, no extra load."
+            },
+            {
+              type: "code",
+              code: "Static Content Examples on Zomato:\n\n→ Restaurant logos & food photos\n→ Homepage banners & promotional creatives\n→ App icons, fonts, UI illustrations\n→ CSS stylesheets & JavaScript files\n→ City-level offer pages (same for all Delhi users)"
+            },
+            {
+              type: "info-callout",
+              text: "📦 Think of static content like Zomato's paper menu. Print it once. Distribute it to every outlet across India. Every customer reads the same menu. Nobody needs to call headquarters to get a fresh copy printed each time."
+            },
+
+            // DYNAMIC CONTENT
+            {
+              type: "heading",
+              text: "Dynamic Content — Different for Everyone"
+            },
+            {
+              type: "paragraph",
+              text: "Dynamic content is the opposite — it's generated fresh, specifically for you, at the moment you request it. Your order history is different from mine. Your saved address is different. The restaurants showing as 'Open' near you depend on your exact location. None of this can be pre-cached — because the CDN has no idea who you are until you ask."
+            },
+            {
+              type: "code",
+              code: "Dynamic Content Examples on Zomato:\n\n→ Your order history\n→ Your cart items\n→ Saved delivery addresses\n→ Restaurant availability near your location\n→ Live delivery tracking\n→ Personalised recommendations ('Because you ordered Biryani')\n→ Payment status & invoices"
+            },
+            {
+              type: "info-callout",
+              text: "👨‍🍳 Dynamic content is like a custom order. 'Paneer burger, no onions, extra sauce, deliver to 3rd floor.' Nobody else placed that order. It can't be pre-made and sitting on a shelf. It gets made fresh, just for you, right when you ask."
+            },
+
+            // THE GREY ZONE
+            {
+              type: "heading",
+              text: "The Grey Zone — Content That's Almost Static"
+            },
+            {
+              type: "paragraph",
+              text: "Here's where it gets genuinely interesting. Some content on Zomato isn't fully static — but it's also not personal. Take the restaurant list for Bengaluru. It's the same for every Bengaluru user. But it changes — new restaurants get added, some close down, ratings update. So does it go on CDN or not?"
+            },
+            {
+              type: "paragraph",
+              text: "The answer is — yes, but with a short TTL. Zomato caches the Bengaluru restaurant list on CDN with a TTL of maybe 10 minutes. For those 10 minutes, every Bengaluru user gets served instantly from the Edge Server. After 10 minutes, the cache expires, the Edge Server fetches a fresh copy from origin, and the cycle repeats. Fast for users. Fresh enough to be accurate."
+            },
+            {
+              type: "code",
+              code: "Bengaluru Restaurant List:\n\n→ Same for all Bengaluru users?         ✅ Yes\n→ Changes throughout the day?           ✅ Yes (new listings, closures)\n→ Solution: Cache on CDN with TTL = 10 mins\n\nEvery 10 minutes:\nEdge Server cache expires\n→ Fresh fetch from origin\n→ New copy cached\n→ All Bengaluru users get updated list ✅"
+            },
+            {
+              type: "info-callout",
+              text: "⏱️ TTL is the tuning knob here. Truly static content like logos? TTL of 30 days. Semi-dynamic content like city restaurant lists? TTL of 10 minutes. Fully dynamic content like your cart? TTL of 0 — never cached, always direct."
+            },
+
+            // STEP BY STEP
+            {
+              type: "heading",
+              text: "How Zomato Decides — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Is this content the same for every user?",
+              desc: "If yes — it's a CDN candidate. Restaurant logos, banners, fonts — identical for everyone. Put it on CDN with a long TTL and never think about it again."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Does it change frequently?",
+              desc: "If it changes rarely — long TTL. Restaurant photos barely change. TTL = 7 days. If it changes often but is still the same for everyone in a region — short TTL. City restaurant list, TTL = 10 minutes."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Is it personal to the user?",
+              desc: "If yes — skip CDN entirely. Your order history, your cart, your address, your live tracker — all of it bypasses CDN completely and goes straight to origin. Every time."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Is it time-critical?",
+              desc: "Payment status, delivery location, real-time availability — even if it's technically cacheable, the cost of serving stale data is too high. These always go direct. Nobody wants to see 'Delivered' when their food is still 20 minutes away."
+            },
+
+            // FULL COMPARISON
+            {
+              type: "table",
+              headers: ["Content", "Type", "CDN?", "TTL"],
+              rows: [
+                ["Restaurant logo", "Static", "✅ Yes", "30 days"],
+                ["Homepage banner", "Static", "✅ Yes", "7 days"],
+                ["City restaurant list", "Semi-dynamic", "✅ Yes", "10 mins"],
+                ["Today's offers page", "Semi-dynamic", "✅ Yes", "1 hour"],
+                ["Your order history", "Dynamic", "❌ No", "—"],
+                ["Live delivery tracking", "Dynamic", "❌ No", "—"],
+                ["Payment status", "Dynamic", "❌ No", "—"],
+                ["Your saved addresses", "Dynamic", "❌ No", "—"]
+              ]
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ This is how Zomato stays both fast and accurate. Static content cached aggressively on CDN — serving millions without touching origin. Dynamic content always fetched fresh — so your data is never wrong. And the grey zone handled smartly with short TTLs. One rule, applied consistently across every asset on the platform."
+            },
+
+            // ⚠️ CLIFFHANGER
+
+          ]
+
+        }
+
+
+      },
+
+      // INTERMEDIATE
+      {
+        id: 2,
+        title: "CDN Caching & Routing",
+        level: "intermediate",
+        topics: [
+          "CDN Invalidation & Cache Purging",
+          "TTL in CDN (how long content is cached)",
+          "CDN with HTTPS & SSL termination",
+          "Geo-routing & Latency based routing",
+          "CDN for API responses (not just static)"
+        ]
+      },
+
+      // EXPERIENCED
+      {
+        id: 3,
+        title: "CDN at Scale & Production",
+        level: "experienced",
+        topics: [
+          "CDN under DDoS attack",
+          "Edge Computing & Edge Functions",
+          "CDN Failover & Origin Shield",
+          "Multi-CDN strategy (why companies use 2+ CDNs)",
+          "CDN Analytics & Cache Hit Ratio monitoring"
+        ]
+      }
+
+    ]
+  },
   ,
   // {
   //   id: "nodejs-internals-makemytrip",

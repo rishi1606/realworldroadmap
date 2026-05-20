@@ -2968,14 +2968,255 @@ db.restaurants.find({
         title: "Indexing",
         level: "freshers",
         topics: [
-          "What is an Index and Why Swiggy Needs It",
-          "Single Field Index",
-          "Compound Index",
-          "Text Index — Searching Restaurants by Name",
-          "Geospatial Index — Finding Restaurants Near You",
-          "Index Performance & explain()",
-          "When Indexes Hurt Performance",
-        ]
+          "What is Indexing and How it works ?"
+        ],
+        topicDetails: {
+          "What is Indexing and How it works ?": [
+            {
+              type: "paragraph",
+              text: "You open Swiggy and search 'Domino's'. You want the nearest outlet. Results appear in milliseconds. Behind that — MongoDB just searched through millions of restaurant documents. Without indexes, it would scan every single one. With indexes, it jumps straight to the answer. That's what indexing is."
+            },
+
+            // ─── WHAT IS AN INDEX ─────────────────────────────────
+
+            {
+              type: "heading",
+              text: "What is an Index and Why Swiggy Needs It"
+            },
+            {
+              type: "paragraph",
+              text: "An index is a sorted shortcut MongoDB maintains on a field. Instead of scanning every document to find what you need, MongoDB looks up the index and goes directly to the matching documents — like a book's index pointing you to the exact page instead of reading every page."
+            },
+            {
+              type: "error-callout",
+              title: "Without index — Full Collection Scan",
+              list: [
+                "You search for Domino's in Mumbai",
+                "MongoDB reads all 5 lakh restaurant documents one by one",
+                "Checks city, checks name on every single document",
+                "Returns the 12 matching outlets — after scanning everything",
+                "Several seconds under load 😱"
+              ],
+              footer: "With index — MongoDB checks the index on city, jumps straight to Mumbai restaurants, returns Domino's outlets instantly. 5 lakh documents never touched. ✅"
+            },
+            {
+              type: "code",
+              code: `// No index — MongoDB scans every restaurant
+db.restaurants.find({ city: "Mumbai" })  // 😱 full scan
+
+// Create an index on city — now it's instant
+db.restaurants.createIndex({ city: 1 })  // 1 = ascending`
+            },
+
+            // ─── SINGLE FIELD INDEX ───────────────────────────────
+
+            {
+              type: "heading",
+              text: "Single Field Index"
+            },
+            {
+              type: "paragraph",
+              text: "You order a Farmhouse Pizza from Domino's. Your order is placed. Now Swiggy's ops team wants to pull all orders with status 'out_for_delivery' in real time. That query runs millions of times a day — it needs a single field index on status."
+            },
+            {
+              type: "step",
+              title: "Order placed — status is 'placed'",
+              desc: "Your Domino's order document is created with status: 'placed'."
+            },
+            {
+              type: "step",
+              title: "Domino's confirms — status updates to 'preparing'",
+              desc: "updateOne runs. The index on status automatically updates."
+            },
+            {
+              type: "step",
+              title: "Delivery partner picks up — status is 'out_for_delivery'",
+              desc: "Swiggy's live tracking dashboard queries all out_for_delivery orders every few seconds. Without an index — full scan of 50 million orders every time."
+            },
+            {
+              type: "code",
+              code: `// Create single field index on status
+db.orders.createIndex({ status: 1 })
+
+// Now this query is instant — hits the index directly
+db.orders.find({ status: "out_for_delivery" })`
+            },
+            {
+              type: "success-callout",
+              text: "✅ Single field index — one field, one index. Best for queries that filter or sort by one field heavily."
+            },
+
+            // ─── COMPOUND INDEX ───────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Compound Index"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy's support team doesn't just filter by status alone. They pull — all 'out_for_delivery' orders in Mumbai from today. That's three fields together: status + city + createdAt. A single field index on status helps a little. A compound index on all three is what makes it truly fast."
+            },
+            {
+              type: "code",
+              code: `// Compound index — covers all three fields in one index
+db.orders.createIndex({ city: 1, status: 1, createdAt: -1 })
+
+// This query now uses the compound index perfectly
+db.orders.find({ city: "Mumbai", status: "out_for_delivery", createdAt: { $gte: today } })`
+            },
+            {
+              type: "step",
+              title: "Order of fields matters",
+              desc: "Put the most selective field first — the one that eliminates the most documents. city before status before createdAt. MongoDB can use the leftmost fields of a compound index even if you don't use all of them."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ A compound index on { city, status, createdAt } works for queries on city alone, or city + status, or city + status + createdAt. It does NOT help a query on status alone — the leftmost field must be present."
+            },
+
+            // ─── TEXT INDEX ───────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Text Index — Searching Restaurants by Name"
+            },
+            {
+              type: "paragraph",
+              text: "You type 'Domino' in Swiggy's search bar. You expect to see Domino's Pizza outlets. That's a text search — not an exact match, not a range query. MongoDB's text index is built exactly for this."
+            },
+            {
+              type: "step",
+              title: "You type 'Domino' — partial search",
+              desc: "A regular index on name looks for exact matches only. 'Domino' won't match 'Domino's Pizza'. A text index tokenises and matches partial words."
+            },
+            {
+              type: "step",
+              title: "You type 'Pizza' — category search",
+              desc: "Text index searches across all words in the name field. Returns Domino's Pizza, Pizza Hut, La Pino'z Pizza — everything with 'Pizza' in the name."
+            },
+            {
+              type: "code",
+              code: `// Create text index on name field
+db.restaurants.createIndex({ name: "text" })
+
+// Search — returns all restaurants with 'Domino' in the name
+db.restaurants.find({ $text: { $search: "Domino" } })`
+            },
+
+            // ─── GEOSPATIAL INDEX ─────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Geospatial Index — Finding Domino's Near You"
+            },
+            {
+              type: "paragraph",
+              text: "You're in Bandra. You search for Domino's. Swiggy shows only the outlets within 5km — not the one in Andheri, not the one in Thane. This is a location-based query. MongoDB handles it with a geospatial index."
+            },
+            {
+              type: "step",
+              title: "Every restaurant stores its coordinates",
+              desc: "Each restaurant document has a location field with lat/lng coordinates stored in GeoJSON format."
+            },
+            {
+              type: "step",
+              title: "You open Swiggy — your location is detected",
+              desc: "Swiggy knows you're at 19.0596° N, 72.8295° E — Bandra West."
+            },
+            {
+              type: "step",
+              title: "Swiggy queries restaurants within 5km",
+              desc: "MongoDB uses the 2dsphere index to find all restaurants within a 5km radius of your coordinates. Returns the 3 nearest Domino's outlets."
+            },
+            {
+              type: "code",
+              code: `// Create geospatial index
+db.restaurants.createIndex({ location: "2dsphere" })
+
+// Find Domino's within 5km of your location
+db.restaurants.find({
+  name: { $regex: "Domino" },
+  location: { $near: { $geometry: { type: "Point", coordinates: [72.8295, 19.0596] }, $maxDistance: 5000 } }
+})`
+            },
+
+            // ─── EXPLAIN ──────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Index Performance — explain()"
+            },
+            {
+              type: "paragraph",
+              text: "You've created indexes — but how do you know if MongoDB is actually using them? explain() shows you exactly what MongoDB did to run your query — did it use an index, or did it scan the entire collection?"
+            },
+            {
+              type: "code",
+              code: `// Append .explain("executionStats") to any query
+db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
+            },
+            {
+              type: "step",
+              title: "COLLSCAN — Bad. No index used.",
+              desc: "MongoDB scanned every document. You'll see totalDocsExamined: 5000000, docsReturned: 12. Examined 5 million, returned 12. That's a full collection scan — you need an index."
+            },
+            {
+              type: "step",
+              title: "IXSCAN — Good. Index used.",
+              desc: "MongoDB used an index. You'll see totalDocsExamined: 12, docsReturned: 12. Examined exactly as many as it returned. That's a perfect index hit."
+            },
+            {
+              type: "table",
+              headers: ["explain() output", "Meaning", "Action"],
+              rows: [
+                ["COLLSCAN", "Full collection scan — no index", "Create an index on the query fields"],
+                ["IXSCAN", "Index scan — index is being used", "✅ You're good"],
+                ["totalDocsExamined >> nReturned", "Index exists but not selective enough", "Consider a compound index"],
+              ]
+            },
+
+            // ─── WHEN INDEXES HURT ────────────────────────────────
+
+            {
+              type: "heading",
+              text: "When Indexes Hurt Performance"
+            },
+            {
+              type: "paragraph",
+              text: "Indexes speed up reads — but they slow down writes. Every time a document is inserted, updated, or deleted, MongoDB must also update every index on that collection. Swiggy's orders collection gets thousands of inserts per minute — too many indexes and every insert becomes expensive."
+            },
+            {
+              type: "step",
+              title: "Every insert updates all indexes",
+              desc: "Your Domino's order is placed. MongoDB inserts the order document AND updates every index on the orders collection. 10 indexes = 10 index updates per insert."
+            },
+            {
+              type: "step",
+              title: "Indexes use disk space",
+              desc: "Each index is a separate data structure stored on disk. A collection with 50 million documents and 10 indexes uses significantly more storage than one with 2 indexes."
+            },
+            {
+              type: "step",
+              title: "Unused indexes are dead weight",
+              desc: "An index nobody queries still gets updated on every write. Dead weight — slowing down inserts with zero benefit."
+            },
+            {
+              type: "table",
+              headers: ["Scenario", "Index helps?"],
+              rows: [
+                ["Searching orders by city + status frequently", "✅ Yes — create compound index"],
+                ["Inserting 10,000 orders per minute", "❌ Too many indexes slow inserts"],
+                ["A field queried once a month", "❌ Not worth the write overhead"],
+                ["Sorting orders by createdAt on every request", "✅ Yes — index on createdAt"],
+              ]
+            },
+            ,
+            {
+              type: "success-callout",
+              text: "✅ Indexes make reads fast by creating sorted shortcuts MongoDB can jump to directly. Single field for simple filters, compound for multi-field queries, text for search, 2dsphere for location. Always verify with explain() — and never over-index high-write collections."
+            }
+          ]
+        }
       },
 
       {
@@ -2983,23 +3224,17 @@ db.restaurants.find({
         title: "Aggregation Pipeline",
         level: "freshers",
         topics: [
-          "What is Aggregation Pipeline?",
-          "$match — Filtering Orders by City",
-          "$group — Calculating Total Orders Per Restaurant",
-          "$sort & $limit — Top 10 Restaurants by Rating",
-          "$lookup — Joining Orders with Restaurant Data",
-          "$project — Shaping the Output",
-          "Real Pipeline — Swiggy's Weekly Revenue Report",
+          "Aggregation Pipeline",
         ],
         topicDetails: {
-          "What is Aggregation Pipeline?": [
+          "Aggregation Pipeline": [
             {
               type: "paragraph",
-              text: "You open Swiggy. You place an order. That order is one document in MongoDB. Simple. But now imagine Swiggy's ops team on Monday morning asking — which city had the highest revenue last week? Which restaurant got the most orders? What is the average order value in Mumbai vs Delhi? find() can't answer any of these. It just fetches documents. To compute answers from data, you need the Aggregation Pipeline."
+              text: "You order a Butterscotch and a Chocolate Fudge ice cream from Naturals on Swiggy. That order is one document. Now Swiggy's team asks — which ice cream flavour sold the most this week across all orders? find() can't answer this. It just fetches documents as they are. To compute answers from data, you need the Aggregation Pipeline."
             },
             {
               type: "curious-callout",
-              text: "❓ How does Swiggy calculate 'Top Restaurants This Week' from millions of raw order documents?"
+              text: "❓ How does Swiggy find the most ordered ice cream flavour from millions of orders — each with multiple items inside?"
             },
             {
               type: "heading",
@@ -3007,187 +3242,310 @@ db.restaurants.find({
             },
             {
               type: "paragraph",
-              text: "The Aggregation Pipeline is a series of stages. Raw documents enter from one end, pass through each stage one by one — getting filtered, grouped, sorted, shaped — and a computed result comes out the other end. Like an assembly line in a factory."
-            },
-            {
-              type: "step",
-              title: "Stage 1 — $match",
-              desc: "Filter only the documents you care about. Like find(). Only delivered orders from last week enter the pipeline — millions of old orders are dropped immediately."
-            },
-            {
-              type: "step",
-              title: "Stage 2 — $group",
-              desc: "Group the filtered documents and compute. Group by restaurantId, count total orders, sum total revenue. Millions of order documents collapse into a few hundred restaurant summaries."
-            },
-            {
-              type: "step",
-              title: "Stage 3 — $sort",
-              desc: "Sort the grouped results. Highest revenue restaurant at the top."
-            },
-            {
-              type: "step",
-              title: "Stage 4 — $limit",
-              desc: "Take only the top 10. Discard the rest."
-            },
-            {
-              type: "step",
-              title: "Stage 5 — $project",
-              desc: "Shape the final output — only return restaurant name, total orders, total revenue. Clean, lean response."
+              text: "Think of it as an assembly line. Raw order documents go in one end. They pass through stages — each stage does one job — and a clean computed result comes out the other end."
             },
             {
               type: "code",
               code: `db.orders.aggregate([
-  { $match:   { status: "delivered", week: "2024-W11" } },  // Stage 1
-  { $group:   { _id: "$restaurantId",                       // Stage 2
-                totalOrders:  { $sum: 1 },
-                totalRevenue: { $sum: "$totalAmount" } } },
-  { $sort:    { totalRevenue: -1 } },                       // Stage 3
-  { $limit:   10 },                                         // Stage 4
-  { $project: { restaurantId: "$_id",                       // Stage 5
-                totalOrders: 1,
-                totalRevenue: 1,
-                _id: 0 } }
+  { $match   },   // Stage 1 — filter
+  { $unwind  },   // Stage 2 — flatten arrays
+  { $group   },   // Stage 3 — compute
+  { $sort    },   // Stage 4 — sort
+  { $limit   },   // Stage 5 — top N
+  { $lookup  },   // Stage 6 — join
+  { $project },   // Stage 7 — shape output
+  { $addFields }, // Stage 8 — add new fields
+  { $count   },   // Stage 9 — count results
+  { $skip    },   // Stage 10 — skip for pagination
+  { $out     }    // Stage 11 — save result to collection
 ])`
             },
-            {
-              type: "success-callout",
-              text: "✅ Millions of raw order documents go in. Top 10 restaurants by revenue come out. Each stage does one job and passes its output to the next. That's the Aggregation Pipeline."
-            },
-            {
-              type: "table",
-              headers: ["Stage", "What it does", "Swiggy example"],
-              rows: [
-                ["$match", "Filter documents", "Only last week's delivered orders"],
-                ["$group", "Group & compute", "Total revenue per restaurant"],
-                ["$sort", "Sort results", "Highest revenue first"],
-                ["$limit", "Take top N", "Top 10 only"],
-                ["$lookup", "Join another collection", "Attach restaurant name to results"],
-                ["$project", "Shape the output fields", "Return only name, orders, revenue"],
-              ]
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ The order of stages matters. $match always goes first — filter early so later stages process less data. Sorting 10 grouped results is fast. Sorting 2 million raw orders before grouping is very slow."
-            }
-          ],
-          "$match — Filtering Orders by City": [
-            {
-              type: "paragraph",
-              text: "Swiggy's ops team wants to analyse last week's orders — but only from Mumbai. The orders collection has 50 million documents across every city, every status, every date. You don't want to group or sort all 50 million. You want to cut it down first. That's exactly what $match does."
-            },
-            {
-              type: "heading",
-              text: "What Does $match Do?"
-            },
-            {
-              type: "paragraph",
-              text: "$match is a filter stage. It looks at every document coming in and only passes forward the ones that meet your condition. Everything else is dropped. The smaller the dataset after $match, the faster every stage after it runs."
-            },
-            {
-              type: "step",
-              title: "50 million orders enter the pipeline",
-              desc: "The full orders collection — every city, every status, every date."
-            },
-            {
-              type: "step",
-              title: "$match filters by city: Mumbai",
-              desc: "Only Mumbai orders pass through. 48 million documents are dropped right here."
-            },
-            {
-              type: "step",
-              title: "2 million Mumbai orders flow to the next stage",
-              desc: "Whatever comes after $match — $group, $sort, $lookup — now works on 2 million documents instead of 50 million."
-            },
-            {
-              type: "code",
-              code: `// Basic $match — filter by city
-db.orders.aggregate([
-  {
-    $match: {
-      city: "Mumbai"
-    }
-  }
-])`
-            },
-            {
-              type: "heading",
-              text: "Multiple Conditions in $match"
-            },
-            {
-              type: "paragraph",
-              text: "Swiggy rarely filters by just one field. A real query filters by city AND status AND date range together — narrowing down to exactly the slice of data needed."
-            },
-            {
-              type: "code",
-              code: `// Filter Mumbai delivered orders from last week
-db.orders.aggregate([
-  {
-    $match: {
-      city: "Mumbai",
-      status: "delivered",
-      createdAt: {
-        $gte: new Date("2024-03-11"),
-        $lte: new Date("2024-03-17")
-      }
-    }
-  }
-])
 
-// All query operators work inside $match
-db.orders.aggregate([
-  {
-    $match: {
-      city: { $in: ["Mumbai", "Pune", "Nagpur"] },  // multiple cities
-      totalAmount: { $gte: 300 },                    // orders above ₹300
-      status: { $ne: "cancelled" }                   // exclude cancelled
-    }
-  }
-])`
-            },
+            // ─── $match ───────────────────────────────────────────
+
             {
               type: "heading",
-              text: "$match Uses Indexes — Critical for Performance"
+              text: "$match — Filter First"
             },
             {
               type: "paragraph",
-              text: "$match at the start of a pipeline behaves exactly like find() — it uses your indexes. If you have an index on city and createdAt, MongoDB doesn't scan 50 million documents. It jumps straight to Mumbai orders from last week using the index."
+              text: "You only want ice cream orders from this week. $match is a filter — it lets only matching documents through and drops everything else. Always put $match first — it reduces the data early so every stage after it is faster."
             },
             {
               type: "code",
-              code: `// Make sure these indexes exist for the $match above
-db.orders.createIndex({ city: 1 })
-db.orders.createIndex({ city: 1, createdAt: -1 })  // compound — even better
+              code: `{ $match: { category: "ice-cream", status: "delivered", createdAt: { $gte: new Date("2024-03-11") } } }
 
-// With this index, $match on city + createdAt is instant
-// Without it — full collection scan on 50 million documents 😱`
+// 50 million orders enter. Only this week's ice cream orders pass through.`
             },
             {
               type: "error-callout",
-              title: "The most common $match mistake:",
+              title: "Never put $match late in the pipeline",
               list: [
-                "Putting $match after $group or $lookup — by then you've already processed all 50 million documents",
-                "Not having an index on the $match fields — turns a 10ms query into a 30 second scan",
-                "Filtering inside $lookup instead of $match — always $match first, then join"
+                "$match after $group means you grouped all 50 million documents first — then filtered",
+                "$match after $lookup means you joined all documents first — then filtered",
               ],
-              footer: "Rule: $match goes first. Always. Filter as early as possible, as aggressively as possible."
+              footer: "Rule: $match goes first. Always. Filter early, filter aggressively."
+            },
+
+            // ─── $unwind ──────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$unwind — Flatten Arrays"
+            },
+            {
+              type: "paragraph",
+              text: "Your Naturals order has two items inside it — Butterscotch and Chocolate Fudge — stored as an array. $group can't count individual flavours while they're bundled together in arrays. $unwind splits one document with an array into multiple documents — one per item."
+            },
+            {
+              type: "step",
+              title: "Before $unwind — items are bundled",
+              desc: "One order document has items: [ Butterscotch, Chocolate Fudge ]. You can't count flavours individually from this."
+            },
+            {
+              type: "step",
+              title: "After $unwind — one document per item",
+              desc: "The same order becomes two documents — one for Butterscotch, one for Chocolate Fudge. Now you can group and count each flavour separately."
+            },
+            {
+              type: "code",
+              code: `// Before $unwind
+{ orderId: "ord_001", items: [ { name: "Butterscotch", price: 120 }, { name: "Chocolate Fudge", price: 140 } ] }
+
+// After $unwind on items
+{ orderId: "ord_001", items: { name: "Butterscotch",   price: 120 } }
+{ orderId: "ord_001", items: { name: "Chocolate Fudge", price: 140 } }
+
+// The stage itself
+{ $unwind: "$items" }`
+            },
+
+            // ─── $group ───────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$group — Compute Per Flavour"
+            },
+            {
+              type: "paragraph",
+              text: "Now every document is one ice cream item. $group collects all documents with the same flavour name and computes — how many times was this flavour ordered? What was the total revenue from it?"
+            },
+            {
+              type: "code",
+              code: `{ $group: {
+  _id:          "$items.name",           // group by flavour name
+  totalOrders:  { $sum: 1 },             // count how many times ordered
+  totalRevenue: { $sum: "$items.price" } // total revenue per flavour
+} }
+
+// Result — each flavour is now one document
+// { _id: "Butterscotch",   totalOrders: 8423, totalRevenue: 1010760 }
+// { _id: "Chocolate Fudge", totalOrders: 6210, totalRevenue: 869400  }`
+            },
+
+            // ─── $sort & $limit ───────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$sort & $limit — Top 5 Flavours"
+            },
+            {
+              type: "paragraph",
+              text: "You have every flavour's total. Now sort by most ordered and keep only the top 5."
+            },
+            {
+              type: "code",
+              code: `{ $sort:  { totalOrders: -1 } }, // highest orders first
+{ $limit: 5 }                     // top 5 flavours only`
+            },
+
+            // ─── $skip ────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$skip — Pagination"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy's dessert report shows 10 flavours per page. Page 1 is $limit 10. Page 2 skips the first 10 and takes the next 10. $skip and $limit work together for pagination."
+            },
+            {
+              type: "code",
+              code: `// Page 1 — first 10 flavours
+{ $skip: 0  }, { $limit: 10 }
+
+// Page 2 — next 10 flavours
+{ $skip: 10 }, { $limit: 10 }
+
+// Page 3
+{ $skip: 20 }, { $limit: 10 }`
+            },
+
+            // ─── $lookup ──────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$lookup — Attach Shop Details"
+            },
+            {
+              type: "paragraph",
+              text: "Your top 5 flavours have a restaurantId — just an ID. To display shop name and area you join the restaurants collection using $lookup."
+            },
+            {
+              type: "code",
+              code: `{ $lookup: {
+  from:         "restaurants",  // join this collection
+  localField:   "restaurantId", // field in current document
+  foreignField: "_id",          // field in restaurants
+  as:           "shopDetails"   // attach result as this field
+} }`
+            },
+
+            // ─── $addFields ───────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$addFields — Add a Computed Field"
+            },
+            {
+              type: "paragraph",
+              text: "You want to add an avgPrice field — total revenue divided by total orders — without replacing the whole document. $addFields adds new fields to existing documents and leaves everything else untouched."
+            },
+            {
+              type: "code",
+              code: `{ $addFields: {
+  avgPrice: { $divide: ["$totalRevenue", "$totalOrders"] }
+} }
+
+// Adds avgPrice to each flavour document
+// { _id: "Butterscotch", totalOrders: 8423, totalRevenue: 1010760, avgPrice: 120 }`
+            },
+
+            // ─── $project ─────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$project — Clean the Output"
+            },
+            {
+              type: "paragraph",
+              text: "Documents now have many fields — internal IDs, raw lookup arrays, intermediate values. $project picks only what the frontend needs and hides the rest."
+            },
+            {
+              type: "code",
+              code: `{ $project: {
+  _id:         0,
+  flavour:     "$_id",
+  shopName:    { $arrayElemAt: ["$shopDetails.name", 0] },
+  totalOrders: 1,
+  avgPrice:    1
+} }`
+            },
+
+            // ─── $count ───────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$count — Count Results"
+            },
+            {
+              type: "paragraph",
+              text: "How many unique ice cream flavours were ordered this week? $count gives you a single number — simpler than $group when you just want a count."
+            },
+            {
+              type: "code",
+              code: `{ $count: "totalFlavours" }
+
+// Result
+// { totalFlavours: 47 }`
+            },
+
+            // ─── $out ─────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$out — Save Result to a Collection"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy runs this ice cream report every Monday and saves the result so dashboards can read it instantly — without rerunning the full pipeline every time. $out writes the pipeline output into a new collection."
+            },
+            {
+              type: "code",
+              code: `{ $out: "weekly_icecream_report" }
+
+// The final result is saved as documents in weekly_icecream_report collection
+// Dashboards read from there — fast, no pipeline needed`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ $out replaces the entire target collection every time it runs. If the pipeline fails midway, the old collection is gone. Use $merge instead if you want to update without replacing."
+            },
+
+            // ─── FULL PIPELINE ────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Full Pipeline — Most Ordered Ice Cream Flavours This Week"
+            },
+            {
+              type: "code",
+              code: `db.orders.aggregate([
+
+  // 1. Only this week's delivered ice cream orders
+  { $match: { category: "ice-cream", status: "delivered",
+              createdAt: { $gte: new Date("2024-03-11") } } },
+
+  // 2. Flatten items array — one document per flavour
+  { $unwind: "$items" },
+
+  // 3. Count and sum per flavour
+  { $group: { _id: "$items.name",
+              totalOrders:  { $sum: 1 },
+              totalRevenue: { $sum: "$items.price" } } },
+
+  // 4. Add average price field
+  { $addFields: { avgPrice: { $divide: ["$totalRevenue", "$totalOrders"] } } },
+
+  // 5. Highest orders first
+  { $sort: { totalOrders: -1 } },
+
+  // 6. Top 5 only
+  { $limit: 5 },
+
+  // 7. Attach shop details
+  { $lookup: { from: "restaurants", localField: "restaurantId",
+               foreignField: "_id", as: "shopDetails" } },
+
+  // 8. Clean output
+  { $project: { _id: 0, flavour: "$_id", totalOrders: 1, avgPrice: 1,
+                shopName: { $arrayElemAt: ["$shopDetails.name", 0] } } },
+
+  // 9. Save result to a collection
+  { $out: "weekly_icecream_report" }
+
+])`
             },
             {
               type: "table",
-              headers: ["", "With $match first", "Without $match first"],
+              headers: ["Stage", "What it does", "Ice cream example"],
               rows: [
-                ["Documents processed", "2 million (Mumbai only)", "50 million (entire collection)"],
-                ["Pipeline speed", "Fast", "25x slower"],
-                ["Index used?", "✅ Yes", "❌ No — too late"],
-                ["Memory usage", "Low", "High — may hit limits"],
+                ["$match", "Filter documents", "Only this week's ice cream orders"],
+                ["$unwind", "Flatten array into documents", "One doc per flavour per order"],
+                ["$group", "Group & compute", "Total orders per flavour"],
+                ["$addFields", "Add computed field", "avgPrice per flavour"],
+                ["$sort", "Sort results", "Most ordered first"],
+                ["$limit", "Take top N", "Top 5 flavours"],
+                ["$skip", "Skip N for pagination", "Page 2 = skip 5"],
+                ["$lookup", "Join another collection", "Attach shop name"],
+                ["$project", "Shape the output", "Return only needed fields"],
+                ["$count", "Count total results", "How many unique flavours"],
+                ["$out", "Save result to collection", "Write to weekly_icecream_report"],
               ]
             },
             {
               type: "success-callout",
-              text: "✅ $match is the most important stage for performance. It reduces the dataset early so every subsequent stage — $group, $sort, $lookup — works on the smallest possible slice of data. Swiggy's analytics pipelines always open with a tight $match on date range and city."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ $match filtered the data down. Now what? The next step is usually to compute something from those filtered documents — count orders per restaurant, sum revenue per area. That's $group."
+              text: "✅ Millions of ice cream orders go in. Top 5 flavours by orders come out — with shop name and average price. Each stage does exactly one job. $match filters early, $unwind flattens arrays, $group computes, $sort + $limit rank, $lookup enriches, $project cleans, $out saves. That's the full Aggregation Pipeline."
             }
           ]
         }

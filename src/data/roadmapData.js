@@ -2173,6 +2173,10 @@ WHERE o.id = 10239847;`
         topicDetails: {
           "CRUD Operations (insertOne, insertMany, find, findOne, updateOne, updateMany, deleteOne, deleteMany)": [
             {
+              type: "image",
+              src: "md2.png",
+            },
+            {
               type: "paragraph",
               text: "CRUD stands for Create, Read, Update, Delete. These are the four basic operations you do on any database. On Swiggy — a new restaurant onboards (Create), a user searches for orders (Read), a delivery status changes (Update), a cancelled order gets removed (Delete). Let's go through each one."
             },
@@ -2732,6 +2736,10 @@ db.restaurants.find({
 
           "Embedded vs Referenced Documents — When to Use Which": [
             {
+              type: "image",
+              src: "md3.png",
+            },
+            {
               type: "paragraph",
               text: "You order Dum Biryani from Behrouz Biryani on Swiggy. That order has items, a payment, and a restaurant attached to it. Now MongoDB has to store all of this. The question is — does everything go inside one document, or do you store some things separately and just point to them?"
             },
@@ -2848,6 +2856,10 @@ db.restaurants.find({
 
 
           "One-to-One, One-to-Many, Many-to-Many in MongoDB": [
+            {
+              type: "image",
+              src: "md4.png",
+            },
             {
               type: "paragraph",
               text: "Every piece of data on Swiggy has a relationship with something else. Your account has one profile. Your order has multiple items. You've ordered from multiple restaurants, and each restaurant has served thousands of customers. These are the three relationship patterns — and each one tells you whether to embed or reference."

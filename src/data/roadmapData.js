@@ -7676,8 +7676,6 @@ db.orders.createIndex({ city: 1, createdAt: -1 })  // compound — even better
               text: "⚡ For time-sensitive campaigns — flash sales, cricket match offers, Republic Day deals — Zomato uses instant cache purge. For regular content that can wait, TTL handles it automatically on its own schedule."
             },
 
-            ,
-
             // ⚠️ CLIFFHANGER
             {
               type: "warning-callout",

@@ -2988,6 +2988,10 @@ db.restaurants.find({
         topicDetails: {
           "What is Indexing and How it works ?": [
             {
+              type: "image",
+              text: "md5.png"
+            },
+            {
               type: "paragraph",
               text: "You open Swiggy and search 'Domino's'. You want the nearest outlet. Results appear in milliseconds. Behind that — MongoDB just searched through millions of restaurant documents. Without indexes, it would scan every single one. With indexes, it jumps straight to the answer. That's what indexing is."
             },
@@ -3243,6 +3247,10 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
         ],
         topicDetails: {
           "Aggregation Pipeline": [
+            {
+              type: "image",
+              text: "md6.png"
+            },
             {
               type: "paragraph",
               text: "You order a Butterscotch and a Chocolate Fudge ice cream from Naturals on Swiggy. That order is one document. Now Swiggy's team asks — which ice cream flavour sold the most this week across all orders? find() can't answer this. It just fetches documents as they are. To compute answers from data, you need the Aggregation Pipeline."

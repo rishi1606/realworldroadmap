@@ -17,6 +17,16 @@ import {
 import { notifyAPI } from "../../api/client";
 
 
+const getImageUrl = (src) => {
+  if (!src) return "";
+  if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:") || src.startsWith("/")) {
+    return src;
+  }
+  const apiURL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const backendBase = apiURL.replace(/\/api$/, "");
+  return `${backendBase}/images/${src}`;
+};
+
 // ─── Block Renderers ────────────────────────────────────────────────────────
 
 const blockRenderers = {
@@ -37,34 +47,37 @@ const blockRenderers = {
 
   code: ({ block, index }) => <CodeBlock key={index} code={block.code} />,
 
-  image: ({ block, index, onZoom }) => (
-    <div key={index} className="mb-6">
-      <div
-        className="relative cursor-pointer rounded-lg overflow-hidden border border-slate-200 shadow-sm"
-        onClick={() => onZoom && onZoom(block.src)}
-      >
-        <img
-          src={block.src}
-          alt={block.alt}
-          className="w-full object-contain"
-        />
-        {/* Zoom icon — always visible, top-right */}
-        <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 shadow-sm flex items-center justify-center">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <polyline points="15 3 21 3 21 9" />
-            <polyline points="9 21 3 21 3 15" />
-            <polyline points="21 3 14 10" />
-            <polyline points="3 21 10 14" />
-          </svg>
+  image: ({ block, index, onZoom }) => {
+    const imageUrl = getImageUrl(block.src);
+    return (
+      <div key={index} className="mb-6">
+        <div
+          className="relative cursor-pointer rounded-lg overflow-hidden border border-slate-200 shadow-sm"
+          onClick={() => onZoom && onZoom(imageUrl)}
+        >
+          <img
+            src={imageUrl}
+            alt={block.alt}
+            className="w-full object-contain"
+          />
+          {/* Zoom icon — always visible, top-right */}
+          <div className="absolute top-3 right-3 w-8 h-8 bg-white/90 backdrop-blur-sm rounded-lg border border-slate-200 shadow-sm flex items-center justify-center">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="15 3 21 3 21 9" />
+              <polyline points="9 21 3 21 3 15" />
+              <polyline points="21 3 14 10" />
+              <polyline points="3 21 10 14" />
+            </svg>
+          </div>
         </div>
+        {block.alt && (
+          <p className="text-[13px] text-slate-500 mt-2 text-center italic">
+            {block.alt}
+          </p>
+        )}
       </div>
-      {block.alt && (
-        <p className="text-[13px] text-slate-500 mt-2 text-center italic">
-          {block.alt}
-        </p>
-      )}
-    </div>
-  ),
+    );
+  },
 
   table: ({ block, index }) => (
     <div

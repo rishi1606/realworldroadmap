@@ -1931,7 +1931,7 @@ export const roadmapData = [
   },
   {
     id: "mongodb-swiggy",
-    image: "https://images.icon-icons.com/2699/PNG/512/swiggy_logo_icon_170919.png",
+    image: "https://cdn.worldvectorlogo.com/logos/swiggy-1.svg",
     title: "Learn MongoDB Through Swiggy's Database Architecture",
     description:
       "Learn MongoDB from scratch — documents, collections, indexing, aggregations, and schema design through real Swiggy order, restaurant, and delivery scenarios.",
@@ -2661,11 +2661,306 @@ db.restaurants.find({
         level: "freshers",
         topics: [
           "What is Schema Design in MongoDB?",
-          "Embedded Documents — Storing Order Items Inside Orders",
-          "Referenced Documents — Linking Restaurants to Orders",
-          "Embedded vs Referenced — When to Use Which",
+          "Embedded vs Referenced Documents — When to Use Which",
           "One-to-One, One-to-Many, Many-to-Many in MongoDB",
-        ]
+        ],
+        topicDetails: {
+          "What is Schema Design in MongoDB?": [
+            {
+              type: "paragraph",
+              text: "In SQL, schema design means defining your tables, columns, and data types before writing a single row. MongoDB has no such enforcement — you can write any document, any shape, any time. But that doesn't mean you should skip thinking about structure. How you design your documents decides how fast your queries run."
+            },
+            {
+              type: "heading",
+              text: "Definition"
+            },
+            {
+              type: "paragraph",
+              text: "Schema design in MongoDB means deciding how to structure your documents — what fields to include, what to nest inside a document, and what to store separately. There's no right or wrong enforced by the database. The rule is simple: design your schema around how your application queries the data."
+            },
+            {
+              type: "step",
+              title: "SQL designs around the data",
+              desc: "Normalize everything. Split into tables. Join at query time. The structure is rigid and query-independent."
+            },
+            {
+              type: "step",
+              title: "MongoDB designs around the queries",
+              desc: "How does your app read this data? Design the document shape to match that. If you always fetch an order with its items — store items inside the order document."
+            },
+            {
+              type: "code",
+              code: `// Bad schema — designed like SQL, not like MongoDB
+// Order document with no items — forces a second query every time
+{
+  _id: ObjectId("ord_001"),
+  restaurantId: "rst_4421",   // reference
+  userId: "usr_982341",       // reference
+  totalAmount: 487
+}
+// To show the order screen you now need 3 separate queries 😬
+
+// Good schema — designed around how Swiggy reads orders
+// Everything the order screen needs is right here
+{
+  _id: ObjectId("ord_001"),
+  totalAmount: 487,
+  restaurant: { name: "Behrouz Biryani", area: "Andheri" },
+  items: [
+    { name: "Dum Gosht Biryani", price: 389 },
+    { name: "Raita",              price: 49  }
+  ],
+  payment: { method: "UPI", status: "success" }
+}`
+            },
+            {
+              type: "paragraph",
+              text: "MongoDB gives you two fundamental tools for schema design — embedding and referencing. The choice between them is the most important decision you'll make."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Schema design in MongoDB isn't about enforcing structure — it's about shaping documents so your most common queries are fast and simple. Design for reads, not for normalization."
+            }
+          ],
+
+
+          // ─────────────────────────────────────────────────────────────────────────────
+
+
+          "Embedded vs Referenced Documents — When to Use Which": [
+            {
+              type: "paragraph",
+              text: "You order Dum Biryani from Behrouz Biryani on Swiggy. That order has items, a payment, and a restaurant attached to it. Now MongoDB has to store all of this. The question is — does everything go inside one document, or do you store some things separately and just point to them?"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Should your order document contain the full restaurant details — or just a restaurant ID?"
+            },
+
+            // ─── EMBEDDED ─────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Embedded — Everything Inside One Document"
+            },
+            {
+              type: "paragraph",
+              text: "Imagine you order Biryani, Raita, and a Soft Drink from Behrouz. These 3 items belong to your order and only your order. They don't exist anywhere else. So you store them inside the order document itself — this is called embedding."
+            },
+            {
+              type: "step",
+              title: "You place the order",
+              desc: "MongoDB creates one order document. Your 3 items are stored as an array inside it. Your payment details are stored as an object inside it. One document, everything in it."
+            },
+            {
+              type: "step",
+              title: "You open the order detail screen",
+              desc: "Swiggy fetches your order. One query. Items are already inside — no second query needed. This is the biggest advantage of embedding."
+            },
+            {
+              type: "step",
+              title: "Your order is delivered",
+              desc: "Swiggy updates the status field inside that one document. The items don't change. The payment doesn't change. Only status gets updated."
+            },
+            {
+              type: "code",
+              code: `db.orders.findOne({ _id: "ord_001" })  // one fetch — items, payment, everything is inside`
+            },
+            {
+              type: "success-callout",
+              text: "✅ Items and payment are embedded because they belong to this one order, they're always shown with the order, and they never change independently."
+            },
+
+            // ─── REFERENCED ───────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Referenced — Store an ID, Look Up Separately"
+            },
+            {
+              type: "paragraph",
+              text: "Now think about Behrouz Biryani the restaurant. It's not just on your order. Thousands of people ordered from Behrouz today. Its rating is 4.5 and it updates every hour as new reviews come in. If you copy Behrouz's full details inside every order — you'd need to update millions of order documents every time the rating changes. That's wrong. Instead, your order just stores a restaurantId — a pointer. The actual restaurant lives in one place: the restaurants collection."
+            },
+            {
+              type: "step",
+              title: "You open Behrouz on Swiggy",
+              desc: "Swiggy fetches the restaurant document from the restaurants collection — one document with name, rating, area, timings. Your order has nothing to do with this yet."
+            },
+            {
+              type: "step",
+              title: "You place the order",
+              desc: "Your order document stores restaurantId — just the ID pointing to Behrouz. Not the name, not the rating, not the address. Just the ID."
+            },
+            {
+              type: "step",
+              title: "Behrouz gets a new review — rating updates",
+              desc: "Swiggy updates one document in the restaurants collection. Done. Every order that references this restaurantId automatically reflects the latest data. No mass update needed."
+            },
+            {
+              type: "code",
+              code: `db.restaurants.findOne({ _id: order.restaurantId })  // second query to get restaurant details`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Referencing means two queries to show a full order — one for the order, one for the restaurant. Embedding means one query. Referencing trades read speed for easier updates."
+            },
+
+            // ─── DECISION ─────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "How to Decide — Ask These Questions"
+            },
+            {
+              type: "step",
+              title: "Does this data belong to only this one document?",
+              desc: "Order items only exist for this order — nobody else uses them. Embed. Restaurant details are shared across thousands of orders. Reference."
+            },
+            {
+              type: "step",
+              title: "Does this data change on its own?",
+              desc: "Behrouz's rating changes independently — not because of your order. Reference it. Your payment status changes only in context of your order. Embed it."
+            },
+            {
+              type: "step",
+              title: "Will the list grow forever?",
+              desc: "A restaurant will accumulate 100,000+ orders over time. Never embed an unbounded list. Reference it. Your order will have 2–10 items max. Safe to embed."
+            },
+            {
+              type: "table",
+              headers: ["", "Embedded", "Referenced"],
+              rows: [
+                ["Data lives", "Inside the document", "In a separate collection"],
+                ["Read speed", "Fast — one query", "Slower — two queries"],
+                ["Updates", "Hard — exists in many copies", "Easy — update one place"],
+                ["Use when", "Data owned by one document", "Data shared or updated often"],
+                ["Swiggy example", "Items & payment inside order", "restaurantId inside order"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Embed when data belongs to one document and is always read with it. Reference when data is shared across many documents or changes on its own. Your Behrouz order uses both — items are embedded, restaurant is referenced."
+            }
+          ],
+
+
+          "One-to-One, One-to-Many, Many-to-Many in MongoDB": [
+            {
+              type: "paragraph",
+              text: "Every piece of data on Swiggy has a relationship with something else. Your account has one profile. Your order has multiple items. You've ordered from multiple restaurants, and each restaurant has served thousands of customers. These are the three relationship patterns — and each one tells you whether to embed or reference."
+            },
+
+            // ─── ONE TO ONE ───────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "One-to-One — One thing belongs to exactly one other thing"
+            },
+            {
+              type: "paragraph",
+              text: "You create a Swiggy account. That account has one profile — your food preferences, your subscription status, your dietary preference. Your profile belongs to you and only you. Nobody else shares it."
+            },
+            {
+              type: "step",
+              title: "You sign up on Swiggy",
+              desc: "A user document is created with your name and phone number."
+            },
+            {
+              type: "step",
+              title: "You set your food preferences",
+              desc: "Your profile details — preferred cuisine, diet type, Swiggy One status — are added. Since this profile belongs only to you and is always loaded with your account, it's embedded directly inside your user document."
+            },
+            {
+              type: "code",
+              code: `// profile is embedded inside user — always together, always one-to-one
+{ name: "Rahul", phone: "98765", profile: { cuisine: "Biryani", diet: "Non-Veg" } }`
+            },
+            {
+              type: "success-callout",
+              text: "✅ One-to-One → Embed. The data is exclusively owned, always loaded together, never shared."
+            },
+
+            // ─── ONE TO MANY ──────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "One-to-Many — One thing has many of another"
+            },
+            {
+              type: "paragraph",
+              text: "This is the most common pattern on Swiggy. It appears in two very different situations — and each needs a different approach."
+            },
+            {
+              type: "step",
+              title: "Situation 1 — One order has many items (small, bounded)",
+              desc: "You order Biryani, Raita, and a Soft Drink from Behrouz. One order — 3 items. The items are small, they belong to this order only, and you'll never have 10,000 items in one order. Embed them."
+            },
+            {
+              type: "code",
+              code: `// items embedded inside order — small list, always read together
+{ orderId: "ord_001", items: [{ name: "Biryani" }, { name: "Raita" }] }`
+            },
+            {
+              type: "step",
+              title: "Situation 2 — One restaurant has many orders (large, unbounded)",
+              desc: "Behrouz Biryani has received 1,00,000 orders this month alone. You can't embed 1 lakh order documents inside one restaurant document — it would become massive. Instead, each order stores a restaurantId pointing back to Behrouz. The restaurant document stays clean."
+            },
+            {
+              type: "code",
+              code: `// each order references the restaurant — never embed 1 lakh orders inside one document
+{ orderId: "ord_001", restaurantId: "rst_4421", totalAmount: 487 }`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ One-to-Many has two cases. Small bounded list → embed. Large unbounded list → reference. Getting this wrong causes documents to grow forever and slow down every query."
+            },
+
+            // ─── MANY TO MANY ─────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Many-to-Many — Many things relate to many other things"
+            },
+            {
+              type: "paragraph",
+              text: "You've ordered from Behrouz, McDonald's, and Burger King. Your friend has also ordered from Behrouz and Domino's. Behrouz has served both of you plus thousands of others. Many customers, many restaurants — everyone is connected to everyone. Neither side owns the other."
+            },
+            {
+              type: "step",
+              title: "You order from Behrouz",
+              desc: "An order document is created. It stores your userId and the restaurantId of Behrouz. The order is the bridge connecting you to the restaurant."
+            },
+            {
+              type: "step",
+              title: "Your friend orders from Behrouz",
+              desc: "Another order document is created — with their userId and the same Behrouz restaurantId. Same restaurant, different customer, different order document."
+            },
+            {
+              type: "step",
+              title: "Swiggy checks all orders from Behrouz this week",
+              desc: "Query the orders collection for restaurantId = Behrouz. Get all customers who ordered. No need to touch the users or restaurants collection directly."
+            },
+            {
+              type: "code",
+              code: `// order is the bridge — it references both the user and the restaurant
+{ orderId: "ord_001", userId: "usr_982341", restaurantId: "rst_4421" }`
+            },
+            {
+              type: "table",
+              headers: ["Relationship", "Swiggy Example", "Approach"],
+              rows: [
+                ["One-to-One", "User → Profile", "Embed profile inside user"],
+                ["One-to-Many (small)", "Order → Items", "Embed items inside order"],
+                ["One-to-Many (large)", "Restaurant → Orders", "Reference restaurantId in order"],
+                ["Many-to-Many", "Customers ↔ Restaurants", "Order bridges both with IDs"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ One-to-One — embed. One-to-Many with small list — embed. One-to-Many with large list — reference. Many-to-Many — a third document bridges both sides. Your entire Swiggy order flow is built on just these three patterns."
+            }
+          ]
+        }
       },
 
       {

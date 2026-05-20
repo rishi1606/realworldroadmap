@@ -2989,7 +2989,7 @@ db.restaurants.find({
           "What is Indexing and How it works ?": [
             {
               type: "image",
-              text: "md5.png"
+              src: "md5.png"
             },
             {
               type: "paragraph",
@@ -3249,7 +3249,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
           "Aggregation Pipeline": [
             {
               type: "image",
-              text: "md6.png"
+              src: "md6.png"
             },
             {
               type: "paragraph",

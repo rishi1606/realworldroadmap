@@ -2184,18 +2184,14 @@ WHERE o.id = 10239847;`
             },
             {
               type: "paragraph",
-              text: "CRUD stands for Create, Read, Update, Delete. These are the four basic operations you do on any database. On Swiggy — a new restaurant onboards (Create), a user searches for orders (Read), a delivery status changes (Update), a cancelled order gets removed (Delete). Let's go through each one."
+              text: "CRUD = Create, Read, Update, Delete. On Swiggy — a restaurant onboards (Create), you check your order (Read), delivery status changes (Update), a cancelled order disappears (Delete)."
             },
 
-            // ─── CREATE ───────────────────────────────────────────
-
-            {
-              type: "heading",
-              text: "CREATE — insertOne & insertMany"
-            },
+            // ─── CREATE ───
+            { type: "heading", text: "CREATE — insertOne & insertMany" },
             {
               type: "paragraph",
-              text: "Burger King wants to list itself on Swiggy. That's an insert — a brand new document gets created in the restaurants collection."
+              text: "Burger King wants to list itself on Swiggy. That's an insert — a new document gets created in the restaurants collection."
             },
             {
               type: "step",
@@ -2204,99 +2200,58 @@ WHERE o.id = 10239847;`
             },
             {
               type: "code",
-              code: `db.restaurants.insertOne({
-  name: "Burger King",
-  branch: "Bandra West",
-  city: "Mumbai",
-  rating: 4.1,
-  isOpen: true,
-  cuisines: ["Burgers", "Fast Food"]
-})
-
-// MongoDB confirms with the auto-generated _id
-{ acknowledged: true, insertedId: ObjectId("64a7f2c3e1b2d3a4f5c6d7e8") }`
+              code: `db.restaurants.insertOne({ name: "Burger King", city: "Mumbai", rating: 4.1 })`
             },
             {
               type: "step",
               title: "insertMany — Add multiple restaurants",
-              desc: "Swiggy is expanding to Pune. 3 restaurants onboard at once. One insertMany instead of 3 separate insertOne calls."
+              desc: "Swiggy expanding to Pune — 3 restaurants onboard at once instead of 3 separate insertOne calls."
             },
             {
               type: "code",
               code: `db.restaurants.insertMany([
-  { name: "McDonald's",      branch: "FC Road",       city: "Pune", rating: 4.0 },
-  { name: "Domino's",        branch: "Koregaon Park", city: "Pune", rating: 4.2 },
-  { name: "Behrouz Biryani", branch: "Viman Nagar",   city: "Pune", rating: 4.5 }
-])
-
-// MongoDB confirms all 3
-{ acknowledged: true, insertedCount: 3 }`
+  { name: "McDonald's",  city: "Pune", rating: 4.0 },
+  { name: "Domino's",    city: "Pune", rating: 4.2 },
+  { name: "Behrouz",     city: "Pune", rating: 4.5 }
+])`
             },
             {
               type: "warning-callout",
               text: "⚠️ insertMany stops at the first error by default. Pass { ordered: false } to skip failed documents and insert the rest."
             },
-            {
-              type: "table",
-              headers: ["", "insertOne", "insertMany"],
-              rows: [
-                ["Input", "Single document { }", "Array of documents [ ]"],
-                ["Returns", "insertedId", "insertedCount + all insertedIds"],
-                ["Use when", "One restaurant onboarding", "Batch of restaurants onboarding"],
-              ]
-            },
 
-            // ─── READ ─────────────────────────────────────────────
-
-            {
-              type: "heading",
-              text: "READ — find & findOne"
-            },
+            // ─── READ ───
+            { type: "heading", text: "READ — find & findOne" },
             {
               type: "paragraph",
-              text: "You placed a Burger King order. Swiggy's backend now needs to fetch it — to show you the order detail screen. That's a read. MongoDB gives you find() for multiple documents and findOne() for a single one."
+              text: "You placed a Burger King order. Swiggy fetches it to show your order detail screen. That's a read."
             },
             {
               type: "step",
               title: "findOne — Fetch one specific order",
-              desc: "Load the order detail screen for your Burger King order. You need exactly one document."
+              desc: "Load the order detail screen. You need exactly one document — findOne returns it or null."
             },
             {
               type: "code",
-              code: `// Fetch one order by its ID
-db.orders.findOne({ _id: ObjectId("ord_10239847") })
-
-// Fetch one order by orderId
-db.orders.findOne({ orderId: "SWG-20240318-10239847" })`
+              code: `db.orders.findOne({ orderId: "SWG-20240318-10239847" })`
             },
             {
               type: "step",
               title: "find — Fetch multiple orders",
-              desc: "Show the user their full order history. Multiple documents match — find() returns all of them."
+              desc: "Show the user their full order history. find() returns all matching documents."
             },
             {
               type: "code",
-              code: `// All orders by this user
-db.orders.find({ userId: "usr_982341" })
-
-// All delivered orders in Mumbai
-db.orders.find({ city: "Mumbai", status: "delivered" })
-
-// All restaurants in Mumbai — returns cursor, iterate with .toArray()
-db.restaurants.find({ city: "Mumbai" }).toArray()`
+              code: `db.orders.find({ userId: "usr_982341", status: "delivered" })`
             },
             {
               type: "step",
               title: "Projection — fetch only the fields you need",
-              desc: "For the order history screen you only need orderId, restaurant name, totalAmount, and status — not the full document. Projection cuts down what MongoDB returns."
+              desc: "For order history you only need name, amount, status — not the full document. 1 = include, 0 = exclude."
             },
             {
               type: "code",
-              code: `// Return only these fields — 1 means include, 0 means exclude
-db.orders.find(
-  { userId: "usr_982341" },
-  { orderId: 1, restaurant: 1, totalAmount: 1, status: 1, _id: 0 }
-)`
+              code: `db.orders.find({ userId: "usr_982341" }, { orderId: 1, totalAmount: 1, status: 1, _id: 0 })`
             },
             {
               type: "table",
@@ -2308,61 +2263,38 @@ db.orders.find(
               ]
             },
 
-            // ─── UPDATE ───────────────────────────────────────────
-
-            {
-              type: "heading",
-              text: "UPDATE — updateOne & updateMany"
-            },
+            // ─── UPDATE ───
+            { type: "heading", text: "UPDATE — updateOne & updateMany" },
             {
               type: "paragraph",
-              text: "Ravi picks up your Burger King order. The status changes from 'placed' to 'out_for_delivery'. That's an update — an existing document is modified. MongoDB gives you updateOne for a single document and updateMany for a batch."
+              text: "Ravi picks up your order. Status changes from 'placed' to 'out_for_delivery'. That's an update."
             },
             {
               type: "step",
               title: "updateOne — Update one order's status",
-              desc: "Ravi just picked up your order. Update that one order document's status."
+              desc: "Ravi just picked up your order. Update that one document's status using the order's ID."
             },
             {
               type: "code",
-              code: `// updateOne takes two arguments — filter and update
-db.orders.updateOne(
-  { _id: ObjectId("ord_10239847") },         // filter — which document
-  { $set: { status: "out_for_delivery" } }   // update — what to change
-)`
+              code: `db.orders.updateOne({ _id: ObjectId("ord_10239847") }, { $set: { status: "out_for_delivery" } })`
             },
             {
               type: "step",
               title: "$set — update only specific fields",
-              desc: "$set changes only the fields you mention. Everything else in the document stays untouched. Without $set you'd overwrite the entire document."
+              desc: "$set changes only the fields you mention. Without it you'd overwrite the entire document."
             },
             {
               type: "code",
-              code: `// Update multiple fields at once
-db.orders.updateOne(
-  { _id: ObjectId("ord_10239847") },
-  {
-    $set: {
-      status: "delivered",
-      deliveredAt: new Date()
-    }
-  }
-)`
+              code: `db.orders.updateOne({ _id: ObjectId("ord_10239847") }, { $set: { status: "delivered", deliveredAt: new Date() } })`
             },
             {
               type: "step",
               title: "updateMany — Update a batch of documents",
-              desc: "A Burger King branch in Mumbai is temporarily closed. Mark all their pending orders as cancelled at once."
+              desc: "A BK branch in Mumbai closes. Cancel all their pending orders in one shot."
             },
             {
               type: "code",
-              code: `// Update ALL pending orders from BK Bandra in one shot
-db.orders.updateMany(
-  { restaurantId: "rst_4421", status: "placed" },    // filter
-  { $set: { status: "cancelled", reason: "Restaurant closed" } }  // update
-)
-
-// { acknowledged: true, matchedCount: 47, modifiedCount: 47 }`
+              code: `db.orders.updateMany({ restaurantId: "rst_4421", status: "placed" }, { $set: { status: "cancelled" } })`
             },
             {
               type: "table",
@@ -2375,41 +2307,33 @@ db.orders.updateMany(
             },
             {
               type: "warning-callout",
-              text: "⚠️ Always use $set. Without it — db.orders.updateOne({ _id: ... }, { status: 'delivered' }) — you replace the entire document with just { status: 'delivered' }. All other fields are wiped."
+              text: "⚠️ Always use $set. Without it — db.orders.updateOne({ _id: ... }, { status: 'delivered' }) — you replace the entire document. All other fields are wiped."
             },
 
-            // ─── DELETE ───────────────────────────────────────────
-
-            {
-              type: "heading",
-              text: "DELETE — deleteOne & deleteMany"
-            },
+            // ─── DELETE ───
+            { type: "heading", text: "DELETE — deleteOne & deleteMany" },
             {
               type: "paragraph",
-              text: "A user cancelled an order within 30 seconds — before the restaurant even saw it. Swiggy removes it. That's a delete. deleteOne removes a single document, deleteMany removes a batch."
+              text: "A user cancelled within 30 seconds — before the restaurant saw it. Swiggy removes it. That's a delete."
             },
             {
               type: "step",
               title: "deleteOne — Remove one cancelled order",
-              desc: "The user cancelled immediately. Remove that one order document."
+              desc: "User cancelled immediately. Remove that one document by its ID."
             },
             {
               type: "code",
               code: `db.orders.deleteOne({ _id: ObjectId("ord_10239847") })
-
 // { acknowledged: true, deletedCount: 1 }`
             },
             {
               type: "step",
               title: "deleteMany — Remove a batch of old orders",
-              desc: "Swiggy purges orders older than 2 years to free up storage. One deleteMany wipes them all."
+              desc: "Swiggy purges orders older than 2 years to free up storage."
             },
             {
               type: "code",
-              code: `db.orders.deleteMany({
-  createdAt: { $lt: new Date("2022-01-01") }  // older than 2 years
-})
-
+              code: `db.orders.deleteMany({ createdAt: { $lt: new Date("2022-01-01") } })
 // { acknowledged: true, deletedCount: 8271034 }`
             },
             {
@@ -2423,25 +2347,8 @@ db.orders.updateMany(
             },
             {
               type: "warning-callout",
-              text: "⚠️ deleteMany with an empty filter — db.orders.deleteMany({}) — deletes every document in the collection. No undo. Always double-check your filter before running deleteMany."
+              text: "⚠️ deleteMany({}) with an empty filter deletes every document in the collection. No undo. Always double-check your filter."
             },
-
-            // ─── SUMMARY ──────────────────────────────────────────
-
-            {
-              type: "table",
-              headers: ["Operation", "Method", "Swiggy example"],
-              rows: [
-                ["Create", "insertOne / insertMany", "New restaurant onboards"],
-                ["Read", "findOne / find", "Fetch order detail / order history"],
-                ["Update", "updateOne / updateMany", "Status changes to delivered / bulk cancel"],
-                ["Delete", "deleteOne / deleteMany", "Remove cancelled order / purge old data"],
-              ]
-            },
-            {
-              type: "success-callout",
-              text: "✅ These 8 methods cover every basic operation on MongoDB. Create documents with insert, read them with find, modify them with update, remove them with delete. Everything Swiggy does with orders, restaurants, and users starts with one of these."
-            }
           ],
           "Query Operators ($eq, $gt, $in, $and, $or)": [
             {

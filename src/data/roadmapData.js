@@ -1952,6 +1952,9 @@ export const roadmapData = [
         , topicDetails: {
           "SQL vs NoSQL — Why Swiggy Chose MongoDB": [
             {
+              type: "image", src: "md1.png"
+            },
+            {
               type: "paragraph",
               text: "You open Swiggy and place an order. That single action captures your address, the restaurant, every item you ordered, your payment method, and a delivery timeline — all as one thing. Now the question is: how do you store this? In a rigid table with rows and columns? Or as one self-contained document? That choice is the difference between SQL and NoSQL."
             },

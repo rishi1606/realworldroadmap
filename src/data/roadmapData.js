@@ -3727,7 +3727,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "When IRCTC's app talks to the server — it uses HTTP to send and receive data. But HTTP is just the transport layer — like roads. REST is the set of rules about how to use those roads. REST tells you how to structure your requests, how to name your URLs, how to use the right methods."
             },
-            { type: "image", src: "http.png" },
+            { type: "image", src: "httpserver.png" },
             {
               type: "heading",
               text: "HTTP — The Transport"
@@ -4059,6 +4059,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "Every time you search trains or book a ticket on IRCTC, your app sends a request to the server. That request isn't just a random message — it has a precise structure. Three parts: Method, Headers, Body. Miss any one of them and the server either rejects your request or gives you garbage back."
             },
+            { type: "image", src: "request.png" },
             {
               type: "curious-callout",
               text: "❓ You tap 'Book Ticket' on IRCTC. What exactly leaves your phone and travels to the IRCTC server? What does that message look like?"
@@ -4151,6 +4152,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "IRCTC's server got your booking request. It processed it. Now it sends something back. That something is the HTTP Response. Just like the request had a structure — Method, Headers, Body — the response has its own structure: Status Line, Headers, Body. You need to read all three correctly, or your app won't know if the ticket was actually booked."
             },
+            { type: "image", src: "response.png" },
             {
               type: "curious-callout",
               text: "❓ You hit 'Confirm Booking' on IRCTC. The server processes it. How does your app know the ticket was booked? How does it know if payment failed? How does it know if the server crashed?"
@@ -4282,6 +4284,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "IRCTC has hundreds of engineers. Some build the mobile app, some build the website, some build the booking engine. They all talk to the same backend APIs. Without agreed-upon design rules, one engineer writes /getTrains, another writes /fetchAllTrainData, another writes /trains/list — and everything breaks. REST API design principles are those agreed-upon rules."
             },
+            { type: "image", src: "apidesign.png" },
             {
               type: "curious-callout",
               text: "❓ IRCTC's API has endpoints for trains, bookings, passengers, payments, cancellations. How do you name them? How do you structure them so any developer — internal or external — can understand them instantly?"
@@ -4370,6 +4373,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "IRCTC launched their API. MakeMyTrip, ixigo, Paytm — they all integrated it. Six months later, IRCTC needs to change the booking response format — add new fields, rename some, remove one that was a bad idea. If they just change the API, every app that integrated breaks overnight. API versioning solves this."
             },
+            { type: "image", src: "version.png" },
             {
               type: "curious-callout",
               text: "❓ ixigo has 10 million users booking IRCTC tickets through their app. IRCTC needs to redesign their booking API completely. How do they upgrade without crashing ixigo's app at 2am on a Monday?"
@@ -4452,6 +4456,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "IRCTC has 14 million passengers a day. If you hit GET /bookings — do you get all 14 million records back? No. That response would be gigabytes of data, take minutes to load, and crash your app. Pagination breaks large datasets into small pages so your app only gets what it can actually display."
             },
+            { type: "image", src: "paginate.png" },
             {
               type: "curious-callout",
               text: "❓ An IRCTC admin queries all bookings for May 25th. There are 2.3 million records. How does the API return this without sending 2.3 million rows in one response and crashing everything?"

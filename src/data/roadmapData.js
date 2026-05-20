@@ -2987,10 +2987,10 @@ db.restaurants.find({
         ],
         topicDetails: {
           "What is Indexing and How it works ?": [
-            {
-              type: "image",
-              src: "md5.png"
-            },
+            // {
+            //   type: "image",
+            //   src: "md5.png"
+            // },
             {
               type: "paragraph",
               text: "You open Swiggy and search 'Domino's'. You want the nearest outlet. Results appear in milliseconds. Behind that — MongoDB just searched through millions of restaurant documents. Without indexes, it would scan every single one. With indexes, it jumps straight to the answer. That's what indexing is."
@@ -3247,10 +3247,10 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
         ],
         topicDetails: {
           "Aggregation Pipeline": [
-            {
-              type: "image",
-              src: "md6.png"
-            },
+            // {
+            //   type: "image",
+            //   src: "md6.png"
+            // },
             {
               type: "paragraph",
               text: "You order a Butterscotch and a Chocolate Fudge ice cream from Naturals on Swiggy. That order is one document. Now Swiggy's team asks — which ice cream flavour sold the most this week across all orders? find() can't answer this. It just fetches documents as they are. To compute answers from data, you need the Aggregation Pipeline."
@@ -4512,6 +4512,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "GET /trains returns every train in India — thousands of them. That's useless. You need Mumbai to Delhi trains, on May 25th, with available seats in 3A class, sorted by departure time. Filtering, sorting, and searching are how you turn a massive dataset into exactly the slice your user needs."
             },
+            { type: "image", "src": "sorting.png" },
             {
               type: "curious-callout",
               text: "❓ IRCTC's database has 13,452 trains. You search 'Mumbai to Delhi on 25th May, 3A class, sort by departure time, only show trains with available seats.' How does the API handle all of that in one request?"
@@ -4586,6 +4587,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "You're building a travel app at mytravelapp.com. You write JavaScript that calls IRCTC's API at api.irctc.co.in. You open the browser, run your code, and get a red error: 'CORS policy blocked this request.' The API works fine in Postman. It works fine on your server. Only the browser blocks it. Why?"
             },
+            { type: "image", "src": "cors.png" },
             {
               type: "curious-callout",
               text: "❓ Your frontend at mytravelapp.com tries to call api.irctc.co.in from the browser. The same request works in Postman. The browser blocks it with a CORS error. What's happening and how do you fix it?"

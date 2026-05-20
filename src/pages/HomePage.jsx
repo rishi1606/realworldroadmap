@@ -48,7 +48,7 @@ export function HomePage() {
 
   return (
     <div className="bg-bg-base text-text-main font-sans flex-1 overflow-x-hidden">
-      <SEO 
+      <SEO
         title="Interactive Developer Roadmaps & System Design Scenarios"
         description="Master real-world tech engineering with interactive developer roadmaps, real-world case studies, and practical system design guides. Learn system design, database scaling, caching, and load balancing."
         keywords="developer roadmaps, system design course, software engineering guides, learn caching, load balancing explain, backend scenarios, learn system design"

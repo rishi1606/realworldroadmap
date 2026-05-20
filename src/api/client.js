@@ -39,4 +39,9 @@ export const progressAPI = {
   toggle: (roadmapId, topicId) => apiClient.post('/progress/toggle', { roadmapId, topicId }),
 };
 
+export const reviewAPI = {
+  rate: (roadmapId, rating, comment) => apiClient.post(`/roadmaps/${roadmapId}/reviews`, { rating, comment }),
+  getMyRating: (roadmapId) => apiClient.get(`/roadmaps/${roadmapId}/reviews/me`),
+};
+
 export default apiClient;

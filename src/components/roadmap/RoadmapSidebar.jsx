@@ -5,7 +5,43 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 import { ShareModal } from '../common/ShareModal';
-import { notifyAPI } from '../../api/client';
+import { ReviewModal } from '../common/ReviewModal';
+import { notifyAPI, reviewAPI } from '../../api/client';
+
+const renderStars = (rating) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating % 1 >= 0.3;
+  
+  for (let i = 1; i <= 5; i++) {
+    if (i <= fullStars) {
+      stars.push(
+        <svg key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      );
+    } else if (i === fullStars + 1 && hasHalf) {
+      stars.push(
+        <svg key={i} className="w-3.5 h-3.5 text-amber-400" viewBox="0 0 20 20" fill="currentColor">
+          <defs>
+            <linearGradient id="half-sidebar">
+              <stop offset="50%" stopColor="#fbbf24" />
+              <stop offset="50%" stopColor="#e2e8f0" />
+            </linearGradient>
+          </defs>
+          <path fill="url(#half-sidebar)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      );
+    } else {
+      stars.push(
+        <svg key={i} className="w-3.5 h-3.5 fill-slate-200 text-slate-300" viewBox="0 0 20 20" fill="currentColor">
+          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+        </svg>
+      );
+    }
+  }
+  return stars;
+};
 
 const NODE_ICONS = [FiSettings, FiLayers, FiZap, FiLink, FiCode, FiDatabase, FiGlobe, FiCpu, FiKey, FiServer, FiBox];
 
@@ -93,13 +129,15 @@ function NotifyModal({ roadmapId, user, isOpen, onClose, isSubscribed, onSubscri
 }
 
 // ─── Main Sidebar ──────────────────────────────────────────────────────────────
-export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, topicStatus, updateStatus }) {
+export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, selectedTopic, onSelectTopic, topicStatus, updateStatus, onReviewSuccess }) {
   const { user, setShowLoginModal } = useAuth();
   const [mounted, setMounted] = useState(false);
   const [isShareOpen, setIsShareOpen] = useState(false);
+  const [isReviewOpen, setIsReviewOpen] = useState(false);
   const [showNotify, setShowNotify] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(false);
   const [isNotifyLoading, setIsNotifyLoading] = useState(true);
+  const [userRating, setUserRating] = useState(0);
   const [activeLevel, setActiveLevel] = useState('all');
   const [shareUrl, setShareUrl] = useState('');
 
@@ -121,6 +159,17 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
       }
     }
   }, [mounted, user, roadmap]);
+
+  // Fetch user's own rating when logged in
+  useEffect(() => {
+    if (user && roadmap?._id) {
+      reviewAPI.getMyRating(roadmap._id)
+        .then(res => setUserRating(res.data.rating || 0))
+        .catch(() => setUserRating(0));
+    } else {
+      setUserRating(0);
+    }
+  }, [user, roadmap?._id]);
 
   const nodesWithLevels = useMemo(() =>
     (data || []).map(n => ({ ...n, _level: n.level || 'freshers' })), [data]);
@@ -231,9 +280,49 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
         <h1 className="text-2xl md:text-3xl font-bold text-slate-900 mb-3 tracking-tight leading-tight">
           {roadmap?.title || 'Roadmap'}
         </h1>
-        <p className="text-slate-500 text-[14px] mb-6 leading-relaxed">
+        <p className="text-slate-500 text-[14px] mb-4 leading-relaxed">
           {roadmap?.description || 'Step by step guide to mastering this topic'}
         </p>
+
+        {userRating > 0 ? (
+          // Show filled stars only if user has already rated
+          <div
+            onClick={() => setIsReviewOpen(true)}
+            className="flex items-center gap-2 mb-6 cursor-pointer hover:opacity-80 transition-opacity bg-amber-50 border border-amber-200/70 rounded-xl px-3 py-1.5 shadow-sm w-fit"
+          >
+            <div className="flex items-center">
+              {renderStars(roadmap?.averageRating || userRating)}
+            </div>
+            <span className="text-[13px] font-bold text-slate-800 ml-1">
+              {roadmap?.averageRating ? roadmap.averageRating.toFixed(1) : userRating.toFixed(1)}
+            </span>
+            <span className="text-slate-400 text-[11px] font-medium">
+              ({roadmap?.totalRatings || 1} {roadmap?.totalRatings === 1 ? 'rating' : 'ratings'})
+            </span>
+            <span className="text-slate-300 mx-1">|</span>
+            <span className="text-[12px] font-bold text-amber-600 hover:underline">
+              Edit Review
+            </span>
+          </div>
+        ) : (
+          // Show plain CTA when user hasn't rated yet (no default stars)
+          <button
+            onClick={() => user ? setIsReviewOpen(true) : setShowLoginModal(true)}
+            className="flex items-center gap-2 mb-6 cursor-pointer hover:bg-slate-100 transition-colors bg-slate-50 border border-slate-200/60 rounded-xl px-3 py-1.5 text-slate-600 font-bold text-[12px] shadow-sm"
+          >
+            <span className="text-[#2563eb]">
+              Rate / Review
+            </span>
+            {roadmap?.totalRatings > 0 && (
+              <>
+                <span className="text-slate-300 mx-0.5">|</span>
+                <span className="text-slate-500 font-medium">
+                  {roadmap.totalRatings} {roadmap.totalRatings === 1 ? 'rating' : 'ratings'} ({roadmap.averageRating?.toFixed(1) || '0.0'} ★)
+                </span>
+              </>
+            )}
+          </button>
+        )}
 
         {/* ── Tabs */}
         <div className="flex items-center justify-between border-b border-slate-200 w-full mt-5 mb-5">
@@ -384,6 +473,19 @@ export function RoadmapSidebar({ roadmap, data, selectedNode, onSelectNode, sele
         onClose={() => setIsShareOpen(false)}
         url={shareUrl}
         title={roadmap?.title || 'Roadmap'}
+      />
+
+      <ReviewModal
+        roadmapId={roadmap?._id}
+        roadmapTitle={roadmap?.title}
+        user={user}
+        isOpen={isReviewOpen}
+        onClose={() => setIsReviewOpen(false)}
+        onReviewSuccess={(data) => {
+          // Immediately update local star display — no refresh needed
+          setUserRating(data.userRating || 0);
+          if (onReviewSuccess) onReviewSuccess(data);
+        }}
       />
     </div>
   );

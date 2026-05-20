@@ -3667,6 +3667,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "You open IRCTC, type 'Mumbai to Delhi', hit Search. Within 2 seconds you see 14 trains, timings, available seats, prices. The app doesn't store any of this. The mobile app doesn't store it either. Something in the middle fetched it and gave it back. That something is an API."
             },
+            { type: "image", src: "api.png" },
             {
               type: "curious-callout",
               text: "❓ You're on the IRCTC app. Train data lives on a railway server. How does your app talk to that server and get data back instantly?"
@@ -3718,6 +3719,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "When IRCTC's app talks to the server — it uses HTTP to send and receive data. But HTTP is just the transport layer — like roads. REST is the set of rules about how to use those roads. REST tells you how to structure your requests, how to name your URLs, how to use the right methods."
             },
+            { type: "image", src: "http.png" },
             {
               type: "heading",
               text: "HTTP — The Transport"
@@ -3759,6 +3761,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "IRCTC's backend handles millions of actions every day — searching trains, booking tickets, updating passenger names, cancelling bookings. But how does the server know WHAT action you want to perform? That's the job of HTTP methods. The URL identifies the resource. The HTTP method tells the server what to do with it."
             },
+            { type: "image", src: "methods.png" },
             {
               type: "curious-callout",
               text: "❓ You click 'Book Ticket' in IRCTC. Another user clicks 'Cancel Ticket'. Both actions hit the same /bookings endpoint. How does the server know one request should create a booking while the other should delete it?"
@@ -3887,6 +3890,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
               type: "paragraph",
               text: "You book a train ticket on IRCTC. Did it work? Did it fail? Was the train not found? Were you not logged in? The server doesn't just send back data — it always sends back a 3-digit number that tells you exactly what happened. These are HTTP Status Codes."
             },
+            { type: "image", src: "statuscodes.png" },
             {
               type: "heading",
               text: "Status Code Groups"
@@ -3931,6 +3935,9 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
             {
               type: "paragraph",
               text: "You search for trains on IRCTC — you pass source, destination, date. You view a specific booking — you pass the booking ID. You create a new booking — you pass passenger details. All three are sending data to the server — but in three completely different ways."
+            },
+            {
+              type: "image", src: "query.png"
             },
             {
               type: "heading",

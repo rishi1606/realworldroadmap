@@ -27,6 +27,8 @@ const getImageUrl = (src) => {
   return `${backendBase}/images/${src}`;
 };
 
+
+
 // ─── Block Renderers ────────────────────────────────────────────────────────
 
 const blockRenderers = {
@@ -385,7 +387,9 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
   const [viewMode, setViewMode] = useState("concept");
   const [zoomedImage, setZoomedImage] = useState(null);
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, setShowLoginModal } = useAuth();
+
+
 
   const handleZoom = useCallback((src) => setZoomedImage(src), []);
   const handleCloseZoom = useCallback(() => setZoomedImage(null), []);
@@ -435,6 +439,8 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
               <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-[1.1]">
                 {selectedTopic.title || selectedNode.title}
               </h1>
+
+
             </div>
 
             {/* Status Toggle Button */}

@@ -12,7 +12,7 @@ export function RoadmapPage() {
   const { title } = useParams();
   const location = useLocation();
   const { user, setShowLoginModal } = useAuth();
-  const { fetchAllRoadmaps, getRoadmapBySlug, roadmapsCache, roadmaps } = useRoadmaps();
+  const { fetchAllRoadmaps, getRoadmapBySlug, roadmapsCache, roadmaps, setRoadmapsCache } = useRoadmaps();
 
   const [activeRoadmap, setActiveRoadmap] = useState(null);
   const [selectedNode, setSelectedNode] = useState(null);
@@ -26,6 +26,11 @@ export function RoadmapPage() {
     const resolveAndFetch = async () => {
       try {
         const decodedTitle = decodeURIComponent(title);
+        
+        // If activeRoadmap is already matching the current title/slug, avoid resolving again
+        if (activeRoadmap && (activeRoadmap.title === decodedTitle || activeRoadmap.slug === decodedTitle)) {
+          return;
+        }
         
         // Check if we already have it in cache
         const cached = Object.values(roadmapsCache).find(r => r.title === decodedTitle || r.slug === decodedTitle);
@@ -52,7 +57,7 @@ export function RoadmapPage() {
     };
 
     if (title) resolveAndFetch();
-  }, [title, fetchAllRoadmaps, getRoadmapBySlug, roadmaps, roadmapsCache]);
+  }, [title, fetchAllRoadmaps, getRoadmapBySlug, roadmaps, roadmapsCache, activeRoadmap]);
 
   // 2. Selection Logic
   useEffect(() => {
@@ -142,6 +147,26 @@ export function RoadmapPage() {
     }
   };
 
+  const handleReviewSuccess = (ratingData) => {
+    setActiveRoadmap(prev => {
+      if (!prev) return prev;
+      const updated = {
+        ...prev,
+        averageRating: ratingData.averageRating,
+        totalRatings: ratingData.totalRatings
+      };
+      
+      setRoadmapsCache(oldCache => ({
+        ...oldCache,
+        [prev.slug]: updated
+      }));
+      
+      return updated;
+    });
+    // Force refresh the global roadmaps list cache in context
+    fetchAllRoadmaps(true);
+  };
+
   if (loading && !activeRoadmap) {
     return (
       <div className="w-full bg-white text-slate-900 font-sans flex justify-center border-t border-slate-200">
@@ -207,6 +232,7 @@ export function RoadmapPage() {
           onSelectTopic={setSelectedTopic}
           topicStatus={topicStatus}
           updateStatus={updateStatus}
+          onReviewSuccess={handleReviewSuccess}
         />
         <RoadmapContent
           roadmap={activeRoadmap}

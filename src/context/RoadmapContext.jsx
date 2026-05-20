@@ -43,7 +43,8 @@ export function RoadmapProvider({ children }) {
       fetchAllRoadmaps, 
       getRoadmapBySlug, 
       loadingRoadmaps,
-      roadmapsCache 
+      roadmapsCache,
+      setRoadmapsCache
     }}>
       {children}
     </RoadmapContext.Provider>

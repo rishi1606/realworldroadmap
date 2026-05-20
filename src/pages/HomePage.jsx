@@ -90,20 +90,58 @@ export function HomePage() {
 
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {loading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+            <SkeletonLoader type="card" />
+            <SkeletonLoader type="card" />
+            <SkeletonLoader type="card" />
+          </div>
+        ) : (
+          (() => {
+            const groups = {
+              "Backend Concepts": [],
+              "Databases": []
+            };
 
-          {loading ? (
-            <>
-              <SkeletonLoader type="card" />
-              <SkeletonLoader type="card" />
-              <SkeletonLoader type="card" />
-            </>
-          ) : roadmaps.map((item, index) => {
-            const enhancedItem = { ...item, type: "featured" };
-            return <RoadmapCard key={index} item={enhancedItem} />;
-          })}
+            roadmaps.forEach(item => {
+              const cat = item.category || (item.slug === 'mongodb-swiggy' || item.id === 'mongodb-swiggy' ? 'Databases' : 'Backend Concepts');
+              if (!groups[cat]) {
+                groups[cat] = [];
+              }
+              groups[cat].push(item);
+            });
 
-        </div>
+            // Sort each group by sortOrder
+            Object.keys(groups).forEach(cat => {
+              groups[cat].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+            });
+
+            return (
+              <div className="space-y-16">
+                {Object.entries(groups).map(([categoryName, items]) => {
+                  if (items.length === 0) return null;
+                  return (
+                    <div key={categoryName} className="flex flex-col space-y-6">
+                      <div className="flex items-center gap-4">
+                        <div className="w-1.5 h-6 bg-blue-600 rounded-full"></div>
+                        <h2 className="text-xl md:text-2xl font-bold text-slate-800 tracking-tight">
+                          {categoryName}
+                        </h2>
+                        <div className="h-[2px] bg-slate-100 flex-grow rounded-full"></div>
+                      </div>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                        {items.map((item, idx) => {
+                          const enhancedItem = { ...item, type: "featured" };
+                          return <RoadmapCard key={idx} item={enhancedItem} />;
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            );
+          })()
+        )}
       </div>
 
     </div>

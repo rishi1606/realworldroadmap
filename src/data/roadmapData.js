@@ -1,6 +1,8 @@
 export const roadmapData = [
   {
     id: "authentication-nodejs",
+    category: "Backend Concepts",
+    sortOrder: 2,
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png",
     title: "Learn Authentication Through Flipkart-like Scenarios",
     description:
@@ -1022,6 +1024,8 @@ export const roadmapData = [
   },
   {
     id: "caching-netflix",
+    category: "Backend Concepts",
+    sortOrder: 3,
     image: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png",
     title: "Learn Caching Through Netflix-style Architectures",
     description:
@@ -1931,6 +1935,8 @@ export const roadmapData = [
   },
   {
     id: "mongodb-swiggy",
+    category: "Databases",
+    sortOrder: 1,
     image: "https://cdn.worldvectorlogo.com/logos/swiggy-1.svg",
     title: "Learn MongoDB Through Swiggy's Database Architecture",
     description:
@@ -3648,6 +3654,8 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   },
   {
     id: "api-irctc",
+    category: "Backend Concepts",
+    sortOrder: 1,
     image: "https://upload.wikimedia.org/wikipedia/en/thumb/4/45/IRCTC_Logo.svg/1280px-IRCTC_Logo.svg.png",
     title: "Learn APIs Through IRCTC-style Architecture",
     description:
@@ -4735,6 +4743,8 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   // ,
   // {
   //   id: "websockets-gaming",
+  //   category: "Backend Concepts",
+  //   sortOrder: 6,
   //   image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
   //   title: "How Gaming Apps Use WebSockets",
   //   description:
@@ -6288,6 +6298,8 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   ,
   {
     id: "loadbalancer-booking",
+    category: "Backend Concepts",
+    sortOrder: 4,
     image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Icon_2022.svg",
     title: "Load Balancing Explained with Booking Platform Examples",
     description:
@@ -8026,6 +8038,8 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   // },
   {
     id: "cdn-zomato",
+    category: "Backend Concepts",
+    sortOrder: 5,
     image: "https://crystalpng.com/wp-content/uploads/2025/12/Zomato-Logo.png",
     title: "Understand CDN through Zomato",
     description: "Learn how Zomato serves millions of concurrent users — from edge servers and cache hits, to geo-routing, CDN invalidation, DDoS protection, and multi-CDN strategies in production.",
@@ -10390,6 +10404,8 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   // }
   {
     id: "websockets-gaming",
+    category: "Backend Concepts",
+    sortOrder: 6,
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
     title: "How Multiplayer Games Use WebSockets",
     description:

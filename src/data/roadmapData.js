@@ -1930,6 +1930,1047 @@ export const roadmapData = [
 
   },
   {
+    id: "mongodb-swiggy",
+    image: "https://images.icon-icons.com/2699/PNG/512/swiggy_logo_icon_170919.png",
+    title: "Learn MongoDB Through Swiggy's Database Architecture",
+    description:
+      "Learn MongoDB from scratch — documents, collections, indexing, aggregations, and schema design through real Swiggy order, restaurant, and delivery scenarios.",
+    tags: ["MongoDB", "NoSQL", "Indexing"],
+    nodes: [
+
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "SQL vs NoSQL — Why Swiggy Chose MongoDB",
+          "What is a Document?",
+          "What is a Collection?"
+
+
+        ]
+        , topicDetails: {
+          "SQL vs NoSQL — Why Swiggy Chose MongoDB": [
+            {
+              type: "paragraph",
+              text: "You open Swiggy and place an order. That single action captures your address, the restaurant, every item you ordered, your payment method, and a delivery timeline — all as one thing. Now the question is: how do you store this? In a rigid table with rows and columns? Or as one self-contained document? That choice is the difference between SQL and NoSQL."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Swiggy's engineers knew SQL. It's battle-tested. So why did they pick MongoDB for their core order data?"
+            },
+            {
+              type: "heading",
+              text: "SQL — Tables, Rows, Joins"
+            },
+            {
+              type: "paragraph",
+              text: "SQL stores data in tables — fixed rows and columns. To fetch one Swiggy order with all its details, you'd join 4–5 separate tables every single time."
+            },
+            {
+              type: "code",
+              code: `-- Fetch one order in SQL — requires joining 4 tables
+SELECT o.id, r.name, u.phone, a.full_address, p.method
+FROM orders o
+JOIN restaurants r ON o.restaurant_id = r.id
+JOIN users      u ON o.user_id = u.id
+JOIN addresses  a ON o.address_id = a.id
+JOIN payments   p ON o.payment_id = p.id
+WHERE o.id = 10239847;`
+            },
+            {
+              type: "heading",
+              text: "MongoDB — Documents"
+            },
+            {
+              type: "paragraph",
+              text: "MongoDB stores data as JSON-like documents. That same order — restaurant, items, payment, timeline — lives in one document. One fetch. No joins."
+            },
+            {
+              type: "code",
+              code: `// One Swiggy order in MongoDB — everything in one document
+{
+  orderId: "SWG-20240318-10239847",
+  status: "delivered",
+  totalAmount: 487,
+
+  restaurant: { name: "Behrouz Biryani", area: "Andheri" },
+
+  items: [
+    { name: "Dum Gosht Biryani", qty: 1, price: 389 },
+    { name: "Raita",              qty: 1, price: 49  }
+  ],
+
+  customer: {
+    phone: "+91-9876543210",
+    deliveryAddress: "4B Sunshine Apartments, Bandra West, Mumbai"
+  },
+
+  payment: { method: "UPI", status: "success" }
+}`
+            },
+            {
+              type: "table",
+              headers: ["", "SQL", "MongoDB"],
+              rows: [
+                ["Data model", "Tables — rows & columns", "Collections — JSON documents"],
+                ["Schema", "Fixed, defined upfront", "Flexible, per document"],
+                ["Relationships", "Foreign keys + JOINs", "Embedded inside one document"],
+                ["Scaling", "Vertical (bigger server)", "Horizontal (more servers)"],
+                ["Best for", "Financial records, fixed data", "Variable data, fast reads"],
+              ]
+            },
+            {
+              type: "heading",
+              text: "Why Swiggy Picked MongoDB"
+            },
+            {
+              type: "step",
+              title: "Orders are naturally document-shaped",
+              desc: "An order isn't a flat row — it's a nested object with items, payment, and a timeline inside it. Storing it as one document matches how it actually looks."
+            },
+            {
+              type: "step",
+              title: "Schema changes constantly",
+              desc: "When Swiggy launched Instamart, grocery orders needed new fields like weight_kg and shelf_life. In MongoDB — just write the new fields. In SQL — ALTER TABLE on a 200 million row table. Slow and risky."
+            },
+            {
+              type: "step",
+              title: "One read per order detail page",
+              desc: "The most common operation is: fetch this one order with all details. MongoDB does it in one document fetch. SQL runs a multi-table join — millions of times a day under peak load."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ MongoDB isn't the answer to everything. Swiggy uses PostgreSQL for restaurant payouts and financial records — data that's relational, never changes shape, and needs strict transaction guarantees. Right tool for the right job."
+            },
+            {
+              type: "success-callout",
+              text: "✅ SQL structures data into rigid tables joined together. MongoDB stores it as flexible documents. Swiggy's order data is nested, changes shape often, and needs fast single-document reads — which is exactly what MongoDB is built for."
+            }
+          ],
+          "What is a Document?": [
+            {
+              type: "paragraph",
+              text: "You order a Whopper from Burger King on Swiggy. The moment you tap Place Order — MongoDB saves that order. That saved record is called a Document."
+            },
+            {
+              type: "heading",
+              text: "Definition"
+            },
+            {
+              type: "paragraph",
+              text: "A Document is a single record in MongoDB. It stores data as key-value pairs — like a JSON object. One order = one document. One user = one document. One restaurant = one document."
+            },
+            {
+              type: "code",
+              code: `// Your Burger King order — this entire object is ONE document
+{
+  _id: ObjectId("ord_10239847"),   // unique ID, auto-generated by MongoDB
+  orderId: "SWG-20240318-10239847",
+  status: "placed",
+  totalAmount: 387,
+
+  items: [
+    { name: "Whopper",      price: 229 },
+    { name: "Medium Fries", price: 89  },
+    { name: "Pepsi Medium", price: 69  }
+  ],
+
+  payment: { method: "UPI", status: "success" }
+}`
+            },
+            {
+              type: "step",
+              title: "_id — Every document has one",
+              desc: "MongoDB automatically creates an _id for every document. It uniquely identifies that record. No two documents in the same collection can share an _id."
+            },
+            {
+              type: "step",
+              title: "Fields can be nested",
+              desc: "payment is an object inside the document. items is an array inside the document. You don't need separate tables — it all lives in one place."
+            },
+            {
+              type: "step",
+              title: "No fixed shape required",
+              desc: "Your food order has items and restaurant. A Swiggy Genie order has pickup and drop. Both are documents — they just have different fields. MongoDB doesn't enforce a fixed structure."
+            },
+            {
+              type: "success-callout",
+              text: "✅ A document is one record. It's a JSON-like object with fields inside it. Your Burger King order — items, payment, status — all saved as one document."
+            }
+          ],
+
+          "What is a Collection?": [
+            {
+              type: "paragraph",
+              text: "Your Burger King order is saved as a document. Tomorrow you order from McDonald's — another document. Next week, biryani from Behrouz — another document. All these order documents need to live somewhere together. That place is called a Collection."
+            },
+            {
+              type: "heading",
+              text: "Definition"
+            },
+            {
+              type: "paragraph",
+              text: "A Collection is a group of related documents in MongoDB. All orders go into the orders collection. All restaurants go into the restaurants collection. It's the MongoDB equivalent of a table in SQL — except documents inside a collection don't need to have the same fields."
+            },
+            {
+              type: "code",
+              code: `// orders collection — every order ever placed on Swiggy lives here
+
+// Document 1 — your Burger King order
+{ _id: ObjectId("ord_001"), restaurant: "Burger King", totalAmount: 387, status: "delivered" }
+
+// Document 2 — someone's biryani order
+{ _id: ObjectId("ord_002"), restaurant: "Behrouz Biryani", totalAmount: 487, status: "placed" }
+
+// Document 3 — a Genie pickup order (different shape, same collection)
+{ _id: ObjectId("ord_003"), pickup: "Bandra", drop: "Andheri", package: "Documents" }
+
+// All three are documents inside the same orders collection`
+            },
+            {
+              type: "heading",
+              text: "Swiggy's Collections"
+            },
+            {
+              type: "code",
+              code: `swiggy_db
+├── orders          // every order placed — your BK order lives here
+├── restaurants     // every restaurant — Burger King, Behrouz, etc.
+├── users           // every customer account
+├── menus           // menu items per restaurant
+└── deliveryAgents  // every delivery partner`
+            },
+            {
+              type: "table",
+              headers: ["SQL", "MongoDB", "Swiggy example"],
+              rows: [
+                ["Database", "Database", "swiggy_db"],
+                ["Table", "Collection", "orders, users, restaurants"],
+                ["Row", "Document", "Your Burger King order"],
+                ["Primary key", "_id", "ObjectId — auto generated"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ A collection is a group of documents. orders is a collection. Your Burger King order inside it is a document. That's it."
+            }
+          ]
+        }
+      },
+
+      {
+        id: 2,
+        title: "CRUD Operations",
+        level: "freshers",
+        topics: [
+          "CRUD Operations (insertOne, insertMany, find, findOne, updateOne, updateMany, deleteOne, deleteMany)",
+          "Query Operators ($eq, $gt, $in, $and, $or)",
+        ],
+        topicDetails: {
+          "CRUD Operations (insertOne, insertMany, find, findOne, updateOne, updateMany, deleteOne, deleteMany)": [
+            {
+              type: "paragraph",
+              text: "CRUD stands for Create, Read, Update, Delete. These are the four basic operations you do on any database. On Swiggy — a new restaurant onboards (Create), a user searches for orders (Read), a delivery status changes (Update), a cancelled order gets removed (Delete). Let's go through each one."
+            },
+
+            // ─── CREATE ───────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "CREATE — insertOne & insertMany"
+            },
+            {
+              type: "paragraph",
+              text: "Burger King wants to list itself on Swiggy. That's an insert — a brand new document gets created in the restaurants collection."
+            },
+            {
+              type: "step",
+              title: "insertOne — Add one restaurant",
+              desc: "One restaurant is onboarding. One document, one insertOne call."
+            },
+            {
+              type: "code",
+              code: `db.restaurants.insertOne({
+  name: "Burger King",
+  branch: "Bandra West",
+  city: "Mumbai",
+  rating: 4.1,
+  isOpen: true,
+  cuisines: ["Burgers", "Fast Food"]
+})
+
+// MongoDB confirms with the auto-generated _id
+{ acknowledged: true, insertedId: ObjectId("64a7f2c3e1b2d3a4f5c6d7e8") }`
+            },
+            {
+              type: "step",
+              title: "insertMany — Add multiple restaurants",
+              desc: "Swiggy is expanding to Pune. 3 restaurants onboard at once. One insertMany instead of 3 separate insertOne calls."
+            },
+            {
+              type: "code",
+              code: `db.restaurants.insertMany([
+  { name: "McDonald's",      branch: "FC Road",       city: "Pune", rating: 4.0 },
+  { name: "Domino's",        branch: "Koregaon Park", city: "Pune", rating: 4.2 },
+  { name: "Behrouz Biryani", branch: "Viman Nagar",   city: "Pune", rating: 4.5 }
+])
+
+// MongoDB confirms all 3
+{ acknowledged: true, insertedCount: 3 }`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ insertMany stops at the first error by default. Pass { ordered: false } to skip failed documents and insert the rest."
+            },
+            {
+              type: "table",
+              headers: ["", "insertOne", "insertMany"],
+              rows: [
+                ["Input", "Single document { }", "Array of documents [ ]"],
+                ["Returns", "insertedId", "insertedCount + all insertedIds"],
+                ["Use when", "One restaurant onboarding", "Batch of restaurants onboarding"],
+              ]
+            },
+
+            // ─── READ ─────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "READ — find & findOne"
+            },
+            {
+              type: "paragraph",
+              text: "You placed a Burger King order. Swiggy's backend now needs to fetch it — to show you the order detail screen. That's a read. MongoDB gives you find() for multiple documents and findOne() for a single one."
+            },
+            {
+              type: "step",
+              title: "findOne — Fetch one specific order",
+              desc: "Load the order detail screen for your Burger King order. You need exactly one document."
+            },
+            {
+              type: "code",
+              code: `// Fetch one order by its ID
+db.orders.findOne({ _id: ObjectId("ord_10239847") })
+
+// Fetch one order by orderId
+db.orders.findOne({ orderId: "SWG-20240318-10239847" })`
+            },
+            {
+              type: "step",
+              title: "find — Fetch multiple orders",
+              desc: "Show the user their full order history. Multiple documents match — find() returns all of them."
+            },
+            {
+              type: "code",
+              code: `// All orders by this user
+db.orders.find({ userId: "usr_982341" })
+
+// All delivered orders in Mumbai
+db.orders.find({ city: "Mumbai", status: "delivered" })
+
+// All restaurants in Mumbai — returns cursor, iterate with .toArray()
+db.restaurants.find({ city: "Mumbai" }).toArray()`
+            },
+            {
+              type: "step",
+              title: "Projection — fetch only the fields you need",
+              desc: "For the order history screen you only need orderId, restaurant name, totalAmount, and status — not the full document. Projection cuts down what MongoDB returns."
+            },
+            {
+              type: "code",
+              code: `// Return only these fields — 1 means include, 0 means exclude
+db.orders.find(
+  { userId: "usr_982341" },
+  { orderId: 1, restaurant: 1, totalAmount: 1, status: 1, _id: 0 }
+)`
+            },
+            {
+              type: "table",
+              headers: ["", "findOne", "find"],
+              rows: [
+                ["Returns", "Single document or null", "Cursor of all matching documents"],
+                ["Use when", "Order detail screen", "Order history, restaurant listing"],
+                ["No match", "Returns null", "Returns empty cursor"],
+              ]
+            },
+
+            // ─── UPDATE ───────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "UPDATE — updateOne & updateMany"
+            },
+            {
+              type: "paragraph",
+              text: "Ravi picks up your Burger King order. The status changes from 'placed' to 'out_for_delivery'. That's an update — an existing document is modified. MongoDB gives you updateOne for a single document and updateMany for a batch."
+            },
+            {
+              type: "step",
+              title: "updateOne — Update one order's status",
+              desc: "Ravi just picked up your order. Update that one order document's status."
+            },
+            {
+              type: "code",
+              code: `// updateOne takes two arguments — filter and update
+db.orders.updateOne(
+  { _id: ObjectId("ord_10239847") },         // filter — which document
+  { $set: { status: "out_for_delivery" } }   // update — what to change
+)`
+            },
+            {
+              type: "step",
+              title: "$set — update only specific fields",
+              desc: "$set changes only the fields you mention. Everything else in the document stays untouched. Without $set you'd overwrite the entire document."
+            },
+            {
+              type: "code",
+              code: `// Update multiple fields at once
+db.orders.updateOne(
+  { _id: ObjectId("ord_10239847") },
+  {
+    $set: {
+      status: "delivered",
+      deliveredAt: new Date()
+    }
+  }
+)`
+            },
+            {
+              type: "step",
+              title: "updateMany — Update a batch of documents",
+              desc: "A Burger King branch in Mumbai is temporarily closed. Mark all their pending orders as cancelled at once."
+            },
+            {
+              type: "code",
+              code: `// Update ALL pending orders from BK Bandra in one shot
+db.orders.updateMany(
+  { restaurantId: "rst_4421", status: "placed" },    // filter
+  { $set: { status: "cancelled", reason: "Restaurant closed" } }  // update
+)
+
+// { acknowledged: true, matchedCount: 47, modifiedCount: 47 }`
+            },
+            {
+              type: "table",
+              headers: ["", "updateOne", "updateMany"],
+              rows: [
+                ["Updates", "First matching document only", "All matching documents"],
+                ["Use when", "One order status changed", "Bulk cancel, bulk price update"],
+                ["Returns", "matchedCount: 1, modifiedCount: 1", "matchedCount: N, modifiedCount: N"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Always use $set. Without it — db.orders.updateOne({ _id: ... }, { status: 'delivered' }) — you replace the entire document with just { status: 'delivered' }. All other fields are wiped."
+            },
+
+            // ─── DELETE ───────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "DELETE — deleteOne & deleteMany"
+            },
+            {
+              type: "paragraph",
+              text: "A user cancelled an order within 30 seconds — before the restaurant even saw it. Swiggy removes it. That's a delete. deleteOne removes a single document, deleteMany removes a batch."
+            },
+            {
+              type: "step",
+              title: "deleteOne — Remove one cancelled order",
+              desc: "The user cancelled immediately. Remove that one order document."
+            },
+            {
+              type: "code",
+              code: `db.orders.deleteOne({ _id: ObjectId("ord_10239847") })
+
+// { acknowledged: true, deletedCount: 1 }`
+            },
+            {
+              type: "step",
+              title: "deleteMany — Remove a batch of old orders",
+              desc: "Swiggy purges orders older than 2 years to free up storage. One deleteMany wipes them all."
+            },
+            {
+              type: "code",
+              code: `db.orders.deleteMany({
+  createdAt: { $lt: new Date("2022-01-01") }  // older than 2 years
+})
+
+// { acknowledged: true, deletedCount: 8271034 }`
+            },
+            {
+              type: "table",
+              headers: ["", "deleteOne", "deleteMany"],
+              rows: [
+                ["Deletes", "First matching document only", "All matching documents"],
+                ["Use when", "Remove one cancelled order", "Purge old/test data in bulk"],
+                ["Returns", "deletedCount: 1", "deletedCount: N"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ deleteMany with an empty filter — db.orders.deleteMany({}) — deletes every document in the collection. No undo. Always double-check your filter before running deleteMany."
+            },
+
+            // ─── SUMMARY ──────────────────────────────────────────
+
+            {
+              type: "table",
+              headers: ["Operation", "Method", "Swiggy example"],
+              rows: [
+                ["Create", "insertOne / insertMany", "New restaurant onboards"],
+                ["Read", "findOne / find", "Fetch order detail / order history"],
+                ["Update", "updateOne / updateMany", "Status changes to delivered / bulk cancel"],
+                ["Delete", "deleteOne / deleteMany", "Remove cancelled order / purge old data"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ These 8 methods cover every basic operation on MongoDB. Create documents with insert, read them with find, modify them with update, remove them with delete. Everything Swiggy does with orders, restaurants, and users starts with one of these."
+            }
+          ],
+          "Query Operators ($eq, $gt, $in, $and, $or)": [
+            {
+              type: "paragraph",
+              text: "You know find(). You pass a condition, MongoDB returns matching documents. But what if you need orders above ₹500? Orders from Mumbai OR Delhi? Orders that are NOT cancelled? A plain key-value filter can't do this. That's where query operators come in — they let you express precise conditions."
+            },
+
+            // ─── $eq ──────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$eq — Equals"
+            },
+            {
+              type: "paragraph",
+              text: "Fetch all orders where status is exactly 'delivered'. $eq matches documents where a field equals a specific value."
+            },
+            {
+              type: "code",
+              code: `// These two are identical — $eq is implicit in shorthand
+db.orders.find({ status: "delivered" })
+db.orders.find({ status: { $eq: "delivered" } })
+
+// You'll mostly use shorthand — $eq is rarely written explicitly`
+            },
+
+            // ─── $ne ──────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$ne — Not Equals"
+            },
+            {
+              type: "paragraph",
+              text: "Fetch all orders that are NOT cancelled. $ne is the opposite of $eq."
+            },
+            {
+              type: "code",
+              code: `db.orders.find({ status: { $ne: "cancelled" } })
+
+// Returns every order where status is anything except "cancelled"`
+            },
+
+            // ─── $gt / $gte / $lt / $lte ──────────────────────────
+
+            {
+              type: "heading",
+              text: "$gt / $gte / $lt / $lte — Comparisons"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy's growth team wants to analyse high-value orders — orders above ₹500. Comparison operators let you filter by range."
+            },
+            {
+              type: "code",
+              code: `// Orders above ₹500
+db.orders.find({ totalAmount: { $gt: 500 } })
+
+// Orders ₹300 and above
+db.orders.find({ totalAmount: { $gte: 300 } })
+
+// Orders below ₹200
+db.orders.find({ totalAmount: { $lt: 200 } })
+
+// Orders between ₹300 and ₹800 — combine both in one field
+db.orders.find({ totalAmount: { $gte: 300, $lte: 800 } })`
+            },
+            {
+              type: "table",
+              headers: ["Operator", "Meaning", "Example"],
+              rows: [
+                ["$gt", "Greater than", "totalAmount > 500"],
+                ["$gte", "Greater than or equal to", "totalAmount >= 300"],
+                ["$lt", "Less than", "totalAmount < 200"],
+                ["$lte", "Less than or equal to", "totalAmount <= 800"],
+              ]
+            },
+
+            // ─── $in ──────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$in — Match Any Value in a List"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy wants all orders from Mumbai, Delhi, and Bangalore together. Instead of three separate queries, $in matches documents where the field equals any value in the array."
+            },
+            {
+              type: "code",
+              code: `// Orders from any of these 3 cities
+db.orders.find({ city: { $in: ["Mumbai", "Delhi", "Bangalore"] } })
+
+// Orders paid via UPI or Cash
+db.orders.find({ "payment.method": { $in: ["UPI", "Cash"] } })`
+            },
+            {
+              type: "step",
+              title: "$nin — Not In",
+              desc: "The opposite of $in. Exclude specific values — fetch all orders NOT from Mumbai or Delhi."
+            },
+            {
+              type: "code",
+              code: `db.orders.find({ city: { $nin: ["Mumbai", "Delhi"] } })`
+            },
+
+            // ─── $and ─────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$and — All Conditions Must Match"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy's ops team wants delivered orders from Mumbai above ₹500. Every condition must be true. That's $and."
+            },
+            {
+              type: "code",
+              code: `// Explicit $and
+db.orders.find({
+  $and: [
+    { city: "Mumbai" },
+    { status: "delivered" },
+    { totalAmount: { $gt: 500 } }
+  ]
+})
+
+// Shorthand — same result, cleaner to write
+// When all conditions are on different fields, just combine them
+db.orders.find({
+  city: "Mumbai",
+  status: "delivered",
+  totalAmount: { $gt: 500 }
+})`
+            },
+            {
+              type: "step",
+              title: "When must you use explicit $and?",
+              desc: "When you have two conditions on the same field. Like orders where totalAmount > 300 AND totalAmount < 800 — shorthand can't express this, but $and can."
+            },
+            {
+              type: "code",
+              code: `// Same field, two conditions — explicit $and required
+db.orders.find({
+  $and: [
+    { totalAmount: { $gt: 300 } },
+    { totalAmount: { $lt: 800 } }
+  ]
+})
+
+// Actually for ranges, just combine in one field — even cleaner
+db.orders.find({ totalAmount: { $gt: 300, $lt: 800 } })`
+            },
+
+            // ─── $or ──────────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "$or — At Least One Condition Must Match"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy wants to flag urgent orders — either status is 'delayed' OR totalAmount is above ₹1000 (premium customer). At least one condition must be true. That's $or."
+            },
+            {
+              type: "code",
+              code: `// Orders that are delayed OR high value
+db.orders.find({
+  $or: [
+    { status: "delayed" },
+    { totalAmount: { $gt: 1000 } }
+  ]
+})
+
+// Restaurants that are in Mumbai OR have rating above 4.5
+db.restaurants.find({
+  $or: [
+    { city: "Mumbai" },
+    { rating: { $gt: 4.5 } }
+  ]
+})`
+            },
+
+            // ─── COMBINING ────────────────────────────────────────
+
+            {
+              type: "heading",
+              text: "Combining Operators — Real Swiggy Query"
+            },
+            {
+              type: "paragraph",
+              text: "Real queries rarely use one operator alone. Swiggy's support team wants to pull: delivered or out_for_delivery orders from Mumbai or Pune, placed in the last 7 days, with order value above ₹300."
+            },
+            {
+              type: "code",
+              code: `db.orders.find({
+  city:        { $in: ["Mumbai", "Pune"] },
+  status:      { $in: ["delivered", "out_for_delivery"] },
+  totalAmount: { $gt: 300 },
+  createdAt:   { $gte: new Date("2024-03-11") }
+})`
+            },
+            {
+              type: "table",
+              headers: ["Operator", "Meaning", "Swiggy example"],
+              rows: [
+                ["$eq", "Equals", "status = 'delivered'"],
+                ["$ne", "Not equals", "status ≠ 'cancelled'"],
+                ["$gt", "Greater than", "totalAmount > 500"],
+                ["$gte", "Greater than or equal", "totalAmount >= 300"],
+                ["$lt", "Less than", "totalAmount < 200"],
+                ["$lte", "Less than or equal", "totalAmount <= 800"],
+                ["$in", "Matches any in list", "city in [Mumbai, Delhi]"],
+                ["$nin", "Matches none in list", "city not in [Mumbai, Delhi]"],
+                ["$and", "All conditions must match", "Mumbai AND delivered AND > ₹500"],
+                ["$or", "Any condition must match", "delayed OR premium order"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Query operators are the vocabulary of MongoDB filters. $gt/$lt for ranges, $in for lists, $and/$or for logic. You combine them to slice exactly the data you need — from 50 million orders down to the 200 that actually matter."
+            }
+          ]
+        }
+      },
+
+      {
+        id: 3,
+        title: "Schema Design",
+        level: "freshers",
+        topics: [
+          "What is Schema Design in MongoDB?",
+          "Embedded Documents — Storing Order Items Inside Orders",
+          "Referenced Documents — Linking Restaurants to Orders",
+          "Embedded vs Referenced — When to Use Which",
+          "One-to-One, One-to-Many, Many-to-Many in MongoDB",
+        ]
+      },
+
+      {
+        id: 4,
+        title: "Indexing",
+        level: "freshers",
+        topics: [
+          "What is an Index and Why Swiggy Needs It",
+          "Single Field Index",
+          "Compound Index",
+          "Text Index — Searching Restaurants by Name",
+          "Geospatial Index — Finding Restaurants Near You",
+          "Index Performance & explain()",
+          "When Indexes Hurt Performance",
+        ]
+      },
+
+      {
+        id: 5,
+        title: "Aggregation Pipeline",
+        level: "freshers",
+        topics: [
+          "What is Aggregation Pipeline?",
+          "$match — Filtering Orders by City",
+          "$group — Calculating Total Orders Per Restaurant",
+          "$sort & $limit — Top 10 Restaurants by Rating",
+          "$lookup — Joining Orders with Restaurant Data",
+          "$project — Shaping the Output",
+          "Real Pipeline — Swiggy's Weekly Revenue Report",
+        ],
+        topicDetails: {
+          "What is Aggregation Pipeline?": [
+            {
+              type: "paragraph",
+              text: "You open Swiggy. You place an order. That order is one document in MongoDB. Simple. But now imagine Swiggy's ops team on Monday morning asking — which city had the highest revenue last week? Which restaurant got the most orders? What is the average order value in Mumbai vs Delhi? find() can't answer any of these. It just fetches documents. To compute answers from data, you need the Aggregation Pipeline."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does Swiggy calculate 'Top Restaurants This Week' from millions of raw order documents?"
+            },
+            {
+              type: "heading",
+              text: "What is the Aggregation Pipeline?"
+            },
+            {
+              type: "paragraph",
+              text: "The Aggregation Pipeline is a series of stages. Raw documents enter from one end, pass through each stage one by one — getting filtered, grouped, sorted, shaped — and a computed result comes out the other end. Like an assembly line in a factory."
+            },
+            {
+              type: "step",
+              title: "Stage 1 — $match",
+              desc: "Filter only the documents you care about. Like find(). Only delivered orders from last week enter the pipeline — millions of old orders are dropped immediately."
+            },
+            {
+              type: "step",
+              title: "Stage 2 — $group",
+              desc: "Group the filtered documents and compute. Group by restaurantId, count total orders, sum total revenue. Millions of order documents collapse into a few hundred restaurant summaries."
+            },
+            {
+              type: "step",
+              title: "Stage 3 — $sort",
+              desc: "Sort the grouped results. Highest revenue restaurant at the top."
+            },
+            {
+              type: "step",
+              title: "Stage 4 — $limit",
+              desc: "Take only the top 10. Discard the rest."
+            },
+            {
+              type: "step",
+              title: "Stage 5 — $project",
+              desc: "Shape the final output — only return restaurant name, total orders, total revenue. Clean, lean response."
+            },
+            {
+              type: "code",
+              code: `db.orders.aggregate([
+  { $match:   { status: "delivered", week: "2024-W11" } },  // Stage 1
+  { $group:   { _id: "$restaurantId",                       // Stage 2
+                totalOrders:  { $sum: 1 },
+                totalRevenue: { $sum: "$totalAmount" } } },
+  { $sort:    { totalRevenue: -1 } },                       // Stage 3
+  { $limit:   10 },                                         // Stage 4
+  { $project: { restaurantId: "$_id",                       // Stage 5
+                totalOrders: 1,
+                totalRevenue: 1,
+                _id: 0 } }
+])`
+            },
+            {
+              type: "success-callout",
+              text: "✅ Millions of raw order documents go in. Top 10 restaurants by revenue come out. Each stage does one job and passes its output to the next. That's the Aggregation Pipeline."
+            },
+            {
+              type: "table",
+              headers: ["Stage", "What it does", "Swiggy example"],
+              rows: [
+                ["$match", "Filter documents", "Only last week's delivered orders"],
+                ["$group", "Group & compute", "Total revenue per restaurant"],
+                ["$sort", "Sort results", "Highest revenue first"],
+                ["$limit", "Take top N", "Top 10 only"],
+                ["$lookup", "Join another collection", "Attach restaurant name to results"],
+                ["$project", "Shape the output fields", "Return only name, orders, revenue"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The order of stages matters. $match always goes first — filter early so later stages process less data. Sorting 10 grouped results is fast. Sorting 2 million raw orders before grouping is very slow."
+            }
+          ],
+          "$match — Filtering Orders by City": [
+            {
+              type: "paragraph",
+              text: "Swiggy's ops team wants to analyse last week's orders — but only from Mumbai. The orders collection has 50 million documents across every city, every status, every date. You don't want to group or sort all 50 million. You want to cut it down first. That's exactly what $match does."
+            },
+            {
+              type: "heading",
+              text: "What Does $match Do?"
+            },
+            {
+              type: "paragraph",
+              text: "$match is a filter stage. It looks at every document coming in and only passes forward the ones that meet your condition. Everything else is dropped. The smaller the dataset after $match, the faster every stage after it runs."
+            },
+            {
+              type: "step",
+              title: "50 million orders enter the pipeline",
+              desc: "The full orders collection — every city, every status, every date."
+            },
+            {
+              type: "step",
+              title: "$match filters by city: Mumbai",
+              desc: "Only Mumbai orders pass through. 48 million documents are dropped right here."
+            },
+            {
+              type: "step",
+              title: "2 million Mumbai orders flow to the next stage",
+              desc: "Whatever comes after $match — $group, $sort, $lookup — now works on 2 million documents instead of 50 million."
+            },
+            {
+              type: "code",
+              code: `// Basic $match — filter by city
+db.orders.aggregate([
+  {
+    $match: {
+      city: "Mumbai"
+    }
+  }
+])`
+            },
+            {
+              type: "heading",
+              text: "Multiple Conditions in $match"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy rarely filters by just one field. A real query filters by city AND status AND date range together — narrowing down to exactly the slice of data needed."
+            },
+            {
+              type: "code",
+              code: `// Filter Mumbai delivered orders from last week
+db.orders.aggregate([
+  {
+    $match: {
+      city: "Mumbai",
+      status: "delivered",
+      createdAt: {
+        $gte: new Date("2024-03-11"),
+        $lte: new Date("2024-03-17")
+      }
+    }
+  }
+])
+
+// All query operators work inside $match
+db.orders.aggregate([
+  {
+    $match: {
+      city: { $in: ["Mumbai", "Pune", "Nagpur"] },  // multiple cities
+      totalAmount: { $gte: 300 },                    // orders above ₹300
+      status: { $ne: "cancelled" }                   // exclude cancelled
+    }
+  }
+])`
+            },
+            {
+              type: "heading",
+              text: "$match Uses Indexes — Critical for Performance"
+            },
+            {
+              type: "paragraph",
+              text: "$match at the start of a pipeline behaves exactly like find() — it uses your indexes. If you have an index on city and createdAt, MongoDB doesn't scan 50 million documents. It jumps straight to Mumbai orders from last week using the index."
+            },
+            {
+              type: "code",
+              code: `// Make sure these indexes exist for the $match above
+db.orders.createIndex({ city: 1 })
+db.orders.createIndex({ city: 1, createdAt: -1 })  // compound — even better
+
+// With this index, $match on city + createdAt is instant
+// Without it — full collection scan on 50 million documents 😱`
+            },
+            {
+              type: "error-callout",
+              title: "The most common $match mistake:",
+              list: [
+                "Putting $match after $group or $lookup — by then you've already processed all 50 million documents",
+                "Not having an index on the $match fields — turns a 10ms query into a 30 second scan",
+                "Filtering inside $lookup instead of $match — always $match first, then join"
+              ],
+              footer: "Rule: $match goes first. Always. Filter as early as possible, as aggressively as possible."
+            },
+            {
+              type: "table",
+              headers: ["", "With $match first", "Without $match first"],
+              rows: [
+                ["Documents processed", "2 million (Mumbai only)", "50 million (entire collection)"],
+                ["Pipeline speed", "Fast", "25x slower"],
+                ["Index used?", "✅ Yes", "❌ No — too late"],
+                ["Memory usage", "Low", "High — may hit limits"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ $match is the most important stage for performance. It reduces the dataset early so every subsequent stage — $group, $sort, $lookup — works on the smallest possible slice of data. Swiggy's analytics pipelines always open with a tight $match on date range and city."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ $match filtered the data down. Now what? The next step is usually to compute something from those filtered documents — count orders per restaurant, sum revenue per area. That's $group."
+            }
+          ]
+        }
+      },
+
+      {
+        id: 6,
+        title: "Transactions & Data Integrity",
+        level: "intermediate",
+        topics: [
+          "What are Transactions?",
+          "ACID in MongoDB",
+          "Single Document Atomicity",
+          "Multi-Document Transactions — Order + Payment Together",
+          "When to Use Transactions vs Embedded Documents",
+        ]
+      },
+
+      {
+        id: 7,
+        title: "Performance & Optimization",
+        level: "intermediate",
+        topics: [
+          "TTL Indexes — Auto-deleting Expired OTPs & Sessions",
+          "Capped Collections — Storing Last N Delivery Logs",
+          "Projection — Fetching Only What You Need",
+          "Pagination — Loading Swiggy Order History Page by Page",
+          "Read vs Write Heavy Design Decisions",
+        ]
+      },
+
+      {
+        id: 8,
+        title: "Replication",
+        level: "experienced",
+        topics: [
+          "What is Replication?",
+          "Replica Sets in MongoDB",
+          "Primary & Secondary Nodes",
+          "Automatic Failover — What Happens When Swiggy's DB Goes Down",
+          "Read from Secondary — Scaling Read Traffic",
+          "Replication Lag & Stale Reads",
+        ]
+      },
+
+      {
+        id: 9,
+        title: "Sharding",
+        level: "experienced",
+        topics: [
+          "What is Sharding?",
+          "Why Swiggy Needs Sharding at Scale",
+          "Shard Key — How to Choose the Right One",
+          "Range-based Sharding vs Hash-based Sharding",
+          "Hotspot Problem with Bad Shard Keys",
+          "Mongos Router & Config Servers",
+          "Sharding + Replication Together",
+        ]
+      },
+
+      {
+        id: 10,
+        title: "MongoDB at Production Scale",
+        level: "experienced",
+        topics: [
+          "Connection Pooling",
+          "Write Concern & Read Concern",
+          "Monitoring with MongoDB Atlas",
+          "Slow Query Detection & Fixing",
+          "Data Archiving — Moving Old Orders to Cold Storage",
+          "GDPR & PII — Handling User Data in MongoDB",
+          "MongoDB vs Cassandra vs DynamoDB — When to Switch",
+        ]
+      }
+
+    ]
+  },
+  {
     id: "api-irctc",
     image: "https://upload.wikimedia.org/wikipedia/en/thumb/4/45/IRCTC_Logo.svg/1280px-IRCTC_Logo.svg.png",
     title: "Learn APIs Through IRCTC-style Architecture",

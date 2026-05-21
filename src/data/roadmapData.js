@@ -1,5 +1,1944 @@
 export const roadmapData = [
   {
+    id: "nodejs-foundation",
+    category: "Backend Concepts",
+    sortOrder: 1,
+    image: "https://nodejs.org/static/images/logo.svg",
+    title: "Learn Node.js Foundation Through Real-World Scenarios",
+    description:
+      "Learn how Node.js actually works internally — including single thread architecture, event loop, async execution, worker threads, clustering, streams, and scaling through real-world backend scenarios like Flipkart, Swiggy, BGMI, and Netflix.",
+    tags: [
+      "Node.js",
+      "Event Loop",
+      "Single Thread",
+      "Worker Threads",
+      "Cluster",
+      "Streams",
+      "libuv",
+      "Async Programming",
+      "Backend",
+      "Scalability"
+    ],
+
+    nodes: [
+
+      {
+        "id": 1,
+        "title": "Node.js Basics",
+        "level": "freshers",
+        "topics": [
+          "What Exactly is Node.js?",
+          "Single Thread vs Multi Thread",
+        ],
+        "topicDetails": {
+
+          "What Exactly is Node.js?": [
+            {
+              type: "paragraph",
+              text: "Imagine Amazon during the Big Billion sale. Millions of users are searching products, adding items to cart, making payments, tracking orders, chatting with support — all at the exact same time. But how does Amazon's backend handle so many users without freezing? One major technology used for handling massive real-time traffic and APIs is Node.js."
+            },
+            {
+              type: "image",
+              src: "nodejs-flow.png"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ You search for an iPhone on Amazon. Product data comes from a server somewhere in the cloud. How does your request travel there and come back in milliseconds while millions of other users are also using Amazon?"
+            },
+            {
+              type: "heading",
+              text: "What is Node.js?"
+            },
+            {
+              type: "paragraph",
+              text: "Node.js is a JavaScript runtime built on Chrome's V8 engine that allows JavaScript to run outside the browser — mainly on servers. Before Node.js, JavaScript only worked inside browsers like Chrome. Node.js changed that completely. Now JavaScript can build APIs, backend servers, real-time apps, chat systems, payment systems, streaming services, and more."
+            },
+            {
+              type: "heading",
+              text: "Real Amazon Example"
+            },
+            {
+              type: "paragraph",
+              text: "You open Amazon and search 'iPhone 15'. Your browser sends a request to Amazon's backend API. A Node.js server receives the request, fetches product details from databases and services, and sends the result back to your app instantly."
+            },
+            {
+              type: "code",
+              code: "You → Amazon App → Node.js Server → Product Database\nDatabase → Node.js Server → Amazon App → You see products ✅"
+            },
+            {
+              type: "step",
+              title: "User searches for a product",
+              desc: "You type 'iPhone 15' in Amazon's search bar and hit Enter."
+            },
+            {
+              type: "step",
+              title: "Request reaches Node.js server",
+              desc: "Amazon's backend API built using Node.js receives your request."
+            },
+            {
+              type: "step",
+              title: "Node.js fetches data",
+              desc: "Node.js talks to databases, recommendation services, pricing systems, inventory systems, and review services simultaneously."
+            },
+            {
+              type: "step",
+              title: "Node.js sends response",
+              desc: "The server combines all the data and sends a JSON response back to your app."
+            },
+            {
+              type: "step",
+              title: "UI updates instantly",
+              desc: "Amazon's frontend renders products, prices, ratings, offers, and delivery dates."
+            },
+            {
+              type: "heading",
+              text: "Why Companies Love Node.js"
+            },
+            {
+              type: "table",
+              headers: ["Feature", "Why it matters for Amazon"],
+              rows: [
+                ["Fast", "Handles huge traffic efficiently"],
+                ["Non-blocking", "Can process thousands of users together"],
+                ["JavaScript everywhere", "Frontend + backend use same language"],
+                ["Real-time", "Perfect for chats, tracking, notifications"],
+                ["Scalable", "Easy to distribute across many servers"],
+                ["Huge ecosystem", "Millions of npm packages available"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Node.js is NOT a Programming Language"
+            },
+            {
+              type: "paragraph",
+              text: "Many beginners think Node.js is a language. It's not. JavaScript is the language. Node.js is the environment/runtime that executes JavaScript outside the browser."
+            },
+            {
+              type: "code",
+              code: "// Browser JavaScript\nconsole.log('Runs inside Chrome')\n\n// Node.js JavaScript\nconsole.log('Runs on server using Node.js')"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Chrome uses the V8 engine to run JavaScript in the browser. Node.js also uses the same V8 engine — but adds server capabilities like file system access, networking, APIs, databases, and operating system interaction."
+            },
+            {
+              type: "heading",
+              text: "Traditional Backend vs Node.js"
+            },
+            {
+              type: "table",
+              headers: ["Traditional Backend", "Node.js Backend"],
+              rows: [
+                ["Frontend uses JavaScript", "Frontend uses JavaScript"],
+                ["Backend uses Java/Python/PHP", "Backend also uses JavaScript"],
+                ["Different teams/languages", "One language across stack"],
+                ["Heavier request handling", "Lightweight async handling"],
+                ["Thread per request", "Event-driven non-blocking architecture"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Node.js made JavaScript a full-stack language. Today companies like Amazon, Netflix, Paytm, Uber, Swiggy, LinkedIn, and Walmart use Node.js for APIs, microservices, real-time systems, and scalable backend architectures."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But here's the crazy part — Node.js handles thousands of users using mostly ONE main thread. How is that even possible? That's where Single Thread vs Multi Thread architecture comes in."
+            }
+          ],
+
+          "Single Thread vs Multi Thread": [
+            {
+              type: "paragraph",
+              text: "Imagine Amazon during a lightning deal sale. 5 lakh users are searching products, placing orders, making payments, and refreshing pages every second. Most backend languages create multiple threads to handle many users. But Node.js became famous because it handles huge traffic mainly using a SINGLE main thread with an event-driven architecture."
+            },
+            {
+              type: "image",
+              src: "single-vs-multi-thread.png"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If Node.js has only one main thread, how does Amazon handle lakhs of users simultaneously without the server freezing?"
+            },
+            {
+              type: "heading",
+              text: "What is a Thread?"
+            },
+            {
+              type: "paragraph",
+              text: "A thread is basically a worker that executes tasks. Think of it like an employee in Amazon's warehouse. More threads = more workers handling tasks simultaneously."
+            },
+            {
+              type: "heading",
+              text: "Multi-Threaded Backend (Traditional Servers)"
+            },
+            {
+              type: "paragraph",
+              text: "Traditional backend systems like Java or Spring Boot often use one thread per request. Every user request gets its own dedicated worker thread."
+            },
+            {
+              type: "code",
+              code: "Rahul searches iPhone   → Thread 1\nPriya adds item to cart → Thread 2\nAman makes payment      → Thread 3\nSneha tracks order      → Thread 4"
+            },
+            {
+              type: "step",
+              title: "User request arrives",
+              desc: "Amazon receives a request from a user."
+            },
+            {
+              type: "step",
+              title: "Server assigns a thread",
+              desc: "A dedicated thread starts handling that request."
+            },
+            {
+              type: "step",
+              title: "Thread waits for database",
+              desc: "While fetching data, that thread stays occupied and waits."
+            },
+            {
+              type: "step",
+              title: "Response is returned",
+              desc: "After processing completes, the thread becomes free again."
+            },
+            {
+              type: "info-callout",
+              text: "💡 Multi-threading works great, but creating thousands of threads consumes huge memory and CPU resources."
+            },
+            {
+              type: "heading",
+              text: "Node.js Single Thread Architecture"
+            },
+            {
+              type: "paragraph",
+              text: "Node.js works differently. Instead of creating one thread per request, Node.js uses one main thread with an Event Loop. The main thread doesn't wait for slow operations like databases, APIs, or file reads. It delegates them and continues handling other users."
+            },
+            {
+              type: "code",
+              code: "Amazon Request → Node.js Main Thread\n\nMain Thread:\n- Receives request\n- Delegates DB/API work\n- Continues serving next users\n\nBackground Workers:\n- Fetch database data\n- Read files\n- Handle networking\n\nEvent Loop:\n- Sends completed responses back"
+            },
+            {
+              type: "heading",
+              text: "Real Amazon Flow in Node.js"
+            },
+            {
+              type: "step",
+              title: "Rahul searches iPhone",
+              desc: "Node.js receives Rahul's request."
+            },
+            {
+              type: "step",
+              title: "Database call starts",
+              desc: "Fetching product data is slow, so Node.js delegates it to background workers."
+            },
+            {
+              type: "step",
+              title: "Main thread becomes free immediately",
+              desc: "Instead of waiting, Node.js instantly handles Priya's cart request next."
+            },
+            {
+              type: "step",
+              title: "More users keep getting served",
+              desc: "Node.js keeps processing new incoming requests continuously."
+            },
+            {
+              type: "step",
+              title: "Database response comes back",
+              desc: "When the database finishes, the Event Loop picks the completed task."
+            },
+            {
+              type: "step",
+              title: "Response is returned to Rahul",
+              desc: "Rahul finally sees the iPhone products."
+            },
+            {
+              type: "code",
+              code: "Rahul Request → DB Fetch Started ⏳\n(Node.js DOES NOT WAIT)\n\nMeanwhile:\nPriya Cart Request → handled\nAman Payment Request → handled\nSneha Tracking Request → handled\n\nDB Finished ✅\nEvent Loop sends Rahul's response"
+            },
+            {
+              type: "heading",
+              text: "Why Node.js Feels Fast"
+            },
+            {
+              type: "table",
+              headers: ["Traditional Thread Model", "Node.js Event Loop Model"],
+              rows: [
+                ["Thread waits for DB/API", "Main thread never waits"],
+                ["Many threads consume memory", "Single lightweight event loop"],
+                ["Context switching overhead", "Efficient async execution"],
+                ["Heavy under huge concurrency", "Excellent for high I/O traffic"],
+                ["Good for CPU-heavy tasks", "Best for network/API systems"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "What Node.js is BEST At"
+            },
+            {
+              type: "table",
+              headers: ["Perfect For", "Examples"],
+              rows: [
+                ["APIs", "Amazon product APIs"],
+                ["Real-time apps", "Chats, notifications"],
+                ["Streaming", "Netflix video streaming"],
+                ["Microservices", "Order/payment services"],
+                ["WebSockets", "Live order tracking"],
+                ["High concurrent traffic", "Big Billion Day sales"]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Where Node.js Struggles"
+            },
+            {
+              type: "paragraph",
+              text: "Node.js is amazing for I/O operations (database, APIs, network requests). But CPU-heavy operations can block the single main thread."
+            },
+            {
+              type: "code",
+              code: "// BAD for Node.js main thread ❌\n- Video rendering\n- Heavy image processing\n- AI model training\n- Massive calculations\n- Large PDF generation"
+            },
+            {
+              type: "info-callout",
+              text: "💡 Modern Node.js solves CPU-heavy limitations using Worker Threads, Clustering, and Microservices architectures."
+            },
+            {
+              type: "heading",
+              text: "Simple Analogy"
+            },
+            {
+              type: "table",
+              headers: ["Architecture", "Real-Life Analogy"],
+              rows: [
+                ["Multi-threaded", "100 employees each handling one customer"],
+                ["Node.js", "One super-efficient manager delegating tasks smartly"]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Node.js became revolutionary because it handles massive concurrent traffic efficiently using an event-driven non-blocking architecture instead of creating thousands of heavy threads."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ But how exactly does this 'Event Loop' work internally? How does Node.js know when database calls finish and responses are ready? That's the next big concept."
+            }
+          ]
+
+        }
+      },
+
+      {
+        "id": 2,
+        "title": "Event Loop & Internal Architecture",
+        "level": "freshers",
+        "topics": [
+          "What is the Event Loop?",
+          "Call Stack, Callback Queue & Microtask Queue",
+          "setTimeout vs setImmediate vs process.nextTick",
+          "What is libuv?",
+          "Thread Pool in Node.js",
+          "How File System & Network Requests Work Internally",
+          "CPU Intensive Tasks Problem"
+        ],
+
+        "topicDetails": {
+
+          "What is the Event Loop?": [
+            {
+              type: "paragraph",
+              text: "Amazon receives millions of requests every minute — product searches, payments, order tracking, recommendations, notifications. But Node.js mainly runs JavaScript on ONE main thread. So how does it handle thousands of users simultaneously without freezing? The answer is the Event Loop."
+            },
+            {
+              type: "image",
+              src: "event-loop-flow.png"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Rahul searches 'iPhone', Priya adds an item to cart, Aman makes payment, Sneha tracks delivery — all at the same time. How can ONE Node.js thread manage all these users together?"
+            },
+            {
+              type: "heading",
+              text: "What Exactly is the Event Loop?"
+            },
+            {
+              type: "paragraph",
+              text: "The Event Loop is the heart of Node.js. It continuously checks whether asynchronous tasks like database calls, file reads, timers, or API requests are completed. Once completed, it pushes their callbacks back into execution."
+            },
+            {
+              type: "code",
+              code: "Amazon User Request\n        ↓\nNode.js Main Thread\n        ↓\nSlow Task Delegated (DB/API/File)\n        ↓\nMain Thread Continues Handling New Users\n        ↓\nTask Finishes in Background\n        ↓\nEvent Loop Detects Completion\n        ↓\nCallback Executes"
+            },
+            {
+              type: "heading",
+              text: "Real Amazon Search Flow"
+            },
+            {
+              type: "step",
+              title: "Rahul searches iPhone",
+              desc: "Amazon API request reaches Node.js server."
+            },
+            {
+              type: "step",
+              title: "Database query starts",
+              desc: "Fetching product data from DB is slow."
+            },
+            {
+              type: "step",
+              title: "Node.js delegates the task",
+              desc: "Instead of waiting, Node.js sends DB work to background systems."
+            },
+            {
+              type: "step",
+              title: "Main thread becomes free instantly",
+              desc: "Node.js immediately starts handling Priya's cart request."
+            },
+            {
+              type: "step",
+              title: "Database finishes query",
+              desc: "Background system returns completed product data."
+            },
+            {
+              type: "step",
+              title: "Event Loop notices completion",
+              desc: "The Event Loop pushes Rahul's callback into execution."
+            },
+            {
+              type: "step",
+              title: "Rahul receives products",
+              desc: "Amazon app finally displays iPhone results."
+            },
+            {
+              type: "table",
+              headers: ["Traditional Blocking Server", "Node.js Event Loop"],
+              rows: [
+                [
+                  "Thread waits during DB/API calls",
+                  "Main thread never waits"
+                ],
+                [
+                  "One thread per user",
+                  "One event loop handles many users"
+                ],
+                [
+                  "Heavy memory usage",
+                  "Lightweight async architecture"
+                ],
+                [
+                  "Slow under massive concurrency",
+                  "Excellent for high traffic APIs"
+                ]
+              ]
+            },
+            {
+              type: "info-callout",
+              text: "💡 Node.js itself is NOT magically doing database work. It delegates async operations to the operating system, libuv, thread pool, databases, or external systems — while the Event Loop keeps the main thread free."
+            },
+            {
+              type: "success-callout",
+              text: "✅ The Event Loop is what makes Node.js scalable. It allows one lightweight server process to manage thousands of concurrent users efficiently."
+            }
+          ],
+
+          "Call Stack, Callback Queue & Microtask Queue": [
+            {
+              type: "paragraph",
+              text: "The Event Loop doesn't randomly execute code. Internally, Node.js manages execution using multiple structures: the Call Stack, Callback Queue, and Microtask Queue. Together they decide what runs first, what waits, and what executes next."
+            },
+            {
+              type: "image",
+              src: "callstack-callbackqueue.png"
+            },
+            {
+              type: "heading",
+              text: "1. Call Stack — Where Functions Execute"
+            },
+            {
+              type: "paragraph",
+              text: "The Call Stack is where JavaScript executes functions one by one. Only ONE function executes at a time on the main thread."
+            },
+            {
+              type: "code",
+              code: "function searchProduct() {\n  console.log('Search Started')\n}\n\nsearchProduct()"
+            },
+            {
+              type: "code",
+              code: "Call Stack:\n\nsearchProduct()\nconsole.log()\n"
+            },
+            {
+              type: "heading",
+              text: "2. Callback Queue — Completed Async Tasks Wait Here"
+            },
+            {
+              type: "paragraph",
+              text: "When async tasks like setTimeout, database calls, or file reads finish, their callbacks move into the Callback Queue."
+            },
+            {
+              type: "code",
+              code: "setTimeout(() => {\n  console.log('Payment Success')\n}, 2000)"
+            },
+            {
+              type: "paragraph",
+              text: "After 2 seconds, the callback waits inside the Callback Queue until the Call Stack becomes empty."
+            },
+            {
+              type: "heading",
+              text: "3. Microtask Queue — Higher Priority Queue"
+            },
+            {
+              type: "paragraph",
+              text: "Promises and process.nextTick callbacks go into the Microtask Queue. This queue has HIGHER priority than the normal Callback Queue."
+            },
+            {
+              type: "code",
+              code: "Promise.resolve().then(() => {\n  console.log('Promise Executed')\n})"
+            },
+            {
+              type: "table",
+              headers: ["Queue", "Contains", "Priority"],
+              rows: [
+                [
+                  "Call Stack",
+                  "Currently executing functions",
+                  "Highest"
+                ],
+                [
+                  "Microtask Queue",
+                  "Promises, process.nextTick",
+                  "High"
+                ],
+                [
+                  "Callback Queue",
+                  "Timers, setTimeout, I/O callbacks",
+                  "Normal"
+                ]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Execution Flow"
+            },
+            {
+              type: "code",
+              code: "console.log('1')\n\nsetTimeout(() => {\n  console.log('2')\n}, 0)\n\nPromise.resolve().then(() => {\n  console.log('3')\n})\n\nconsole.log('4')"
+            },
+            {
+              type: "code",
+              code: "Output:\n1\n4\n3\n2"
+            },
+            {
+              type: "step",
+              title: "Call Stack executes sync code first",
+              desc: "1 and 4 print immediately."
+            },
+            {
+              type: "step",
+              title: "Promise enters Microtask Queue",
+              desc: "Promise callback waits in high-priority queue."
+            },
+            {
+              type: "step",
+              title: "setTimeout enters Callback Queue",
+              desc: "Timer callback waits in normal queue."
+            },
+            {
+              type: "step",
+              title: "Event Loop checks Microtasks first",
+              desc: "Promise callback executes before timers."
+            },
+            {
+              type: "step",
+              title: "Timer callback executes last",
+              desc: "Finally setTimeout callback runs."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Microtasks always execute before normal callback queue tasks. That's why Promises often run before setTimeout even with 0ms delay."
+            }
+          ],
+
+          "setTimeout vs setImmediate vs process.nextTick": [
+            {
+              type: "paragraph",
+              text: "Node.js has multiple ways to schedule asynchronous callbacks — but they don't execute at the same time. Understanding setTimeout, setImmediate, and process.nextTick is crucial for understanding Node.js internals."
+            },
+            {
+              type: "image",
+              src: "timeout-vs-immediate.png"
+            },
+            {
+              type: "table",
+              headers: ["Function", "Queue", "Runs When"],
+              rows: [
+                [
+                  "process.nextTick",
+                  "Microtask Queue",
+                  "Immediately after current operation"
+                ],
+                [
+                  "Promise.then",
+                  "Microtask Queue",
+                  "After current stack"
+                ],
+                [
+                  "setTimeout",
+                  "Timers Queue",
+                  "After minimum delay"
+                ],
+                [
+                  "setImmediate",
+                  "Check Phase Queue",
+                  "After I/O operations"
+                ]
+              ]
+            },
+            {
+              type: "code",
+              code: "setTimeout(() => console.log('timeout'))\n\nsetImmediate(() => console.log('immediate'))\n\nprocess.nextTick(() => console.log('nextTick'))\n\nconsole.log('sync')"
+            },
+            {
+              type: "code",
+              code: "Output:\nsync\nnextTick\nimmediate OR timeout"
+            },
+            {
+              type: "info-callout",
+              text: "💡 process.nextTick is extremely high priority. Overusing it can block the Event Loop because Node.js keeps executing nextTick callbacks before moving to other phases."
+            },
+            {
+              type: "heading",
+              text: "Real Amazon Example"
+            },
+            {
+              type: "table",
+              headers: ["Feature", "Possible Internal Usage"],
+              rows: [
+                [
+                  "Immediate payment validation",
+                  "process.nextTick"
+                ],
+                [
+                  "API response cleanup",
+                  "setImmediate"
+                ],
+                [
+                  "Retry after delay",
+                  "setTimeout"
+                ]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ process.nextTick > Promise Microtasks > setTimeout/setImmediate in execution priority."
+            }
+          ],
+
+          "What is libuv?": [
+            {
+              type: "paragraph",
+              text: "Many beginners think Node.js itself handles async operations internally. That's not fully true. The real hero behind Node.js asynchronous behavior is a C library called libuv."
+            },
+            {
+              type: "image",
+              src: "libuv.png"
+            },
+            {
+              type: "heading",
+              text: "What Does libuv Do?"
+            },
+            {
+              type: "paragraph",
+              text: "libuv handles asynchronous operations like file systems, networking, sockets, DNS lookups, and thread pool management."
+            },
+            {
+              type: "code",
+              code: "JavaScript Code\n      ↓\nV8 Engine Executes JS\n      ↓\nlibuv Handles Async Work\n      ↓\nOperating System\n      ↓\nCompleted Result Returns"
+            },
+            {
+              type: "table",
+              headers: ["Responsibility", "Handled By"],
+              rows: [
+                [
+                  "JavaScript Execution",
+                  "V8 Engine"
+                ],
+                [
+                  "Event Loop",
+                  "libuv"
+                ],
+                [
+                  "File System Async",
+                  "libuv"
+                ],
+                [
+                  "Thread Pool",
+                  "libuv"
+                ],
+                [
+                  "Timers",
+                  "libuv"
+                ]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ libuv is the backbone of Node.js async architecture. Without libuv, Node.js could not perform non-blocking I/O operations."
+            }
+          ],
+
+          "Thread Pool in Node.js": [
+            {
+              type: "paragraph",
+              text: "Even though JavaScript runs on one thread, Node.js secretly uses background threads internally through libuv's Thread Pool."
+            },
+            {
+              type: "image",
+              src: "threadpool.png"
+            },
+            {
+              type: "heading",
+              text: "Why Thread Pool Exists"
+            },
+            {
+              type: "paragraph",
+              text: "Some operations are too slow for the Event Loop — especially file systems, cryptography, compression, and DNS lookups."
+            },
+            {
+              type: "code",
+              code: "fs.readFile('products.json', () => {\n  console.log('File Read Complete')\n})"
+            },
+            {
+              type: "paragraph",
+              text: "The file reading operation gets delegated to libuv's thread pool instead of blocking the main thread."
+            },
+            {
+              type: "table",
+              headers: ["Uses Thread Pool", "Does NOT Use Thread Pool"],
+              rows: [
+                [
+                  "File System",
+                  "Most Network Requests"
+                ],
+                [
+                  "Crypto",
+                  "HTTP APIs"
+                ],
+                [
+                  "Compression",
+                  "Sockets"
+                ],
+                [
+                  "DNS lookup",
+                  "Timers"
+                ]
+              ]
+            },
+            {
+              type: "info-callout",
+              text: "💡 By default libuv creates 4 background worker threads. This can be increased using UV_THREADPOOL_SIZE."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Thread Pool allows Node.js to offload expensive tasks without blocking the Event Loop."
+            }
+          ],
+
+          "How File System & Network Requests Work Internally": [
+            {
+              type: "paragraph",
+              text: "When Amazon fetches products from databases or reads invoices from disk, Node.js does NOT pause and wait. Internally, the request gets delegated to background systems."
+            },
+            {
+              type: "image",
+              src: "fs-network-flow.png"
+            },
+            {
+              type: "heading",
+              text: "File System Flow"
+            },
+            {
+              type: "code",
+              code: "fs.readFile('invoice.pdf', callback)\n        ↓\nlibuv sends task to Thread Pool\n        ↓\nBackground thread reads file\n        ↓\nTask completes\n        ↓\nCallback enters Callback Queue\n        ↓\nEvent Loop executes callback"
+            },
+            {
+              type: "heading",
+              text: "Network Request Flow"
+            },
+            {
+              type: "code",
+              code: "fetch('https://amazon-api.com/products')\n        ↓\nOperating System handles socket networking\n        ↓\nResponse arrives\n        ↓\nCallback queued\n        ↓\nEvent Loop executes response callback"
+            },
+            {
+              type: "table",
+              headers: ["Operation", "Handled By"],
+              rows: [
+                [
+                  "File Reads",
+                  "Thread Pool"
+                ],
+                [
+                  "Database Queries",
+                  "Database Engines"
+                ],
+                [
+                  "HTTP Requests",
+                  "Operating System Networking"
+                ],
+                [
+                  "Timers",
+                  "libuv Timers"
+                ]
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Node.js itself rarely performs heavy work directly. It coordinates async systems efficiently while keeping the Event Loop free."
+            }
+          ],
+
+          "CPU Intensive Tasks Problem": [
+            {
+              type: "paragraph",
+              text: "Node.js is excellent for APIs and networking — but CPU-heavy tasks can completely block the Event Loop."
+            },
+            {
+              type: "image",
+              src: "cpu-blocking.png"
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Amazon's API suddenly starts generating huge PDFs and video processing inside the main thread. Why does the entire server become slow for ALL users?"
+            },
+            {
+              type: "heading",
+              text: "Why CPU Tasks Are Dangerous"
+            },
+            {
+              type: "paragraph",
+              text: "JavaScript runs on ONE main thread. If heavy computation starts, the Event Loop cannot process new requests until computation finishes."
+            },
+            {
+              type: "code",
+              code: "while(true) {\n  // Infinite CPU work\n}"
+            },
+            {
+              type: "paragraph",
+              text: "During this loop, NO API requests, NO timers, NO callbacks, and NO user requests can execute."
+            },
+            {
+              type: "heading",
+              text: "Real Amazon Problem"
+            },
+            {
+              type: "table",
+              headers: ["Heavy CPU Task", "Impact"],
+              rows: [
+                [
+                  "Large PDF generation",
+                  "Blocks API responses"
+                ],
+                [
+                  "Video rendering",
+                  "Freezes Event Loop"
+                ],
+                [
+                  "AI model execution",
+                  "High CPU usage"
+                ],
+                [
+                  "Image processing",
+                  "Delays all requests"
+                ]
+              ]
+            },
+            {
+              type: "heading",
+              text: "Solutions"
+            },
+            {
+              type: "table",
+              headers: ["Solution", "Purpose"],
+              rows: [
+                [
+                  "Worker Threads",
+                  "Run CPU tasks separately"
+                ],
+                [
+                  "Clustering",
+                  "Use multiple CPU cores"
+                ],
+                [
+                  "Microservices",
+                  "Move heavy work to separate services"
+                ],
+                [
+                  "Queues",
+                  "Process heavy tasks asynchronously"
+                ]
+              ]
+            },
+            {
+              type: "code",
+              code: "Main API Server\n      ↓\nHeavy Task Sent to Worker Service\n      ↓\nMain Event Loop Stays Fast"
+            },
+            {
+              type: "success-callout",
+              text: "✅ Node.js shines for I/O-heavy applications like APIs, chats, streaming, and real-time systems. CPU-intensive work should usually be offloaded to workers or separate services."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Understanding the Event Loop is the foundation of mastering Node.js. Almost every advanced backend concept — streams, WebSockets, scaling, clustering, microservices, queues — builds on top of this architecture."
+            }
+          ]
+        }
+      },
+
+      {
+        "id": 3,
+        "title": "Worker Threads & Clustering",
+        "level": "freshers",
+        "topics": [
+          "Why Worker Threads Exist",
+          "How Worker Threads Run in Parallel",
+          "Sharing Data Between Threads",
+          "What is Clustering?",
+          "Using Multiple CPU Cores",
+          "Load Balancing Between Node.js Processes",
+          "How Amazon/Netflix Scale Node.js Servers"
+        ],
+
+        "topicDetails": {
+          "Why Worker Threads Exist": [
+            {
+              "type": "paragraph",
+              "text": "Node.js became extremely popular because it can handle thousands of users efficiently using its non-blocking asynchronous architecture. But there is one major limitation — JavaScript code itself runs on a single main thread. That means if one heavy CPU-intensive task starts running, the Event Loop gets blocked and the entire server becomes slow."
+            },
+            {
+              "type": "paragraph",
+              "text": "Async operations like database calls, API requests, file reading, and network communication are not a problem because Node.js delegates them to the OS and libuv. But pure CPU-heavy calculations still execute directly on the main thread."
+            },
+            {
+              "type": "image",
+              "src": "workerthreads.png"
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Imagine Amazon is generating lakhs of invoices during a huge sale. PDF generation is CPU-heavy. If Node.js generates all PDFs on the main thread itself, what happens to checkout APIs and payment APIs?"
+            },
+            {
+              "type": "heading",
+              "text": "The Real Problem"
+            },
+            {
+              "type": "paragraph",
+              "text": "The Event Loop can only process new requests if the Call Stack is free. A long-running CPU task blocks the Call Stack for several seconds. During that time, no other incoming request can be processed."
+            },
+            {
+              "type": "code",
+              "code": "function heavyCalculation() {\n  let total = 0;\n\n  for(let i = 0; i < 10000000000; i++) {\n    total += i;\n  }\n\n  return total;\n}\n\napp.get('/report', (req, res) => {\n  heavyCalculation();\n  res.send('Done');\n});"
+            },
+            {
+              "type": "step",
+              "title": "User requests report generation",
+              "desc": "Node.js starts executing the heavyCalculation() function."
+            },
+            {
+              "type": "step",
+              "title": "CPU-heavy loop starts",
+              "desc": "The for-loop runs continuously for several seconds on the main thread."
+            },
+            {
+              "type": "step",
+              "title": "Event Loop gets blocked",
+              "desc": "Node.js cannot process other incoming requests while calculation runs."
+            },
+            {
+              "type": "step",
+              "title": "Entire server slows down",
+              "desc": "Checkout APIs, login APIs, and payment APIs all start waiting."
+            },
+            {
+              "type": "heading",
+              "text": "How Worker Threads Solve This"
+            },
+            {
+              "type": "paragraph",
+              "text": "Worker Threads move CPU-heavy JavaScript execution away from the main thread. Instead of blocking the Event Loop, expensive calculations run in separate threads while the main server continues handling users normally."
+            },
+            {
+              "type": "table",
+              "headers": ["Without Worker Threads", "With Worker Threads"],
+              "rows": [
+                ["Main thread blocked", "Heavy work moved outside main thread"],
+                ["APIs become slow", "APIs stay responsive"],
+                ["Poor scalability", "Better parallel processing"],
+                ["Single CPU usage", "Multiple CPU cores utilized"],
+                ["Bad for image/video processing", "Perfect for CPU-heavy work"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Worker Threads exist because Node.js's single-threaded architecture is excellent for I/O operations but struggles with heavy CPU calculations. Workers solve this by running calculations separately."
+            }
+          ],
+
+          "How Worker Threads Run in Parallel": [
+            {
+              "type": "paragraph",
+              "text": "Worker Threads are actual OS-level threads. Unlike async/await, which still runs on the same main JavaScript thread, Worker Threads execute JavaScript truly in parallel on separate CPU cores."
+            },
+            {
+              "type": "paragraph",
+              "text": "Each worker has its own isolated V8 engine instance, memory space, and Event Loop. This means workers can independently execute heavy calculations without affecting the main thread."
+            },
+            {
+              "type": "image",
+              "src": "parallelworkers.png"
+            },
+            {
+              "type": "heading",
+              "text": "Main Thread vs Worker Thread"
+            },
+            {
+              "type": "table",
+              "headers": ["Main Thread", "Worker Thread"],
+              "rows": [
+                ["Handles APIs and Event Loop", "Handles CPU-heavy tasks"],
+                ["Single thread", "Separate parallel thread"],
+                ["Must stay responsive", "Can run long calculations"],
+                ["Shared app entry point", "Independent execution"],
+                ["Handles users", "Handles computation"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Creating a Worker"
+            },
+            {
+              "type": "code",
+              "code": "// main.js\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./worker.js');\n\nworker.on('message', (msg) => {\n  console.log('Worker Result:', msg);\n});\n\nconsole.log('Main thread continues running');"
+            },
+            {
+              "type": "code",
+              "code": "// worker.js\nconst { parentPort } = require('worker_threads');\n\nlet total = 0;\n\nfor(let i = 0; i < 1000000000; i++) {\n  total += i;\n}\n\nparentPort.postMessage(total);"
+            },
+            {
+              "type": "step",
+              "title": "Main thread creates worker",
+              "desc": "Node.js asks the operating system to create a new thread."
+            },
+            {
+              "type": "step",
+              "title": "Worker starts independently",
+              "desc": "The worker runs its own JavaScript code separately."
+            },
+            {
+              "type": "step",
+              "title": "Parallel execution begins",
+              "desc": "Heavy calculation happens in parallel while APIs continue working."
+            },
+            {
+              "type": "step",
+              "title": "Worker sends result back",
+              "desc": "Once complete, worker communicates using messages."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Async operations are NOT parallel JavaScript execution. Worker Threads provide true multi-threaded JavaScript execution."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Worker Threads allow Node.js to fully utilize modern multi-core CPUs for JavaScript execution."
+            }
+          ],
+
+          "Sharing Data Between Threads": [
+            {
+              "type": "paragraph",
+              "text": "Worker Threads do not automatically share variables with the main thread. Every worker runs in an isolated memory environment. Communication happens using messages or shared memory structures."
+            },
+            {
+              "type": "image",
+              "src": "threadcommunication.png"
+            },
+            {
+              "type": "heading",
+              "text": "Method 1 — Message Passing"
+            },
+            {
+              "type": "paragraph",
+              "text": "The most common communication method is postMessage(). Data is copied and transferred safely between threads."
+            },
+            {
+              "type": "code",
+              "code": "// main.js\nworker.postMessage({ orderId: 123 });\n\nworker.on('message', (msg) => {\n  console.log(msg);\n});"
+            },
+            {
+              "type": "step",
+              "title": "Main thread sends data",
+              "desc": "Data is sent using postMessage()."
+            },
+            {
+              "type": "step",
+              "title": "Worker receives message",
+              "desc": "Worker processes the incoming data."
+            },
+            {
+              "type": "step",
+              "title": "Worker sends result back",
+              "desc": "Result returned safely to main thread."
+            },
+            {
+              "type": "heading",
+              "text": "Method 2 — Shared Memory"
+            },
+            {
+              "type": "paragraph",
+              "text": "For high-performance systems, Node.js allows multiple threads to access the same memory using SharedArrayBuffer. This avoids copying large data repeatedly."
+            },
+            {
+              "type": "table",
+              "headers": ["Communication Method", "How it Works", "Best For"],
+              "rows": [
+                ["postMessage()", "Copies data safely", "Most applications"],
+                ["SharedArrayBuffer", "Shared memory access", "High-performance systems"],
+                ["Atomics", "Synchronizes shared memory", "Prevent race conditions"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Shared memory is powerful but dangerous. Multiple threads modifying the same memory can create race conditions and inconsistent data."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Most real-world applications use message passing because it is safer and easier to manage."
+            }
+          ],
+
+          "What is Clustering?": [
+            {
+              "type": "paragraph",
+              "text": "Worker Threads solve CPU-heavy computation problems. But there is another limitation — one Node.js process only uses one CPU core for the Event Loop. Modern servers may have 16, 32, or even 64 CPU cores. Clustering allows Node.js to use all those cores."
+            },
+            {
+              "type": "image",
+              "src": "cluster.png"
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Amazon's backend machine has 32 CPU cores. Why should only ONE core handle all incoming traffic while the other 31 cores stay idle?"
+            },
+            {
+              "type": "heading",
+              "text": "How Clustering Works"
+            },
+            {
+              "type": "paragraph",
+              "text": "The cluster module creates multiple Node.js processes called workers. Every process has its own Event Loop, memory, and JavaScript runtime. Together, they share incoming traffic."
+            },
+            {
+              "type": "code",
+              "code": "const cluster = require('cluster');\nconst os = require('os');\n\nif(cluster.isMaster) {\n  const cpuCount = os.cpus().length;\n\n  for(let i = 0; i < cpuCount; i++) {\n    cluster.fork();\n  }\n}\nelse {\n  require('./server');\n}"
+            },
+            {
+              "type": "step",
+              "title": "Master process starts",
+              "desc": "Master process checks how many CPU cores exist."
+            },
+            {
+              "type": "step",
+              "title": "Multiple workers created",
+              "desc": "One Node.js process launched per CPU core."
+            },
+            {
+              "type": "step",
+              "title": "Traffic distributed",
+              "desc": "Requests are shared between all workers."
+            },
+            {
+              "type": "step",
+              "title": "Parallel request handling",
+              "desc": "Multiple CPU cores now process requests simultaneously."
+            },
+            {
+              "type": "table",
+              "headers": ["Worker Threads", "Clustering"],
+              "rows": [
+                ["Multiple threads", "Multiple processes"],
+                ["Used for CPU tasks", "Used for scaling traffic"],
+                ["Inside same process", "Separate Node.js instances"],
+                ["Shared memory possible", "Separate memory spaces"],
+                ["Parallel calculations", "Parallel request handling"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Clustering helps Node.js scale request handling across multiple CPU cores."
+            }
+          ],
+
+          "Using Multiple CPU Cores": [
+            {
+              "type": "paragraph",
+              "text": "Modern cloud servers are extremely powerful machines with multiple CPU cores. Without clustering, Node.js wastes most of the machine's power because only one core handles requests."
+            },
+            {
+              "type": "image",
+              "src": "multicore.png"
+            },
+            {
+              "type": "heading",
+              "text": "Real Amazon Example"
+            },
+            {
+              "type": "paragraph",
+              "text": "Suppose Amazon receives lakhs of checkout requests during a flash sale. One Node.js process alone cannot handle such traffic efficiently."
+            },
+            {
+              "type": "step",
+              "title": "Without clustering",
+              "desc": "Single process becomes overloaded quickly."
+            },
+            {
+              "type": "step",
+              "title": "With clustering",
+              "desc": "32 workers distribute traffic across all 32 CPU cores."
+            },
+            {
+              "type": "step",
+              "title": "Higher throughput achieved",
+              "desc": "More requests processed simultaneously."
+            },
+            {
+              "type": "table",
+              "headers": ["Server CPU", "Without Cluster", "With Cluster"],
+              "rows": [
+                ["8 cores", "1 core utilized", "8 cores utilized"],
+                ["16 cores", "1 core utilized", "16 cores utilized"],
+                ["32 cores", "1 core utilized", "32 cores utilized"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Clustering allows Node.js to fully utilize modern server hardware."
+            }
+          ],
+
+          "Load Balancing Between Node.js Processes": [
+            {
+              "type": "paragraph",
+              "text": "Once multiple Node.js workers are running, traffic must be distributed properly between them. This process is called load balancing."
+            },
+            {
+              "type": "image",
+              "src": "loadbalancer.png"
+            },
+            {
+              "type": "heading",
+              "text": "How Load Balancing Works"
+            },
+            {
+              "type": "step",
+              "title": "User sends request",
+              "desc": "Request first reaches a load balancer."
+            },
+            {
+              "type": "step",
+              "title": "Load balancer selects worker",
+              "desc": "Traffic distributed among available Node.js workers."
+            },
+            {
+              "type": "step",
+              "title": "Worker processes request",
+              "desc": "Selected worker handles API request."
+            },
+            {
+              "type": "step",
+              "title": "Response returned",
+              "desc": "User receives final response."
+            },
+            {
+              "type": "heading",
+              "text": "Common Load Balancing Algorithms"
+            },
+            {
+              "type": "table",
+              "headers": ["Algorithm", "How it Works", "Best Use Case"],
+              "rows": [
+                ["Round Robin", "One request per worker sequentially", "Most common"],
+                ["Least Connections", "Worker with fewest active users", "Real-time systems"],
+                ["IP Hash", "Same user routed consistently", "Session persistence"],
+                ["Weighted", "Powerful servers receive more traffic", "Cloud infrastructure"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Clustered workers do not share memory. Sessions usually need Redis or shared databases."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Load balancing ensures no single Node.js worker becomes overloaded."
+            }
+          ],
+
+          "How Amazon/Netflix Scale Node.js Servers": [
+            {
+              "type": "paragraph",
+              "text": "Companies like Amazon and Netflix never rely on one single Node.js server. They run thousands of distributed services globally. Scaling happens using clustering, worker threads, microservices, load balancers, queues, caching systems, and auto-scaling infrastructure."
+            },
+            {
+              "type": "image",
+              "src": "amazonscale.png"
+            },
+            {
+              "type": "heading",
+              "text": "Netflix Architecture Flow"
+            },
+            {
+              "type": "step",
+              "title": "User opens Netflix app",
+              "desc": "Request reaches CDN and API Gateway."
+            },
+            {
+              "type": "step",
+              "title": "Gateway routes traffic",
+              "desc": "Traffic forwarded to correct Node.js microservice."
+            },
+            {
+              "type": "step",
+              "title": "Clustered workers handle APIs",
+              "desc": "Multiple Node.js instances process traffic in parallel."
+            },
+            {
+              "type": "step",
+              "title": "Worker Threads handle heavy computation",
+              "desc": "Thumbnail generation, video processing, AI recommendations run in workers."
+            },
+            {
+              "type": "step",
+              "title": "Distributed infrastructure coordinates everything",
+              "desc": "Redis, Kafka, databases, queues, and caches work together."
+            },
+            {
+              "type": "heading",
+              "text": "Technologies Used at Scale"
+            },
+            {
+              "type": "table",
+              "headers": ["Technology", "Purpose"],
+              "rows": [
+                ["Clustering", "Use all CPU cores"],
+                ["Worker Threads", "Run CPU-heavy jobs"],
+                ["Redis", "Caching and shared sessions"],
+                ["Kafka", "Event-driven communication"],
+                ["Microservices", "Split giant system into smaller services"],
+                ["Load Balancers", "Distribute traffic"],
+                ["Auto Scaling", "Automatically add/remove servers"],
+                ["CDN", "Serve content faster globally"]
+              ]
+            },
+            {
+              "type": "code",
+              "code": "User Request\n     ↓\nLoad Balancer\n     ↓\nNode.js Cluster\n     ↓\nMicroservices\n     ↓\nRedis / Kafka / Databases\n     ↓\nWorker Threads for CPU Tasks"
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Large-scale systems scale horizontally by adding more machines instead of relying on one giant server."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Real-world Node.js scaling combines clustering, worker threads, load balancing, caching, queues, and microservices together."
+            }
+          ]
+        }
+
+      },
+
+      {
+        "id": 4,
+        "title": "Modules & Package System",
+        "level": "freshers",
+        "topics": [
+          "Understanding Modules, Imports, Exports, package.json & NPM Internally"
+        ],
+        "topicDetails": {
+
+          "Understanding Modules, Imports, Exports, package.json & NPM Internally": [
+            {
+              type: "paragraph",
+              text: "Amazon's backend is not one giant 50,000-line file. Different teams build different features — cart system, payments, orders, authentication, product search, notifications. Every feature lives in separate modules and packages. Node.js provides a modular system so massive applications can stay maintainable and scalable."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Amazon has thousands of backend features and engineers. How do developers split code into reusable parts without everything becoming one huge messy file?"
+            },
+
+            {
+              type: "heading",
+              text: "What are Modules in Node.js?"
+            },
+            {
+              type: "paragraph",
+              text: "A module is simply a separate file containing reusable code. Instead of writing everything in one file, developers split logic into smaller focused files and share them using exports and imports."
+            },
+            {
+              type: "code",
+              code: "// cart.js\nfunction addToCart(product) {\n  console.log(product, 'added to cart')\n}\n\nmodule.exports = addToCart"
+            },
+            {
+              type: "code",
+              code: "// app.js\nconst addToCart = require('./cart')\n\naddToCart('iPhone 15')"
+            },
+
+            {
+              type: "heading",
+              text: "Why Amazon Uses Modules"
+            },
+            {
+              type: "table",
+              headers: ["Amazon Feature", "Separate Module"],
+              rows: [
+                ["Authentication", "auth.js"],
+                ["Payments", "payment.js"],
+                ["Cart System", "cart.js"],
+                ["Order Management", "orders.js"],
+                ["Notifications", "notification.js"],
+                ["Product Search", "search.js"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "How Modules Work Internally"
+            },
+            {
+              type: "paragraph",
+              text: "Every Node.js file is treated as its own private module. Variables and functions inside one file are NOT automatically available in another file. To share them, Node.js uses exports and imports."
+            },
+            {
+              type: "code",
+              code: "// payment.js\nconst secretKey = 'amazon-secret'\n\nfunction processPayment() {\n  console.log('Payment Processed')\n}\n\nmodule.exports = processPayment"
+            },
+            {
+              type: "info-callout",
+              text: "💡 secretKey stays private inside payment.js. Only processPayment gets exported and shared with other files."
+            },
+
+            {
+              type: "heading",
+              text: "Exports — Sharing Code"
+            },
+            {
+              type: "paragraph",
+              text: "Exports allow a module to expose variables, functions, or objects so other files can use them."
+            },
+
+            {
+              type: "table",
+              headers: ["Export Type", "Example", "Meaning"],
+              rows: [
+                [
+                  "Single Export",
+                  "module.exports = function",
+                  "Export one main thing"
+                ],
+                [
+                  "Multiple Exports",
+                  "module.exports = { add, remove }",
+                  "Export many functions"
+                ],
+                [
+                  "Named Export (ESM)",
+                  "export const add = () => {}",
+                  "Modern JavaScript export"
+                ],
+                [
+                  "Default Export (ESM)",
+                  "export default app",
+                  "Export one default item"
+                ]
+              ]
+            },
+
+            {
+              type: "code",
+              code: "// orders.js\nfunction createOrder() {\n  console.log('Order Created')\n}\n\nfunction cancelOrder() {\n  console.log('Order Cancelled')\n}\n\nmodule.exports = {\n  createOrder,\n  cancelOrder\n}"
+            },
+
+            {
+              type: "heading",
+              text: "Imports — Using Shared Code"
+            },
+            {
+              type: "paragraph",
+              text: "Imports bring exported code from one module into another file."
+            },
+
+            {
+              type: "code",
+              code: "// app.js\nconst orders = require('./orders')\n\norders.createOrder()\norders.cancelOrder()"
+            },
+
+            {
+              type: "table",
+              headers: ["Import Style", "Syntax", "Used In"],
+              rows: [
+                [
+                  "CommonJS",
+                  "require('./cart')",
+                  "Traditional Node.js"
+                ],
+                [
+                  "ES Modules",
+                  "import cart from './cart.js'",
+                  "Modern JavaScript"
+                ]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "CommonJS vs ES Modules"
+            },
+            {
+              type: "table",
+              headers: ["Feature", "CommonJS", "ES Modules"],
+              rows: [
+                ["Import", "require()", "import"],
+                ["Export", "module.exports", "export"],
+                ["Default in old Node.js", "✅ Yes", "❌ No"],
+                ["Modern standard", "Older system", "✅ Current future standard"],
+                ["Synchronous loading", "✅ Yes", "❌ No — supports async"],
+                ["Used in", "Older Express apps", "Modern React/Node apps"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "What is package.json?"
+            },
+            {
+              type: "paragraph",
+              text: "Imagine Amazon's backend needs Express, MongoDB drivers, Redis clients, payment SDKs, JWT libraries, and thousands of dependencies. How does Node.js know which packages the project needs? package.json is the central manifest file that stores all project information."
+            },
+
+            {
+              type: "code",
+              code: "{\n  \"name\": \"amazon-backend\",\n  \"version\": \"1.0.0\",\n  \"main\": \"app.js\",\n  \"scripts\": {\n    \"start\": \"node app.js\"\n  },\n  \"dependencies\": {\n    \"express\": \"^4.18.2\",\n    \"mongoose\": \"^8.0.0\"\n  }\n}"
+            },
+
+            {
+              type: "table",
+              headers: ["Field", "Purpose"],
+              rows: [
+                ["name", "Project name"],
+                ["version", "Current project version"],
+                ["main", "Entry point file"],
+                ["scripts", "Custom terminal commands"],
+                ["dependencies", "Libraries required for app"],
+                ["devDependencies", "Development-only packages"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "What Happens When You Run npm install?"
+            },
+            {
+              type: "paragraph",
+              text: "When Amazon engineers clone a backend project and run npm install, Node Package Manager (NPM) reads package.json and downloads all required packages automatically."
+            },
+
+            {
+              type: "step",
+              title: "npm reads package.json",
+              desc: "Node checks all dependencies listed in the project."
+            },
+            {
+              type: "step",
+              title: "Packages are downloaded",
+              desc: "NPM downloads Express, Mongoose, JWT, Redis, and other packages from the NPM registry."
+            },
+            {
+              type: "step",
+              title: "node_modules folder created",
+              desc: "All downloaded packages are stored locally inside node_modules."
+            },
+            {
+              type: "step",
+              title: "Dependencies become usable",
+              desc: "Now the project can import and use installed libraries."
+            },
+
+            {
+              type: "code",
+              code: "npm install express\n\n// npm:\n// 1. Downloads Express\n// 2. Saves it inside node_modules\n// 3. Updates package.json\n// 4. Updates package-lock.json"
+            },
+
+            {
+              type: "heading",
+              text: "What is node_modules?"
+            },
+            {
+              type: "paragraph",
+              text: "node_modules is the folder where all installed packages live. In real-world projects, this folder can become massive because every package may depend on many other packages internally."
+            },
+
+            {
+              type: "table",
+              headers: ["Package", "May Internally Install"],
+              rows: [
+                ["Express", "body-parser, debug, cookie"],
+                ["Mongoose", "MongoDB driver libraries"],
+                ["React", "scheduler, loose-envify"],
+                ["Next.js", "webpack, babel, SWC"]
+              ]
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 That's why node_modules can become hundreds of MBs. One package may internally depend on dozens or even hundreds of smaller packages."
+            },
+
+            {
+              type: "heading",
+              text: "What is package-lock.json?"
+            },
+            {
+              type: "paragraph",
+              text: "Amazon's backend must behave identically on every developer's machine and production server. package-lock.json locks exact dependency versions so everyone installs the exact same package versions."
+            },
+
+            {
+              type: "table",
+              headers: ["Without package-lock", "With package-lock"],
+              rows: [
+                ["Different developers may install slightly different versions", "Everyone gets identical versions"],
+                ["Random bugs may appear", "Consistent stable builds"],
+                ["Production mismatches possible", "Predictable deployments"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "How NPM Works Internally"
+            },
+            {
+              type: "code",
+              code: "npm install express\n        ↓\nNPM contacts NPM Registry Server\n        ↓\nDownloads Express package\n        ↓\nChecks Express dependencies\n        ↓\nDownloads sub-dependencies\n        ↓\nStores everything inside node_modules\n        ↓\nUpdates package.json & package-lock.json"
+            },
+
+            {
+              type: "heading",
+              text: "Real Amazon Backend Example"
+            },
+            {
+              type: "table",
+              headers: ["Feature", "Possible NPM Package"],
+              rows: [
+                ["API Server", "express"],
+                ["MongoDB Database", "mongoose"],
+                ["Authentication", "jsonwebtoken"],
+                ["Payments", "stripe"],
+                ["Redis Cache", "ioredis"],
+                ["AWS Uploads", "aws-sdk"],
+                ["Real-time Chat", "socket.io"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "Quick Summary"
+            },
+            {
+              type: "table",
+              headers: ["Concept", "Simple Meaning"],
+              rows: [
+                ["Module", "Separate reusable file"],
+                ["Export", "Share code from file"],
+                ["Import", "Use shared code"],
+                ["package.json", "Project dependency/config file"],
+                ["NPM", "Node package manager"],
+                ["node_modules", "Installed package storage"],
+                ["package-lock.json", "Exact dependency version lock"]
+              ]
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Modules and NPM are the backbone of modern Node.js development. Without them, large-scale applications like Amazon, Netflix, Swiggy, and Uber would become impossible to maintain."
+            },
+
+            {
+              type: "warning-callout",
+              text: "⚠️ But installing packages is only half the story. How does Node.js actually execute asynchronous operations like APIs, databases, timers, and file reads internally without blocking everything? That's where the Event Loop, Call Stack, Callback Queue, and Async Architecture begin."
+            }
+          ]
+
+        }
+      },
+
+      {
+        "id": 5,
+        "title": "Node.js Core Modules",
+        "level": "freshers",
+        "topics": [
+          "Understanding Node.js Core Modules (fs, path, os, process, events, http)"
+        ],
+        "topicDetails": {
+
+          "Understanding Node.js Core Modules (fs, path, os, process, events, http)": [
+            {
+              type: "paragraph",
+              text: "Amazon's backend does thousands of different operations every second — reading product images from disk, handling APIs, checking server memory, managing file paths, processing events, and handling incoming requests. Node.js provides built-in Core Modules for these tasks so developers don't need to build everything from scratch."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ When Amazon uploads invoices, serves APIs, tracks system memory, and handles millions of requests — which Node.js features actually make all this possible internally?"
+            },
+            {
+              type: "heading",
+              text: "What are Node.js Core Modules?"
+            },
+            {
+              type: "paragraph",
+              text: "Core Modules are built-in modules that come bundled with Node.js itself. No installation needed. They provide powerful server-side capabilities like file handling, networking, operating system access, event handling, and HTTP server creation."
+            },
+            {
+              type: "code",
+              code: "// Importing built-in core modules\nconst fs = require('fs')\nconst path = require('path')\nconst os = require('os')\nconst process = require('process')\nconst EventEmitter = require('events')\nconst http = require('http')"
+            },
+            {
+              type: "heading",
+              text: "Node.js Core Modules Overview"
+            },
+            {
+              type: "table",
+              headers: ["Module", "Purpose", "Amazon Example", "Common Use Cases"],
+              rows: [
+                [
+                  "fs",
+                  "File System operations",
+                  "Reading invoice PDFs and product images",
+                  "Read/write files, upload handling, logs"
+                ],
+                [
+                  "path",
+                  "Handle file/folder paths safely",
+                  "Building image storage paths",
+                  "Join paths, file extensions, directory handling"
+                ],
+                [
+                  "os",
+                  "Get operating system information",
+                  "Checking server memory during sale traffic",
+                  "CPU info, RAM usage, platform details"
+                ],
+                [
+                  "process",
+                  "Interact with running Node.js process",
+                  "Reading environment variables for payment APIs",
+                  "Env variables, process IDs, exiting apps"
+                ],
+                [
+                  "events",
+                  "Event-driven programming",
+                  "Triggering order placed notifications",
+                  "Custom events, emit/listen patterns"
+                ],
+                [
+                  "http",
+                  "Create backend servers & APIs",
+                  "Amazon product APIs",
+                  "Web servers, REST APIs, request handling"
+                ]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "1. fs Module — File System"
+            },
+            {
+              type: "paragraph",
+              text: "The fs module lets Node.js interact with files and folders. Amazon uses this for invoice generation, image uploads, log storage, and reading configuration files."
+            },
+            {
+              type: "code",
+              code: "const fs = require('fs')\n\n// Reading a file\nfs.readFile('invoice.txt', 'utf8', (err, data) => {\n  console.log(data)\n})"
+            },
+            {
+              type: "table",
+              headers: ["Amazon Use Case", "How fs Helps"],
+              rows: [
+                ["Invoice downloads", "Reads PDF files from storage"],
+                ["Product image uploads", "Stores uploaded files"],
+                ["Application logs", "Writes logs into files"],
+                ["Configuration management", "Reads config JSON files"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "2. path Module — Managing File Paths"
+            },
+            {
+              type: "paragraph",
+              text: "Different operating systems use different path formats. path module safely handles file paths without worrying about Windows or Linux differences."
+            },
+            {
+              type: "code",
+              code: "const path = require('path')\n\nconst filePath = path.join(__dirname, 'uploads', 'iphone.png')\n\nconsole.log(filePath)"
+            },
+            {
+              type: "table",
+              headers: ["Problem", "path Module Solution"],
+              rows: [
+                ["Windows uses \\\\", "path handles OS differences automatically"],
+                ["Linux uses /", "Works consistently everywhere"],
+                ["Manual path concatenation errors", "path.join() creates safe paths"],
+                ["Need file extension", "path.extname() extracts extensions"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "3. os Module — Operating System Information"
+            },
+            {
+              type: "paragraph",
+              text: "During Amazon sales, servers must monitor memory and CPU usage continuously. The os module gives Node.js access to system-level information."
+            },
+            {
+              type: "code",
+              code: "const os = require('os')\n\nconsole.log(os.platform())\nconsole.log(os.totalmem())\nconsole.log(os.freemem())"
+            },
+            {
+              type: "table",
+              headers: ["Function", "Purpose"],
+              rows: [
+                ["os.platform()", "Current operating system"],
+                ["os.totalmem()", "Total server memory"],
+                ["os.freemem()", "Available free memory"],
+                ["os.cpus()", "CPU core information"],
+                ["os.hostname()", "Server machine name"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "4. process Module — Current Running Process"
+            },
+            {
+              type: "paragraph",
+              text: "The process module interacts with the currently running Node.js application. Amazon stores secret API keys, database URLs, and payment credentials using environment variables."
+            },
+            {
+              type: "code",
+              code: "console.log(process.env.DB_URL)\nconsole.log(process.pid)\nconsole.log(process.cwd())"
+            },
+            {
+              type: "table",
+              headers: ["Feature", "Amazon Example"],
+              rows: [
+                ["Environment Variables", "Store Stripe/Razorpay secret keys"],
+                ["Process ID", "Track server processes"],
+                ["Current Working Directory", "Locate project files"],
+                ["Exit Process", "Shutdown unhealthy servers"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "5. events Module — Event Driven Architecture"
+            },
+            {
+              type: "paragraph",
+              text: "Node.js internally works using events. Amazon triggers events constantly — order placed, payment success, delivery dispatched, refund processed."
+            },
+            {
+              type: "code",
+              code: "const EventEmitter = require('events')\n\nconst emitter = new EventEmitter()\n\nemitter.on('orderPlaced', () => {\n  console.log('Send confirmation email')\n})\n\nemitter.emit('orderPlaced')"
+            },
+            {
+              type: "table",
+              headers: ["Amazon Event", "Triggered Action"],
+              rows: [
+                ["Order placed", "Send email + SMS"],
+                ["Payment success", "Generate invoice"],
+                ["Delivery dispatched", "Push notification"],
+                ["Refund completed", "Update wallet balance"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "6. http Module — Creating Backend Servers"
+            },
+            {
+              type: "paragraph",
+              text: "The http module allows Node.js to create web servers and APIs. Every Amazon API request eventually reaches an HTTP server."
+            },
+            {
+              type: "code",
+              code: "const http = require('http')\n\nconst server = http.createServer((req, res) => {\n  res.write('Amazon API Running')\n  res.end()\n})\n\nserver.listen(3000)"
+            },
+            {
+              type: "table",
+              headers: ["Request", "What http Module Does"],
+              rows: [
+                ["GET /products", "Returns product list"],
+                ["POST /orders", "Creates new order"],
+                ["GET /payments", "Fetches payment status"],
+                ["PUT /cart", "Updates shopping cart"]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "How All Modules Work Together in Amazon"
+            },
+            {
+              type: "code",
+              code: "User uploads invoice request\n        ↓\nhttp module receives API request\n        ↓\nprocess module checks environment configs\n        ↓\npath module creates file path\n        ↓\nfs module stores invoice PDF\n        ↓\nevents module triggers email notification\n        ↓\nos module monitors server memory usage"
+            },
+
+            {
+              type: "heading",
+              text: "Quick Summary"
+            },
+            {
+              type: "table",
+              headers: ["Module", "Simple Meaning"],
+              rows: [
+                ["fs", "Work with files"],
+                ["path", "Handle file paths safely"],
+                ["os", "Get system/server info"],
+                ["process", "Control running Node.js app"],
+                ["events", "Handle custom events"],
+                ["http", "Create APIs and web servers"]
+              ]
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ These core modules are the foundation of almost every Node.js backend application. Express.js, NestJS, Next.js APIs — all internally depend on these Node.js core modules."
+            },
+
+            {
+              type: "warning-callout",
+              text: "⚠️ But Node.js became powerful not just because of modules — but because of asynchronous execution. How can file reads, APIs, and database calls happen without blocking the server? That's where Callbacks, Promises, Async/Await, and the Event Loop come in."
+            }
+          ]
+
+        }
+      }
+
+    ]
+  },
+
+
+
+
+
+  {
     id: "authentication-nodejs",
     category: "Backend Concepts",
     sortOrder: 2,

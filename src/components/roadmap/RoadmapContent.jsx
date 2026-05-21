@@ -22,7 +22,7 @@ const getImageUrl = (src) => {
   if (src.startsWith("http://") || src.startsWith("https://") || src.startsWith("data:") || src.startsWith("/")) {
     return src;
   }
-  const apiURL = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+  const apiURL = import.meta.env.VITE_API_URL || "https://api.bytebytetech.com/api";
   const backendBase = apiURL.replace(/\/api$/, "");
   return `${backendBase}/images/${src}`;
 };
@@ -447,15 +447,14 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
             <button
               onClick={() => updateStatus(selectedTopic._id)}
               disabled={isProgressLoading}
-              className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${
-                isProgressLoading
+              className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${isProgressLoading
                   ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed shadow-none'
                   : topicStatus[selectedTopic._id] === 'done'
                     ? 'bg-emerald-500 text-white shadow-emerald-100 hover:bg-emerald-600 border-transparent'
                     : !user
                       ? 'bg-white text-[#2563eb] hover:bg-blue-50/50 border-[#2563eb]/20 hover:border-[#2563eb]/40'
                       : 'bg-white text-slate-600 hover:bg-slate-50 border-slate-200 hover:border-slate-300'
-              }`}
+                }`}
             >
               {isProgressLoading ? (
                 <>

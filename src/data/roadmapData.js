@@ -334,10 +334,7 @@ export const roadmapData = [
           "What is the Event Loop?",
           "Call Stack, Callback Queue & Microtask Queue",
           "setTimeout vs setImmediate vs process.nextTick",
-          "What is libuv?",
-          "Thread Pool in Node.js",
-          "How File System & Network Requests Work Internally",
-          "CPU Intensive Tasks Problem"
+          "libuv & Thread Pool in Node.js",
         ],
 
         "topicDetails": {
@@ -345,67 +342,142 @@ export const roadmapData = [
           "What is the Event Loop?": [
             {
               type: "paragraph",
-              text: "Amazon receives millions of requests every minute — product searches, payments, order tracking, recommendations, notifications. But Node.js mainly runs JavaScript on ONE main thread. So how does it handle thousands of users simultaneously without freezing? The answer is the Event Loop."
+              text: "Imagine Amazon during a huge sale. Millions of users are searching products, adding items to cart, making payments, tracking deliveries, and receiving notifications — all simultaneously. But surprisingly, Node.js mainly runs JavaScript on ONE main thread. So how does Amazon-like systems handle so many users together without the server freezing? The answer is the Event Loop."
             },
-            {
-              type: "image",
-              src: "event-loop-flow.png"
-            },
+
             {
               type: "curious-callout",
-              text: "❓ Rahul searches 'iPhone', Priya adds an item to cart, Aman makes payment, Sneha tracks delivery — all at the same time. How can ONE Node.js thread manage all these users together?"
+              text: "❓ Rahul searches 'iPhone', Priya adds shoes to cart, Aman makes payment, Sneha tracks her order, and Vikram receives delivery notifications — all at the same time. How can ONE Node.js thread manage all these users together?"
             },
+
+            {
+              type: "heading",
+              text: "The Core Problem"
+            },
+
+            {
+              type: "paragraph",
+              text: "Some operations are extremely slow compared to CPU speed. Database queries, API calls, payment gateways, file reads, image processing, and network requests may take milliseconds or even seconds. If Node.js waited for every task to finish before handling the next user, Amazon would become painfully slow."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead of waiting, Node.js uses an Event Loop architecture. The main thread quickly delegates slow operations to background systems and immediately becomes free to handle new incoming users."
+            },
+
             {
               type: "heading",
               text: "What Exactly is the Event Loop?"
             },
+
             {
               type: "paragraph",
-              text: "The Event Loop is the heart of Node.js. It continuously checks whether asynchronous tasks like database calls, file reads, timers, or API requests are completed. Once completed, it pushes their callbacks back into execution."
+              text: "The Event Loop is the traffic manager of Node.js. It continuously checks whether background asynchronous tasks are completed. Once completed, their callbacks are pushed back into the main execution queue so JavaScript can continue processing them."
             },
+
             {
               type: "code",
-              code: "Amazon User Request\n        ↓\nNode.js Main Thread\n        ↓\nSlow Task Delegated (DB/API/File)\n        ↓\nMain Thread Continues Handling New Users\n        ↓\nTask Finishes in Background\n        ↓\nEvent Loop Detects Completion\n        ↓\nCallback Executes"
+              code: "User Request Arrives\n        ↓\nNode.js Main Thread Receives Request\n        ↓\nSlow Task Identified (DB/API/File/Payment)\n        ↓\nTask Delegated to Background System\n        ↓\nMain Thread Immediately Becomes Free\n        ↓\nNode.js Handles Other Users Meanwhile\n        ↓\nBackground Task Completes\n        ↓\nEvent Loop Detects Completion\n        ↓\nCallback Added Back to Queue\n        ↓\nMain Thread Executes Callback\n        ↓\nResponse Sent to User"
             },
+
             {
               type: "heading",
-              text: "Real Amazon Search Flow"
+              text: "Amazon Search Flow — Step by Step"
             },
+
             {
               type: "step",
-              title: "Rahul searches iPhone",
-              desc: "Amazon API request reaches Node.js server."
+              title: " Rahul searches for iPhone",
+              desc: "Rahul opens Amazon and searches 'iPhone 16'. The request reaches the Node.js server."
             },
+
             {
               type: "step",
-              title: "Database query starts",
-              desc: "Fetching product data from DB is slow."
+              title: " Node.js starts processing request",
+              desc: "The main thread checks what work needs to be done. Amazon now needs product data from the database."
             },
+
             {
               type: "step",
-              title: "Node.js delegates the task",
-              desc: "Instead of waiting, Node.js sends DB work to background systems."
+              title: " Database query is slow",
+              desc: "Fetching thousands of product records, prices, offers, ratings, and stock information can take time."
             },
+
             {
               type: "step",
-              title: "Main thread becomes free instantly",
-              desc: "Node.js immediately starts handling Priya's cart request."
+              title: " Node.js delegates the database work",
+              desc: "Instead of blocking the thread, Node.js sends the database operation to external systems like databases, libuv, operating system networking, or thread pools."
             },
+
             {
               type: "step",
-              title: "Database finishes query",
-              desc: "Background system returns completed product data."
+              title: " Main thread becomes free instantly",
+              desc: "Node.js does NOT wait for Rahul's database query. The main thread is now free to handle other users immediately."
             },
+
             {
               type: "step",
-              title: "Event Loop notices completion",
-              desc: "The Event Loop pushes Rahul's callback into execution."
+              title: " Priya adds shoes to cart",
+              desc: "While Rahul's database query is still running, Priya clicks 'Add to Cart'. Node.js instantly starts handling her request."
             },
+
             {
               type: "step",
-              title: "Rahul receives products",
-              desc: "Amazon app finally displays iPhone results."
+              title: " Aman starts payment",
+              desc: "At the same time, Aman makes a UPI payment. Node.js sends payment verification requests to payment gateways asynchronously."
             },
+
+            {
+              type: "step",
+              title: " Sneha tracks delivery",
+              desc: "Another request comes in for delivery tracking. Node.js again delegates tracking API calls without blocking the thread."
+            },
+
+            {
+              type: "step",
+              title: " Background database query finishes",
+              desc: "Rahul's product search data is finally ready. The database sends the completed result back."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop notices completion",
+              desc: "The Event Loop continuously checks completed async operations. It detects Rahul's database task has finished."
+            },
+
+            {
+              type: "step",
+              title: " Callback enters execution queue",
+              desc: "The Event Loop pushes Rahul's callback function into the callback queue so JavaScript can process the result."
+            },
+
+            {
+              type: "step",
+              title: " Main thread executes callback",
+              desc: "Once the Call Stack becomes free, Node.js executes Rahul's callback and prepares the final response."
+            },
+
+            {
+              type: "step",
+              title: " Rahul receives product results",
+              desc: "Amazon finally sends the iPhone product list back to Rahul's screen."
+            },
+
+            {
+              type: "heading",
+              text: "Visual Flow of Multiple Amazon Users"
+            },
+
+            {
+              type: "code",
+              code: "Rahul → Search iPhone ─────┐\nPriya → Add to Cart ──────┤\nAman → Payment ──────────┤\nSneha → Track Order ─────┤\n                             ↓\n                    Node.js Main Thread\n                             ↓\n         Delegates Slow Tasks to Background Systems\n                             ↓\n      Main Thread Keeps Serving New Incoming Users\n                             ↓\n             Completed Tasks Return Back\n                             ↓\n              Event Loop Detects Completion\n                             ↓\n               Callbacks Execute One-by-One"
+            },
+
+            {
+              type: "heading",
+              text: "Why This Architecture is Powerful"
+            },
+
             {
               type: "table",
               headers: ["Traditional Blocking Server", "Node.js Event Loop"],
@@ -416,84 +488,217 @@ export const roadmapData = [
                 ],
                 [
                   "One thread per user",
-                  "One event loop handles many users"
+                  "Single event loop handles many users"
                 ],
                 [
-                  "Heavy memory usage",
-                  "Lightweight async architecture"
+                  "High memory consumption",
+                  "Very lightweight architecture"
                 ],
                 [
-                  "Slow under massive concurrency",
-                  "Excellent for high traffic APIs"
+                  "Slow under huge traffic",
+                  "Excellent for massive concurrency"
+                ],
+                [
+                  "Threads stay blocked often",
+                  "Async tasks run in background"
+                ],
+                [
+                  "Scaling becomes expensive",
+                  "Handles thousands of users efficiently"
                 ]
               ]
             },
+
             {
               type: "info-callout",
-              text: "💡 Node.js itself is NOT magically doing database work. It delegates async operations to the operating system, libuv, thread pool, databases, or external systems — while the Event Loop keeps the main thread free."
+              text: "💡 Important: Node.js itself is NOT magically doing database queries or network operations. Async tasks are handled by databases, operating system networking, libuv, browser APIs, thread pools, or external services. The Event Loop simply manages when callbacks should execute."
             },
+
+
             {
               type: "success-callout",
-              text: "✅ The Event Loop is what makes Node.js scalable. It allows one lightweight server process to manage thousands of concurrent users efficiently."
+              text: "✅ The Event Loop is the reason Node.js can efficiently power high-traffic systems like Amazon, Netflix, Paytm, Uber, and LinkedIn using lightweight asynchronous architecture."
             }
           ],
 
           "Call Stack, Callback Queue & Microtask Queue": [
             {
               type: "paragraph",
-              text: "The Event Loop doesn't randomly execute code. Internally, Node.js manages execution using multiple structures: the Call Stack, Callback Queue, and Microtask Queue. Together they decide what runs first, what waits, and what executes next."
+              text: "Inside Amazon-like systems, thousands of operations happen every second — searching products, placing orders, verifying payments, sending notifications, and updating deliveries. But Node.js does not execute everything randomly. Internally, it uses structures like the Call Stack, Callback Queue, and Microtask Queue to decide what runs immediately, what waits, and what gets priority."
             },
+
             {
-              type: "image",
-              src: "callstack-callbackqueue.png"
+              type: "curious-callout",
+              text: "❓ Rahul searches for iPhone, Priya completes payment, and Amazon sends order confirmation — but which task executes first inside Node.js? How does the Event Loop decide execution order?"
             },
+
+            {
+              type: "heading",
+              text: "Big Picture — How Node.js Internally Manages Tasks"
+            },
+
+            {
+              type: "code",
+              code: "Incoming Requests\n        ↓\nCall Stack Executes Sync Code\n        ↓\nAsync Tasks Delegated to Background Systems\n        ↓\nCompleted Tasks Enter Queues\n        ↓\nMicrotask Queue Checked First\n        ↓\nCallback Queue Checked Next\n        ↓\nEvent Loop Pushes Tasks Back To Call Stack"
+            },
+
             {
               type: "heading",
               text: "1. Call Stack — Where Functions Execute"
             },
+
             {
               type: "paragraph",
-              text: "The Call Stack is where JavaScript executes functions one by one. Only ONE function executes at a time on the main thread."
+              text: "The Call Stack is where JavaScript executes functions one by one. Since JavaScript is single-threaded, only ONE function can execute at a time on the main thread."
             },
+
+            {
+              type: "paragraph",
+              text: "Imagine Rahul searching for 'iPhone' on Amazon. The search function enters the Call Stack and starts executing immediately."
+            },
+
             {
               type: "code",
-              code: "function searchProduct() {\n  console.log('Search Started')\n}\n\nsearchProduct()"
+              code: "function searchProduct() {\n  console.log('Searching iPhone')\n}\n\nsearchProduct()"
             },
+
             {
               type: "code",
-              code: "Call Stack:\n\nsearchProduct()\nconsole.log()\n"
+              code: "Call Stack:\n\nsearchProduct()\nconsole.log()"
             },
+
+            {
+              type: "step",
+              title: " Rahul clicks Search",
+              desc: "Amazon sends request to Node.js server."
+            },
+
+            {
+              type: "step",
+              title: " searchProduct() enters Call Stack",
+              desc: "JavaScript starts executing the function."
+            },
+
+            {
+              type: "step",
+              title: " console.log() executes",
+              desc: "The message prints on screen."
+            },
+
+            {
+              type: "step",
+              title: " Function removed from stack",
+              desc: "Once execution finishes, the Call Stack becomes free again."
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 The Call Stack can only execute one function at a time. If a heavy task blocks it, the entire application feels frozen."
+            },
+
             {
               type: "heading",
-              text: "2. Callback Queue — Completed Async Tasks Wait Here"
+              text: "2. Callback Queue — Where Completed Async Tasks Wait"
             },
+
             {
               type: "paragraph",
-              text: "When async tasks like setTimeout, database calls, or file reads finish, their callbacks move into the Callback Queue."
+              text: "When async operations like database queries, payment verification, timers, or file reads finish, their callbacks move into the Callback Queue."
             },
+
+            {
+              type: "paragraph",
+              text: "Imagine Priya makes payment on Amazon. Payment verification takes time because Node.js must contact external banking systems."
+            },
+
             {
               type: "code",
-              code: "setTimeout(() => {\n  console.log('Payment Success')\n}, 2000)"
+              code: "setTimeout(() => {\n  console.log('Payment Successful')\n}, 2000)"
             },
+
             {
               type: "paragraph",
-              text: "After 2 seconds, the callback waits inside the Callback Queue until the Call Stack becomes empty."
+              text: "The timer runs in the background. After 2 seconds, its callback enters the Callback Queue and waits there until the Call Stack becomes empty."
             },
+
+            {
+              type: "code",
+              code: "Background Timer Running...\n        ↓\n2 Seconds Completed\n        ↓\nCallback Added To Callback Queue\n        ↓\nEvent Loop Waits For Empty Call Stack\n        ↓\nCallback Executes"
+            },
+
+            {
+              type: "step",
+              title: " Priya clicks Pay",
+              desc: "Amazon starts payment verification asynchronously."
+            },
+
+            {
+              type: "step",
+              title: " Timer/API runs in background",
+              desc: "Node.js does not block the main thread."
+            },
+
+            {
+              type: "step",
+              title: " Payment verification finishes",
+              desc: "Callback enters the Callback Queue."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop waits",
+              desc: "If Call Stack is busy, callback must wait."
+            },
+
+            {
+              type: "step",
+              title: " Callback executes",
+              desc: "Once stack becomes empty, payment success message prints."
+            },
+
             {
               type: "heading",
-              text: "3. Microtask Queue — Higher Priority Queue"
+              text: "3. Microtask Queue — VIP Priority Queue"
             },
+
             {
               type: "paragraph",
               text: "Promises and process.nextTick callbacks go into the Microtask Queue. This queue has HIGHER priority than the normal Callback Queue."
             },
+
+            {
+              type: "paragraph",
+              text: "Amazon heavily uses Promises for fast async workflows like order confirmations, recommendation systems, inventory checks, and notification pipelines."
+            },
+
             {
               type: "code",
-              code: "Promise.resolve().then(() => {\n  console.log('Promise Executed')\n})"
+              code: "Promise.resolve().then(() => {\n  console.log('Order Confirmation Sent')\n})"
             },
+
+            {
+              type: "paragraph",
+              text: "Once the Promise resolves, its callback enters the Microtask Queue. The Event Loop ALWAYS executes Microtasks before normal Callback Queue tasks."
+            },
+
+            {
+              type: "code",
+              code: "Promise Resolved\n        ↓\nCallback Added To Microtask Queue\n        ↓\nEvent Loop Prioritizes Microtasks\n        ↓\nCallback Executes Before Timers"
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 process.nextTick() in Node.js has even higher priority and executes before Promise microtasks."
+            },
+
+            {
+              type: "heading",
+              text: "Priority Order Inside Node.js"
+            },
+
             {
               type: "table",
-              headers: ["Queue", "Contains", "Priority"],
+              headers: ["Structure", "Contains", "Priority"],
               rows: [
                 [
                   "Call Stack",
@@ -501,156 +706,484 @@ export const roadmapData = [
                   "Highest"
                 ],
                 [
+                  "process.nextTick Queue",
+                  "process.nextTick callbacks",
+                  "Very High"
+                ],
+                [
                   "Microtask Queue",
-                  "Promises, process.nextTick",
+                  "Promises, queueMicrotask",
                   "High"
                 ],
                 [
                   "Callback Queue",
-                  "Timers, setTimeout, I/O callbacks",
+                  "setTimeout, setInterval, I/O callbacks",
                   "Normal"
                 ]
               ]
             },
+
             {
               type: "heading",
-              text: "Execution Flow"
+              text: "Amazon Execution Flow Example"
             },
+
             {
               type: "code",
-              code: "console.log('1')\n\nsetTimeout(() => {\n  console.log('2')\n}, 0)\n\nPromise.resolve().then(() => {\n  console.log('3')\n})\n\nconsole.log('4')"
+              code: "console.log('1 - Rahul Searches Product')\n\nsetTimeout(() => {\n  console.log('2 - Payment Verification Complete')\n}, 0)\n\nPromise.resolve().then(() => {\n  console.log('3 - Order Confirmation Sent')\n})\n\nconsole.log('4 - Product Page Loaded')"
             },
+
             {
               type: "code",
-              code: "Output:\n1\n4\n3\n2"
+              code: "Output:\n1 - Rahul Searches Product\n4 - Product Page Loaded\n3 - Order Confirmation Sent\n2 - Payment Verification Complete"
             },
+
+            {
+              type: "heading",
+              text: "Step-by-Step Internal Flow"
+            },
+
             {
               type: "step",
-              title: "Call Stack executes sync code first",
-              desc: "1 and 4 print immediately."
+              title: " Sync code enters Call Stack",
+              desc: "console.log('1') executes immediately."
             },
+
             {
               type: "step",
-              title: "Promise enters Microtask Queue",
-              desc: "Promise callback waits in high-priority queue."
+              title: " setTimeout delegated",
+              desc: "Timer starts in background and callback waits for completion."
             },
+
             {
               type: "step",
-              title: "setTimeout enters Callback Queue",
-              desc: "Timer callback waits in normal queue."
+              title: " Promise resolves quickly",
+              desc: "Promise callback enters Microtask Queue."
             },
+
+            {
+              type: "step",
+              title: " console.log('4') executes",
+              desc: "Remaining synchronous code finishes first."
+            },
+
             {
               type: "step",
               title: "Event Loop checks Microtasks first",
-              desc: "Promise callback executes before timers."
+              desc: "Promise callback executes before timer callback."
             },
+
             {
               type: "step",
-              title: "Timer callback executes last",
+              title: "Callback Queue executes last",
               desc: "Finally setTimeout callback runs."
             },
+
+            {
+              type: "heading",
+              text: "Visual Internal Execution Flow"
+            },
+
+            {
+              type: "code",
+              code: "Call Stack Executes Sync Code\n            ↓\n---------------------------------\nMicrotask Queue (High Priority)\n• Promises\n• process.nextTick\n---------------------------------\n            ↓\n---------------------------------\nCallback Queue (Normal Priority)\n• setTimeout\n• setInterval\n• I/O Callbacks\n---------------------------------\n            ↓\nEvent Loop Picks Tasks Continuously"
+            },
+
             {
               type: "success-callout",
               text: "✅ Microtasks always execute before normal callback queue tasks. That's why Promises often run before setTimeout even with 0ms delay."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ This priority system helps Amazon-like systems execute critical async operations quickly while still handling massive concurrent traffic efficiently."
             }
           ],
 
           "setTimeout vs setImmediate vs process.nextTick": [
             {
               type: "paragraph",
-              text: "Node.js has multiple ways to schedule asynchronous callbacks — but they don't execute at the same time. Understanding setTimeout, setImmediate, and process.nextTick is crucial for understanding Node.js internals."
+              text: "Inside Amazon-like systems, not all asynchronous callbacks execute at the same time. Some operations need ultra-high priority, some should execute after I/O operations, while others should wait for a delay. Node.js provides multiple scheduling mechanisms like process.nextTick, setImmediate, and setTimeout to control exactly WHEN callbacks should run."
             },
+
             {
-              type: "image",
-              src: "timeout-vs-immediate.png"
+              type: "curious-callout",
+              text: "❓ Rahul adds an iPhone to cart, payment verification starts, stock updates happen, and recommendation APIs execute — but how does Node.js decide which callback should execute FIRST?"
             },
+
+            {
+              type: "heading",
+              text: "The Big Idea"
+            },
+
+            {
+              type: "paragraph",
+              text: "Node.js Event Loop works in phases. Different async callbacks enter different queues, and each queue has different execution priority."
+            },
+
+            {
+              type: "code",
+              code: "Current Sync Code Executes\n            ↓\nprocess.nextTick Queue\n            ↓\nPromise Microtask Queue\n            ↓\nTimers Phase (setTimeout)\n            ↓\nPoll Phase (I/O Operations)\n            ↓\nCheck Phase (setImmediate)"
+            },
+
+            {
+              type: "heading",
+              text: "Execution Priority Table"
+            },
+
             {
               type: "table",
-              headers: ["Function", "Queue", "Runs When"],
+              headers: ["Function", "Queue/Phase", "Runs When"],
               rows: [
                 [
                   "process.nextTick",
-                  "Microtask Queue",
+                  "nextTick Queue",
                   "Immediately after current operation"
                 ],
                 [
                   "Promise.then",
                   "Microtask Queue",
-                  "After current stack"
+                  "After current stack finishes"
                 ],
                 [
                   "setTimeout",
-                  "Timers Queue",
+                  "Timers Phase",
                   "After minimum delay"
                 ],
                 [
                   "setImmediate",
-                  "Check Phase Queue",
+                  "Check Phase",
                   "After I/O operations"
                 ]
               ]
             },
+
+            {
+              type: "heading",
+              text: "1. process.nextTick — Ultra High Priority"
+            },
+
+            {
+              type: "paragraph",
+              text: "process.nextTick executes BEFORE the Event Loop moves to the next phase. It runs immediately after the current operation finishes."
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine Rahul clicks 'Add To Cart' on Amazon. Before anything else happens, Amazon may instantly validate the cart internally."
+            },
+
             {
               type: "code",
-              code: "setTimeout(() => console.log('timeout'))\n\nsetImmediate(() => console.log('immediate'))\n\nprocess.nextTick(() => console.log('nextTick'))\n\nconsole.log('sync')"
+              code: "process.nextTick(() => {\n  console.log('Cart Validation Completed')\n})"
             },
+
             {
-              type: "code",
-              code: "Output:\nsync\nnextTick\nimmediate OR timeout"
+              type: "step",
+              title: " Rahul clicks Add To Cart",
+              desc: "Amazon receives cart request."
             },
+
+            {
+              type: "step",
+              title: " Cart validation scheduled",
+              desc: "Node.js adds callback into nextTick queue."
+            },
+
+            {
+              type: "step",
+              title: " Current operation finishes",
+              desc: "Node.js immediately executes nextTick callback."
+            },
+
             {
               type: "info-callout",
-              text: "💡 process.nextTick is extremely high priority. Overusing it can block the Event Loop because Node.js keeps executing nextTick callbacks before moving to other phases."
+              text: "💡 process.nextTick is extremely high priority. If abused heavily, it can block the Event Loop because Node.js keeps executing nextTick callbacks before moving to other phases."
             },
-            {
-              type: "heading",
-              text: "Real Amazon Example"
-            },
-            {
-              type: "table",
-              headers: ["Feature", "Possible Internal Usage"],
-              rows: [
-                [
-                  "Immediate payment validation",
-                  "process.nextTick"
-                ],
-                [
-                  "API response cleanup",
-                  "setImmediate"
-                ],
-                [
-                  "Retry after delay",
-                  "setTimeout"
-                ]
-              ]
-            },
-            {
-              type: "success-callout",
-              text: "✅ process.nextTick > Promise Microtasks > setTimeout/setImmediate in execution priority."
-            }
-          ],
 
-          "What is libuv?": [
-            {
-              type: "paragraph",
-              text: "Many beginners think Node.js itself handles async operations internally. That's not fully true. The real hero behind Node.js asynchronous behavior is a C library called libuv."
-            },
-            {
-              type: "image",
-              src: "libuv.png"
-            },
             {
               type: "heading",
-              text: "What Does libuv Do?"
+              text: "2. Promise.then — High Priority Microtask"
             },
+
             {
               type: "paragraph",
-              text: "libuv handles asynchronous operations like file systems, networking, sockets, DNS lookups, and thread pool management."
+              text: "Promise callbacks go into the Microtask Queue. They execute after process.nextTick but before timers and I/O callbacks."
             },
+
+            {
+              type: "paragraph",
+              text: "Amazon may use Promises for fast async operations like updating recommendations after Rahul adds an iPhone to cart."
+            },
+
             {
               type: "code",
-              code: "JavaScript Code\n      ↓\nV8 Engine Executes JS\n      ↓\nlibuv Handles Async Work\n      ↓\nOperating System\n      ↓\nCompleted Result Returns"
+              code: "Promise.resolve().then(() => {\n  console.log('Recommended Accessories Loaded')\n})"
             },
+
+            {
+              type: "step",
+              title: " Cart updated successfully",
+              desc: "Promise resolves quickly."
+            },
+
+            {
+              type: "step",
+              title: " Callback enters Microtask Queue",
+              desc: "It waits until current stack finishes."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop executes microtask",
+              desc: "Recommendations load before timers execute."
+            },
+
+            {
+              type: "heading",
+              text: "3. setTimeout — Run After Delay"
+            },
+
+            {
+              type: "paragraph",
+              text: "setTimeout schedules callbacks in the Timers Phase. Even with 0ms delay, it does NOT execute immediately."
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon may use setTimeout for retrying failed inventory checks or delayed notifications."
+            },
+
+            {
+              type: "code",
+              code: "setTimeout(() => {\n  console.log('Retry Inventory Check')\n}, 2000)"
+            },
+
+            {
+              type: "step",
+              title: " Inventory API temporarily fails",
+              desc: "Amazon schedules retry after 2 seconds."
+            },
+
+            {
+              type: "step",
+              title: " Timer starts in background",
+              desc: "Node.js continues handling other users."
+            },
+
+            {
+              type: "step",
+              title: " Timer completes",
+              desc: "Callback enters Timers Queue."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop executes timer callback",
+              desc: "Retry operation finally runs."
+            },
+
+            {
+              type: "heading",
+              text: "4. setImmediate — Run After I/O"
+            },
+
+            {
+              type: "paragraph",
+              text: "setImmediate callbacks execute during the Check Phase, usually after I/O operations complete."
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon may use setImmediate to clean up API responses or trigger background analytics after database operations."
+            },
+
+            {
+              type: "code",
+              code: "setImmediate(() => {\n  console.log('Cart Analytics Updated')\n})"
+            },
+
+            {
+              type: "step",
+              title: " Database operation finishes",
+              desc: "Cart successfully stored in database."
+            },
+
+            {
+              type: "step",
+              title: " setImmediate callback queued",
+              desc: "Callback enters Check Phase queue."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop reaches Check Phase",
+              desc: "Analytics callback executes."
+            },
+
+            {
+              type: "heading",
+              text: "Complete Amazon Cart Example"
+            },
+
+            {
+              type: "code",
+              code: "setTimeout(() => {\n  console.log('Retry Failed Coupon Validation')\n}, 0)\n\nsetImmediate(() => {\n  console.log('Update Cart Analytics')\n})\n\nprocess.nextTick(() => {\n  console.log('Validate Cart Instantly')\n})\n\nPromise.resolve().then(() => {\n  console.log('Load Product Recommendations')\n})\n\nconsole.log('User Added iPhone To Cart')"
+            },
+
+            {
+              type: "code",
+              code: "Possible Output:\nUser Added iPhone To Cart\nValidate Cart Instantly\nLoad Product Recommendations\nUpdate Cart Analytics\nRetry Failed Coupon Validation"
+            },
+
+            {
+              type: "heading",
+              text: "Step-by-Step Internal Flow"
+            },
+
+            {
+              type: "step",
+              title: "Sync code executes first",
+              desc: "User Added iPhone To Cart prints immediately."
+            },
+
+            {
+              type: "step",
+              title: " process.nextTick executes",
+              desc: "nextTick queue has highest priority."
+            },
+
+            {
+              type: "step",
+              title: "Promise microtask executes",
+              desc: "Microtask queue runs after nextTick."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop enters next phases",
+              desc: "Timers and Check phases now execute."
+            },
+
+            {
+              type: "step",
+              title: " setImmediate or setTimeout executes",
+              desc: "Their order can vary depending on Event Loop timing and I/O conditions."
+            },
+
+            {
+              type: "heading",
+              text: "Why setImmediate vs setTimeout Order Changes"
+            },
+
+            {
+              type: "paragraph",
+              text: "Outside I/O operations, setTimeout(0) and setImmediate can execute in different orders depending on system timing. Inside I/O callbacks, setImmediate usually executes first."
+            },
+
+            {
+              type: "code",
+              code: "Priority Order:\n\n1. Current Sync Code\n2. process.nextTick\n3. Promise Microtasks\n4. Timers (setTimeout)\n5. Poll Phase (I/O)\n6. Check Phase (setImmediate)"
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ process.nextTick has the highest priority among async callbacks in Node.js."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Promises execute before timers because Microtask Queue has higher priority than the Callback Queue."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Amazon-like systems use different scheduling mechanisms to prioritize critical operations like payments, cart validation, recommendations, and analytics efficiently."
+            }
+          ],
+          "libuv & Thread Pool in Node.js": [
+            {
+              type: "paragraph",
+              text: "Many beginners think Node.js itself magically handles asynchronous operations like database queries, file reads, networking, and timers. But the real engine behind Node.js async behavior is a powerful C library called libuv."
+            },
+
+            {
+              type: "curious-callout",
+              text: "❓ Rahul uploads an invoice PDF on Amazon, Priya downloads a bill, Aman makes payment, and thousands of users search products simultaneously. JavaScript runs on ONE thread — so who is actually doing all the heavy background work?"
+            },
+
+            {
+              type: "heading",
+              text: "What is libuv?"
+            },
+
+            {
+              type: "paragraph",
+              text: "libuv is a low-level C library used internally by Node.js. It powers the Event Loop and manages asynchronous operations like file systems, networking, sockets, timers, DNS lookups, and background worker threads."
+            },
+
+            {
+              type: "paragraph",
+              text: "JavaScript itself cannot directly perform async operating system tasks. Instead, Node.js delegates those operations to libuv."
+            },
+
+            {
+              type: "code",
+              code: "JavaScript Code\n        ↓\nV8 Engine Executes JS\n        ↓\nlibuv Receives Async Task\n        ↓\nOperating System / Thread Pool Handles Work\n        ↓\nTask Completes\n        ↓\nEvent Loop Gets Result\n        ↓\nCallback Executes"
+            },
+
+            {
+              type: "heading",
+              text: "Amazon Real-World Flow"
+            },
+
+            {
+              type: "step",
+              title: " Rahul uploads invoice PDF",
+              desc: "Amazon backend receives file upload request."
+            },
+
+            {
+              type: "step",
+              title: "JavaScript starts execution",
+              desc: "V8 engine runs the Node.js code."
+            },
+
+            {
+              type: "step",
+              title: " File operation delegated to libuv",
+              desc: "Reading or writing files is slow, so Node.js sends the task to libuv."
+            },
+
+            {
+              type: "step",
+              title: "libuv uses background worker thread",
+              desc: "The file operation executes outside the main thread."
+            },
+
+            {
+              type: "step",
+              title: " Main thread stays free",
+              desc: "Meanwhile Node.js continues serving other Amazon users."
+            },
+
+            {
+              type: "step",
+              title: "File operation finishes",
+              desc: "libuv notifies the Event Loop that work is completed."
+            },
+
+            {
+              type: "step",
+              title: " Callback executes",
+              desc: "Node.js finally sends upload success response."
+            },
+
+            {
+              type: "heading",
+              text: "What Exactly Does libuv Handle?"
+            },
+
             {
               type: "table",
               headers: ["Responsibility", "Handled By"],
@@ -664,60 +1197,78 @@ export const roadmapData = [
                   "libuv"
                 ],
                 [
-                  "File System Async",
+                  "File System Operations",
                   "libuv"
                 ],
                 [
-                  "Thread Pool",
+                  "Thread Pool Management",
                   "libuv"
                 ],
                 [
                   "Timers",
                   "libuv"
+                ],
+                [
+                  "DNS Lookups",
+                  "libuv"
+                ],
+                [
+                  "Sockets & Networking",
+                  "Operating System + libuv"
                 ]
               ]
             },
-            {
-              type: "success-callout",
-              text: "✅ libuv is the backbone of Node.js async architecture. Without libuv, Node.js could not perform non-blocking I/O operations."
-            }
-          ],
 
-          "Thread Pool in Node.js": [
-            {
-              type: "paragraph",
-              text: "Even though JavaScript runs on one thread, Node.js secretly uses background threads internally through libuv's Thread Pool."
-            },
-            {
-              type: "image",
-              src: "threadpool.png"
-            },
             {
               type: "heading",
-              text: "Why Thread Pool Exists"
+              text: "What is the Thread Pool?"
             },
+
             {
               type: "paragraph",
-              text: "Some operations are too slow for the Event Loop — especially file systems, cryptography, compression, and DNS lookups."
+              text: "Even though JavaScript runs on one main thread, Node.js secretly uses multiple background worker threads internally through libuv's Thread Pool."
             },
+
+            {
+              type: "paragraph",
+              text: "The Thread Pool exists because some tasks are too slow and blocking for the Event Loop."
+            },
+
             {
               type: "code",
-              code: "fs.readFile('products.json', () => {\n  console.log('File Read Complete')\n})"
+              code: "const fs = require('fs')\n\nfs.readFile('products.json', () => {\n  console.log('Products Loaded')\n})"
             },
+
             {
               type: "paragraph",
-              text: "The file reading operation gets delegated to libuv's thread pool instead of blocking the main thread."
+              text: "The file reading operation does NOT happen on the main JavaScript thread. libuv sends this task to a background worker thread from the Thread Pool."
             },
+
+            {
+              type: "heading",
+              text: "Why Thread Pool is Needed"
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine Amazon trying to read huge product files, encrypt passwords, compress invoices, or process images directly on the main thread. The entire server would freeze for other users."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead, libuv offloads these expensive operations to worker threads while the Event Loop keeps serving new incoming requests."
+            },
+
             {
               type: "table",
-              headers: ["Uses Thread Pool", "Does NOT Use Thread Pool"],
+              headers: ["Uses Thread Pool", "Usually Does NOT Use Thread Pool"],
               rows: [
                 [
-                  "File System",
+                  "File System Operations",
                   "Most Network Requests"
                 ],
                 [
-                  "Crypto",
+                  "Password Hashing / Crypto",
                   "HTTP APIs"
                 ],
                 [
@@ -725,168 +1276,62 @@ export const roadmapData = [
                   "Sockets"
                 ],
                 [
-                  "DNS lookup",
+                  "DNS.lookup()",
                   "Timers"
                 ]
               ]
             },
+
+            {
+              type: "heading",
+              text: "Internal Architecture Flow"
+            },
+
+            {
+              type: "code",
+              code: "Amazon User Request\n        ↓\nNode.js Main Thread\n        ↓\nHeavy Task Detected\n        ↓\nlibuv Delegates Work\n        ↓\nThread Pool Executes Task\n        ↓\nMain Thread Keeps Handling Users\n        ↓\nTask Finishes\n        ↓\nEvent Loop Receives Completion\n        ↓\nCallback Executes"
+            },
+
             {
               type: "info-callout",
-              text: "💡 By default libuv creates 4 background worker threads. This can be increased using UV_THREADPOOL_SIZE."
+              text: "💡 By default, libuv creates 4 worker threads internally. This can be increased using the UV_THREADPOOL_SIZE environment variable."
             },
+
+            {
+              type: "info-callout",
+              text: "💡 Not all async operations use the Thread Pool. Many network operations are handled directly by the operating system asynchronously."
+            },
+
+            {
+              type: "heading",
+              text: "Simple Restaurant Analogy"
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine a restaurant manager taking customer orders. The manager does not personally cook food, wash dishes, or pack parcels. Instead, those heavy tasks are delegated to kitchen staff working in the background. The manager stays free to handle new customers continuously."
+            },
+
+            {
+              type: "paragraph",
+              text: "In Node.js:\n• Manager = Event Loop\n• Kitchen Workers = libuv Thread Pool\n• Restaurant System = Operating System"
+            },
+
             {
               type: "success-callout",
-              text: "✅ Thread Pool allows Node.js to offload expensive tasks without blocking the Event Loop."
+              text: "✅ libuv is the backbone of Node.js asynchronous architecture."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ The Thread Pool allows Node.js to perform expensive operations without blocking the Event Loop."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ This is why Amazon-like systems can process uploads, payments, encryption, invoices, and massive traffic efficiently on lightweight Node.js servers."
             }
           ],
-
-          "How File System & Network Requests Work Internally": [
-            {
-              type: "paragraph",
-              text: "When Amazon fetches products from databases or reads invoices from disk, Node.js does NOT pause and wait. Internally, the request gets delegated to background systems."
-            },
-            {
-              type: "image",
-              src: "fs-network-flow.png"
-            },
-            {
-              type: "heading",
-              text: "File System Flow"
-            },
-            {
-              type: "code",
-              code: "fs.readFile('invoice.pdf', callback)\n        ↓\nlibuv sends task to Thread Pool\n        ↓\nBackground thread reads file\n        ↓\nTask completes\n        ↓\nCallback enters Callback Queue\n        ↓\nEvent Loop executes callback"
-            },
-            {
-              type: "heading",
-              text: "Network Request Flow"
-            },
-            {
-              type: "code",
-              code: "fetch('https://amazon-api.com/products')\n        ↓\nOperating System handles socket networking\n        ↓\nResponse arrives\n        ↓\nCallback queued\n        ↓\nEvent Loop executes response callback"
-            },
-            {
-              type: "table",
-              headers: ["Operation", "Handled By"],
-              rows: [
-                [
-                  "File Reads",
-                  "Thread Pool"
-                ],
-                [
-                  "Database Queries",
-                  "Database Engines"
-                ],
-                [
-                  "HTTP Requests",
-                  "Operating System Networking"
-                ],
-                [
-                  "Timers",
-                  "libuv Timers"
-                ]
-              ]
-            },
-            {
-              type: "success-callout",
-              text: "✅ Node.js itself rarely performs heavy work directly. It coordinates async systems efficiently while keeping the Event Loop free."
-            }
-          ],
-
-          "CPU Intensive Tasks Problem": [
-            {
-              type: "paragraph",
-              text: "Node.js is excellent for APIs and networking — but CPU-heavy tasks can completely block the Event Loop."
-            },
-            {
-              type: "image",
-              src: "cpu-blocking.png"
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Amazon's API suddenly starts generating huge PDFs and video processing inside the main thread. Why does the entire server become slow for ALL users?"
-            },
-            {
-              type: "heading",
-              text: "Why CPU Tasks Are Dangerous"
-            },
-            {
-              type: "paragraph",
-              text: "JavaScript runs on ONE main thread. If heavy computation starts, the Event Loop cannot process new requests until computation finishes."
-            },
-            {
-              type: "code",
-              code: "while(true) {\n  // Infinite CPU work\n}"
-            },
-            {
-              type: "paragraph",
-              text: "During this loop, NO API requests, NO timers, NO callbacks, and NO user requests can execute."
-            },
-            {
-              type: "heading",
-              text: "Real Amazon Problem"
-            },
-            {
-              type: "table",
-              headers: ["Heavy CPU Task", "Impact"],
-              rows: [
-                [
-                  "Large PDF generation",
-                  "Blocks API responses"
-                ],
-                [
-                  "Video rendering",
-                  "Freezes Event Loop"
-                ],
-                [
-                  "AI model execution",
-                  "High CPU usage"
-                ],
-                [
-                  "Image processing",
-                  "Delays all requests"
-                ]
-              ]
-            },
-            {
-              type: "heading",
-              text: "Solutions"
-            },
-            {
-              type: "table",
-              headers: ["Solution", "Purpose"],
-              rows: [
-                [
-                  "Worker Threads",
-                  "Run CPU tasks separately"
-                ],
-                [
-                  "Clustering",
-                  "Use multiple CPU cores"
-                ],
-                [
-                  "Microservices",
-                  "Move heavy work to separate services"
-                ],
-                [
-                  "Queues",
-                  "Process heavy tasks asynchronously"
-                ]
-              ]
-            },
-            {
-              type: "code",
-              code: "Main API Server\n      ↓\nHeavy Task Sent to Worker Service\n      ↓\nMain Event Loop Stays Fast"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Node.js shines for I/O-heavy applications like APIs, chats, streaming, and real-time systems. CPU-intensive work should usually be offloaded to workers or separate services."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Understanding the Event Loop is the foundation of mastering Node.js. Almost every advanced backend concept — streams, WebSockets, scaling, clustering, microservices, queues — builds on top of this architecture."
-            }
-          ]
         }
       },
 
@@ -900,378 +1345,874 @@ export const roadmapData = [
           "Sharing Data Between Threads",
           "What is Clustering?",
           "Using Multiple CPU Cores",
-          "process.nextTick and setImmediate",
-          "workerData and isMainThread",
           "MessageChannel and Advanced Communication",
-          "Thread Pools in Node.js",
-          "PM2 for Production Clustering",
-          "How Amazon/Netflix Scale Node.js Servers"
         ],
 
         "topicDetails": {
           "Why Worker Threads Exist": [
             {
-              "type": "paragraph",
-              "text": "Node.js became extremely popular because it can efficiently handle thousands of users using its non-blocking asynchronous architecture. The Event Loop continuously processes completed I/O operations without waiting, making Node.js very fast for database queries, API calls, file handling, and network requests."
+              type: "paragraph",
+              text: "Node.js became extremely popular because of its fast non-blocking Event Loop architecture. A single Node.js server can efficiently handle thousands of concurrent users performing API calls, database queries, file uploads, streaming, and real-time socket communication without creating one thread per user. This makes Node.js excellent for I/O-heavy applications like Amazon, Netflix, Flipkart, and Paytm."
             },
+
             {
-              "type": "step",
-              "title": "Why Node.js Performs Well",
-              "desc": "Node.js uses a non-blocking asynchronous architecture that allows it to handle thousands of concurrent users efficiently without creating separate threads for every request."
+              type: "paragraph",
+              text: "However, JavaScript execution itself still runs on a single main thread. CPU-heavy operations such as PDF generation, image processing, video compression, machine learning, fraud detection, and massive calculations execute directly on the main thread and can completely block the Event Loop. While this heavy computation is running, Node.js cannot process new requests, execute callbacks, or respond to users."
             },
+
             {
-              "type": "step",
-              "title": "Single Thread Limitation",
-              "desc": "All JavaScript code in Node.js runs on a single main thread. Async operations are delegated to the OS and libuv thread pool, but CPU-heavy tasks still execute directly on the main thread."
+              type: "paragraph",
+              text: "Worker Threads were introduced to solve this limitation. They allow CPU-intensive JavaScript code to run on separate threads so the main Event Loop remains free and responsive while heavy tasks execute independently in parallel."
             },
+
             {
-              "type": "step",
-              "title": "CPU Heavy Tasks Block the Event Loop",
-              "desc": "Tasks like PDF generation, image processing, video compression, machine learning predictions, and report generation can block the Event Loop and freeze the application temporarily."
+              type: "curious-callout",
+              text: "❓ Imagine Amazon is generating lakhs of PDF invoices during a flash sale. If invoice generation happens on the main thread, what happens to checkout and payment APIs?"
             },
+
             {
-              "type": "paragraph",
-              "text": "A real-world example is Amazon during the Great Indian Festival sale. Millions of users browse products, place orders, apply coupons, and make payments while the backend generates thousands of PDF invoices every second."
+              type: "heading",
+              text: "Why Node.js Performs So Well"
             },
+
             {
-              "type": "step",
-              "title": "Problem During Flash Sales",
-              "desc": "If even one heavy PDF generation task runs on the main Node.js thread, APIs like checkout, payment, and product search can stop responding until the computation finishes."
+              type: "step",
+              title: "Non-blocking architecture",
+              desc: "Node.js delegates async operations like DB queries and API calls to background systems."
             },
+
             {
-              "type": "step",
-              "title": "Worker Threads Solve the Problem",
-              "desc": "Worker Threads move CPU-intensive work to separate threads, keeping the Event Loop responsive and allowing the server to continue handling incoming requests smoothly."
+              type: "step",
+              title: "Single Event Loop",
+              desc: "One lightweight thread handles thousands of concurrent users efficiently."
             },
+
             {
-              "type": "image",
-              "src": "workerthreads.png"
+              type: "step",
+              title: "Excellent for I/O operations",
+              desc: "Perfect for APIs, databases, sockets, streaming, and networking."
             },
+
             {
-              "type": "curious-callout",
-              "text": "❓ Imagine Amazon is generating lakhs of invoices during a huge sale. PDF generation is CPU-heavy. If Node.js generates all PDFs on the main thread itself, what happens to checkout APIs and payment APIs? Every user trying to pay would see a timeout error while the server is stuck generating a single invoice."
+              type: "heading",
+              text: "The Main Limitation"
             },
+
             {
-              "type": "heading",
-              "text": "The Real Problem — Event Loop Blocking"
+              type: "paragraph",
+              text: "CPU-heavy tasks still run directly on the main thread because JavaScript execution itself is single-threaded. Even though Node.js handles asynchronous I/O efficiently, expensive calculations can still freeze the Event Loop and block all incoming requests."
             },
+
             {
-              "type": "paragraph",
-              "text": "The Event Loop is the heart of Node.js. It continuously monitors the Call Stack and the callback queues. The Event Loop can only pick up and process new callbacks if the Call Stack is completely empty. If a long-running CPU task occupies the Call Stack for even 5 seconds, the Event Loop is completely frozen during that time. It cannot accept new connections, respond to health checks, process payment confirmations, or handle any other incoming request. The entire server appears dead to users."
-            },
-            {
-              "type": "paragraph",
-              "text": "This is not a Node.js bug — it is how JavaScript was designed. JavaScript was originally a single-threaded language built for browser interactions. Worker Threads were introduced in Node.js v10 and became stable in v12 specifically to address this limitation in server-side applications where CPU-intensive work is common."
-            },
-            {
-              "type": "code",
-              "code": "// BAD EXAMPLE — This blocks the entire server\nfunction heavyCalculation() {\n  let total = 0;\n\n  // This loop runs for several seconds on the MAIN THREAD\n  // During this time NO other request can be processed\n  for (let i = 0; i < 10_000_000_000; i++) {\n    total += i;\n  }\n\n  return total;\n}\n\napp.get('/report', (req, res) => {\n  // All users hitting ANY endpoint will be stuck\n  // until this single calculation finishes\n  const result = heavyCalculation();\n  res.send(`Report total: ${result}`);\n});\n\napp.get('/checkout', (req, res) => {\n  // Even this simple checkout will NOT respond\n  // while /report is still calculating above\n  res.send('Order placed!');\n});"
-            },
-            {
-              "type": "step",
-              "title": "User A requests report generation",
-              "desc": "Node.js starts executing the heavyCalculation() function on the main thread. The Call Stack is now occupied."
-            },
-            {
-              "type": "step",
-              "title": "CPU-heavy loop starts running",
-              "desc": "The for-loop iterates 10 billion times. This takes several seconds. The main thread is 100% occupied with this work."
-            },
-            {
-              "type": "step",
-              "title": "Event Loop gets completely blocked",
-              "desc": "Node.js cannot process any incoming requests, run any callbacks, or respond to any health checks while the calculation runs."
-            },
-            {
-              "type": "step",
-              "title": "User B tries to checkout",
-              "desc": "User B's checkout request arrives but sits in the queue. The Event Loop cannot pick it up because the Call Stack is still busy."
-            },
-            {
-              "type": "step",
-              "title": "Entire server appears frozen",
-              "desc": "Checkout APIs, login APIs, payment APIs, and even health check endpoints all stop responding. Users see timeouts."
-            },
-            {
-              "type": "heading",
-              "text": "How Worker Threads Solve This"
-            },
-            {
-              "type": "paragraph",
-              "text": "Worker Threads move CPU-heavy JavaScript execution completely away from the main thread onto a separate thread. Instead of blocking the Event Loop, expensive calculations run in their own isolated environment while the main server continues handling thousands of users normally. The main thread simply creates a worker, gives it the heavy job, and immediately goes back to processing user requests. When the worker finishes, it sends the result back to the main thread through a message."
-            },
-            {
-              "type": "paragraph",
-              "text": "Going back to the Amazon example — with Worker Threads, every invoice generation request spins up a worker thread that handles the PDF creation independently. The main thread keeps processing checkout requests, payment confirmations, and order status updates without any delay. Users experience zero slowdown even while thousands of invoices are being generated simultaneously in the background."
-            },
-            {
-              "type": "table",
-              "headers": ["Without Worker Threads", "With Worker Threads"],
-              "rows": [
-                ["Main thread blocked during CPU work", "Heavy work moved to separate thread"],
-                ["All APIs become slow or timeout", "APIs stay fully responsive"],
-                ["Server appears frozen to users", "Server continues handling requests"],
-                ["Single CPU core utilized", "Multiple CPU cores can be utilized"],
-                ["PDF generation blocks checkout", "PDF generation runs alongside checkout"],
-                ["Poor scalability under load", "Better parallel processing capacity"],
-                ["Bad for image/video processing", "Perfect for any CPU-heavy work"]
+              type: "table",
+              headers: ["Good for Node.js", "Bad for Main Thread"],
+              rows: [
+                [
+                  "API calls",
+                  "PDF generation"
+                ],
+                [
+                  "Database queries",
+                  "Video compression"
+                ],
+                [
+                  "Sockets",
+                  "Image processing"
+                ],
+                [
+                  "File uploads",
+                  "Machine learning"
+                ],
+                [
+                  "Streaming",
+                  "Huge calculations"
+                ]
               ]
             },
+
             {
-              "type": "success-callout",
-              "text": "✅ Worker Threads exist because Node.js's single-threaded architecture is excellent for I/O operations but struggles with heavy CPU calculations. Workers solve this by running computations in completely separate threads, keeping the Event Loop always free."
+              type: "heading",
+              text: "Amazon Flash Sale Problem"
+            },
+
+            {
+              type: "paragraph",
+              text: "During Amazon Great Indian Festival sales, millions of users continuously search products, place orders, complete payments, and refresh checkout pages. At the same time Amazon also generates invoices, processes images, runs fraud detection systems, updates analytics, and calculates recommendations. These operations can become extremely CPU-intensive during traffic spikes."
+            },
+
+            {
+              type: "paragraph",
+              text: "If heavy operations like invoice PDF generation run directly on the main thread, the Event Loop becomes blocked. As a result, checkout APIs slow down, payment requests timeout, carts freeze, and the server starts feeling unresponsive for all users."
+            },
+
+            {
+              type: "step",
+              title: "User places an order",
+              desc: "Amazon starts invoice PDF generation."
+            },
+
+            {
+              type: "step",
+              title: "Heavy PDF generation starts",
+              desc: "CPU becomes busy generating layouts, images, taxes, and QR codes."
+            },
+
+            {
+              type: "step",
+              title: "Main thread gets blocked",
+              desc: "The Event Loop cannot process new incoming requests."
+            },
+
+            {
+              type: "step",
+              title: "Checkout APIs stop responding",
+              desc: "Other users trying payments now experience delays and timeouts."
+            },
+
+            {
+              type: "step",
+              title: "Entire server feels frozen",
+              desc: "Search, payments, carts, and health checks become slow."
+            },
+
+            {
+              type: "heading",
+              text: "The Real Problem — Event Loop Blocking"
+            },
+
+            {
+              type: "paragraph",
+              text: "The Event Loop only works when the Call Stack is empty. Long CPU-heavy tasks occupy the Call Stack for several seconds or even minutes. During that time Node.js cannot execute callbacks, process APIs, handle timers, or respond to incoming users because the single main thread remains fully occupied."
+            },
+
+            {
+              type: "code",
+              code: "// BAD EXAMPLE — Blocks entire server\nfunction heavyCalculation() {\n  let total = 0;\n\n  for (let i = 0; i < 10_000_000_000; i++) {\n    total += i;\n  }\n\n  return total;\n}\n\napp.get('/report', (req, res) => {\n  const result = heavyCalculation();\n  res.send(`Report total: ${result}`);\n});\n\napp.get('/checkout', (req, res) => {\n  res.send('Order placed!');\n});"
+            },
+
+            {
+              type: "heading",
+              text: "What Happens Internally"
+            },
+
+            {
+              type: "step",
+              title: "Report API starts",
+              desc: "heavyCalculation() enters the Call Stack."
+            },
+
+            {
+              type: "step",
+              title: "CPU-heavy loop runs",
+              desc: "The main thread becomes fully occupied."
+            },
+
+            {
+              type: "step",
+              title: "Event Loop freezes",
+              desc: "No new callbacks or requests can execute."
+            },
+
+            {
+              type: "step",
+              title: "Another user tries checkout",
+              desc: "Checkout request waits because the Call Stack is still busy."
+            },
+
+            {
+              type: "step",
+              title: "Users experience timeout",
+              desc: "The entire server appears dead temporarily."
+            },
+
+            {
+              type: "heading",
+              text: "How Worker Threads Solve This"
+            },
+
+            {
+              type: "paragraph",
+              text: "Worker Threads move CPU-heavy JavaScript execution away from the main thread onto separate threads. Each worker has its own V8 engine, memory, Event Loop, and Call Stack, allowing expensive calculations to run independently without blocking the main server."
+            },
+
+            {
+              type: "paragraph",
+              text: "This allows the main Event Loop to stay responsive while heavy background processing continues in parallel on different CPU cores."
+            },
+
+            {
+              type: "code",
+              code: "Incoming Request\n        ↓\nMain Thread Receives Request\n        ↓\nHeavy CPU Task Detected\n        ↓\nWorker Thread Created\n        ↓\nHeavy Calculation Runs In Worker\n        ↓\nMain Thread Continues Handling APIs\n        ↓\nWorker Finishes Task\n        ↓\nResult Sent Back To Main Thread"
+            },
+
+            {
+              type: "heading",
+              text: "Amazon Worker Thread Flow"
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon uses Worker Threads for CPU-intensive operations that should not block checkout APIs. When customers place orders, the main server quickly delegates expensive tasks like invoice generation or fraud detection to worker threads while continuing to serve other users normally."
+            },
+
+            {
+              type: "step",
+              title: "User places order",
+              desc: "Invoice generation request arrives."
+            },
+
+            {
+              type: "step",
+              title: "Main thread creates worker",
+              desc: "Heavy PDF generation moves to separate thread."
+            },
+
+            {
+              type: "step",
+              title: "Worker generates invoice",
+              desc: "CPU-intensive work runs independently."
+            },
+
+            {
+              type: "step",
+              title: "Main thread stays responsive",
+              desc: "Payments, search, and checkout APIs continue normally."
+            },
+
+            {
+              type: "step",
+              title: "Worker sends final PDF",
+              desc: "Completed invoice returns back to main thread."
+            },
+
+            {
+              type: "table",
+              headers: ["Without Worker Threads", "With Worker Threads"],
+              rows: [
+                [
+                  "Main thread blocked",
+                  "Heavy work moved away"
+                ],
+                [
+                  "Checkout APIs freeze",
+                  "APIs remain responsive"
+                ],
+                [
+                  "Single CPU core used",
+                  "Multiple CPU cores utilized"
+                ],
+                [
+                  "Poor scalability",
+                  "Better parallel processing"
+                ],
+                [
+                  "Users see timeouts",
+                  "Smooth user experience"
+                ]
+              ]
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 Worker Threads are mainly used for CPU-heavy work, NOT normal database or API operations."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Worker Threads exist because Node.js is excellent for async I/O but struggles with CPU-heavy calculations on a single thread."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Workers keep the Event Loop free by running expensive computations in completely separate threads."
+            }
+          ],
+          "How Worker Threads Run in Parallel": [
+            {
+              type: "paragraph",
+              text: "Normally, Node.js runs JavaScript on a single main thread. This works extremely well for APIs and I/O operations, but CPU-heavy tasks like image processing, PDF generation, analytics, fraud detection, or video processing can block the Event Loop and slow down the entire server."
+            },
+
+            {
+              type: "paragraph",
+              text: "Worker Threads solve this limitation by creating real OS-level threads that run JavaScript in parallel on multiple CPU cores. Unlike async/await, which still runs on the same thread, Worker Threads allow multiple pieces of JavaScript code to execute simultaneously."
+            },
+
+            {
+              type: "paragraph",
+              text: "Each Worker Thread gets its own isolated V8 engine, memory heap, Call Stack, and Event Loop. This isolation keeps heavy background tasks separate from the main server so APIs remain fast and responsive."
+            },
+
+            {
+              type: "curious-callout",
+              text: "❓ During Amazon Great Indian Festival, millions of users place orders together. At the same time Amazon must generate invoices, process images, calculate recommendations, and verify fraud checks. How can all these heavy tasks run simultaneously without freezing checkout APIs?"
+            },
+
+            {
+              type: "heading",
+              text: "Important Difference"
+            },
+
+            {
+              type: "paragraph",
+              text: "Many developers think async/await creates parallel execution, but that is not true. async/await only avoids blocking during I/O waiting. Worker Threads are what provide actual parallel JavaScript execution."
+            },
+
+            {
+              type: "table",
+              headers: ["Feature", "async/await", "Worker Threads"],
+              rows: [
+                [
+                  "JavaScript Execution",
+                  "Still single-threaded",
+                  "Runs on separate threads"
+                ],
+                [
+                  "Purpose",
+                  "Avoid waiting during I/O",
+                  "Run CPU-heavy work"
+                ],
+                [
+                  "Parallel Execution",
+                  "No",
+                  "Yes"
+                ],
+                [
+                  "Uses Multiple CPU Cores",
+                  "No",
+                  "Yes"
+                ],
+                [
+                  "Heavy Calculations",
+                  "Can still block Event Loop",
+                  "Runs independently"
+                ]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "Amazon Real-World Example"
+            },
+
+            {
+              type: "paragraph",
+              text: "Large systems like Amazon continuously run expensive background computations while users continue browsing products and placing orders normally."
+            },
+
+            {
+              type: "paragraph",
+              text: "When a customer places an order, Amazon may need to generate PDF invoices, resize product images, run fraud detection algorithms, calculate recommendations, process analytics, and update inventory systems together."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead of blocking the main checkout API with these heavy operations, Amazon can move them into separate Worker Threads so all tasks run simultaneously across multiple CPU cores."
+            },
+
+            {
+              type: "code",
+              code: "Customer Places Order\n      ↓\nWorker 1 → Generate PDF Invoice\nWorker 2 → Resize Product Images\nWorker 3 → Fraud Detection Calculation\nWorker 4 → Recommendation Engine\nWorker 5 → Analytics Processing\n      ↓\nAll Tasks Run Simultaneously"
+            },
+
+            {
+              type: "step",
+              title: " Order placed",
+              desc: "Amazon backend receives a new customer order request."
+            },
+
+            {
+              type: "step",
+              title: " Main thread creates workers",
+              desc: "Separate Worker Threads are created for each CPU-intensive background task."
+            },
+
+            {
+              type: "step",
+              title: " OS schedules threads",
+              desc: "Operating system distributes workers across multiple CPU cores."
+            },
+
+            {
+              type: "step",
+              title: " Heavy tasks run in parallel",
+              desc: "Invoice generation, fraud detection, analytics, and image processing all execute simultaneously."
+            },
+
+            {
+              type: "step",
+              title: " Main thread stays responsive",
+              desc: "Checkout APIs, payment APIs, and product APIs continue serving users normally."
+            },
+
+            {
+              type: "heading",
+              text: "Main Thread vs Worker Thread"
+            },
+
+            {
+              type: "table",
+              headers: ["Main Thread", "Worker Thread"],
+              rows: [
+                [
+                  "Handles APIs and Event Loop",
+                  "Handles assigned heavy task"
+                ],
+                [
+                  "Shared by all users",
+                  "Separate parallel thread"
+                ],
+                [
+                  "Must stay responsive",
+                  "Can run long calculations"
+                ],
+                [
+                  "Runs application server",
+                  "Runs isolated JavaScript"
+                ],
+                [
+                  "Cannot block",
+                  "Designed for CPU-heavy work"
+                ]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "Creating a Worker Thread"
+            },
+
+            {
+              type: "code",
+              code: "// main.js\nconst { Worker } = require('worker_threads');\n\nconsole.log('Main thread started');\n\nconst worker = new Worker('./worker.js');\n\nworker.on('message', (result) => {\n  console.log('Worker Result:', result);\n});\n\nconsole.log('Main thread continues serving users');"
+            },
+
+            {
+              type: "paragraph",
+              text: "The main thread creates a Worker Thread and immediately continues handling APIs without waiting for the heavy task to finish."
+            },
+
+            {
+              type: "heading",
+              text: "Worker Thread Code"
+            },
+
+            {
+              type: "code",
+              code: "// worker.js\nconst { parentPort } = require('worker_threads');\n\nlet total = 0;\n\nfor (let i = 0; i < 1_000_000_000; i++) {\n  total += i;\n}\n\nparentPort.postMessage(total);"
+            },
+
+            {
+              type: "paragraph",
+              text: "This heavy calculation runs entirely inside the Worker Thread, keeping the main Event Loop free and responsive."
+            },
+
+            {
+              type: "heading",
+              text: "Internal Parallel Flow"
+            },
+
+            {
+              type: "code",
+              code: "Main Thread\n    ↓\nCreates Worker Thread\n    ↓\n--------------------------------\nWorker Thread Starts\nHeavy Calculation Runs\n--------------------------------\n    ↓\nMain Thread Continues APIs\n    ↓\nWorker Finishes Task\n    ↓\nResult Sent Back Using Message"
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 Worker Threads run in isolated environments, so worker crashes usually do NOT crash the main server."
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 Workers communicate using message passing instead of directly sharing variables or objects."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Worker Threads provide true parallel JavaScript execution in Node.js using multiple CPU cores."
             }
           ],
 
-          "How Worker Threads Run in Parallel": [
-            {
-              "type": "paragraph",
-              "text": "Worker Threads are actual OS-level threads managed by the operating system itself. This is a crucial distinction that many developers misunderstand. When you use async/await or Promises in Node.js, your JavaScript code still executes on the same single main thread — the async pattern just means Node.js doesn't sit idle while waiting for I/O responses. Worker Threads are fundamentally different. They create genuinely separate threads that the OS schedules on different CPU cores, allowing true simultaneous JavaScript execution."
-            },
-            {
-              "type": "paragraph",
-              "text": "Each Worker Thread gets its own completely isolated environment — its own V8 JavaScript engine instance, its own heap memory, its own Call Stack, and its own Event Loop. This isolation means workers cannot accidentally corrupt the main thread's variables or state. A crash inside a worker also does not crash the main process, which is extremely important for production reliability. Workers communicate with the main thread only through structured message passing, which keeps the system safe and predictable."
-            },
-            {
-              "type": "paragraph",
-              "text": "Consider how Netflix uses this in practice. When a new movie is uploaded to Netflix, the platform needs to generate multiple video quality versions — 4K, 1080p, 720p, 480p, 360p — simultaneously, along with generating thumbnail images, extracting subtitles, running content analysis for recommendations, and creating preview clips. Without Worker Threads, each of these tasks would have to run one after another on a single thread, taking hours per movie. With Worker Threads, Netflix can launch separate workers for each task and complete all processing in parallel, dramatically reducing the time before content becomes available to users."
-            },
-            {
-              "type": "image",
-              "src": "parallelworkers.png"
-            },
-            {
-              "type": "heading",
-              "text": "Main Thread vs Worker Thread — Key Differences"
-            },
-            {
-              "type": "table",
-              "headers": ["Main Thread", "Worker Thread"],
-              "rows": [
-                ["Handles all incoming APIs and Event Loop", "Handles only assigned CPU-heavy task"],
-                ["Single thread shared by all users", "Separate parallel thread per task"],
-                ["Must stay responsive at all times", "Can run long calculations without worrying"],
-                ["Manages application entry point", "Independent execution environment"],
-                ["Has access to express app context", "Isolated V8 instance and memory"],
-                ["Communicates via messages to workers", "Communicates via messages to main thread"],
-                ["Cannot do heavy work without blocking", "Designed exactly for heavy work"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Creating and Using a Worker Thread"
-            },
-            {
-              "type": "code",
-              "code": "// main.js — Main thread creates a worker for heavy calculation\nconst { Worker } = require('worker_threads');\n\nconsole.log('Main thread: Starting server...');\n\n// Create a new worker thread and point it to worker.js\nconst worker = new Worker('./worker.js');\n\n// Listen for messages sent back from the worker\nworker.on('message', (result) => {\n  console.log('Worker finished. Total:', result);\n});\n\n// Handle worker errors without crashing main process\nworker.on('error', (err) => {\n  console.error('Worker error:', err);\n});\n\n// Know when the worker has completely finished\nworker.on('exit', (code) => {\n  console.log('Worker exited with code:', code);\n});\n\n// Main thread continues serving users IMMEDIATELY\n// It does NOT wait for the worker to finish\nconsole.log('Main thread: Continuing to handle user requests...');"
-            },
-            {
-              "type": "code",
-              "code": "// worker.js — Runs in a completely separate thread\nconst { parentPort } = require('worker_threads');\n\nconsole.log('Worker thread: Starting heavy calculation...');\n\nlet total = 0;\n\n// This loop runs on the WORKER THREAD, not the main thread\n// Main thread is completely free during this entire computation\nfor (let i = 0; i < 1_000_000_000; i++) {\n  total += i;\n}\n\nconsole.log('Worker thread: Calculation complete!');\n\n// Send the result back to the main thread\nparentPort.postMessage(total);"
-            },
-            {
-              "type": "step",
-              "title": "Main thread creates the worker",
-              "desc": "Node.js asks the operating system to create a brand new OS thread. The new thread loads its own V8 engine and starts executing worker.js independently."
-            },
-            {
-              "type": "step",
-              "title": "Both threads run simultaneously",
-              "desc": "Worker starts its billion-iteration loop on one CPU core. Main thread continues accepting and responding to user requests on another CPU core. Both run truly in parallel."
-            },
-            {
-              "type": "step",
-              "title": "Worker completes its task",
-              "desc": "The heavy calculation finishes inside the worker. The worker sends the result to the main thread using parentPort.postMessage()."
-            },
-            {
-              "type": "step",
-              "title": "Main thread receives the result",
-              "desc": "The worker's message arrives in the main thread's Event Loop as a regular callback. Main thread processes it and responds to the waiting user."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 async/await does NOT create parallel execution. It only avoids idle waiting during I/O. Worker Threads provide true multi-threaded JavaScript execution where multiple lines of JavaScript code run at exactly the same time on different CPU cores."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Worker Threads allow Node.js to fully utilize modern multi-core CPUs for JavaScript execution, making it possible to run CPU-intensive workloads without ever freezing the main server."
-            }
-          ],
 
           "Sharing Data Between Threads": [
             {
-              "type": "paragraph",
-              "text": "Worker Threads do not automatically share variables, objects, or state with the main thread. Every worker runs in a completely isolated memory environment with its own heap. This isolation is intentional and important — it prevents race conditions, memory corruption, and unpredictable bugs that commonly occur in traditional multi-threaded languages like Java or C++. When a worker is created, its memory is separate from the main thread from the very beginning."
+              type: "paragraph",
+              text: "Worker Threads do not automatically share variables, objects, or memory with the main thread. Every worker runs inside its own isolated memory environment with a separate V8 engine, Event Loop, and heap memory."
             },
+
             {
-              "type": "paragraph",
-              "text": "There are two primary ways threads can exchange data in Node.js: message passing through postMessage() which copies data safely between threads, and SharedArrayBuffer which allows multiple threads to read and write to the exact same memory location simultaneously. Each approach has different performance characteristics and safety tradeoffs. Most production applications use message passing because it is simpler, safer, and sufficient for most use cases."
+              type: "paragraph",
+              text: "This isolation is extremely important because it prevents accidental data corruption, race conditions, and unpredictable bugs that commonly happen in traditional multi-threaded systems."
             },
+
             {
-              "type": "paragraph",
-              "text": "In Amazon's order processing system, when a worker thread finishes calculating the final invoice total including taxes, discounts, and delivery charges, it needs to return that result to the main thread so the API can send the response to the user. The worker sends a structured JavaScript object through postMessage(), and the main thread receives it like a regular event callback. The data transfer is handled safely by Node.js internally — the worker's copy and the main thread's copy are completely independent after the message is sent."
+              type: "paragraph",
+              text: "Node.js mainly uses message passing to safely exchange data between threads. The main thread sends data using postMessage(), and workers return results back using parentPort.postMessage()."
             },
+
             {
-              "type": "image",
-              "src": "threadcommunication.png"
+              type: "curious-callout",
+              text: "❓ Amazon's invoice worker calculates taxes, discounts, and final totals. How does the result safely return back to the checkout API?"
             },
+
             {
-              "type": "heading",
-              "text": "Method 1 — Message Passing with postMessage()"
+              type: "heading",
+              text: "How Threads Communicate"
             },
+
             {
-              "type": "paragraph",
-              "text": "Message passing is the standard and recommended way to communicate between Worker Threads. The main thread sends data to a worker using worker.postMessage(), and the worker sends results back using parentPort.postMessage(). Node.js uses the structured clone algorithm to copy the data, which supports complex objects, arrays, nested structures, and even certain types like Map and Set."
+              type: "paragraph",
+              text: "Node.js provides multiple ways for threads to exchange data depending on performance and safety requirements."
             },
+
             {
-              "type": "code",
-              "code": "// main.js — Sending data to worker and receiving results\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./invoice-worker.js');\n\n// Send order details to the worker for processing\nworker.postMessage({\n  orderId: 'AMZ-123456',\n  items: [\n    { name: 'Laptop', price: 75000, qty: 1 },\n    { name: 'Mouse', price: 999, qty: 2 }\n  ],\n  userId: 'USR-789',\n  discountCode: 'SAVE10'\n});\n\n// Listen for the completed invoice from the worker\nworker.on('message', (invoice) => {\n  console.log('Invoice ready:', invoice);\n  // Now send the invoice response to the waiting user\n  res.json(invoice);\n});"
-            },
-            {
-              "type": "code",
-              "code": "// invoice-worker.js — Runs in worker thread\nconst { parentPort } = require('worker_threads');\n\n// Listen for data sent from the main thread\nparentPort.on('message', (orderData) => {\n  console.log('Processing order:', orderData.orderId);\n\n  // Heavy CPU calculations happen here — safely isolated\n  const subtotal = orderData.items.reduce(\n    (sum, item) => sum + item.price * item.qty, 0\n  );\n\n  const discount = orderData.discountCode === 'SAVE10'\n    ? subtotal * 0.10\n    : 0;\n\n  const tax = (subtotal - discount) * 0.18;\n  const total = subtotal - discount + tax;\n\n  // Send completed invoice back to main thread\n  parentPort.postMessage({\n    orderId: orderData.orderId,\n    subtotal,\n    discount,\n    tax,\n    total\n  });\n});"
-            },
-            {
-              "type": "step",
-              "title": "Main thread sends order data",
-              "desc": "postMessage() deep-clones the order object and transfers it safely to the worker's memory space. The main thread does not wait — it immediately continues processing other requests."
-            },
-            {
-              "type": "step",
-              "title": "Worker receives and processes the message",
-              "desc": "The worker's message event fires. Worker performs all heavy calculations including tax, discounts, and totals independently on its own thread."
-            },
-            {
-              "type": "step",
-              "title": "Worker sends result back",
-              "desc": "Worker calls parentPort.postMessage() with the completed invoice. The data is cloned and transferred back to the main thread."
-            },
-            {
-              "type": "step",
-              "title": "Main thread receives the result",
-              "desc": "The message callback fires in the main thread's Event Loop. Main thread sends the invoice response to the user's HTTP request."
-            },
-            {
-              "type": "heading",
-              "text": "Method 2 — Shared Memory with SharedArrayBuffer"
-            },
-            {
-              "type": "paragraph",
-              "text": "For high-performance scenarios where copying large amounts of data repeatedly would be too slow, Node.js allows multiple threads to directly access the same block of memory using SharedArrayBuffer. Instead of copying data back and forth, both the main thread and worker thread hold a reference to the exact same memory region and can read or modify it directly. This is much faster for large datasets but requires careful coordination to avoid race conditions."
-            },
-            {
-              "type": "code",
-              "code": "// Shared Memory Example — Both threads access same buffer\nconst { Worker, isMainThread } = require('worker_threads');\n\nif (isMainThread) {\n  // Create a shared buffer — 4 bytes for one 32-bit integer\n  const sharedBuffer = new SharedArrayBuffer(4);\n  const sharedArray = new Int32Array(sharedBuffer);\n\n  // Initial value\n  sharedArray[0] = 0;\n\n  const worker = new Worker(__filename, {\n    workerData: { sharedBuffer }\n  });\n\n  worker.on('exit', () => {\n    // Worker directly modified the shared memory\n    console.log('Final value from worker:', sharedArray[0]);\n    // Output: 999\n  });\n\n} else {\n  const { workerData } = require('worker_threads');\n  const sharedArray = new Int32Array(workerData.sharedBuffer);\n\n  // Worker writes directly to shared memory\n  // No postMessage needed — same memory location\n  sharedArray[0] = 999;\n}"
-            },
-            {
-              "type": "table",
-              "headers": ["Communication Method", "How it Works", "Speed", "Safety", "Best For"],
-              "rows": [
-                ["postMessage()", "Deep copies data between threads", "Good for small/medium data", "Very safe — isolated copies", "Most production applications"],
-                ["SharedArrayBuffer", "Both threads access same memory block", "Very fast — zero copying", "Risky — needs synchronization", "Large data, real-time systems"],
-                ["Atomics", "Locks shared memory during modification", "Slightly slower than raw shared", "Safe shared memory access", "Prevent race conditions in shared memory"]
+              type: "table",
+              headers: ["Method", "How it Works", "Best For"],
+              rows: [
+                [
+                  "postMessage()",
+                  "Copies data safely between threads",
+                  "Most applications"
+                ],
+                [
+                  "SharedArrayBuffer",
+                  "Both threads access same memory",
+                  "High-performance systems"
+                ],
+                [
+                  "Atomics",
+                  "Controls shared memory safely",
+                  "Prevent race conditions"
+                ]
               ]
             },
+
             {
-              "type": "warning-callout",
-              "text": "⚠️ Shared memory is powerful but dangerous. If two threads modify the same memory location simultaneously without proper synchronization using Atomics, you can end up with corrupted data, impossible-to-debug race conditions, or completely wrong results. Always use Atomics when multiple threads write to SharedArrayBuffer."
+              type: "heading",
+              text: "Amazon Real-World Example"
+            },
+
+            {
+              type: "paragraph",
+              text: "Large platforms like Amazon constantly perform heavy background calculations while users continue browsing products and placing orders normally."
+            },
+
+            {
+              type: "paragraph",
+              text: "When a customer places an order, Amazon may need to calculate taxes, discounts, coupon offers, delivery charges, cashback, and final invoice totals. Instead of blocking the main checkout API, this heavy work is moved to a Worker Thread."
+            },
+
+            {
+              type: "paragraph",
+              text: "The main thread sends order details to the worker thread, the worker performs all calculations independently, and the final invoice result is safely sent back to the checkout API using message passing."
             },
             {
-              "type": "success-callout",
-              "text": "✅ Most real-world production applications use message passing because it is safer, easier to debug, and sufficient for the majority of use cases. Only switch to SharedArrayBuffer when profiling shows data copying is a genuine performance bottleneck."
+              type: "code",
+              code: "Main Thread\n    ↓\nSend Order Data Using postMessage()\n    ↓\nWorker Thread Calculates:\n- Tax\n- Discount\n- Final Total\n    ↓\nWorker Sends Final Invoice Back\n    ↓\nCheckout API Responds to User"
+            },
+
+            {
+              type: "heading",
+              text: "Sending Data to Worker"
+            },
+
+            {
+              type: "code",
+              code: "// main.js\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./invoice-worker.js');\n\nworker.postMessage({\n  product: 'Laptop',\n  price: 75000,\n  discount: 10\n});\n\nworker.on('message', (invoice) => {\n  console.log(invoice);\n});"
+            },
+
+            {
+              type: "heading",
+              text: "Worker Processing"
+            },
+
+            {
+              type: "code",
+              code: "// invoice-worker.js\nconst { parentPort } = require('worker_threads');\n\nparentPort.on('message', (data) => {\n  const finalPrice = data.price - (data.price * data.discount / 100);\n\n  parentPort.postMessage({\n    finalPrice\n  });\n});"
+            },
+
+            {
+              type: "step",
+              title: " Main thread sends order data",
+              desc: "postMessage() safely copies data into worker memory."
+            },
+
+            {
+              type: "step",
+              title: " Worker processes calculation",
+              desc: "Heavy invoice logic runs independently on another thread."
+            },
+
+            {
+              type: "step",
+              title: " Worker sends result back",
+              desc: "Final invoice is returned using parentPort.postMessage()."
+            },
+
+            {
+              type: "step",
+              title: " Main thread responds to user",
+              desc: "Checkout API sends the final result to the customer."
+            },
+
+            {
+              type: "heading",
+              text: "Shared Memory Example"
+            },
+
+            {
+              type: "paragraph",
+              text: "For extremely large datasets or high-performance systems, threads can directly share the same memory using SharedArrayBuffer instead of copying data repeatedly."
+            },
+
+            {
+              type: "code",
+              code: "Main Thread\n    ↓\nCreates Shared Memory\n    ↓\nWorker Reads/Writes Same Memory\n    ↓\nNo Data Copy Needed"
+            },
+
+            {
+              type: "warning-callout",
+              text: "⚠️ Shared memory is fast but risky. Multiple threads writing together can cause race conditions without Atomics."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Most production systems use postMessage() because it is simpler, safer, and easier to debug."
             }
           ],
 
+
           "What is Clustering?": [
             {
-              "type": "paragraph",
-              "text": "Worker Threads are excellent for solving CPU-heavy computation problems within a single Node.js process. But there is another separate and equally important limitation — one Node.js process only runs one Event Loop, and that Event Loop runs on one CPU core. This means no matter how many concurrent users are sending requests, only one CPU core is actually handling all the incoming traffic routing, middleware execution, and response sending. Modern cloud servers at Amazon, Netflix, Google, and Flipkart have machines with 16, 32, 64, or even 128 CPU cores. Without clustering, you are paying for 32 cores but only using one of them to handle user traffic."
+              type: "paragraph",
+              text: "A single Node.js process can use only one CPU core, even if the server has many cores available. Clustering solves this limitation by creating multiple separate Node.js worker processes so all CPU cores can handle incoming traffic together. Each clustered worker runs independently with its own memory, Event Loop, and V8 engine."
+            },
+
+            {
+              type: "image",
+              src: "cluster.png"
+            },
+
+            {
+              type: "curious-callout",
+              text: "❓ During Amazon Great Indian Festival, millions of users search products, add items to cart, and place orders simultaneously. How can one server handle such huge traffic without crashing?"
+            },
+
+            {
+              type: "heading",
+              text: "Why Clustering is Needed"
+            },
+
+            {
+              type: "paragraph",
+              text: "Without clustering, only one CPU core handles all incoming requests while the remaining CPU cores stay mostly unused. During flash sales or traffic spikes, this single core becomes overloaded, causing slow APIs, request queues, timeouts, and server bottlenecks."
             },
             {
-              "type": "paragraph",
-              "text": "The Cluster module in Node.js solves this by allowing you to create multiple completely separate Node.js processes, each running its own full copy of your application with its own Event Loop, its own memory space, and its own JavaScript runtime. These worker processes all listen on the same port, and the operating system distributes incoming network connections across all of them. From a user's perspective, they are all talking to the same server. In reality, 32 separate processes are handling requests in parallel across all 32 CPU cores."
+              type: "heading",
+              text: "Amazon Real-World Example"
             },
+
             {
-              "type": "paragraph",
-              "text": "Think about how Amazon handles their checkout service. During Diwali sales, millions of users are simultaneously clicking 'Buy Now'. A single Node.js process running on one CPU core can handle maybe 10,000 to 15,000 requests per second under ideal conditions. But with clustering across 32 CPU cores, that same machine can now handle 320,000 to 480,000 requests per second. Amazon achieves this scale by running clustered Node.js processes behind load balancers across hundreds of machines worldwide."
+              type: "paragraph",
+              text: "During massive sales like Amazon Great Indian Festival, millions of users simultaneously open product pages, search items, add products to carts, and place orders."
             },
+
             {
-              "type": "image",
-              "src": "cluster.png"
+              type: "paragraph",
+              text: "Handling such enormous traffic using only one Node.js process would quickly overload a single CPU core and create severe bottlenecks."
             },
+
             {
-              "type": "curious-callout",
-              "text": "❓ Amazon's backend machine has 32 CPU cores. If only ONE core handles all incoming traffic while the other 31 cores sit completely idle, Amazon is wasting approximately 97% of that machine's computing power. During a flash sale, this single overloaded core would become a bottleneck while users see slow checkouts and payment timeouts."
+              type: "paragraph",
+              text: "Amazon servers may have 32 CPU cores, and clustering allows all 32 cores to process incoming user requests together in parallel by running multiple Node.js worker processes."
             },
+
             {
-              "type": "heading",
-              "text": "How Clustering Works — Master and Worker Processes"
+              type: "code",
+              code: "Amazon Server (32 CPU Cores)\n        ↓\nMaster Process\n        ↓\n------------------------------------------------\nWorker 1  → Checkout APIs\nWorker 2  → Payment APIs\nWorker 3  → Search APIs\nWorker 4  → Cart APIs\nWorker 5  → Product APIs\n...\nWorker 32 → User Requests\n------------------------------------------------\n        ↓\nTraffic Distributed Across All CPU Cores"
             },
+
             {
-              "type": "paragraph",
-              "text": "The Cluster module creates one Master process and multiple Worker processes. The Master process is the coordinator — it creates all the workers, monitors their health, and restarts them if they crash. Worker processes are where actual user requests are handled. Each worker is a complete separate Node.js process running your full application code. The OS uses round-robin load balancing to distribute incoming connections across all workers."
+              type: "step",
+              title: " User requests arrive",
+              desc: "Millions of Amazon users send requests during the sale."
             },
+
             {
-              "type": "code",
-              "code": "// server.js — Production-ready clustering setup\nconst cluster = require('cluster');\nconst os = require('os');\nconst express = require('express');\n\nconst totalCPUs = os.cpus().length;\n\nif (cluster.isMaster) {\n  console.log(`Master process ${process.pid} is running`);\n  console.log(`Starting ${totalCPUs} workers for ${totalCPUs} CPU cores...`);\n\n  // Create one worker process per CPU core\n  for (let i = 0; i < totalCPUs; i++) {\n    cluster.fork();\n  }\n\n  // Auto-restart any worker that crashes\n  cluster.on('exit', (worker, code, signal) => {\n    console.log(`Worker ${worker.process.pid} died. Restarting...`);\n    cluster.fork(); // Immediately spawn a replacement worker\n  });\n\n  cluster.on('online', (worker) => {\n    console.log(`Worker ${worker.process.pid} is online`);\n  });\n\n} else {\n  // All workers run the actual Express application\n  const app = express();\n\n  app.get('/checkout', (req, res) => {\n    res.json({\n      status: 'Order placed!',\n      handledBy: `Worker ${process.pid}` // Shows which worker handled this\n    });\n  });\n\n  app.listen(3000, () => {\n    console.log(`Worker ${process.pid} listening on port 3000`);\n  });\n}"
+              type: "step",
+              title: " Master process starts",
+              desc: "The master process checks how many CPU cores are available on the server."
             },
+
             {
-              "type": "step",
-              "title": "Master process starts on boot",
-              "desc": "The master process reads the machine's CPU count using os.cpus().length. On a 32-core machine, this returns 32."
+              type: "step",
+              title: " Workers are created",
+              desc: "One worker process is created for each CPU core."
             },
+
             {
-              "type": "step",
-              "title": "Master forks worker processes",
-              "desc": "Master calls cluster.fork() 32 times. Each fork creates a completely independent Node.js process with its own memory, Event Loop, and copy of the application."
+              type: "step",
+              title: " Workers listen on same port",
+              desc: "All workers can accept incoming API requests."
             },
+
             {
-              "type": "step",
-              "title": "All workers bind to port 3000",
-              "desc": "All 32 workers listen on the same port. The OS handles distributing incoming connections using round-robin, sending each new connection to a different worker."
+              type: "step",
+              title: " Traffic distributes automatically",
+              desc: "The operating system spreads requests across all workers."
             },
+
             {
-              "type": "step",
-              "title": "Traffic distributes automatically",
-              "desc": "User 1's checkout request goes to Worker 1. User 2's request goes to Worker 2. User 33's request cycles back to Worker 1. All handled truly in parallel."
+              type: "step",
+              title: " APIs run in parallel",
+              desc: "Checkout, payment, cart, and search APIs process simultaneously."
             },
+
             {
-              "type": "step",
-              "title": "Crashed workers restart automatically",
-              "desc": "If Worker 5 crashes due to an unhandled error, the master's exit event fires immediately and forks a fresh replacement worker. Zero downtime."
+              type: "step",
+              title: " Server handles massive traffic",
+              desc: "All CPU cores work together to serve millions of users efficiently."
             },
+
             {
-              "type": "table",
-              "headers": ["Worker Threads", "Clustering"],
-              "rows": [
-                ["Multiple threads inside same process", "Multiple completely separate processes"],
-                ["Used for CPU-heavy computation tasks", "Used for scaling incoming request traffic"],
-                ["All share same process memory space", "Each has completely separate memory"],
-                ["SharedArrayBuffer allows shared memory", "Separate memory — no accidental sharing"],
-                ["Parallel calculations within one server", "Parallel request handling across CPU cores"],
-                ["One process crashes = all threads affected", "Worker crash = master restarts just that worker"],
-                ["Good for invoice, image, video processing", "Good for API servers, high-traffic applications"]
+              type: "heading",
+              text: "How Clustering Internally Works"
+            },
+
+            {
+              type: "paragraph",
+              text: "The master process mainly manages workers, while worker processes handle actual user requests."
+            },
+
+            {
+              type: "code",
+              code: "Incoming User Requests\n          ↓\nMaster Process\n          ↓\n--------------------------------\nWorker 1 → Handles User A\nWorker 2 → Handles User B\nWorker 3 → Handles User C\nWorker 4 → Handles User D\n--------------------------------\n          ↓\nAll Workers Process Requests Together"
+            },
+
+            {
+              type: "heading",
+              text: "Using Multiple CPU Cores"
+            },
+
+            {
+              type: "paragraph",
+              text: "With clustering, every CPU core gets its own Node.js worker process."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead of one overloaded process handling everything, traffic gets divided across all available CPU cores."
+            },
+
+            {
+              type: "code",
+              code: "Without Clustering\n----------------------\nCPU Core 1  → Handles ALL Traffic\nCPU Core 2  → Idle\nCPU Core 3  → Idle\nCPU Core 4  → Idle\n\nWith Clustering\n----------------------\nCPU Core 1  → Worker 1\nCPU Core 2  → Worker 2\nCPU Core 3  → Worker 3\nCPU Core 4  → Worker 4\n\nAll Cores Handle Traffic Together"
+            },
+
+            {
+              type: "paragraph",
+              text: "This massively increases throughput and allows Node.js servers to handle far more users simultaneously."
+            },
+
+            {
+              type: "heading",
+              text: "Cluster Example"
+            },
+
+            {
+              type: "code",
+              code: "const cluster = require('cluster');\nconst os = require('os');\n\nif (cluster.isMaster) {\n  const totalCPUs = os.cpus().length;\n\n  console.log(`Starting ${totalCPUs} workers...`);\n\n  // Create one worker per CPU core\n  for (let i = 0; i < totalCPUs; i++) {\n    cluster.fork();\n  }\n\n  // Restart crashed workers\n  cluster.on('exit', () => {\n    cluster.fork();\n  });\n\n} else {\n  console.log(`Worker ${process.pid} started`);\n}"
+            },
+
+            {
+              type: "paragraph",
+              text: "Every worker runs independently with its own Event Loop and memory space."
+            },
+
+            {
+              type: "heading",
+              text: "Master Process vs Worker Process"
+            },
+
+            {
+              type: "table",
+              headers: ["Master Process", "Worker Process"],
+              rows: [
+                [
+                  "Creates workers",
+                  "Handles user requests"
+                ],
+                [
+                  "Monitors worker health",
+                  "Runs APIs"
+                ],
+                [
+                  "Restarts crashed workers",
+                  "Processes traffic"
+                ],
+                [
+                  "Controls clustering",
+                  "Uses CPU core independently"
+                ]
               ]
             },
+
             {
-              "type": "success-callout",
-              "text": "✅ Clustering helps Node.js scale request handling across all available CPU cores. It is the foundation of how high-traffic Node.js servers handle millions of requests per day in production."
+              type: "heading",
+              text: "Worker Threads vs Clustering"
+            },
+
+            {
+              type: "table",
+              headers: ["Worker Threads", "Clustering"],
+              rows: [
+                [
+                  "Used for CPU-heavy tasks",
+                  "Used for scaling traffic"
+                ],
+                [
+                  "Multiple threads in one process",
+                  "Multiple separate processes"
+                ],
+                [
+                  "Good for calculations",
+                  "Good for API scaling"
+                ],
+                [
+                  "Runs background computations",
+                  "Handles more users"
+                ],
+                [
+                  "Invoice generation",
+                  "Checkout API scaling"
+                ],
+                [
+                  "Image/video processing",
+                  "High traffic handling"
+                ]
+              ]
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 If one worker crashes, the master process can immediately create a replacement worker without stopping the server."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Clustering allows Node.js to fully utilize all CPU cores for handling massive traffic."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Companies like Amazon use clustering to scale APIs during huge sales and traffic spikes."
             }
           ],
 
           "Using Multiple CPU Cores": [
             {
               "type": "paragraph",
-              "text": "Modern cloud infrastructure is incredibly powerful. When Amazon deploys an EC2 instance for running Node.js APIs, they often use machines with 16 or 32 virtual CPU cores. When Flipkart provisions servers for their checkout service, they may use instances with 64 cores. Without clustering, all of that hardware capability goes completely unused — only a single CPU core does any work while the rest sit idle. This means companies are spending huge amounts on server infrastructure but only utilizing a tiny fraction of what they are paying for."
-            },
-            {
-              "type": "paragraph",
               "text": "With clustering, every single CPU core gets its own Node.js worker process. Each worker independently handles incoming HTTP connections, runs middleware, queries databases, and sends responses. The OS kernel efficiently schedules all these processes across the physical CPU cores, achieving true hardware-level parallelism. On a 32-core machine, you can theoretically handle 32 times more concurrent requests compared to running a single Node.js process."
-            },
-            {
-              "type": "paragraph",
-              "text": "Netflix provides a great real-world illustration of this. When you press Play on a movie, Netflix's Node.js API servers need to simultaneously process your playback request, check your subscription status, fetch the video CDN URLs, record the viewing event for recommendations, and return the response — all within 100-200 milliseconds. Netflix runs these API servers with full clustering enabled, so thousands of users can trigger these simultaneous workflows without any single server becoming a bottleneck. Each CPU core on each machine is handling different users' playback requests at exactly the same time."
             },
             {
               "type": "image",
@@ -1321,132 +2262,6 @@ export const roadmapData = [
             }
           ],
 
-          "process.nextTick and setImmediate": [
-            {
-              "type": "paragraph",
-              "text": "Understanding process.nextTick() and setImmediate() is essential when working with Worker Threads and Clustering because they control the exact execution order of callbacks within a single Node.js thread. Both are mechanisms to schedule code to run asynchronously, but they operate at different points in the Event Loop cycle. Getting their behavior wrong can cause subtle bugs in multi-threaded and clustered environments where timing and execution order matter."
-            },
-            {
-              "type": "paragraph",
-              "text": "The Node.js Event Loop processes tasks in distinct phases — timers (setTimeout, setInterval), pending callbacks, idle and prepare, poll (I/O), check (setImmediate), and close callbacks. There is also a special microtask queue that exists outside these phases and gets processed between every phase transition. process.nextTick() adds callbacks to this microtask queue and they run before the Event Loop moves to its next phase, regardless of what that phase is. setImmediate() schedules callbacks to run in the check phase, which comes after the poll phase where I/O callbacks execute."
-            },
-            {
-              "type": "paragraph",
-              "text": "In Amazon's order service, when a checkout request arrives and the worker sends back the invoice result via postMessage(), the main thread receives it as a message event. If the main thread needs to do some cleanup after receiving the result — like updating an internal counter or logging — using process.nextTick() ensures that cleanup runs immediately after the current operation completes, before any I/O callbacks or timer callbacks. This guarantees predictable execution order even when dozens of workers are sending messages back to the main thread simultaneously."
-            },
-            {
-              "type": "image",
-              "src": "nexttick.png"
-            },
-            {
-              "type": "heading",
-              "text": "process.nextTick() — Runs Before Next Event Loop Phase"
-            },
-            {
-              "type": "paragraph",
-              "text": "process.nextTick() is not technically part of the Event Loop itself. It uses a dedicated nextTick queue that is processed after every C++ to JavaScript transition and before the Event Loop moves to its next phase. This makes it the highest priority asynchronous scheduling mechanism available. If you recursively call process.nextTick() inside a nextTick callback, you can actually starve the Event Loop — no I/O, no timers, and no incoming requests will be processed until all nextTick callbacks are exhausted."
-            },
-            {
-              "type": "code",
-              "code": "// Understanding execution order in Node.js Event Loop\nconsole.log('1 — Synchronous code starts');\n\nsetTimeout(() => {\n  console.log('4 — setTimeout fires (Timers phase)');\n}, 0);\n\nsetImmediate(() => {\n  console.log('5 — setImmediate fires (Check phase)');\n});\n\nPromise.resolve().then(() => {\n  console.log('3 — Promise microtask resolves');\n});\n\nprocess.nextTick(() => {\n  console.log('2 — process.nextTick runs FIRST among async');\n});\n\nconsole.log('1b — More synchronous code');\n\n// Output ORDER:\n// 1 — Synchronous code starts\n// 1b — More synchronous code\n// 2 — process.nextTick runs FIRST among async\n// 3 — Promise microtask resolves\n// 4 — setTimeout fires (Timers phase)\n// 5 — setImmediate fires (Check phase)"
-            },
-            {
-              "type": "heading",
-              "text": "setImmediate() — Runs After I/O in Check Phase"
-            },
-            {
-              "type": "paragraph",
-              "text": "setImmediate() is designed specifically to run callbacks after the current poll phase completes — meaning after all I/O events for the current iteration have been processed. This makes it the right choice when you want to run something after I/O operations complete but before any timers fire. Unlike process.nextTick(), setImmediate() callbacks cannot starve the Event Loop because they only run once per iteration of the loop."
-            },
-            {
-              "type": "code",
-              "code": "// Real-world usage pattern in clustered worker message handling\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./heavy-worker.js');\n\nworker.on('message', (result) => {\n  console.log('Received worker result:', result);\n\n  // Use process.nextTick when you need guaranteed\n  // immediate execution before any I/O callbacks\n  process.nextTick(() => {\n    console.log('Updating in-memory cache immediately');\n    // This runs before any pending I/O callbacks\n  });\n\n  // Use setImmediate when you want to defer processing\n  // until after all pending I/O for this loop iteration\n  setImmediate(() => {\n    console.log('Sending analytics event after I/O clears');\n    // This runs in the check phase — after I/O phase\n  });\n\n  // Use setTimeout for minimum delay scheduling\n  setTimeout(() => {\n    console.log('Cleanup task runs after at least 100ms');\n  }, 100);\n});"
-            },
-            {
-              "type": "table",
-              "headers": ["Method", "Queue Type", "Runs When", "Can Starve Loop?", "Best Use Case"],
-              "rows": [
-                ["process.nextTick()", "nextTick queue (microtask)", "Before next Event Loop phase, immediately after current op", "Yes — use carefully", "Ensure callback runs before any I/O or timers"],
-                ["Promise.then()", "Microtask queue", "After nextTick queue, before next phase", "Yes — in theory", "Chained async operations, API results"],
-                ["setImmediate()", "Check phase queue", "After I/O poll phase completes", "No — once per loop", "After I/O work, deferring non-critical work"],
-                ["setTimeout(fn, 0)", "Timers phase queue", "After minimum timer threshold, timers phase", "No", "Minimum delay scheduling, animations"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Why This Matters in Multi-threaded Code"
-            },
-            {
-              "type": "code",
-              "code": "// Practical example — Handling multiple worker results correctly\nconst { Worker } = require('worker_threads');\nconst workers = [];\n\n// Create 4 workers for parallel processing\nfor (let i = 0; i < 4; i++) {\n  const worker = new Worker('./calculation-worker.js');\n\n  worker.on('message', (result) => {\n    // When worker sends result back:\n\n    // 1. nextTick — Update critical in-memory state first\n    process.nextTick(() => {\n      updateResultCache(result); // Runs before any more I/O\n    });\n\n    // 2. setImmediate — Non-critical logging after I/O clears\n    setImmediate(() => {\n      logResultToDatabase(result); // Deferred, non-blocking\n    });\n  });\n\n  workers.push(worker);\n}\n\nfunction updateResultCache(result) {\n  console.log('Cache updated:', result);\n}\n\nfunction logResultToDatabase(result) {\n  console.log('Logged to DB:', result);\n}"
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Avoid calling process.nextTick() recursively or in tight loops. Each recursive nextTick call gets added to the queue before the Event Loop can move forward, effectively starving all I/O operations, timer callbacks, and incoming network connections. In a clustered server, this can make an entire worker process appear unresponsive."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Use process.nextTick() when you need guaranteed execution before any I/O or timers. Use setImmediate() when you want to defer work until after current I/O completes. Both are essential tools for writing precise, predictable async code in Worker Thread and Cluster environments."
-            }
-          ],
-
-          "workerData and isMainThread": [
-            {
-              "type": "paragraph",
-              "text": "When you create a Worker Thread, you often need to pass initial configuration or input data to it before it starts processing. Node.js provides the workerData option for exactly this purpose. You pass data when creating the Worker, and the worker receives it immediately on startup through require('worker_threads').workerData. This is different from postMessage() — workerData is available the instant the worker starts executing, before any messages are sent, making it perfect for passing configuration, task parameters, worker IDs, or initial datasets."
-            },
-            {
-              "type": "paragraph",
-              "text": "The isMainThread property is a boolean that tells you whether the current execution context is the main thread or a worker thread. This is particularly powerful because it allows you to write the main thread logic and worker thread logic in the same single file — Node.js will execute different code branches based on whether it is running as the master or as a worker. This pattern is commonly used in clustering and worker thread code to keep everything organized in one place."
-            },
-            {
-              "type": "paragraph",
-              "text": "In a real-world scenario like Netflix's video transcoding service, when a new video upload triggers processing, the main thread creates multiple worker threads — one for each quality level needed. Using workerData, the main thread passes each worker its specific task: Worker 1 receives { quality: '4K', bitrate: 40000, inputFile: 'raw_upload.mp4' }, Worker 2 receives { quality: '1080p', bitrate: 8000, inputFile: 'raw_upload.mp4' }, and so on. Each worker knows exactly what to do from the very start without needing any additional postMessage calls."
-            },
-            {
-              "type": "heading",
-              "text": "Using isMainThread to Write Single-File Worker Code"
-            },
-            {
-              "type": "code",
-              "code": "// transcoder.js — Single file handles both main and worker logic\nconst {\n  Worker,\n  isMainThread,\n  parentPort,\n  workerData\n} = require('worker_threads');\n\nif (isMainThread) {\n  // === MAIN THREAD CODE ===\n  console.log('Main thread: Starting video transcoding service...');\n\n  const videoFile = 'upload_movie_123.mp4';\n\n  const qualityProfiles = [\n    { quality: '4K',   bitrate: 40000, width: 3840, height: 2160 },\n    { quality: '1080p', bitrate: 8000,  width: 1920, height: 1080 },\n    { quality: '720p',  bitrate: 4000,  width: 1280, height: 720  },\n    { quality: '480p',  bitrate: 2000,  width: 854,  height: 480  },\n    { quality: '360p',  bitrate: 800,   width: 640,  height: 360  }\n  ];\n\n  const results = [];\n\n  qualityProfiles.forEach((profile) => {\n    // Create a worker for each quality level\n    // Pass config via workerData — available immediately on startup\n    const worker = new Worker(__filename, {\n      workerData: {\n        inputFile: videoFile,\n        quality: profile.quality,\n        bitrate: profile.bitrate,\n        width: profile.width,\n        height: profile.height,\n        workerId: profile.quality\n      }\n    });\n\n    worker.on('message', (result) => {\n      results.push(result);\n      console.log(`✅ ${result.quality} transcoding complete:`, result.outputFile);\n\n      if (results.length === qualityProfiles.length) {\n        console.log('\\n🎬 All quality versions ready for streaming!');\n      }\n    });\n\n    worker.on('error', (err) => {\n      console.error(`❌ Worker ${profile.quality} failed:`, err.message);\n    });\n  });\n\n  console.log('Main thread: All workers launched. Handling other requests...');\n\n} else {\n  // === WORKER THREAD CODE ===\n  // workerData is immediately available here — no postMessage needed\n  const { inputFile, quality, bitrate, width, height } = workerData;\n\n  console.log(`Worker [${quality}]: Starting transcoding...`);\n  console.log(`Worker [${quality}]: Input: ${inputFile}, Bitrate: ${bitrate}kbps`);\n\n  // Simulate CPU-intensive video transcoding\n  function simulateTranscoding(duration) {\n    const start = Date.now();\n    let frames = 0;\n    // Simulate heavy frame processing\n    while (Date.now() - start < duration) {\n      frames++;\n    }\n    return frames;\n  }\n\n  // Different qualities take different amounts of time\n  const processingTime = quality === '4K' ? 3000 :\n                         quality === '1080p' ? 2000 :\n                         quality === '720p' ? 1500 :\n                         quality === '480p' ? 1000 : 500;\n\n  const framesProcessed = simulateTranscoding(processingTime);\n\n  const outputFile = `output_${quality}_${width}x${height}.mp4`;\n\n  // Send result back to main thread\n  parentPort.postMessage({\n    quality,\n    outputFile,\n    framesProcessed,\n    bitrate,\n    status: 'success'\n  });\n}"
-            },
-            {
-              "type": "step",
-              "title": "Main thread reads isMainThread as true",
-              "desc": "When Node.js runs this file as the entry point, isMainThread is true. The main thread block executes, creating 5 worker instances for 5 quality levels."
-            },
-            {
-              "type": "step",
-              "title": "Workers start with workerData already populated",
-              "desc": "Each new Worker receives its quality profile via workerData. The worker's isMainThread is false, so it executes the worker block and immediately has access to inputFile, quality, bitrate, width, and height."
-            },
-            {
-              "type": "step",
-              "title": "All 5 workers run in parallel",
-              "desc": "4K, 1080p, 720p, 480p, and 360p transcoding all run simultaneously on different CPU cores. Total time is approximately the duration of the slowest task — not the sum of all tasks."
-            },
-            {
-              "type": "step",
-              "title": "Main thread stays fully responsive",
-              "desc": "While all 5 transcoding workers are running, the main thread can still accept new upload requests, respond to health checks, and handle user API calls."
-            },
-            {
-              "type": "table",
-              "headers": ["Feature", "workerData", "postMessage()"],
-              "rows": [
-                ["When available", "Immediately on worker startup", "Only after message is sent"],
-                ["Direction", "Main → Worker only (one-way, one-time)", "Bidirectional, any time"],
-                ["Use case", "Initial configuration, task parameters", "Ongoing data exchange"],
-                ["Mutability", "Read-only inside worker", "Received copy can be modified"],
-                ["Complexity", "Simple, no event listeners needed", "Requires on('message') handler"]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Use workerData for passing initial configuration and task parameters to workers. Use isMainThread to write clean single-file code that handles both master and worker logic elegantly."
-            }
-          ],
 
           "MessageChannel and Advanced Communication": [
             {
@@ -1492,225 +2307,6 @@ export const roadmapData = [
               "text": "✅ MessageChannel enables sophisticated multi-threaded communication patterns. Use it when you need dedicated channels for different message types or when workers need to communicate with each other directly without routing through the main thread."
             }
           ],
-
-          "Thread Pools in Node.js": [
-            {
-              "type": "paragraph",
-              "text": "Before Worker Threads were introduced, Node.js already had an internal thread pool that it used invisibly for certain types of operations. This thread pool is managed by libuv, the C++ library that powers Node.js's Event Loop. The libuv thread pool handles operations that don't have native async OS support — things like reading/writing files, DNS lookups, and some cryptographic operations. By default, this pool has 4 threads, though it can be configured up to 1024 threads using the UV_THREADPOOL_SIZE environment variable."
-            },
-            {
-              "type": "paragraph",
-              "text": "Understanding the libuv thread pool is crucial because it can become a hidden bottleneck in Node.js applications. If your server is making many simultaneous file reads, DNS lookups, or bcrypt password hashes, and only 4 libuv threads are available, the 5th concurrent operation will queue up and wait even though your Node.js code is completely async. Increasing UV_THREADPOOL_SIZE or redesigning to use streaming operations can eliminate this bottleneck."
-            },
-            {
-              "type": "paragraph",
-              "text": "Worker Threads and the libuv thread pool are two completely separate systems. The libuv pool is managed automatically by Node.js for specific built-in operations. Worker Threads are OS threads that you explicitly create and control for running your own JavaScript code. In production systems like Flipkart's image processing service, engineers need to be aware of both — the libuv pool handles background file I/O while Worker Threads handle the CPU-intensive image manipulation code itself."
-            },
-            {
-              "type": "image",
-              "src": "threadpool.png"
-            },
-            {
-              "type": "heading",
-              "text": "libuv Thread Pool — What It Handles"
-            },
-            {
-              "type": "table",
-              "headers": ["Operation", "Uses libuv Thread Pool?", "Notes"],
-              "rows": [
-                ["fs.readFile()", "Yes", "File I/O uses pool threads"],
-                ["fs.writeFile()", "Yes", "File writes use pool threads"],
-                ["dns.lookup()", "Yes", "DNS resolution uses pool"],
-                ["crypto.pbkdf2()", "Yes", "CPU-heavy crypto uses pool"],
-                ["bcrypt hashing", "Yes (via native addon)", "Why bcrypt can bottleneck"],
-                ["http.get()", "No", "Uses OS network events directly"],
-                ["setTimeout()", "No", "Uses OS timer events"],
-                ["Worker Threads", "No", "Separate OS threads you control"]
-              ]
-            },
-            {
-              "type": "code",
-              "code": "// Demonstrating libuv thread pool bottleneck\n// Default UV_THREADPOOL_SIZE is 4\n\nconst crypto = require('crypto');\nconst start = Date.now();\n\n// Launch 8 concurrent bcrypt-like crypto operations\n// Operations 1-4 run immediately in the 4 pool threads\n// Operations 5-8 WAIT until a pool thread becomes free\nfor (let i = 1; i <= 8; i++) {\n  crypto.pbkdf2('password', 'salt', 100000, 512, 'sha512', (err, key) => {\n    console.log(`Operation ${i} completed at ${Date.now() - start}ms`);\n  });\n}\n\nconsole.log('All 8 crypto operations launched asynchronously');\n\n// With default 4 threads, output shows:\n// Operations 1-4 complete around the same time (~1000ms)\n// Operations 5-8 complete in the SECOND BATCH (~2000ms)\n// Because they had to wait for pool threads to free up\n\n// FIX: Increase thread pool size before Node.js starts\n// UV_THREADPOOL_SIZE=8 node server.js"
-            },
-            {
-              "type": "code",
-              "code": "// Setting UV_THREADPOOL_SIZE programmatically\n// Must be set BEFORE any async operations begin\nprocess.env.UV_THREADPOOL_SIZE = 16; // Increase to 16 threads\n\nconst crypto = require('crypto');\n\n// Now 16 crypto operations can run truly in parallel\n// Useful when your server does many simultaneous file or crypto operations\nconsole.log('libuv thread pool size:', process.env.UV_THREADPOOL_SIZE);"
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Setting UV_THREADPOOL_SIZE too high can backfire. Each thread consumes memory and the OS has overhead managing thread context switches. A good rule of thumb is to set it to match your CPU core count. For CPU-bound work, prefer Worker Threads which you explicitly control."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Node.js has two separate threading systems — the libuv thread pool (automatic, for built-in async operations) and Worker Threads (manual, for your own JavaScript CPU work). Understanding both helps you eliminate hidden bottlenecks in production applications."
-            }
-          ],
-
-          "PM2 for Production Clustering": [
-            {
-              "type": "paragraph",
-              "text": "While Node.js's built-in cluster module works well, managing clusters in production manually is complex. You need to handle worker crashes, graceful shutdowns, zero-downtime restarts, log aggregation, memory monitoring, and CPU monitoring — all while keeping the server running for users. PM2 is the industry-standard process manager that automates all of this. It is used by thousands of companies including major e-commerce platforms, fintech applications, and SaaS products running Node.js in production."
-            },
-            {
-              "type": "paragraph",
-              "text": "PM2's cluster mode does exactly what manual clustering does — it creates one Node.js process per CPU core — but it adds a robust management layer on top. PM2 automatically restarts crashed workers, supports zero-downtime restarts where new workers start before old ones stop, provides a built-in dashboard showing CPU and memory usage per worker, aggregates logs from all workers into single streams, and can automatically respawn workers that exceed memory limits before they cause problems."
-            },
-            {
-              "type": "paragraph",
-              "text": "When Zomato deploys their order tracking API, they use PM2 in cluster mode on their Node.js servers. The deployment command starts one worker per CPU core, monitors each worker's memory, and automatically performs a rolling restart when they push new code — meaning some workers always stay running and serving users while others are restarting with the new code. Users experience zero downtime during deployments, which happen multiple times per day."
-            },
-            {
-              "type": "heading",
-              "text": "PM2 Cluster Mode Commands"
-            },
-            {
-              "type": "code",
-              "code": "# Install PM2 globally\nnpm install -g pm2\n\n# Start your app in cluster mode using ALL CPU cores\npm2 start server.js --name 'amazon-checkout' -i max\n# -i max = one worker process per CPU core\n# -i 4   = exactly 4 workers regardless of core count\n# -i 0   = same as max\n\n# Check status of all workers\npm2 status\n\n# Watch real-time CPU and memory per worker\npm2 monit\n\n# Zero-downtime restart (workers restart one by one)\npm2 reload amazon-checkout\n\n# Hard restart (all workers restart simultaneously)\npm2 restart amazon-checkout\n\n# View aggregated logs from all workers\npm2 logs amazon-checkout\n\n# Stop all workers\npm2 stop amazon-checkout\n\n# Delete from PM2 registry\npm2 delete amazon-checkout\n\n# Auto-start on server reboot\npm2 startup\npm2 save"
-            },
-            {
-              "type": "code",
-              "code": "// ecosystem.config.js — PM2 configuration file\n// Version control this file for consistent deployments\nmodule.exports = {\n  apps: [\n    {\n      name: 'amazon-checkout-service',\n      script: './server.js',\n\n      // Cluster mode — one process per CPU core\n      instances: 'max',\n      exec_mode: 'cluster',\n\n      // Auto-restart if memory exceeds 500MB\n      max_memory_restart: '500M',\n\n      // Environment variables\n      env: {\n        NODE_ENV: 'development',\n        PORT: 3000\n      },\n      env_production: {\n        NODE_ENV: 'production',\n        PORT: 3000,\n        UV_THREADPOOL_SIZE: 16\n      },\n\n      // Log configuration\n      error_file: './logs/error.log',\n      out_file: './logs/output.log',\n      log_date_format: 'YYYY-MM-DD HH:mm:ss',\n\n      // Watch for file changes (use only in development)\n      watch: false,\n\n      // Restart delay after crash\n      restart_delay: 1000,\n\n      // Max consecutive restarts before stopping\n      max_restarts: 10\n    }\n  ]\n};\n\n// Deploy with: pm2 start ecosystem.config.js --env production"
-            },
-            {
-              "type": "table",
-              "headers": ["Feature", "Manual cluster module", "PM2 cluster mode"],
-              "rows": [
-                ["Auto-restart crashed workers", "Must write manually", "Built-in, automatic"],
-                ["Zero-downtime restart", "Complex to implement", "pm2 reload — one command"],
-                ["Memory limit per worker", "Must write manually", "max_memory_restart option"],
-                ["Log aggregation", "Manual file management", "Built-in unified logs"],
-                ["CPU/Memory monitoring", "No built-in dashboard", "pm2 monit — real-time dashboard"],
-                ["Deployment with env vars", "Manual scripts needed", "ecosystem.config.js"],
-                ["Auto-start on server reboot", "Manual systemd setup", "pm2 startup — one command"]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ For any production Node.js application, use PM2 instead of managing the cluster module manually. PM2 provides production-grade process management with zero-downtime restarts, automatic crash recovery, memory monitoring, and simple deployment workflows."
-            }
-          ],
-
-          "How Amazon/Netflix Scale Node.js Servers": [
-            {
-              "type": "paragraph",
-              "text": "Companies like Amazon and Netflix never rely on a single Node.js server or even a single cluster on one machine. Their systems are globally distributed across multiple data centers, regions, and availability zones. Each individual service within their architecture — the checkout service, the recommendation service, the video streaming service, the user authentication service — is a completely separate Node.js application running on its own clustered infrastructure. Scaling happens at multiple layers simultaneously: clustering at the process level, load balancing at the machine level, auto-scaling at the infrastructure level, and geographic distribution at the global level."
-            },
-            {
-              "type": "paragraph",
-              "text": "During Amazon's Prime Day sale, their traffic can spike to 10-15 times normal levels within minutes of the sale starting. Their infrastructure uses auto-scaling groups that monitor CPU utilization and request latency across all servers. When CPU usage on the checkout service exceeds 70%, AWS Auto Scaling automatically provisions new EC2 instances, starts PM2 clusters on them, registers them with the load balancer, and begins routing traffic to them — all within 3-4 minutes. When the sale ends and traffic drops, it scales back down to save costs. This entire process happens automatically without any human intervention."
-            },
-            {
-              "type": "paragraph",
-              "text": "Netflix has an even more sophisticated setup because they need to handle both API traffic and media streaming simultaneously. Their Node.js API services handle metadata requests — what movies are available, personalized recommendations, playback URLs — while the actual video bytes are served from their Open Connect CDN. The Node.js API layer runs in clustered mode behind Netflix's Zuul API Gateway, which itself handles thousands of requests per second for routing, authentication, and rate limiting. Worker Threads inside each Node.js process handle CPU-intensive tasks like generating personalized thumbnails, running A/B test logic, and compressing recommendation payloads."
-            },
-            {
-              "type": "image",
-              "src": "amazonscale.png"
-            },
-            {
-              "type": "heading",
-              "text": "Amazon Checkout Service — Complete Architecture Flow"
-            },
-            {
-              "type": "step",
-              "title": "User clicks 'Buy Now' on Amazon",
-              "desc": "The request first hits Amazon's CloudFront CDN edge location closest to the user — possibly in Mumbai, Singapore, or Dublin. CloudFront handles SSL termination and routes the request to the nearest AWS region."
-            },
-            {
-              "type": "step",
-              "title": "API Gateway receives the request",
-              "desc": "Amazon API Gateway authenticates the JWT token, checks rate limits, validates the request format, and routes it to the correct checkout microservice based on the URL path."
-            },
-            {
-              "type": "step",
-              "title": "Load Balancer distributes traffic",
-              "desc": "AWS Application Load Balancer uses the least-connections algorithm to forward the request to the least busy EC2 instance running the Node.js checkout service. Each instance has a full PM2 cluster running."
-            },
-            {
-              "type": "step",
-              "title": "PM2 Cluster Worker handles the request",
-              "desc": "One of the 32 clustered Node.js worker processes on that EC2 instance receives the connection. It processes the checkout logic — validating inventory, applying discounts, calculating taxes — all asynchronously."
-            },
-            {
-              "type": "step",
-              "title": "Worker Threads handle CPU-heavy subtasks",
-              "desc": "Within the Node.js process, Worker Threads are spawned to handle PDF invoice generation, fraud detection scoring algorithms, and complex discount calculation trees simultaneously, without blocking the main thread."
-            },
-            {
-              "type": "step",
-              "title": "Distributed systems complete the order",
-              "desc": "The Node.js service publishes an order event to Amazon SQS/SNS. Redis cache updates the session. DynamoDB records the order. Downstream services (warehouse, payment, email) consume the event asynchronously."
-            },
-            {
-              "type": "step",
-              "title": "Auto-scaling responds to load",
-              "desc": "If all EC2 instances reach 75% CPU, CloudWatch triggers Auto Scaling to add 10 more instances. New instances start PM2 clusters, register with the load balancer, and begin taking traffic within 4 minutes."
-            },
-            {
-              "type": "heading",
-              "text": "Netflix Architecture Flow"
-            },
-            {
-              "type": "step",
-              "title": "User opens Netflix app",
-              "desc": "Request hits Netflix's Zuul API Gateway via the nearest CDN edge node. Zuul handles authentication using Netflix Passport and routes to the appropriate microservice."
-            },
-            {
-              "type": "step",
-              "title": "Gateway routes to Node.js API service",
-              "desc": "The metadata API service — running as a PM2 cluster on multiple EC2 instances — receives the request to load the user's home screen with personalized content."
-            },
-            {
-              "type": "step",
-              "title": "Clustered workers handle concurrent users",
-              "desc": "Multiple PM2 cluster workers on each instance handle different users' requests simultaneously. Each worker independently queries Redis for cached recommendations, Cassandra for user watch history, and Elasticsearch for content metadata."
-            },
-            {
-              "type": "step",
-              "title": "Worker Threads run personalization algorithms",
-              "desc": "Thumbnail A/B testing, recommendation ranking algorithms, and content compression all run in Worker Threads within the Node.js process to avoid blocking the Event Loop while processing complex machine learning outputs."
-            },
-            {
-              "type": "step",
-              "title": "Hystrix circuit breakers prevent cascade failures",
-              "desc": "Netflix's Hystrix library wraps all downstream service calls. If a recommendation service becomes slow, the circuit breaker opens and returns cached recommendations instead — preventing the slowdown from cascading to affect all users."
-            },
-            {
-              "type": "heading",
-              "text": "Complete Technology Stack Used at Scale"
-            },
-            {
-              "type": "table",
-              "headers": ["Technology", "Purpose", "Where it Fits"],
-              "rows": [
-                ["PM2 Clustering", "Use all CPU cores on each machine", "Each EC2 instance — process level"],
-                ["Worker Threads", "Run CPU-heavy jobs without blocking", "Inside each Node.js worker process"],
-                ["process.nextTick", "Priority async callback scheduling", "Inside Event Loop of each worker"],
-                ["AWS Auto Scaling", "Automatically add/remove EC2 machines", "Infrastructure level"],
-                ["Application Load Balancer", "Distribute traffic across EC2 instances", "Network level between machines"],
-                ["Redis Cluster", "Shared session data and caching across all workers", "Data layer"],
-                ["Kafka / SQS", "Async event-driven communication between services", "Service communication"],
-                ["Microservices", "Split system into independently deployable pieces", "Architecture level"],
-                ["CDN (CloudFront)", "Serve static assets and edge routing globally", "Global network layer"],
-                ["API Gateway (Zuul/Kong)", "Auth, routing, rate limiting at entry point", "Entry point layer"],
-                ["Circuit Breakers (Hystrix)", "Prevent cascade failures between services", "Resilience layer"],
-                ["Docker + Kubernetes", "Container orchestration at massive scale", "Deployment layer"],
-                ["Distributed Tracing", "Monitor request flow across all services", "Observability layer"]
-              ]
-            },
-            {
-              "type": "code",
-              "code": "// Complete Request Flow Diagram\n\nUser Browser / Mobile App\n         ↓\n    CDN Edge Node\n   (CloudFront / Fastly)\n         ↓\n    API Gateway\n   (Auth + Routing + Rate Limiting)\n         ↓\n  Application Load Balancer\n   (Distributes across EC2 instances)\n         ↓\n  EC2 Instance — PM2 Cluster\n  ┌─────────────────────────────┐\n  │  Worker 1 │ Worker 2        │\n  │  Worker 3 │ Worker 4  ...   │\n  │          ...                │\n  │  Worker 31 │ Worker 32      │\n  └─────────────────────────────┘\n         ↓\n  Inside Each Worker Process\n  ┌────────────────────────────────┐\n  │  Main Thread — Event Loop      │\n  │  Worker Thread 1 (Invoice PDF) │\n  │  Worker Thread 2 (Fraud Score) │\n  │  Worker Thread 3 (Tax Calc)    │\n  └────────────────────────────────┘\n         ↓\n  Data Layer\n  Redis │ DynamoDB │ Kafka │ S3\n         ↓\n  Downstream Microservices\n  Payment │ Warehouse │ Email │ Analytics"
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Large-scale systems like Amazon and Netflix scale horizontally by adding more machines rather than relying on making one machine more powerful. Clustering maximizes each machine's capacity, while auto-scaling adds more machines when demand grows. Worker Threads handle computation. Everything else — coordination, communication, resilience — is handled by the distributed infrastructure layer."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Real-world Node.js scaling at Amazon and Netflix scale combines PM2 clustering, Worker Threads, process.nextTick for precise scheduling, load balancers, Redis caching, Kafka event queues, microservices architecture, auto-scaling infrastructure, and CDN delivery — all working together as a unified system."
-            }
-          ]
         }
       },
 

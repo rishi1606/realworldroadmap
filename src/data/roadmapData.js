@@ -1022,6 +1022,744 @@ export const roadmapData = [
 
     ]
   },
+  //   {
+  //     id: "insta-javascript",
+  //     category: "Frontend Concepts",
+  //     sortOrder: 1,
+  //     image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Instagram_logo_2016.svg/1280px-Instagram_logo_2016.svg.png",
+  //     title: "Learn Javascript(ES6+) concepts using Instagram Architecture",
+  //     description: "Learn Javascript(ES6+) concepts using Instagram Architecture.",
+  //     tags: ["Javascript", "UI", "Modern"],
+  //     nodes: [
+  //       {
+  //         id: 1,
+  //         title: "Basics (Foundation)",
+  //         level: "freshers",
+  //         topics: [
+  //           "What is JavaScript?",
+  //           "Scope",
+  //           "var, let & const",
+  //           "Hoisting",
+  //           "Execution Context",
+  //         ],
+  //         topicDetails: {
+
+  //           "What is JavaScript?": [
+  //             {
+  //               type: "paragraph",
+  //               text: "You open Instagram. You double-tap a post — the heart animates red. You type a comment — it appears instantly. You scroll — new posts load without refreshing the page. None of this is possible with just HTML and CSS. Something is making the page alive and reactive. That something is JavaScript."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ What actually happens when you double-tap a post on Instagram?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "What is JavaScript?"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "JavaScript is a programming language that runs in the browser. It lets you respond to user actions, update the page without reloading, send and receive data from servers, and build interactive experiences — all in real time."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "HTML builds the structure",
+  //               desc: "The post box, image, like button, comment input — all HTML."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "CSS makes it look good",
+  //               desc: "Colors, fonts, layout, the heart icon shape — all CSS."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "JavaScript makes it work",
+  //               desc: "Double tap → heart turns red → like count goes up → server is notified. All JavaScript."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// User double-taps a post
+  // function likePost() {
+  //   let likes = 200;
+  //   likes += 1;
+  //   console.log("Likes:", likes); // 201
+  // }`
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ JavaScript is what makes Instagram feel alive — not just a static page, but a real-time interactive app."
+  //             },
+  //             {
+  //               type: "warning-callout",
+  //               text: "⚠️ But where does JavaScript actually run your code? Who keeps track of your variables? That's handled by something called the Execution Context — but before that, we need to understand Scope."
+  //             }
+  //           ],
+
+  //           "Scope": [
+  //             {
+  //               type: "paragraph",
+  //               text: "You're on Instagram. Your DMs are private — only you can see them. Your posts are public — everyone can. Your story is visible only while it's active. Data on Instagram isn't available everywhere — it depends on where you are and what you're allowed to access. JavaScript variables work the exact same way. That's Scope."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ Why can't some variables be accessed outside a function — even if you know they exist?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Global Scope — Available Everywhere"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "A variable declared outside any function is global. Like your Instagram username — it's attached to everything you do on the app."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `const username = "@john"; // Global
+
+  // function showProfile() {
+  //   console.log(username); // ✅ works
+  // }
+  // showProfile();`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Function Scope — Lives Inside a Function Only"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Variables declared inside a function can't be accessed from outside. Like a story timer — it only exists while the story is running."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `function openStory() {
+  //   const timer = 15; // only lives here
+  // }
+
+  // console.log(timer); // ❌ ReferenceError`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Block Scope — Lives Inside { } Only"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Variables declared with let or const inside an if/loop block can't be accessed outside that block."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `if (isLoggedIn) {
+  //   let feed = "Loaded"; // only inside this block
+  // }
+
+  // console.log(feed); // ❌ ReferenceError`
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ Global = everywhere. Function = inside that function. Block = inside that { }. Scope protects your variables from being accessed where they shouldn't be."
+  //             },
+  //             {
+  //               type: "warning-callout",
+  //               text: "⚠️ Scope also depends on how you declare variables — var, let, and const each behave differently. That's next."
+  //             }
+  //           ],
+
+  //           "var, let & const": [
+  //             {
+  //               type: "paragraph",
+  //               text: "Instagram has different types of data. Your username never changes. Your like count changes constantly. A temporary OTP exists for 60 seconds then it's gone. In JavaScript, you pick how a variable behaves using var, let, or const — and the wrong choice causes real bugs."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ Why does JavaScript have three ways to declare a variable?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "const — Value That Never Changes"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Use const when the value should never be reassigned. Like your Instagram user ID — set once, never changes."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `const userId = "ig_9921"; // fixed forever
+  // userId = "ig_0000";       // ❌ TypeError`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "let — Value That Changes"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Use let when the value will update. Like your like count — it changes every time someone taps the heart."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `let likes = 200;
+  // likes += 1; // ✅ 201
+  // likes += 1; // ✅ 202`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "var — The Old Way (Avoid It)"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "var is function-scoped, not block-scoped. It leaks out of if/loop blocks and causes unexpected bugs. Instagram's old codebase had var everywhere — and it was a source of constant bugs."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `if (true) {
+  //   var otp = 123456; // leaks out!
+  // }
+  // console.log(otp); // ✅ works — but it shouldn't
+
+  // if (true) {
+  //   let otp = 123456; // block-scoped
+  // }
+  // console.log(otp); // ❌ ReferenceError — correct!`
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ Rule of thumb: use const by default. Use let when the value changes. Never use var in modern code."
+  //             },
+  //             {
+  //               type: "warning-callout",
+  //               text: "⚠️ var has another weird behaviour — it gets hoisted to the top of the function with a value of undefined. That leads us directly to Hoisting."
+  //             }
+  //           ],
+
+  //           "Hoisting": [
+  //             {
+  //               type: "paragraph",
+  //               text: "You open Instagram and your feed loads before you even search for anything. Instagram pre-loads content it thinks you'll need. JavaScript does something similar — before it runs your code, it scans the entire file and moves all declarations to the top in memory. This is called Hoisting."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ How can you call a function before you've written it — and it still works?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "How Hoisting Works"
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "JS scans the entire file first",
+  //               desc: "Before running line 1, JavaScript reads all declarations — functions and variables."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Declarations are moved to the top (in memory)",
+  //               desc: "Not literally in your code — but in how the engine processes it."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "var gets value: undefined. let/const stay uninitialized.",
+  //               desc: "Accessing let/const before their line throws a ReferenceError — called the Temporal Dead Zone."
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "var is Hoisted With undefined"
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `console.log(followers); // undefined (not an error)
+  // var followers = 1000;
+
+  // // JS sees it as:
+  // var followers;            // hoisted
+  // console.log(followers);  // undefined
+  // followers = 1000;`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "let / const Are Hoisted But Not Initialized"
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `console.log(stories); // ❌ ReferenceError
+  // let stories = 5;
+  // // Temporal Dead Zone — can't touch it before declaration`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Functions Are Fully Hoisted"
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `likePost(); // ✅ works — called before it's defined
+
+  // function likePost() {
+  //   console.log("Post liked!");
+  // }`
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ Functions are fully hoisted. var is hoisted as undefined. let/const are hoisted but blocked until their line — Temporal Dead Zone."
+  //             },
+  //             {
+  //               type: "warning-callout",
+  //               text: "⚠️ Hoisting happens inside a container that JS creates before running any code. That container — which holds your variables and manages execution — is called the Execution Context."
+  //             }
+  //           ],
+
+  //           "Execution Context": [
+  //             {
+  //               type: "paragraph",
+  //               text: "Every time Instagram loads your feed, there's a whole setup that happens behind the scenes — auth is checked, your data is fetched, the UI is prepared. It doesn't just run randomly. JavaScript works the same way. Before any code runs, JS creates an environment to manage it. That environment is the Execution Context."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ How does JavaScript keep track of variables and functions as it runs your code?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "What is Execution Context?"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "An Execution Context is the environment where JavaScript code is evaluated and run. Every time JS runs — it creates one. It tracks variables, the value of 'this', and what code to execute."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Global Execution Context — Created First",
+  //               desc: "When your JS file loads, one Global EC is created. It sets up the global scope, hoists all var and functions, then starts running your code line by line."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Function Execution Context — Created On Each Call",
+  //               desc: "Every time a function is called, a new EC is created just for it — with its own variables and scope. When the function returns, that EC is destroyed."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Call Stack — Manages All Contexts",
+  //               desc: "JS uses a Call Stack to track which EC is active. Global EC sits at the bottom. Each function call pushes a new EC on top. When done, it pops off."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `function loadFeed() {
+  //   const posts = fetchPosts(); // new EC created
+  //   return posts;               // EC destroyed
+  // }
+
+  // loadFeed(); // pushed to Call Stack, then popped`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Two Phases of Every Execution Context"
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// Phase 1 — Creation Phase (Hoisting happens here)
+  // // - var → hoisted as undefined
+  // // - functions → fully hoisted
+  // // - let/const → in Temporal Dead Zone
+
+  // // Phase 2 — Execution Phase
+  // // - Code runs line by line
+  // // - Variables get their actual values`
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ Global EC runs once when the file loads. Function EC is created and destroyed on every function call. The Call Stack manages the order. This is the engine behind every line of JS you write."
+  //             }
+  //           ]
+
+  //         }
+  //       },
+
+  //       {
+  //         id: 2,
+  //         title: "Functions & Scope",
+  //         level: "freshers",
+  //         topics: [
+  //           "Functions",
+  //           "Arrow Functions vs Normal Functions",
+  //           "this Keyword",
+  //           "call, apply & bind",
+  //           "Closures",
+  //           "Callbacks",
+  //           "Higher Order Functions",
+  //           "Pure Functions",
+  //           "Currying & Function Composition",
+  //           "Recursion",
+  //         ],
+  //         topicDetails: {
+  //           "Functions": [
+  //             {
+  //               type: "paragraph",
+  //               text: "You tap 'Post' on Instagram. Your caption gets validated, the image gets compressed, a request fires to the server, your followers get notified, and your feed updates — all in under a second. None of that runs as one giant blob of code. Each job is packaged into its own reusable block. In JavaScript, those blocks are called Functions."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ Why do we wrap code in functions instead of just writing everything line by line?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "The Problem Without Functions"
+  //             },
+  //             {
+  //               type: "error-callout",
+  //               title: "Without functions, your Instagram codebase would look like this:",
+  //               list: [
+  //                 "Like button logic copy-pasted in 47 different places",
+  //                 "A bug in the like counter means fixing it in 47 places",
+  //                 "Adding a 'dislike' feature means rewriting everything",
+  //                 "No one on the team knows which block of code does what"
+  //               ],
+  //               footer: "Instagram has thousands of features. Without functions, the entire codebase becomes an unmaintainable wall of repeated code."
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "What is a Function?"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "A function is a reusable block of code that runs only when called. You define the logic once, give it a name, and call it whenever you need it — from anywhere in your code. Like Instagram defining 'send notification' once and reusing it for likes, comments, follows, and DMs."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Define it once",
+  //               desc: "Write the logic inside a named function block — it doesn't run yet, just gets stored in memory."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Call it whenever needed",
+  //               desc: "Use the function name followed by () to execute it — from anywhere in your code, as many times as needed."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Pass in data with parameters",
+  //               desc: "Functions accept inputs (parameters) so the same logic can work on different data each time it's called."
+  //             },
+  //             {
+  //               type: "step",
+  //               title: "Get a result back with return",
+  //               desc: "Functions can return a computed value back to whoever called them — like returning the total like count."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// Define once
+  // function sendNotification(user, action) {
+  //   console.log(user + " " + action);
+  // }
+
+  // // Reuse everywhere
+  // sendNotification("@john", "liked your post");
+  // sendNotification("@sara", "commented on your post");
+  // sendNotification("@mike", "started following you");`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Parameters vs Arguments"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "These two words get confused all the time. They refer to the same slot — but at different moments."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `//         ↓ parameter — placeholder when defining
+  // function likePost(username) {
+  //   console.log(username + " liked this post");
+  // }
+
+  // likePost("@john");
+  // //        ↑ argument — actual value when calling`
+  //             },
+  //             {
+  //               type: "info-callout",
+  //               text: "💡 Parameter = the variable name in the function definition. Argument = the actual value you pass when calling it. Same slot, different names depending on when you're talking about it."
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Return Values"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "A function doesn't just run code — it can also hand back a result. Instagram's backend calls a function to calculate your total likes across all posts and needs that number back to display on your profile."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `function getTotalLikes(posts) {
+  //   return posts.reduce((sum, post) => sum + post.likes, 0);
+  // }
+
+  // const myPosts = [
+  //   { title: "Sunset", likes: 430 },
+  //   { title: "Coffee", likes: 120 },
+  //   { title: "Reel",   likes: 980 },
+  // ];
+
+  // const total = getTotalLikes(myPosts);
+  // console.log(total); // 1530`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Function Declaration vs Function Expression"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "There are two ways to define a function in JavaScript. They look similar but behave differently — especially around hoisting."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// Function Declaration — hoisted, can be called before it's defined
+  // function loadFeed() {
+  //   console.log("Feed loaded");
+  // }
+
+  // // Function Expression — not hoisted, must be defined before calling
+  // const loadStories = function() {
+  //   console.log("Stories loaded");
+  // };`
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ Functions are the building blocks of every JavaScript app. Define once, reuse everywhere. Accept inputs via parameters. Return outputs via return. Instagram, Netflix, Zomato — every feature you use is a function underneath."
+  //             },
+  //             {
+  //               type: "warning-callout",
+  //               text: "⚠️ JavaScript introduced a shorter, more modern way to write functions — Arrow Functions. They look like a convenience shortcut, but they behave very differently from regular functions, especially around 'this'. That difference matters a lot."
+  //             }
+  //           ],
+  //           "Arrow Functions vs Normal Functions": [
+  //             {
+  //               type: "paragraph",
+  //               text: "Instagram's codebase has thousands of functions. Some are long, named, reusable — like the function that handles the entire login flow. Some are tiny, one-line, used once — like the function that formats a like count from 1000 to '1k'. ES6 introduced Arrow Functions to make those short, inline functions cleaner to write. But shorter syntax comes with real behavioural differences — and using the wrong one breaks things."
+  //             },
+  //             {
+  //               type: "curious-callout",
+  //               text: "❓ Arrow functions look like a shortcut — so why don't developers just use them everywhere and drop regular functions entirely?"
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "The Syntax Difference"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Both do the same job — wrap logic into a callable block. Arrow functions just strip away the boilerplate."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// Regular function
+  // function formatLikes(count) {
+  //   return count >= 1000 ? (count / 1000).toFixed(1) + "k" : count;
+  // }
+
+  // // Arrow function — same logic, shorter syntax
+  // const formatLikes = (count) => {
+  //   return count >= 1000 ? (count / 1000).toFixed(1) + "k" : count;
+  // };
+
+  // // Arrow function — single expression, implicit return
+  // const formatLikes = count => count >= 1000 ? (count / 1000).toFixed(1) + "k" : count;
+
+  // formatLikes(1530); // "1.5k"
+  // formatLikes(430);  // 430`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Difference 1 — 'this' Binding"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "This is the most important difference. Regular functions create their own 'this' — it depends on how they're called. Arrow functions never get their own 'this' — they inherit it from the scope they were written in. This breaks things in objects and classes if you use the wrong one."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `const instagramPost = {
+  //   likes: 0,
+
+  //   // Regular function — 'this' = instagramPost ✅
+  //   likeWithRegular: function () {
+  //     this.likes += 1;
+  //     console.log("Likes:", this.likes);
+  //   },
+
+  //   // Arrow function — 'this' = outer scope (window/global) ❌
+  //   likeWithArrow: () => {
+  //     this.likes += 1; // this is NOT instagramPost here
+  //     console.log("Likes:", this.likes); // NaN or undefined
+  //   }
+  // };
+
+  // instagramPost.likeWithRegular(); // Likes: 1 ✅
+  // instagramPost.likeWithArrow();   // Likes: NaN ❌`
+  //             },
+  //             {
+  //               type: "error-callout",
+  //               title: "Arrow functions break 'this' inside objects because:",
+  //               list: [
+  //                 "Arrow functions don't bind their own 'this'",
+  //                 "They capture 'this' from wherever they were defined",
+  //                 "Inside an object literal, the surrounding scope is global/window",
+  //                 "So 'this.likes' refers to window.likes — which doesn't exist"
+  //               ],
+  //               footer: "Rule: never use arrow functions as object methods. Always use regular functions there."
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Difference 2 — 'arguments' Object"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Regular functions have a built-in 'arguments' object — an array-like list of everything passed in, even if you didn't name the parameters. Arrow functions don't have this at all."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// Regular function — arguments object available ✅
+  // function logTags() {
+  //   console.log(arguments);
+  // }
+  // logTags("travel", "food", "reels"); // ["travel", "food", "reels"]
+
+  // // Arrow function — no arguments object ❌
+  // const logTags = () => {
+  //   console.log(arguments); // ReferenceError: arguments is not defined
+  // };
+
+  // // Arrow function alternative — use rest params instead ✅
+  // const logTags = (...tags) => {
+  //   console.log(tags); // ["travel", "food", "reels"]
+  // };`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Difference 3 — Cannot be Used as Constructors"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Regular functions can be called with 'new' to create object instances. Arrow functions cannot — calling them with 'new' throws a TypeError immediately."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `// Regular function as constructor ✅
+  // function User(username, followers) {
+  //   this.username = username;
+  //   this.followers = followers;
+  // }
+
+  // const john = new User("@john", 5000);
+  // console.log(john.username); // "@john"
+
+  // // Arrow function as constructor ❌
+  // const User = (username, followers) => {
+  //   this.username = username;
+  // };
+
+  // const john = new User("@john", 5000);
+  // // TypeError: User is not a constructor`
+  //             },
+  //             {
+  //               type: "heading",
+  //               text: "Where Arrow Functions Shine — Callbacks and Array Methods"
+  //             },
+  //             {
+  //               type: "paragraph",
+  //               text: "Arrow functions are perfect for short, inline callbacks — especially with array methods. No 'this' issue because you're not inside an object. The concise syntax makes the logic easier to read at a glance."
+  //             },
+  //             {
+  //               type: "code",
+  //               code: `const posts = [
+  //   { title: "Sunset", likes: 430, sponsored: false },
+  //   { title: "Ad",     likes: 120, sponsored: true  },
+  //   { title: "Reel",   likes: 980, sponsored: false },
+  // ];
+
+  // // Clean, readable with arrow functions
+  // const organic   = posts.filter(post => !post.sponsored);
+  // const titles    = posts.map(post => post.title);
+  // const totalLikes = posts.reduce((sum, post) => sum + post.likes, 0);
+
+  // console.log(organic);    // Sunset, Reel posts
+  // console.log(titles);     // ["Sunset", "Ad", "Reel"]
+  // console.log(totalLikes); // 1530`
+  //             },
+  //             {
+  //               type: "info-callout",
+  //               text: "💡 Quick decision rule: writing a method inside an object or class? Use a regular function — you need 'this'. Writing a callback, array method, or short utility? Use an arrow function — cleaner syntax, no 'this' needed."
+  //             },
+  //             {
+  //               type: "success-callout",
+  //               text: "✅ Arrow functions are not just 'shorter regular functions'. They have no 'this' of their own, no 'arguments' object, and can't be used as constructors. Use them for callbacks and array methods. Use regular functions for object methods and constructors."
+  //             },
+  //             {
+  //               type: "warning-callout",
+  //               text: "⚠️ 'this' has come up twice now — and both times it was the thing that broke the code when used wrong. So what exactly is 'this'? Where does it come from? And why does it change depending on how a function is called? That's the next topic."
+  //             }
+  //           ]
+  //         }
+
+  //       },
+
+  //       {
+  //         id: 3,
+  //         title: "Arrays & Objects",
+  //         level: "freshers",
+  //         topics: [
+  //           "Objects",
+  //           "Shallow Copy vs Deep Copy",
+  //           "Object.assign()",
+  //           "Destructuring",
+  //           "Spread & Rest Operators",
+  //           "Arrays & Array Methods",
+  //           "map, filter & reduce",
+  //           "forEach vs map",
+  //           "Maps & Sets",
+  //           "WeakMap & WeakSet",
+  //         ]
+  //       },
+
+  //       {
+  //         id: 4,
+  //         title: "The Browser & DOM",
+  //         level: "freshers",
+  //         topics: [
+  //           "DOM Manipulation",
+  //           "Event Bubbling & Capturing",
+  //           "Event Delegation",
+  //           "Timing Functions (setTimeout & setInterval)",
+  //           "Local Storage & Session Storage",
+  //         ]
+  //       },
+
+  //       {
+  //         id: 5,
+  //         title: "Async JavaScript",
+  //         level: "freshers",
+  //         topics: [
+  //           "Synchronous vs Asynchronous",
+  //           "Callback Hell",
+  //           "Promises",
+  //           "Promise Chaining",
+  //           "Promise.all, Promise.race & Promise.allSettled",
+  //           "Async & Await",
+  //           "fetch API",
+  //           "Microtask vs Macrotask",
+  //           "Event Loop",
+  //         ]
+  //       },
+
+  //       {
+  //         id: 6,
+  //         title: "Advanced JavaScript",
+  //         level: "intermediate",
+  //         topics: [
+  //           "Prototypal Inheritance & Prototype Chain",
+  //           "ES6+ Features",
+  //           "Module System (import & export)",
+  //           "Debouncing & Throttling",
+  //           "Memoization",
+  //           "Garbage Collection",
+  //           "Error Handling",
+  //           "Optional Chaining",
+  //           "Strict Mode",
+  //         ]
+  //       },
+  //     ],
+  //   },
+
   {
     id: "caching-netflix",
     category: "Backend Concepts",
@@ -7851,7 +8589,6 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   //       title: "Rate Limiting in Node.js",
   //       level: "freshers",
   //       topics: [
-  //         "express-rate-limit setup",
   //         "Limiting by IP Address",
   //         "Limiting by User ID",
   //         "Custom Rate Limit Rules",
@@ -7860,18 +8597,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   //       ]
   //     },
 
-  //     {
-  //       id: 4,
-  //       title: "Rate Limiting with Redis",
-  //       level: "freshers",
-  //       topics: [
-  //         "Why Redis for Rate Limiting?",
-  //         "Storing counters in Redis",
-  //         "TTL based expiry in Redis",
-  //         "rate-limiter-flexible library",
-  //         "Distributed Rate Limiting basics"
-  //       ]
-  //     },
+  //    
 
   //     // INTERMEDIATE - System Design
   //     {
@@ -7944,9 +8670,185 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   //   ]
   // },
   {
-    id: "cdn-zomato",
+    id: "rate-limiting-razorpay",
     category: "Backend Concepts",
     sortOrder: 5,
+    image: "https://play-lh.googleusercontent.com/2BQu8Y7Ah9Gh9CZvmaMSYIcZvdO4KfdJ26EZ1WGyaOG_xxeDxNn-AZYxOtQJvyQQPFY",
+    title: "Rate Limiting Explained Through Razorpay",
+    description:
+      "Learn rate limiting from scratch — fixed windows, token buckets, distributed limiting, DDoS protection, and real-world abuse prevention — through Swiggy's order system, OTP flows, and flash sale scenarios.",
+    tags: ["Rate Limiting", "Redis", "DDoS"],
+    nodes: [
+
+      {
+        id: 1,
+        title: "Basics (Foundation)",
+        level: "freshers",
+        topics: [
+          "What is Rate Limiting and why it is needed?",
+          "Client-side vs Server-side Rate Limiting"
+        ]
+      },
+
+      {
+        id: 2,
+        title: "Core Concepts & Algorithms",
+        level: "freshers",
+        topics: [
+          "Fixed Window Algorithm",
+          "Sliding Window Algorithm",
+          "Token Bucket Algorithm",
+          "Leaky Bucket Algorithm"
+        ]
+      },
+
+      {
+        id: 3,
+        title: "Rate Limiting in Node.js",
+        level: "freshers",
+        topics: [
+          "Limiting by IP Address",
+          "Limiting by User ID",
+          "Custom Rate Limit Rules",
+          "Returning 429 Too Many Requests",
+          "Rate Limit Headers (X-RateLimit-*)"
+        ]
+      },
+
+      {
+        id: 4,
+        title: "Rate Limiting with Redis",
+        level: "freshers",
+        topics: [
+          "Why Redis for Rate Limiting?",
+          "Storing counters in Redis",
+          "TTL based expiry in Redis",
+          "rate-limiter-flexible library",
+          "Distributed Rate Limiting basics"
+        ]
+      },
+
+      {
+        id: 5,
+        title: "State Management in Rate Limiting",
+        level: "intermediate",
+        topics: [
+          "Local vs Distributed Rate Limiting",
+          "Redis as Rate Limit Store"
+        ]
+      },
+
+      {
+        id: 6,
+        title: "Rate Limiting in Practice",
+        level: "intermediate",
+        topics: [
+          "Rate Limiting by IP",
+          "Rate Limiting by User",
+          "Rate Limiting by API Key",
+          "Rate Limiting by Endpoint"
+        ]
+      },
+
+      {
+        id: 7,
+        title: "Designing Rate Limiters",
+        level: "intermediate",
+        topics: [
+          "Rate Limiting at API Gateway level",
+          "Per User vs Per IP vs Per Endpoint",
+          "Global vs Local Rate Limiting",
+          "Soft Limit vs Hard Limit",
+          "Burst Allowance & Throttling"
+        ]
+      },
+
+      {
+        id: 8,
+        title: "Advanced Strategies",
+        level: "experienced",
+        topics: [
+          "Throttling vs Rate Limiting",
+          "Soft vs Hard Limits",
+          "Rate Limiting in Microservices",
+          "Global vs Per-Service Rate Limiting"
+        ]
+      },
+
+      {
+        id: 9,
+        title: "Rate Limiting in Distributed Systems",
+        level: "experienced",
+        topics: [
+          "Why single server rate limiting fails at scale",
+          "Centralized vs Decentralized Rate Limiting",
+          "Redis Cluster for Rate Limiting",
+          "Race Conditions in distributed counters",
+          "Lua scripts in Redis for atomicity"
+        ]
+      },
+
+      {
+        id: 10,
+        title: "Reliability & Edge Cases",
+        level: "experienced",
+        topics: [
+          "What happens when limit is hit (429 response)",
+          "Retry-After headers",
+          "Graceful degradation",
+          "Rate Limit bypass attacks",
+          "DDoS mitigation using Rate Limiting",
+          "DDoS vs Brute Force vs Scraping (how Rate Limiting handles each differently)"
+        ]
+      },
+
+      {
+        id: 11,
+        title: "Security & DDoS Protection",
+        level: "experienced",
+        topics: [
+          "Rate Limiting vs DDoS Protection",
+          "Bot Detection & Rate Limiting",
+          "IP Reputation based limiting",
+          "Adaptive Rate Limiting",
+          "Rate Limiting + WAF (Web Application Firewall)",
+          "Brute Force protection",
+          "Credential stuffing prevention",
+          "Scraping prevention",
+          "Rate Limiting as first line of defense"
+        ]
+      },
+
+      {
+        id: 12,
+        title: "Real Tools & Observability",
+        level: "experienced",
+        topics: [
+          "NGINX Rate Limiting",
+          "Redis + Lua scripts",
+          "AWS API Gateway throttling",
+          "Kong API Gateway rate limiting plugin",
+          "Cloudflare Rate Limiting",
+          "Rate Limiting with Service Mesh (Istio)",
+          "Monitoring rate-limited traffic",
+          "Detecting abuse patterns",
+          "Metrics & dashboards",
+          "Alerting",
+          "Logging blocked requests",
+          "Monitoring Rate Limit breaches (Prometheus, Grafana)",
+          "Alerting on suspicious traffic spikes",
+          "Rate Limit Bypass prevention",
+          "Multi-region Rate Limiting",
+          "Customer-tier based Rate Limiting (Free vs Pro vs Enterprise)"
+        ]
+      }
+
+    ]
+  },
+  {
+    id: "cdn-zomato",
+    category: "Backend Concepts",
+    sortOrder: 6,
     image: "https://crystalpng.com/wp-content/uploads/2025/12/Zomato-Logo.png",
     title: "Understand CDN through Zomato",
     description: "Learn how Zomato serves millions of concurrent users — from edge servers and cache hits, to geo-routing, CDN invalidation, DDoS protection, and multi-CDN strategies in production.",
@@ -10312,7 +11214,7 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
   {
     id: "websockets-gaming",
     category: "Backend Concepts",
-    sortOrder: 6,
+    sortOrder: 7,
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
     title: "How Multiplayer Games Use WebSockets",
     description:

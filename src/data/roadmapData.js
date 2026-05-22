@@ -386,6 +386,16 @@ export const roadmapData = [
             },
 
             {
+              type: "paragraph",
+              text: "This is the real power of Node.js non-blocking architecture. While one user's database query, payment verification, or API request is waiting in the background, the main thread immediately becomes free to serve other users instead of sitting idle."
+            },
+
+            {
+              type: "paragraph",
+              text: "Because Node.js never blocks while waiting for slow I/O operations, a single server can efficiently handle thousands of concurrent Amazon users performing searches, payments, cart updates, and tracking requests simultaneously."
+            },
+
+            {
               type: "step",
               title: " Rahul searches for iPhone",
               desc: "Rahul opens Amazon and searches 'iPhone 16'. The request reaches the Node.js server."
@@ -568,6 +578,16 @@ export const roadmapData = [
             },
 
             {
+              type: "paragraph",
+              text: "The Call Stack is the execution area where JavaScript runs functions one by one. Whenever a function starts executing, it gets pushed into the Call Stack, and once execution finishes, it gets removed. Since JavaScript is single-threaded, only one function can execute in the Call Stack at a time."
+            },
+
+            {
+              type: "paragraph",
+              text: "Every API request in Node.js eventually enters the Call Stack for execution. The Event Loop can only process new tasks when the Call Stack becomes empty again."
+            },
+
+            {
               type: "step",
               title: " Rahul clicks Search",
               desc: "Amazon sends request to Node.js server."
@@ -595,7 +615,6 @@ export const roadmapData = [
               type: "info-callout",
               text: "💡 The Call Stack can only execute one function at a time. If a heavy task blocks it, the entire application feels frozen."
             },
-
             {
               type: "heading",
               text: "2. Callback Queue — Where Completed Async Tasks Wait"
@@ -603,12 +622,17 @@ export const roadmapData = [
 
             {
               type: "paragraph",
-              text: "When async operations like database queries, payment verification, timers, or file reads finish, their callbacks move into the Callback Queue."
+              text: "The Callback Queue is the waiting area for completed asynchronous operations in Node.js. When background tasks like database queries, payment verification, API calls, file reads, or timers finish execution, their callback functions are pushed into the Callback Queue."
             },
 
             {
               type: "paragraph",
-              text: "Imagine Priya makes payment on Amazon. Payment verification takes time because Node.js must contact external banking systems."
+              text: "These callbacks cannot execute immediately because JavaScript can run only one task at a time on the main thread. The Event Loop continuously checks whether the Call Stack is empty. Once the stack becomes free, callbacks are removed from the Callback Queue and pushed into the Call Stack for execution."
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine Priya makes a payment on Amazon. Payment verification takes time because Amazon must communicate with external banking systems and payment gateways. Instead of blocking the main thread while waiting, Node.js runs the operation asynchronously in the background."
             },
 
             {
@@ -618,7 +642,7 @@ export const roadmapData = [
 
             {
               type: "paragraph",
-              text: "The timer runs in the background. After 2 seconds, its callback enters the Callback Queue and waits there until the Call Stack becomes empty."
+              text: "The timer runs outside the Call Stack in the background. After 2 seconds complete, its callback function moves into the Callback Queue and waits there until the Event Loop finds the Call Stack empty."
             },
 
             {
@@ -655,7 +679,6 @@ export const roadmapData = [
               title: " Callback executes",
               desc: "Once stack becomes empty, payment success message prints."
             },
-
             {
               type: "heading",
               text: "3. Microtask Queue — VIP Priority Queue"
@@ -663,12 +686,17 @@ export const roadmapData = [
 
             {
               type: "paragraph",
-              text: "Promises and process.nextTick callbacks go into the Microtask Queue. This queue has HIGHER priority than the normal Callback Queue."
+              text: "The Microtask Queue is a high-priority queue inside Node.js used mainly for Promise callbacks and process.nextTick() functions. Whenever Promises resolve or nextTick callbacks are scheduled, they do not enter the normal Callback Queue. Instead, they move into the Microtask Queue which the Event Loop processes with higher priority."
             },
 
             {
               type: "paragraph",
-              text: "Amazon heavily uses Promises for fast async workflows like order confirmations, recommendation systems, inventory checks, and notification pipelines."
+              text: "Before executing timers, I/O callbacks, or other normal async tasks, the Event Loop first completely empties the Microtask Queue. This makes Promise-based operations extremely fast and efficient for lightweight asynchronous workflows."
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon heavily relies on Promises for real-time async operations like order confirmations, inventory checks, recommendation engines, payment status updates, notifications, and analytics pipelines because microtasks execute faster than normal callback queue tasks."
             },
 
             {
@@ -678,12 +706,42 @@ export const roadmapData = [
 
             {
               type: "paragraph",
-              text: "Once the Promise resolves, its callback enters the Microtask Queue. The Event Loop ALWAYS executes Microtasks before normal Callback Queue tasks."
+              text: "Once the Promise resolves, its callback moves into the Microtask Queue. Even if timers or other completed async operations already exist in the Callback Queue, the Event Loop executes all microtasks first before touching normal callbacks."
             },
 
             {
               type: "code",
               code: "Promise Resolved\n        ↓\nCallback Added To Microtask Queue\n        ↓\nEvent Loop Prioritizes Microtasks\n        ↓\nCallback Executes Before Timers"
+            },
+
+            {
+              type: "step",
+              title: " Customer places order",
+              desc: "Amazon starts multiple async operations like payment verification and inventory checks."
+            },
+
+            {
+              type: "step",
+              title: " Promise resolves quickly",
+              desc: "Order confirmation Promise completes successfully."
+            },
+
+            {
+              type: "step",
+              title: " Callback enters Microtask Queue",
+              desc: "Promise callback gets high-priority placement."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop checks Call Stack",
+              desc: "Once the stack becomes empty, Event Loop processes microtasks first."
+            },
+
+            {
+              type: "step",
+              title: " Order confirmation executes immediately",
+              desc: "Confirmation message sends before normal timer or callback queue tasks."
             },
 
             {

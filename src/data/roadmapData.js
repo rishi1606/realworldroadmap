@@ -6888,16 +6888,568 @@ session.withTransaction(async () => {
       },
 
       {
-        id: 7,
-        title: "Performance & Optimization",
-        level: "intermediate",
-        topics: [
+        "id": 7,
+        "title": "Performance & Optimization",
+        "level": "freshers",
+        "topics": [
           "TTL Indexes — Auto-deleting Expired OTPs & Sessions",
           "Capped Collections — Storing Last N Delivery Logs",
           "Projection — Fetching Only What You Need",
           "Pagination — Loading Swiggy Order History Page by Page",
           "Read vs Write Heavy Design Decisions",
-        ]
+          "Bulk Write Operations — Batching Updates at Scale",
+          "Query Selectivity — Writing Filters That Actually Help",
+          "In-Memory Sorting vs Index Sorting"
+        ],
+        "topicDetails": {
+
+          "TTL Indexes — Auto-deleting Expired OTPs & Sessions": [
+            {
+              "type": "paragraph",
+              "text": "You enter your phone number on Swiggy. An OTP lands — valid for 10 minutes. After 10 minutes, it's useless. But it's still sitting in MongoDB's otp collection unless something deletes it. Swiggy doesn't want engineers writing cron jobs to clean up expired OTPs, stale sessions, and temporary tokens. MongoDB has a built-in mechanism for this: TTL Indexes — Time To Live indexes that automatically expire and delete documents after a set duration."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Swiggy generates millions of OTPs a day. If expired ones are never cleaned up, the otp collection grows forever. Who deletes them — and how?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a TTL Index?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A TTL index is a special single-field index on a date field. You specify an expireAfterSeconds value. MongoDB runs a background thread every 60 seconds that scans for documents where the indexed date field plus the TTL duration is in the past — and deletes them automatically. No cron job, no application code, no manual cleanup."
+            },
+            {
+              "type": "step",
+              "title": "You request an OTP",
+              "desc": "Swiggy inserts a document into the otps collection with your phone number, the OTP code, and a createdAt timestamp set to now."
+            },
+            {
+              "type": "step",
+              "title": "10 minutes pass — OTP expires",
+              "desc": "MongoDB's TTL background thread checks: createdAt + 600 seconds < now? Yes. The document is automatically deleted. No Swiggy code ran. The database handled it."
+            },
+            {
+              "type": "step",
+              "title": "You try the OTP after 10 minutes",
+              "desc": "Swiggy queries the otps collection. The document is gone. Returns 'OTP expired' — because MongoDB already cleaned it up."
+            },
+            {
+              "type": "code",
+              "code": "// Create TTL index — deletes OTP documents 600 seconds after createdAt\ndb.otps.createIndex(\n  { createdAt: 1 },\n  { expireAfterSeconds: 600 }  // 10 minutes\n)\n\n// Insert an OTP — MongoDB auto-deletes this document at 2:24 PM\ndb.otps.insertOne({\n  phone:     \"+91-9876543210\",\n  otp:       \"847291\",\n  createdAt: new Date()        // 2:14 PM — expires at 2:24 PM automatically\n})"
+            },
+            {
+              "type": "heading",
+              "text": "Swiggy's TTL Use Cases"
+            },
+            {
+              "type": "step",
+              "title": "OTPs — expire after 10 minutes",
+              "desc": "Login OTPs, payment OTPs. If unused after 600 seconds, MongoDB deletes them. No stale OTPs accumulating in the collection."
+            },
+            {
+              "type": "code",
+              "code": "// OTPs — 10 minute expiry\ndb.otps.createIndex({ createdAt: 1 }, { expireAfterSeconds: 600 })"
+            },
+            {
+              "type": "step",
+              "title": "User sessions — expire after 30 days of inactivity",
+              "desc": "Each session document has a lastAccessedAt field. Every time the user opens Swiggy, lastAccessedAt is updated to now. If they don't open the app for 30 days, the session document expires and they're logged out automatically."
+            },
+            {
+              "type": "code",
+              "code": "// Sessions — expire 30 days after last access\ndb.sessions.createIndex(\n  { lastAccessedAt: 1 },\n  { expireAfterSeconds: 2592000 }  // 30 days\n)\n\n// Every app open — refresh the TTL clock\ndb.sessions.updateOne(\n  { sessionId: \"sess_abc123\" },\n  { $set: { lastAccessedAt: new Date() } }\n)"
+            },
+            {
+              "type": "step",
+              "title": "Temporary cart data — expire after 2 hours",
+              "desc": "If a user adds items to cart but never places the order, the cart document is auto-deleted after 2 hours. No orphaned cart documents from abandoned sessions."
+            },
+            {
+              "type": "code",
+              "code": "// Carts — expire 2 hours after last modification\ndb.carts.createIndex(\n  { updatedAt: 1 },\n  { expireAfterSeconds: 7200 }  // 2 hours\n)"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ TTL deletion is approximate — MongoDB's background thread runs every 60 seconds. An OTP set to expire at 2:14 PM might not be deleted until 2:15 PM. Always validate expiry in your application logic too — don't rely solely on the document being gone."
+            },
+            {
+              "type": "table",
+              "headers": ["Use case", "TTL field", "expireAfterSeconds", "Swiggy benefit"],
+              "rows": [
+                ["Login OTP", "createdAt", "600 (10 min)", "Stale OTPs auto-deleted"],
+                ["Payment OTP", "createdAt", "300 (5 min)", "Shorter window for sensitive actions"],
+                ["User sessions", "lastAccessedAt", "2592000 (30 days)", "Inactive sessions auto-expire"],
+                ["Abandoned carts", "updatedAt", "7200 (2 hrs)", "No orphaned cart data"],
+                ["Push notification tokens", "createdAt", "7776000 (90 days)", "Stale device tokens removed"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ TTL indexes are Swiggy's automatic janitor. OTPs, sessions, carts — anything with a natural expiry — gets cleaned up by MongoDB itself. No cron jobs, no manual deletes, no ever-growing collection of stale data. Create the index once, and MongoDB handles cleanup forever."
+            }
+          ],
+
+          "Capped Collections — Storing Last N Delivery Logs": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy's delivery tracking system logs every location ping from every delivery partner — every 5 seconds. That's 200,000 delivery partners × 12 pings per minute = 2.4 million log entries per minute. Swiggy only needs the last 100 pings per partner to show the live route on your screen. They don't need millions of historical pings accumulating forever. A Capped Collection solves this: a fixed-size collection that automatically overwrites the oldest documents when it fills up — like a circular buffer."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What if you need a MongoDB collection that never grows beyond a certain size — automatically discarding old entries as new ones come in?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Capped Collection?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Capped Collection has a fixed maximum size in bytes and optionally a maximum document count. When either limit is hit, MongoDB automatically overwrites the oldest document with the newest insert — in insertion order. Think of it as a circular log buffer baked into the database."
+            },
+            {
+              "type": "code",
+              "code": "// Create a capped collection for delivery location pings\n// Max 50MB, max 500,000 documents\ndb.createCollection(\"deliveryPings\", {\n  capped:  true,\n  size:    52428800,  // 50MB in bytes — required\n  max:     500000     // optional document count cap\n})\n\n// Check if a collection is capped\ndb.deliveryPings.isCapped()  // true"
+            },
+            {
+              "type": "step",
+              "title": "Ravi pings his location every 5 seconds",
+              "desc": "Each ping inserts a small document — partnerId, lat, lng, timestamp. The capped collection accepts it immediately."
+            },
+            {
+              "type": "step",
+              "title": "The collection hits its size limit",
+              "desc": "The 500,001st document comes in. MongoDB overwrites the oldest document — Ravi's ping from 40 minutes ago — with this new one. The collection stays at exactly 500,000 documents. No manual cleanup needed."
+            },
+            {
+              "type": "step",
+              "title": "Your screen shows Ravi's live route",
+              "desc": "Swiggy queries the last 50 pings for Ravi's partnerId. Because capped collections preserve insertion order, the most recent pings are always at the end. Fast read, no index needed for recent data."
+            },
+            {
+              "type": "code",
+              "code": "// Insert a location ping — no special syntax, just insertOne\ndb.deliveryPings.insertOne({\n  partnerId:  \"dp_7731\",\n  lat:        19.0596,\n  lng:        72.8295,\n  speed:      24,       // kmph\n  recordedAt: new Date()\n})\n\n// Get last 50 pings for a partner — natural order = insertion order\ndb.deliveryPings.find(\n  { partnerId: \"dp_7731\" },\n  { lat: 1, lng: 1, recordedAt: 1, _id: 0 }\n).sort({ $natural: -1 }).limit(50)\n// $natural: -1 = reverse insertion order = most recent first"
+            },
+            {
+              "type": "heading",
+              "text": "Other Swiggy Use Cases for Capped Collections"
+            },
+            {
+              "type": "step",
+              "title": "Order status event log — last 20 events",
+              "desc": "Every status change for an order is logged — placed, confirmed, preparing, out_for_delivery, delivered. A capped collection keeps only the last 20 events per order, enough to display the full timeline without storing every intermediate state forever."
+            },
+            {
+              "type": "step",
+              "title": "Restaurant activity log — last 1000 actions",
+              "desc": "Every time a restaurant confirms an order, updates availability, or changes a menu item, it's logged. Capped at 1000 events, the log shows recent restaurant activity without growing unboundedly."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Capped collections have real limitations. You CANNOT delete individual documents — only the whole collection can be dropped. You CANNOT update a document if the update increases its size. And you cannot shard a capped collection. Use them only for append-only, fixed-window use cases like logs and event streams."
+            },
+            {
+              "type": "table",
+              "headers": ["", "Regular Collection", "Capped Collection"],
+              "rows": [
+                ["Size", "Grows forever", "Fixed max size — auto-wraps"],
+                ["Delete old docs", "Manual delete or TTL", "Automatic — oldest overwritten"],
+                ["Document order", "No guaranteed order", "Insertion order preserved"],
+                ["Use case", "General purpose", "Logs, circular buffers, recent-N data"],
+                ["Sharding", "✅ Supported", "❌ Not supported"],
+                ["Individual deletes", "✅ deleteOne/deleteMany", "❌ Not allowed"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Capped collections are Swiggy's circular buffer for high-volume, recent-data-only workloads. Delivery pings, status event logs, activity streams — fixed size, automatic overwrite, insertion order preserved. Never grows, never needs cleanup, always fast."
+            }
+          ],
+
+          "Projection — Fetching Only What You Need": [
+            {
+              "type": "paragraph",
+              "text": "You open Swiggy's order history screen. It shows 20 orders — each with just the restaurant name, total amount, status, and a thumbnail. But each order document in MongoDB is 4KB — packed with items arrays, payment details, delivery timelines, addresses, and metadata. If Swiggy fetches full documents for 20 orders, that's 80KB transferred from MongoDB to the app server, parsed in memory, then 90% of it thrown away. Projection solves this: tell MongoDB exactly which fields to return, and it sends only those — nothing else."
+            },
+            {
+              "type": "heading",
+              "text": "How Projection Works"
+            },
+            {
+              "type": "paragraph",
+              "text": "Projection is the second argument to find() — a document that specifies which fields to include (1) or exclude (0). MongoDB applies projection before sending results over the network, so you save bandwidth, memory allocation, and serialization cost."
+            },
+            {
+              "type": "code",
+              "code": "// Without projection — full 4KB document sent for each order\ndb.orders.find({ userId: \"usr_982341\" })\n// Returns: orderId, status, totalAmount, restaurant{}, items[], payment{},\n//          deliveryAddress, timeline{}, deliveryPartnerId... everything\n\n// With inclusion projection — only these 4 fields sent\ndb.orders.find(\n  { userId: \"usr_982341\", status: \"delivered\" },\n  { orderId: 1, totalAmount: 1, status: 1, \"restaurant.name\": 1, _id: 0 }\n)\n// Returns: orderId, totalAmount, status, restaurant.name only\n// From 4KB per document → ~80 bytes per document\n// 20 orders: 80KB → 1.6KB ✅"
+            },
+            {
+              "type": "step",
+              "title": "Inclusion projection — specify what to include",
+              "desc": "Set fields to 1. Only those fields are returned. Everything else is excluded. Note: _id is included by default — set _id: 0 to explicitly exclude it."
+            },
+            {
+              "type": "step",
+              "title": "Exclusion projection — specify what to exclude",
+              "desc": "Set fields to 0. Everything except those fields is returned. Useful when you want most of the document but need to hide a few sensitive or large fields."
+            },
+            {
+              "type": "code",
+              "code": "// Exclusion projection — return everything EXCEPT items array and payment details\n// Useful when items[] is large but you don't need it\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { items: 0, \"payment.cardDetails\": 0 }\n)\n\n// ⚠️ You cannot mix inclusion and exclusion in one projection\n// This will throw an error:\ndb.orders.find({}, { orderId: 1, items: 0 })  // ❌ invalid"
+            },
+            {
+              "type": "heading",
+              "text": "Projecting Nested Fields and Array Elements"
+            },
+            {
+              "type": "paragraph",
+              "text": "Swiggy's order documents have nested objects and arrays. Projection can reach into them — fetch only the restaurant name from the nested restaurant object, or fetch just the first item from the items array."
+            },
+            {
+              "type": "code",
+              "code": "// Fetch nested field — only restaurant name, not the whole restaurant object\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { \"restaurant.name\": 1, totalAmount: 1, status: 1, _id: 0 }\n)\n// Result: { restaurant: { name: \"Behrouz Biryani\" }, totalAmount: 487, status: \"delivered\" }\n\n// $slice — fetch only the first 2 items from the items array\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { items: { $slice: 2 }, totalAmount: 1, status: 1 }\n)\n// Useful for order cards that show \"Biryani + 3 more items\""
+            },
+            {
+              "type": "heading",
+              "text": "Covered Queries — The Performance Peak"
+            },
+            {
+              "type": "paragraph",
+              "text": "If every field in your query filter AND every field in your projection exists in a single index, MongoDB can answer the query entirely from the index — without touching any document at all. This is called a covered query and it's the fastest possible read in MongoDB."
+            },
+            {
+              "type": "code",
+              "code": "// Index covers both the filter field and the projection fields\ndb.orders.createIndex({ userId: 1, status: 1, totalAmount: 1, orderId: 1 })\n\n// Covered query — MongoDB answers entirely from the index, never reads a document\ndb.orders.find(\n  { userId: \"usr_982341\", status: \"delivered\" },\n  { totalAmount: 1, orderId: 1, _id: 0 }       // all projected fields are in the index\n)\n// explain() shows: IXSCAN with no FETCH stage ← that's a covered query ✅"
+            },
+            {
+              "type": "table",
+              "headers": ["Swiggy screen", "Query", "Projection fields"],
+              "rows": [
+                ["Order history list", "userId + status", "orderId, restaurant.name, totalAmount, status"],
+                ["Order detail screen", "orderId", "Everything — no projection needed"],
+                ["Support dashboard", "restaurantId + status", "orderId, totalAmount, customerPhone, status"],
+                ["Analytics export", "city + date range", "city, totalAmount, restaurantId — exclude items[]"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Projection is the simplest performance win in MongoDB. Fetch 4 fields instead of 40 and you reduce network transfer, memory usage, and serialization cost by 90%. Every high-traffic query on Swiggy uses projection. Order history doesn't need delivery partner GPS coordinates. Restaurant dashboard doesn't need payment card details. Fetch only what you render."
+            }
+          ],
+
+          "Pagination — Loading Swiggy Order History Page by Page": [
+            {
+              "type": "paragraph",
+              "text": "You've placed 200 orders on Swiggy over 3 years. When you open order history, you don't want all 200 returned at once — that's 200 full documents parsed, transferred, and rendered. Swiggy shows 10 at a time. Tap 'Load more' and the next 10 appear. This is pagination — fetching data in manageable chunks instead of all at once. MongoDB offers two approaches: offset-based pagination (skip + limit) and cursor-based pagination. They look similar but perform very differently at scale."
+            },
+            {
+              "type": "heading",
+              "text": "Offset-based Pagination — skip() + limit()"
+            },
+            {
+              "type": "paragraph",
+              "text": "The simplest approach: use skip() to jump to the right position and limit() to fetch N documents. Page 1 skips 0, page 2 skips 10, page 3 skips 20."
+            },
+            {
+              "type": "code",
+              "code": "// Page 1 — first 10 orders\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { orderId: 1, restaurant: 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).skip(0).limit(10)\n\n// Page 2 — next 10 orders\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { orderId: 1, restaurant: 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).skip(10).limit(10)\n\n// Page 21 — orders 201-210\n.skip(200).limit(10)\n// ⚠️ MongoDB scans and discards 200 documents to find position 201\n// The bigger the skip, the more expensive the query"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ skip() is expensive. MongoDB cannot jump to position N — it must scan and count N documents to find where to start. For Swiggy's most active users with thousands of orders, skip(900).limit(10) scans 900 documents and throws them away. Never use skip() on large collections with deep pagination."
+            },
+            {
+              "type": "heading",
+              "text": "Cursor-based Pagination — The Right Approach"
+            },
+            {
+              "type": "paragraph",
+              "text": "Instead of skipping to a position, cursor-based pagination remembers where the last page ended. The next query filters for documents that come after the last seen document — using an indexed field like createdAt or _id as the cursor. MongoDB doesn't scan anything it doesn't need to return."
+            },
+            {
+              "type": "step",
+              "title": "Page 1 — fetch first 10 orders, newest first",
+              "desc": "No cursor yet. Fetch the first 10 orders sorted by createdAt descending. Return the createdAt of the last document in the results — that's the cursor for the next page."
+            },
+            {
+              "type": "code",
+              "code": "// Page 1 — no cursor needed\nconst page1 = db.orders.find(\n  { userId: \"usr_982341\" },\n  { orderId: 1, \"restaurant.name\": 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).limit(10).toArray()\n\n// Last document's createdAt becomes the cursor\nconst cursor = page1[page1.length - 1].createdAt\n// cursor = ISODate(\"2024-02-14T19:32:00Z\")"
+            },
+            {
+              "type": "step",
+              "title": "Page 2 — use cursor to start exactly where page 1 ended",
+              "desc": "Filter for orders with createdAt less than the cursor. MongoDB uses the index on createdAt to jump directly to that point — no skip, no scan, no wasted reads."
+            },
+            {
+              "type": "code",
+              "code": "// Page 2 — cursor-based, no skip\nconst page2 = db.orders.find(\n  {\n    userId:    \"usr_982341\",\n    createdAt: { $lt: cursor }  // only orders before the last seen one\n  },\n  { orderId: 1, \"restaurant.name\": 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).limit(10).toArray()\n\n// New cursor for page 3\nconst nextCursor = page2[page2.length - 1].createdAt\n\n// ✅ No skip — MongoDB jumps straight to the cursor position via the index\n// Works identically whether this is page 2 or page 200"
+            },
+            {
+              "type": "step",
+              "title": "Index that makes cursor pagination fast",
+              "desc": "Create a compound index on userId and createdAt. MongoDB uses it to filter userId AND seek to the cursor position in one index lookup — O(log n) regardless of how deep the page is."
+            },
+            {
+              "type": "code",
+              "code": "// This index makes cursor-based pagination on order history O(log n) always\ndb.orders.createIndex({ userId: 1, createdAt: -1 })\n\n// Every page request — index seek to userId + cursor position, fetch 10, done\n// Page 1, page 50, page 200 — same cost ✅"
+            },
+            {
+              "type": "table",
+              "headers": ["", "skip() + limit()", "Cursor-based"],
+              "rows": [
+                ["Page 1 performance", "Fast", "Fast"],
+                ["Page 10 performance", "Slower — scans 90 docs", "Same as page 1"],
+                ["Page 100 performance", "Slow — scans 990 docs", "Same as page 1"],
+                ["Works with random access (jump to page 50)", "Yes", "No — sequential only"],
+                ["New items inserted mid-session", "May cause duplicates or gaps", "Stable — cursor anchors position"],
+                ["Swiggy use case", "Admin tools with low page counts", "Order history, restaurant listing, search results"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ For Swiggy's order history — cursor-based pagination with a compound index on {userId, createdAt}. Every page load costs the same regardless of depth. skip() + limit() works for admin tools with small datasets and numbered page navigation. For infinite scroll and 'load more' patterns — cursor is always the right choice."
+            }
+          ],
+
+          "Read vs Write Heavy Design Decisions": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy's restaurant listing page is read millions of times a day. A restaurant's menu changes a few times a week. The order placement flow writes thousands of orders per minute. These two workloads have opposite performance pressures — and designing one schema to serve both equally well is the core challenge of MongoDB performance. Your schema, indexes, and collection structure should be shaped by your ratio of reads to writes."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Swiggy reads restaurant data 10,000 times for every 1 write. Orders are written 500 times per minute but read 50,000 times per minute. How do these ratios change what you build?"
+            },
+            {
+              "type": "heading",
+              "text": "Read-Heavy Design — Optimize for Fast Fetches"
+            },
+            {
+              "type": "paragraph",
+              "text": "Restaurant listing and menu pages are read-dominant. A restaurant's name, rating, and menu barely change. Swiggy can afford to denormalize — duplicate data and embed more — because writes are rare and read speed is everything."
+            },
+            {
+              "type": "step",
+              "title": "Denormalize aggressively",
+              "desc": "Embed the restaurant's top 3 categories and cuisine tags directly inside the restaurant document. The home screen filter query reads one document — no second lookup. The data duplicates slightly, but updates are rare and the read win is massive."
+            },
+            {
+              "type": "step",
+              "title": "Add more indexes without fear",
+              "desc": "A read-heavy collection benefits from multiple indexes. Restaurants queried by city, by cuisine, by rating, by isOpen status — add compound indexes for all major access patterns. Write overhead is low since restaurants update rarely."
+            },
+            {
+              "type": "step",
+              "title": "Cache at the collection level with projection",
+              "desc": "The restaurant listing screen only needs name, rating, deliveryTime, thumbnailUrl, cuisine. Project exactly those fields. Combine with secondaryPreferred reads so this workload never touches the Primary."
+            },
+            {
+              "type": "code",
+              "code": "// Read-heavy: restaurants collection\n// Denormalized — cuisine, tags, and summary menu embedded for fast home screen reads\n{\n  _id:          \"rst_4421\",\n  name:         \"Behrouz Biryani\",\n  city:         \"Mumbai\",\n  rating:       4.5,\n  isOpen:       true,\n  deliveryTime: 35,\n  cuisine:      [\"Biryani\", \"Mughlai\"],   // embedded — no lookup needed\n  tags:         [\"Bestseller\", \"Pure Veg available\"],\n  topDishes:    [\"Dum Gosht Biryani\", \"Chicken 65\"]\n}\n\n// Multiple indexes for every read pattern\ndb.restaurants.createIndex({ city: 1, isOpen: 1, rating: -1 })\ndb.restaurants.createIndex({ city: 1, cuisine: 1, isOpen: 1 })\ndb.restaurants.createIndex({ city: 1, deliveryTime: 1, isOpen: 1 })\n\n// Home screen query — hits compound index, projection keeps it tiny\ndb.restaurants.find(\n  { city: \"Mumbai\", isOpen: true },\n  { name: 1, rating: 1, deliveryTime: 1, cuisine: 1, _id: 0 }\n).sort({ rating: -1 }).readPref(\"secondaryPreferred\")"
+            },
+            {
+              "type": "heading",
+              "text": "Write-Heavy Design — Optimize for Fast Inserts and Updates"
+            },
+            {
+              "type": "paragraph",
+              "text": "The orders collection is write-heavy at insertion time — 500+ orders per minute during peak. Every order insert also triggers status updates throughout the delivery lifecycle. Over-indexing this collection makes every write expensive. Design for write throughput."
+            },
+            {
+              "type": "step",
+              "title": "Minimize indexes on write-heavy collections",
+              "desc": "Every index on the orders collection gets updated on every insert and update. Swiggy has 6 indexes on orders — not 20. Only indexes that directly support high-traffic queries survive. Unused indexes are dropped after profiling."
+            },
+            {
+              "type": "step",
+              "title": "Use $inc for counters, not read-modify-write",
+              "desc": "Swiggy tracks an order count per restaurant. Never read the count, add 1 in code, and write it back — that's a race condition and two round trips. Use MongoDB's atomic $inc operator. One network round trip, no race condition."
+            },
+            {
+              "type": "step",
+              "title": "Batch writes with insertMany or bulkWrite",
+              "desc": "When Swiggy processes analytics events — search clicks, impression logs, scroll depth — they're buffered in memory and flushed to MongoDB in batches of 500. One insertMany call instead of 500 insertOne calls. Dramatically lower overhead per document."
+            },
+            {
+              "type": "code",
+              "code": "// Write-heavy: orders collection\n// Minimal indexes — only what high-traffic queries actually need\ndb.orders.createIndex({ userId: 1, createdAt: -1 })      // order history pagination\ndb.orders.createIndex({ restaurantId: 1, status: 1 })    // restaurant dashboard\ndb.orders.createIndex({ status: 1, city: 1 })            // ops monitoring\n// That's it — 3 indexes. Not 15.\n\n// Atomic counter update — no read-modify-write\ndb.restaurants.updateOne(\n  { _id: \"rst_4421\" },\n  { $inc: { orderCount: 1, totalRevenue: 487 } }  // atomic, no race condition\n)\n\n// Batch insert — 500 analytics events in one call\nconst events = [/* 500 event objects */]\ndb.analyticsEvents.insertMany(events, { ordered: false })\n// ordered: false — skip failed documents, don't stop the batch on one error"
+            },
+            {
+              "type": "table",
+              "headers": ["Decision", "Read-heavy (restaurants)", "Write-heavy (orders)"],
+              "rows": [
+                ["Indexes", "Many — every read pattern covered", "Few — only proven high-traffic queries"],
+                ["Schema", "Denormalized — embed for fast reads", "Normalized where needed — writes are frequent"],
+                ["Read routing", "secondaryPreferred — spread load", "primary — latest status required"],
+                ["Write pattern", "Rare updates — batch acceptable", "High-frequency — optimize individual writes"],
+                ["Counter updates", "Can read-modify-write (rare)", "Always use $inc — atomic, no race condition"],
+                ["Insert pattern", "Single inserts fine", "Batch with insertMany where possible"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ The read/write ratio is the first question to answer before designing any MongoDB collection. Swiggy's restaurants are read 10,000× per write — so denormalize, add indexes freely, and route reads to secondaries. Swiggy's orders are written 500× per minute — so minimize indexes, batch writes, and use atomic operators. Know your workload before you design your schema."
+            }
+          ],
+
+          "Bulk Write Operations — Batching Updates at Scale": [
+            {
+              "type": "paragraph",
+              "text": "It's Sunday night. A Domino's branch in Mumbai shuts unexpectedly. Swiggy needs to cancel 4,000 pending orders for that branch and notify each customer. If Swiggy runs 4,000 individual updateOne calls — that's 4,000 round trips to MongoDB, 4,000 network acknowledgements, 4,000 separate write operations. At peak load, that takes seconds and hammers the database. bulkWrite() solves this: send all 4,000 updates in one network call, let MongoDB execute them, get one acknowledgement back."
+            },
+            {
+              "type": "heading",
+              "text": "What bulkWrite Does"
+            },
+            {
+              "type": "paragraph",
+              "text": "bulkWrite() sends a batch of different write operations — inserts, updates, deletes, replaces — in a single command. MongoDB executes them and returns a combined result with counts for each operation type. One round trip, any mix of write types."
+            },
+            {
+              "type": "code",
+              "code": "// 4,000 order cancellations — one bulkWrite call\nconst cancelOps = pendingOrderIds.map(orderId => ({\n  updateOne: {\n    filter: { _id: orderId, status: \"placed\" },\n    update: { $set: { status: \"cancelled\", cancelledAt: new Date(), reason: \"restaurant_closed\" } }\n  }\n}))\n\nconst result = await db.collection(\"orders\").bulkWrite(cancelOps, {\n  ordered: false   // don't stop on individual failures — cancel as many as possible\n})\n\nconsole.log(result.modifiedCount)   // how many were actually cancelled\nconsole.log(result.matchedCount)    // how many matched the filter\n// One network round trip for 4,000 operations ✅"
+            },
+            {
+              "type": "step",
+              "title": "ordered: true vs ordered: false",
+              "desc": "ordered: true (default) runs operations sequentially — stops at the first error. ordered: false runs all operations and skips failures. For Swiggy's batch cancellation, use ordered: false — if 3 orders are already cancelled and don't match, continue cancelling the rest."
+            },
+            {
+              "type": "step",
+              "title": "Mix operation types in one call",
+              "desc": "bulkWrite can contain insertOne, updateOne, updateMany, deleteOne, deleteMany, and replaceOne all in the same batch. Swiggy can cancel some orders, insert refund records, and delete draft carts — all in one round trip."
+            },
+            {
+              "type": "code",
+              "code": "// Mixed bulk write — cancel orders + create refund records in one call\nconst ops = [\n  // Cancel the order\n  {\n    updateOne: {\n      filter: { _id: \"ord_001\", status: \"placed\" },\n      update: { $set: { status: \"cancelled\", cancelledAt: new Date() } }\n    }\n  },\n  // Insert a refund record\n  {\n    insertOne: {\n      document: { orderId: \"ord_001\", amount: 487, reason: \"restaurant_closed\", createdAt: new Date() }\n    }\n  },\n  // Delete the associated cart\n  {\n    deleteOne: {\n      filter: { orderId: \"ord_001\" }\n    }\n  }\n]\n\ndb.orders.bulkWrite(ops)"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ bulkWrite is not a transaction. If the batch has 4,000 operations and number 2,500 fails (with ordered: false), operations 1–2,499 and 2,501–4,000 all committed independently. If you need all-or-nothing, wrap bulkWrite in a multi-document transaction."
+            },
+            {
+              "type": "table",
+              "headers": ["Approach", "Network round trips", "Use when"],
+              "rows": [
+                ["4,000 × updateOne", "4,000", "Never for bulk operations"],
+                ["updateMany with shared filter", "1", "All documents match the same filter"],
+                ["bulkWrite with 4,000 ops", "1", "Each document needs individual filter/update"],
+                ["bulkWrite + transaction", "1 + commit overhead", "Need all-or-nothing guarantee"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ bulkWrite turns 4,000 network round trips into 1. For any Swiggy operation that touches many documents with per-document logic — batch cancellations, price updates per item, individualized notifications — bulkWrite is the right tool. One call, one acknowledgement, dramatically lower database load."
+            }
+          ],
+
+          "Query Selectivity — Writing Filters That Actually Help": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy creates an index on the status field of the orders collection. status has 5 values — placed, confirmed, preparing, out_for_delivery, delivered. 70% of all orders have status 'delivered'. A query for status: 'delivered' hits the index — but the index points to 70% of the collection. MongoDB still has to fetch 350 million documents from a 500 million document collection. The index exists but it barely helps. This is the problem of low query selectivity — and it's one of the most common performance traps in MongoDB."
+            },
+            {
+              "type": "heading",
+              "text": "What is Query Selectivity?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Selectivity measures how much a filter narrows down the result set. A highly selective filter eliminates most documents — like filtering by a unique orderId (returns 1 document from 500 million). A low-selectivity filter barely narrows anything — like filtering by status: 'delivered' (returns 350 million from 500 million). High selectivity = fast query. Low selectivity = slow query even with an index."
+            },
+            {
+              "type": "code",
+              "code": "// Low selectivity — status alone eliminates only 30% of documents\ndb.orders.find({ status: \"delivered\" })\n// Even with index on status: scans 350 million index entries\n// explain() shows: IXSCAN but totalDocsExamined: 350,000,000 ❌\n\n// High selectivity — orderId is unique, eliminates 499,999,999 documents\ndb.orders.find({ orderId: \"SWG-20240318-10239847\" })\n// explain() shows: IXSCAN, totalDocsExamined: 1 ✅\n\n// Medium selectivity — combine status with city for far better filtering\ndb.orders.find({ status: \"out_for_delivery\", city: \"Mumbai\" })\n// out_for_delivery = 5% of orders, Mumbai = 35% → combined = ~1.75% → much better ✅"
+            },
+            {
+              "type": "step",
+              "title": "Put the most selective field first in a compound index",
+              "desc": "MongoDB uses compound indexes left-to-right. The first field eliminates the most documents. If orderId is in your filter alongside city and status — put orderId first in the index. It eliminates 499,999,999 documents in one step; the rest barely matter."
+            },
+            {
+              "type": "code",
+              "code": "// ❌ Poor compound index — low-selectivity field first\ndb.orders.createIndex({ status: 1, city: 1, orderId: 1 })\n// status: 'delivered' leaves 350M docs → then filters by city → then orderId\n// Three index levels but first level does almost nothing\n\n// ✅ Better compound index — high-selectivity field first\ndb.orders.createIndex({ userId: 1, status: 1, createdAt: -1 })\n// userId: 'usr_982341' immediately leaves ~200 documents for that user\n// Then status and createdAt filter from 200, not from 500 million ✅"
+            },
+            {
+              "type": "step",
+              "title": "Avoid low-selectivity fields as standalone indexes",
+              "desc": "An index on status alone, or isOpen alone on restaurants, or paymentMethod alone on orders — these fields have very few distinct values. Standalone indexes on them provide minimal benefit and slow down every write. Only include them as trailing fields in compound indexes where higher-selectivity fields come first."
+            },
+            {
+              "type": "step",
+              "title": "Use explain() to measure actual selectivity",
+              "desc": "Run explain('executionStats') on any slow query. Compare totalDocsExamined to nReturned. The closer these numbers are, the more selective your query is. A ratio of 1:1 is perfect. A ratio of 350,000,000:12 means your index isn't helping."
+            },
+            {
+              "type": "code",
+              "code": "// Measure selectivity with explain\ndb.orders.find({ status: \"delivered\", city: \"Mumbai\", createdAt: { $gte: today } })\n  .explain(\"executionStats\")\n\n// Good selectivity result:\n// totalDocsExamined: 1243, nReturned: 1198\n// Ratio: 1.04:1 — nearly perfect ✅\n\n// Poor selectivity result:\n// totalDocsExamined: 350000000, nReturned: 1198\n// Ratio: 292,000:1 — index barely helps ❌ — add more selective fields to filter"
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Selectivity determines whether an index actually helps or just pretends to. Swiggy's status field has 5 values — it's never a good standalone index. Combined with userId (high selectivity) and createdAt (narrows to a time window), the same query goes from scanning 350 million to scanning 200. Design indexes around the fields that eliminate the most documents — not the fields that appear most often in queries."
+            }
+          ],
+
+          "In-Memory Sorting vs Index Sorting": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy's restaurant listing page sorts results by rating. The query fetches 5,000 open restaurants in Mumbai and sorts them by rating descending. If there's no index that covers this sort, MongoDB fetches all 5,000 documents into memory, sorts them, then returns the top 20. If there's a compound index that already has the data sorted by rating — MongoDB reads the documents in sorted order directly from the index. No in-memory sort needed. This difference — index sort vs in-memory sort — is often the gap between a 2ms query and a 2000ms query."
+            },
+            {
+              "type": "heading",
+              "text": "In-Memory Sort — When it Happens and Why It Hurts"
+            },
+            {
+              "type": "paragraph",
+              "text": "MongoDB performs an in-memory sort when the query's sort order cannot be satisfied by an index. It fetches all matching documents first, loads them into a sort buffer, sorts them, then returns results. This has two problems: it uses RAM proportional to the result set size, and it has a hard 100MB memory limit — queries that exceed it fail unless allowDiskUse is enabled."
+            },
+            {
+              "type": "code",
+              "code": "// No index on rating — in-memory sort\ndb.restaurants.find({ city: \"Mumbai\", isOpen: true })\n  .sort({ rating: -1 })\n  .limit(20)\n\n// explain() shows:\n// stage: \"SORT\"   ← in-memory sort happening\n// memUsage: 4200000  ← 4.2MB used for sorting\n// hasSortStage: true  ← this is the warning sign\n\n// If result set is huge — query fails with:\n// \"Sort exceeded memory limit of 104857600 bytes\" ❌\n\n// Workaround (not ideal — spills to disk, slow)\ndb.restaurants.find({ city: \"Mumbai\", isOpen: true })\n  .sort({ rating: -1 })\n  .allowDiskUse(true)"
+            },
+            {
+              "type": "heading",
+              "text": "Index Sort — How to Eliminate the Sort Stage"
+            },
+            {
+              "type": "paragraph",
+              "text": "If the index key pattern matches the sort order, MongoDB reads documents from the index in already-sorted order. No sort buffer, no memory allocation, no 100MB limit. The documents come out sorted as a natural property of how the index is structured."
+            },
+            {
+              "type": "code",
+              "code": "// Create compound index that covers filter AND sort\ndb.restaurants.createIndex({ city: 1, isOpen: 1, rating: -1 })\n//                          ↑ filter   ↑ filter    ↑ sort direction must match\n\n// Same query now — no in-memory sort\ndb.restaurants.find({ city: \"Mumbai\", isOpen: true })\n  .sort({ rating: -1 })\n  .limit(20)\n\n// explain() shows:\n// stage: \"IXSCAN\" with no SORT stage above it ✅\n// hasSortStage: false  ← index sort — no memory used for sorting\n// totalDocsExamined: 20  ← fetched only what was needed after limit"
+            },
+            {
+              "type": "step",
+              "title": "Sort direction must match the index",
+              "desc": "If your index has rating: -1 (descending), the query sort({ rating: -1 }) uses it. The query sort({ rating: 1 }) (ascending) also uses it — MongoDB can traverse the index in reverse. But sort({ rating: -1, city: 1 }) with a { rating: -1, city: -1 } index won't work — mixed directions in compound sorts only work if every field's direction matches OR is exactly reversed."
+            },
+            {
+              "type": "step",
+              "title": "Filter fields come before sort fields in the index",
+              "desc": "The compound index must start with equality filter fields, then range filter fields, then sort fields. { city: 1, isOpen: 1, rating: -1 } — city and isOpen are equality filters, rating is the sort. This order allows MongoDB to use the index for both filtering and sorting without a separate sort stage."
+            },
+            {
+              "type": "code",
+              "code": "// ESR rule: Equality fields, then Sort fields, then Range fields\n// Query: city=Mumbai (equality), sort by rating (sort), rating > 4.0 (range)\ndb.restaurants.createIndex({ city: 1, rating: -1 })  // E then S — covers filter + sort\n\ndb.restaurants.find({ city: \"Mumbai\" })\n  .sort({ rating: -1 })\n  .limit(20)\n// ✅ Index scan in sorted order — no SORT stage\n\n// Adding the range filter\ndb.restaurants.find({ city: \"Mumbai\", rating: { $gt: 4.0 } })\n  .sort({ rating: -1 })\n// ✅ Still uses index — range on the sort field works because it's already sorted"
+            },
+            {
+              "type": "table",
+              "headers": ["Scenario", "Sort stage?", "Performance", "Fix"],
+              "rows": [
+                ["Index covers filter + sort", "No — index sort", "Fast — no memory overhead", "Already optimal"],
+                ["Index covers filter only, not sort", "Yes — in-memory", "Slower — RAM proportional to result set", "Add sort field to compound index"],
+                ["No index at all", "Yes — in-memory after COLLSCAN", "Terrible", "Create index covering filter and sort"],
+                ["Result set > 100MB and no index sort", "Fails without allowDiskUse", "Unusable in production", "Index sort is the only real fix"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ In-memory sorts are MongoDB's hidden performance tax. Every query with a sort stage that isn't satisfied by an index is loading documents into RAM, sorting them, then throwing most away. For Swiggy's restaurant listing — a compound index on {city, isOpen, rating} means the top 20 restaurants come back already sorted, in 20 document reads, with zero sort overhead. Check explain() for hasSortStage: true — that's your signal to redesign the index."
+            }
+          ]
+
+        }
       },
 
       {

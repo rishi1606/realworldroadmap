@@ -7633,8 +7633,8 @@ session.withTransaction(async () => {
         level: "freshers",
         topics: [
           "What is Replication?",
-          "Replica Sets in MongoDB",
           "Primary & Secondary Nodes",
+          "Replica Sets in MongoDB",
           "Automatic Failover — What Happens When Swiggy's DB Goes Down",
           "Read from Secondary — Scaling Read Traffic",
           "Replication Lag & Stale Reads",
@@ -7700,7 +7700,60 @@ Secondary 2 ──► copy of your order ✅
               text: "✅ Replication is MongoDB automatically keeping identical copies of your data on multiple servers. Swiggy's orders, restaurants, and users are never on one server alone — every write is copied in real time so a single failure never takes down the app or loses data."
             }
           ],
+          "Primary & Secondary Nodes": [
+            {
+              type: "heading",
+              text: "Primary & Secondary Nodes"
+            },
+            {
+              type: "paragraph",
+              text: "Every replica set has exactly one Primary and one or more Secondaries. The Primary is the only node that accepts writes. Secondaries silently follow along — copying every change from the Primary via the oplog. Together they make sure Swiggy's data is never in just one place."
+            },
+            {
+              type: "step",
+              title: "Primary — the only node that accepts writes",
+              desc: "When Karan places a Biryani order, the write goes exclusively to the Primary. No Secondary ever accepts a direct write from the application. The Primary is the single source of truth."
+            },
+            {
+              type: "code",
+              code: `// All writes → Primary only
+db.orders.insertOne({ orderId: "SWG-9821", user: "karan", status: "placed" })
 
+// Primary logs it to the oplog — Secondaries pick it up from there`
+            },
+            {
+              type: "step",
+              title: "Secondary — silent followers that stay in sync",
+              desc: "Secondaries tail the Primary's oplog and replay every operation on their own copy of the data. They don't need to be told — they watch continuously. Within milliseconds, all nodes have Karan's order."
+            },
+            {
+              type: "code",
+              code: `// Secondaries replay oplog entries automatically
+// { op: "i", ns: "swiggy.orders", o: { orderId: "SWG-9821", status: "placed" } }
+// { op: "u", ns: "swiggy.orders", o: { $set: { status: "out_for_delivery" } } }
+// { op: "u", ns: "swiggy.orders", o: { $set: { status: "delivered" } } }`
+            },
+            {
+              type: "step",
+              title: "Secondaries can serve reads — but carefully",
+              desc: "By default, reads also go to the Primary. But you can configure your driver to read from Secondaries to spread the load — useful for Swiggy's analytics or restaurant dashboards where slightly stale data is acceptable."
+            },
+            {
+              type: "code",
+              code: `// Read from Secondary — acceptable for non-critical reads
+db.orders.find({ status: "delivered" }).readPref("secondaryPreferred")
+
+// ⚠️ Secondary data can lag by milliseconds — never use for live order tracking`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Only the Primary accepts writes — always. If you accidentally connect directly to a Secondary and attempt a write, MongoDB will reject it immediately with a NotWritablePrimary error."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Primary handles all writes and logs them to the oplog. Secondaries tail that log and stay in sync automatically. Your app never has to think about which node is which — the driver handles it."
+            }
+          ],
 
           "Replica Sets in MongoDB": [
             {
@@ -7730,44 +7783,159 @@ rs.initiate({
 // Check replica set status
 rs.status()`
             },
+
+            // ─── EXAMPLE: What happens when Karan places an order ───
+            {
+              type: "heading",
+              text: "Example — Karan places a Biryani order on Swiggy"
+            },
             {
               type: "step",
-              title: "Your app connects to the replica set — not one server",
-              desc: "The connection string lists all three members. MongoDB's driver figures out who the Primary is and routes writes there automatically. If the Primary changes, the driver reconnects without your app doing anything."
+              title: "Step 1 — Karan hits 'Place Order'",
+              desc: "Swiggy's backend receives the request and writes the new order document to MongoDB. The driver knows who the Primary is (mongo1) and sends the write there — and only there."
             },
             {
               type: "code",
-              code: `// Connection string includes all replica set members
-mongodb://mongo1.swiggy.internal:27017,mongo2.swiggy.internal:27017,mongo3.swiggy.internal:27017/?replicaSet=swiggyRS
+              code: `// Swiggy's order service — write goes to Primary (mongo1)
+db.orders.insertOne({
+  orderId: "SWG-9821",
+  userId: "karan_mumbai",
+  restaurant: "Behrouz Biryani",
+  items: [{ name: "Dum Biryani", qty: 1, price: 349 }],
+  status: "placed",
+  placedAt: new Date()
+})`
+            },
+            {
+              type: "step",
+              title: "Step 2 — Primary writes it to the oplog",
+              desc: "The moment mongo1 (Primary) accepts the write, it records the operation in a special internal log called the oplog. Think of the oplog as a running diary of every single thing that ever happened to the data."
+            },
+            {
+              type: "code",
+              code: `// oplog entry written automatically by Primary after Karan's order
+{
+  op: "i",                        // "i" = insert
+  ns: "swiggy.orders",            // which collection
+  o: {
+    _id: ObjectId("..."),
+    orderId: "SWG-9821",
+    userId: "karan_mumbai",
+    restaurant: "Behrouz Biryani",
+    status: "placed"
+  },
+  ts: Timestamp(1716201600, 1)    // exact moment it happened
+}`
+            },
+            {
+              type: "step",
+              title: "Step 3 — Secondaries tail the oplog and copy the write",
+              desc: "mongo2 and mongo3 are constantly watching the Primary's oplog like a live feed. The moment they see Karan's insert, they replay the exact same operation on their own copy of the data. Within milliseconds, all three nodes have Karan's order."
+            },
+            {
+              type: "code",
+              code: `// What mongo2 and mongo3 do automatically — you never write this
+// They tail the oplog and replay every entry
+
+// mongo2 applies:
+db.orders.insertOne({ orderId: "SWG-9821", userId: "karan_mumbai", ... })
+
+// mongo3 applies:
+db.orders.insertOne({ orderId: "SWG-9821", userId: "karan_mumbai", ... })
+
+// All 3 nodes now have identical data — Karan's order exists on all of them`
+            },
+            {
+              type: "step",
+              title: "Step 4 — The delivery agent updates the order status",
+              desc: "The delivery agent marks the order as 'out for delivery'. Again, the write hits the Primary. The update is logged to the oplog. Both Secondaries replicate it within milliseconds."
+            },
+            {
+              type: "code",
+              code: `// Update goes to Primary (mongo1) — Secondaries replicate automatically
+db.orders.updateOne(
+  { orderId: "SWG-9821" },
+  { $set: { status: "out_for_delivery", agentId: "agent_42", updatedAt: new Date() } }
+)
+
+// oplog captures this too:
+// { op: "u", ns: "swiggy.orders", o: { $set: { status: "out_for_delivery" } } }`
+            },
+
+            // ─── EXAMPLE: What happens when mongo1 crashes ───
+            {
+              type: "heading",
+              text: "Example — mongo1 (Primary) crashes at 1 AM"
+            },
+            {
+              type: "step",
+              title: "Step 1 — mongo2 and mongo3 detect the Primary is gone",
+              desc: "MongoDB members send each other heartbeats every 2 seconds. When mongo2 and mongo3 stop hearing from mongo1, they immediately know something is wrong. They don't wait — they start an election right away."
+            },
+            {
+              type: "step",
+              title: "Step 2 — An election happens in seconds",
+              desc: "mongo2 and mongo3 vote. They need a majority — 2 out of 3. Both are alive, so they have a majority. mongo2 wins the election and becomes the new Primary. The whole thing takes under 10 seconds."
+            },
+            {
+              type: "code",
+              code: `// Before crash
+rs.status()
+// mongo1 → PRIMARY   ✅
+// mongo2 → SECONDARY ✅
+// mongo3 → SECONDARY ✅
+
+// mongo1 crashes at 1:00:00 AM
+
+// After election (~10 seconds later)
+rs.status()
+// mongo1 → (unreachable) ❌
+// mongo2 → PRIMARY   ✅  ← elected automatically
+// mongo3 → SECONDARY ✅`
+            },
+            {
+              type: "step",
+              title: "Step 3 — Swiggy's app reconnects automatically — zero code change",
+              desc: "The MongoDB driver in Swiggy's backend detects that mongo1 is gone and that mongo2 is the new Primary. It reconnects to mongo2 automatically. No engineer had to wake up. No code was changed. Orders keep flowing."
+            },
+            {
+              type: "code",
+              code: `// Connection string stays the same — lists all 3 members
+mongodb://mongo1.swiggy.internal:27017,
+         mongo2.swiggy.internal:27017,
+         mongo3.swiggy.internal:27017/?replicaSet=swiggyRS
 
 // The driver:
-// — discovers which member is Primary
-// — sends all writes to Primary
-// — can optionally send reads to Secondaries
-// — detects failover and reconnects automatically`
+// — detects mongo1 is gone
+// — discovers mongo2 is now Primary
+// — routes all new writes to mongo2 automatically
+// — Swiggy users never notice anything happened`
             },
+            {
+              type: "step",
+              title: "Step 4 — mongo1 comes back and re-syncs",
+              desc: "When the mongo1 server is repaired and brought back online, it rejoins the replica set as a Secondary. It compares its oplog against the current Primary (mongo2), figures out what it missed, and catches up by replaying those operations. It's back to full health — no manual intervention needed."
+            },
+            {
+              type: "code",
+              code: `// mongo1 back online — it self-heals by comparing oplogs
+// mongo1 sees it missed these oplog entries while it was down:
+// { op: "u", orderId: "SWG-9830", status: "delivered" }
+// { op: "i", orderId: "SWG-9831", userId: "priya_delhi", ... }
+// { op: "u", orderId: "SWG-9832", status: "out_for_delivery" }
+
+// mongo1 replays them all and catches up
+// rs.status() now shows:
+// mongo1 → SECONDARY ✅  (fully synced again)
+// mongo2 → PRIMARY   ✅
+// mongo3 → SECONDARY ✅`
+            },
+
+            // ─── WHY 3 MEMBERS ───
             {
               type: "step",
               title: "Why 3 members and not 2?",
               desc: "Elections require a majority vote to elect a new Primary. With 2 members — if one goes down, the remaining one can't form a majority of 2. It can't elect itself Primary. The replica set becomes read-only. With 3 members — one goes down, the other two form a majority and elect a new Primary in seconds."
-            },
-            {
-              type: "step",
-              title: "The oplog — how replication actually works",
-              desc: "Every write on the Primary is recorded in a special capped collection called the oplog (operations log). Secondaries continuously tail the oplog and replay every operation on their own copy of the data. This is how they stay in sync."
-            },
-            {
-              type: "code",
-              code: `// The oplog — a capped collection on every replica set member
-use local
-db.oplog.rs.find().sort({ $natural: -1 }).limit(3)
-
-// Each entry is one operation that was applied
-// { op: "i", ns: "swiggy.orders", o: { _id: ..., orderId: "SWG-001", ... } }  // insert
-// { op: "u", ns: "swiggy.orders", o: { $set: { status: "delivered" } } }      // update
-// { op: "d", ns: "swiggy.orders", o: { _id: ... } }                           // delete
-
-// Secondaries tail this log and apply every operation to their own data`
             },
             {
               type: "table",
@@ -7789,99 +7957,7 @@ db.oplog.rs.find().sort({ $natural: -1 }).limit(3)
           ],
 
 
-          "Primary & Secondary Nodes": [
-            {
-              type: "paragraph",
-              text: "Every member of Swiggy's replica set has a role. The Primary is the single source of truth — every order placed, every status update, every restaurant change goes through it. The Secondaries are live mirrors — they apply every change the Primary makes, stay in sync, and are ready to take over at any moment. Understanding what each node does tells you exactly where your reads and writes go — and why."
-            },
-            {
-              type: "heading",
-              text: "The Primary — All Writes Go Here"
-            },
-            {
-              type: "paragraph",
-              text: "There is exactly one Primary in a replica set at any time. All writes — insertOne, updateMany, deleteOne — must go to the Primary. MongoDB's driver routes them there automatically. The Primary writes the data and records every operation in its oplog."
-            },
-            {
-              type: "code",
-              code: `// These all go to the Primary — no configuration needed
-db.orders.insertOne({ orderId: "SWG-001", status: "placed", totalAmount: 487 })
-db.orders.updateOne({ _id: ObjectId("ord_001") }, { $set: { status: "delivered" } })
-db.restaurants.updateMany({ city: "Mumbai" }, { $set: { isOpen: false } })
 
-// Check which member is currently Primary
-rs.isMaster()  // returns { ismaster: true } on Primary
-// or
-rs.status()    // shows all members with their stateStr: "PRIMARY" / "SECONDARY"`
-            },
-            {
-              type: "heading",
-              text: "The Secondary — Replication in Action"
-            },
-            {
-              type: "paragraph",
-              text: "Every Secondary continuously tails the Primary's oplog and replays each operation on its own dataset. The moment your Swiggy order is inserted on the Primary, that insert is queued in the oplog, the Secondary reads it, and applies the same insert to its own copy — usually within milliseconds."
-            },
-            {
-              type: "code",
-              code: `// On the Primary — your order is written
-db.orders.insertOne({ orderId: "SWG-001", totalAmount: 487, status: "placed" })
-
-// oplog entry created:
-// { op: "i", ns: "swiggy.orders", o: { orderId: "SWG-001", totalAmount: 487, status: "placed" } }
-
-// Secondary tails the oplog → applies the same insert → now has your order too
-// Happens automatically, continuously, in the background ✅`
-            },
-            {
-              type: "step",
-              title: "Secondaries are read-only by default",
-              desc: "You cannot write to a Secondary directly. If you try, MongoDB returns an error: 'not primary'. All writes must go through the Primary — the Secondary's job is to replicate, not to accept new data."
-            },
-            {
-              type: "step",
-              title: "Secondaries can serve reads — with a caveat",
-              desc: "By default, reads also go to the Primary. But you can configure your app to read from Secondaries to distribute load. The caveat: the Secondary might be a few milliseconds behind the Primary — you might read slightly stale data. More on this in Replication Lag."
-            },
-            {
-              type: "step",
-              title: "A Secondary can be hidden or delayed",
-              desc: "Swiggy can configure a Secondary to be hidden from the app — it replicates but never serves reads. Or configure a delayed Secondary that is always 1 hour behind the Primary — useful as a safety net if someone accidentally drops a collection."
-            },
-            {
-              type: "code",
-              code: `// Configure a hidden secondary — replicates but never receives app traffic
-rs.reconfig({
-  _id: "swiggyRS",
-  members: [
-    { _id: 0, host: "mongo1.swiggy.internal:27017" },
-    { _id: 1, host: "mongo2.swiggy.internal:27017" },
-    { _id: 2, host: "mongo3.swiggy.internal:27017", hidden: true, priority: 0 }
-    // hidden: true — app never reads from it
-    // priority: 0 — can never become Primary
-  ]
-})
-
-// Configure a delayed secondary — always 1 hour behind Primary
-{ _id: 2, host: "mongo3.swiggy.internal:27017", secondaryDelaySecs: 3600, priority: 0 }
-// If someone runs db.orders.drop() at 2PM — you have until 3PM to recover from the delayed node`
-            },
-            {
-              type: "table",
-              headers: ["", "Primary", "Secondary"],
-              rows: [
-                ["Writes", "✅ All writes go here", "❌ Cannot accept writes"],
-                ["Reads", "✅ Reads here by default", "✅ Optional, with read preference"],
-                ["Count per replica set", "Exactly 1 at any time", "1 or more"],
-                ["On failure", "Secondaries elect a new Primary", "Primary continues, replication resumes on recovery"],
-                ["oplog", "Writes operations here", "Reads and replays from here"],
-              ]
-            },
-            {
-              type: "success-callout",
-              text: "✅ Primary is the single write destination — every Swiggy order, update, and delete goes through it. Secondaries mirror everything via the oplog in near real time. Your app talks to one logical replica set — MongoDB's driver handles routing to the right node automatically."
-            }
-          ],
 
 
           "Automatic Failover — What Happens When Swiggy's DB Goes Down": [
@@ -8003,16 +8079,6 @@ mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=swiggyRS&retryWrite
               text: "Read preference tells MongoDB's driver where to send read operations. There are five modes — each with a different tradeoff between consistency and load distribution."
             },
             {
-              type: "code",
-              code: `// Set read preference at the connection level
-const client = new MongoClient(uri, {
-  readPreference: "secondaryPreferred"
-})
-
-// Or per operation
-db.restaurants.find({ city: "Mumbai" }).readPref("secondary")`
-            },
-            {
               type: "step",
               title: "primary (default)",
               desc: "All reads go to the Primary. Guaranteed to always return the latest data. Use this for anything where stale data is unacceptable — order status, payment confirmation, wallet balance."
@@ -8048,33 +8114,10 @@ db.restaurants.find({ city: "Mumbai" }).readPref("secondary")`
                 ["nearest", "Lowest latency member", "Yes", "Latency-sensitive reads across regions"],
               ]
             },
-            {
-              type: "heading",
-              text: "What Swiggy Reads from Secondary"
-            },
-            {
-              type: "paragraph",
-              text: "Not all reads are equal. Swiggy's engineering team categorises reads by how critical data freshness is — and routes accordingly."
-            },
-            {
-              type: "code",
-              code: `// Restaurant listings — secondaryPreferred
-// Millions of reads, data changes slowly, slight lag is fine
-db.restaurants.find({ city: "Mumbai", isOpen: true })
-  .readPref("secondaryPreferred")
 
-// Order status — primary (always fresh)
-// User is watching the live tracker — must show latest state
-db.orders.findOne({ _id: ObjectId("ord_10239847") })
-  .readPref("primary")
+            // ─── EXAMPLE: Priya opens Swiggy at 1 PM ───
 
-// Weekly sales report — secondary
-// Background job, runs at 2AM, slight lag is irrelevant
-db.orders.aggregate([
-  { $match: { createdAt: { $gte: weekStart } } },
-  { $group: { _id: "$restaurantId", totalRevenue: { $sum: "$totalAmount" } } }
-]).readPref("secondary")`
-            },
+
             {
               type: "warning-callout",
               text: "⚠️ Reading from a Secondary means you might get data that is milliseconds to seconds behind the Primary. For Swiggy's order tracker, wallet balance, or payment status — always read from Primary. For restaurant listings or past order history — secondaryPreferred is safe and dramatically reduces Primary load."
@@ -8212,7 +8255,6 @@ db.orders.insertOne(
         level: "freshers",
         topics: [
           "What is Sharding?",
-          "Why Swiggy Needs Sharding at Scale",
           "Shard Key — How to Choose the Right One",
           "Range-based Sharding vs Hash-based Sharding",
           "Hotspot Problem with Bad Shard Keys",
@@ -8224,211 +8266,292 @@ db.orders.insertOne(
           "What is Sharding?": [
             {
               type: "paragraph",
-              text: "Swiggy has been running for years. The orders collection now has 2 billion documents. A single MongoDB server — even the most powerful one money can buy — can't hold 2 billion orders in RAM, can't index them fast enough, and can't handle 100,000 writes per minute without choking. You've hit the ceiling of vertical scaling. You can't make one server bigger forever. The answer is to split the data across many servers — each server holds a piece of the whole. That's sharding."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Swiggy's orders collection grows by 10 million documents every day. At what point does one server simply stop being enough — and what do you do then?"
+              text: "Swiggy processes millions of orders every day across hundreds of cities. At some point, no single MongoDB server — no matter how powerful — can store all that data and handle all those reads and writes fast enough. Sharding is MongoDB's answer to this problem. Instead of making one server bigger, you split the data across multiple servers. Each server holds a slice of the total data. Together they handle what no single machine ever could."
             },
             {
               type: "heading",
-              text: "Definition"
+              text: "What is Sharding?"
             },
             {
               type: "paragraph",
-              text: "Sharding is MongoDB's way of splitting a large collection across multiple servers called shards. Each shard holds a subset of the data. Together, all shards hold the complete dataset. MongoDB routes every query to the right shard automatically — your application talks to one connection and has no idea the data is spread across ten machines."
+              text: "Sharding is horizontal scaling — splitting one massive collection across multiple machines called shards. Each shard holds a subset of the data. MongoDB uses a shard key — a field you choose — to decide which document goes to which shard. Your application never talks to shards directly. It talks to a router called mongos, which figures out where to send each query."
             },
             {
               type: "step",
-              title: "Without sharding — one server, all data",
-              desc: "Every Swiggy order since 2014 lives on one MongoDB server. Queries get slower as the collection grows. Inserts compete for the same disk and CPU. You add more RAM and faster SSDs — but eventually you hit the hardware ceiling."
-            },
-            {
-              type: "step",
-              title: "With sharding — data split across many servers",
-              desc: "Swiggy's 2 billion orders are split across 10 shards. Each shard holds roughly 200 million orders. Queries hit only the shard that has the relevant data. Inserts are distributed. Every shard handles a fraction of the load."
+              title: "One server hits its limit",
+              desc: "Swiggy starts with one MongoDB server storing all orders. Early days — this is fine. But as Swiggy expands to 500 cities, that one server is handling crores of order documents. Writes slow down. Queries take longer. Disk fills up. Vertical scaling (buying a bigger server) only takes you so far."
             },
             {
               type: "code",
-              code: `// Without sharding — one server holds everything
-MongoDB Server ──► 2 billion orders ──► slowing down, running out of RAM ❌
-
-// With sharding — data distributed across shards
-Shard 1 ──► orders from Mumbai       (200 million)
-Shard 2 ──► orders from Delhi        (200 million)
-Shard 3 ──► orders from Bangalore    (200 million)
-Shard 4 ──► orders from Hyderabad    (200 million)
-Shard 5 ──► orders from other cities (200 million)
-...
-// Your app queries one endpoint — MongoDB routes to the right shard automatically ✅`
+              code: `// One server — 500 million orders — everything is slow
+db.orders.find({ city: "Mumbai", status: "placed" })
+// ⚠️ Full collection scan on 500M documents — painful`
             },
             {
+              type: "step",
+              title: "Sharding splits the data across multiple servers",
+              desc: "Instead of one server with 500 million orders, Swiggy shards the orders collection across 5 servers. Each shard holds roughly 100 million orders. Queries hit only the relevant shard — not all 500 million documents."
+            },
+            {
+              type: "code",
+              code: `// Enable sharding on the orders collection — shard by city
+sh.enableSharding("swiggyDB")
+sh.shardCollection("swiggyDB.orders", { city: 1 })
+
+// MongoDB now splits data automatically:
+// Shard 1 → orders from Mumbai, Pune
+// Shard 2 → orders from Delhi, Noida
+// Shard 3 → orders from Bangalore, Chennai
+// Shard 4 → orders from Hyderabad, Kolkata
+// Shard 5 → orders from Ahmedabad, Jaipur + rest`
+            },
+            {
+              type: "step",
+              title: "Your app never talks to shards directly — mongos handles it",
+              desc: "Swiggy's backend connects to mongos — a lightweight router. When a query comes in, mongos checks the shard key, figures out which shard holds that data, and routes the query there. The app has no idea there are multiple servers underneath."
+            },
+            {
+              type: "code",
+              code: `// App connects to mongos — not individual shards
+mongodb://mongos.swiggy.internal:27017/swiggyDB
+
+// Swiggy queries as normal — mongos does the routing
+db.orders.find({ city: "Mumbai" })
+// mongos → sees city: "Mumbai" → routes to Shard 1 only ✅
+// Only 100M docs searched, not 500M`
+            },
+
+            // ─── EXAMPLE: Karan orders in Mumbai ───
+            {
+              type: "heading",
+              text: "Example — Karan orders Biryani in Mumbai"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Karan places an order",
+              desc: "Karan hits 'Place Order'. Swiggy's backend sends the write to mongos. mongos looks at the shard key — city: 'Mumbai' — and knows exactly which shard owns Mumbai data."
+            },
+            {
+              type: "code",
+              code: `// Write hits mongos first
+db.orders.insertOne({ orderId: "SWG-5001", city: "Mumbai", user: "karan", status: "placed" })
+
+// mongos checks: city = "Mumbai" → belongs to Shard 1
+// Write goes to Shard 1 only ✅`
+            },
+            {
+              type: "step",
+              title: "Step 2 — Swiggy fetches Karan's order status",
+              desc: "The live tracker queries for Karan's order. mongos again looks at city: 'Mumbai', routes the read directly to Shard 1. No other shard is touched. Query is fast — only 100M docs, not 500M."
+            },
+            {
+              type: "code",
+              code: `// mongos routes read to correct shard
+db.orders.findOne({ orderId: "SWG-5001", city: "Mumbai" })
+
+// mongos → city: "Mumbai" → Shard 1 ✅
+// Shard 2, 3, 4, 5 — never consulted`
+            },
+            {
+              type: "step",
+              title: "Step 3 — Swiggy queries all cities for a national report",
+              desc: "The analytics team runs a report — total orders across all cities today. mongos fans the query out to all 5 shards in parallel, collects results, and merges them. This is called a scatter-gather query."
+            },
+            {
+              type: "code",
+              code: `// No city filter — mongos queries all shards in parallel
+db.orders.countDocuments({ createdAt: { $gte: todayStart } })
+
+// mongos → broadcasts to Shard 1, 2, 3, 4, 5 simultaneously
+// Each shard returns its count → mongos adds them up → returns total ✅
+// Parallel execution — still fast`
+            },
+            {
+              type: "step",
+              title: "Step 4 — Swiggy adds a 6th shard as data grows",
+              desc: "Six months later, order volume doubles. Swiggy adds a new shard. MongoDB's balancer automatically migrates chunks of data from busy shards to the new one until load is evenly distributed. Zero downtime. No code changes."
+            },
+            {
+              type: "code",
+              code: `// Add a new shard — MongoDB rebalances automatically
+sh.addShard("mongo6.swiggy.internal:27017")
+
+// Balancer kicks in:
+// Shard 1 had Mumbai + Pune → moves Pune chunk → Shard 6
+// All 6 shards now hold roughly equal data ✅`
+            },
+
+            {
               type: "table",
-              headers: ["", "Without Sharding", "With Sharding"],
+              headers: ["Without Sharding", "With Sharding"],
               rows: [
-                ["Data location", "All on one server", "Split across multiple servers"],
-                ["Scaling strategy", "Vertical — bigger hardware", "Horizontal — more servers"],
-                ["Write throughput", "Limited by one server's I/O", "Distributed across all shards"],
-                ["Query speed", "Degrades as data grows", "Each shard handles a fraction"],
-                ["Storage ceiling", "One server's disk size", "Sum of all shards' disks"],
+                ["1 server holds all 500M orders", "5 shards hold 100M orders each"],
+                ["Every query scans the full collection", "Queries hit only the relevant shard"],
+                ["One server's disk fills up", "Storage scales with each new shard"],
+                ["Writes bottleneck on one machine", "Writes distributed across all shards"],
+                ["Scale up = buy bigger hardware", "Scale out = add another shard"],
               ]
             },
             {
-              type: "success-callout",
-              text: "✅ Sharding is horizontal scaling — splitting one massive collection across many servers so no single server is overwhelmed. Swiggy's 2 billion orders stop being one server's problem and become ten servers' manageable slices. Your app sees one database. MongoDB handles the distribution."
-            }
-          ],
-
-
-          "Why Swiggy Needs Sharding at Scale": [
-            {
-              type: "paragraph",
-              text: "In 2016, Swiggy had a few hundred thousand orders. One MongoDB server was fine. By 2024, Swiggy processes over 3 million orders a day, across 500+ cities, with Instamart, Genie, and Dineout all writing to the same database. The orders collection alone grows by 3 million documents every 24 hours. That's 1 billion new documents a year. No single server — no matter how powerful — handles this indefinitely. Sharding isn't an architecture choice at this scale. It's a necessity."
-            },
-            {
-              type: "heading",
-              text: "The Four Walls Swiggy Hits Without Sharding"
-            },
-            {
-              type: "step",
-              title: "Wall 1 — Storage",
-              desc: "2 billion order documents at ~2KB each = ~4TB of data. The largest cloud MongoDB instances offer ~32TB. But you're also storing restaurants, users, menus, delivery agents, Instamart inventory. A single server's storage ceiling gets hit fast — and you can't just keep upgrading forever."
-            },
-            {
-              type: "step",
-              title: "Wall 2 — RAM and Index Size",
-              desc: "MongoDB performs best when working indexes fit in RAM. A compound index on Swiggy's 2 billion order documents can be hundreds of GB. Once the index no longer fits in RAM, MongoDB starts hitting disk for index lookups — and query performance collapses. No amount of RAM upgrade keeps pace with unbounded data growth."
-            },
-            {
-              type: "step",
-              title: "Wall 3 — Write Throughput",
-              desc: "Peak dinner rush — 6PM to 9PM — Swiggy handles 50,000+ order writes per minute. Every write goes to one Primary. One server's disk I/O, CPU, and write lock become the bottleneck. With sharding, 50,000 writes per minute are split across 10 shards — 5,000 writes per minute each. Each shard barely notices."
-            },
-            {
-              type: "step",
-              title: "Wall 4 — Read Concurrency",
-              desc: "Swiggy's support dashboard, restaurant partner app, delivery partner app, and customer app all query orders simultaneously. Even with read replicas, all reads fan out from one Primary's dataset. With sharding, support queries hit Shard 2, restaurant queries hit Shard 5 — no overlap, no competition."
-            },
-            {
-              type: "code",
-              code: `// Swiggy's scale that forces sharding
-Orders per day:         3,000,000
-Orders per year:        1,095,000,000
-Total orders (10 yrs):  ~10,000,000,000   // 10 billion
-
-Peak writes per minute: 50,000+
-Active cities:          500+
-Collections writing:    orders, instamart_orders, genie_orders, restaurants,
-                        users, menus, inventory, delivery_agents, wallets...
-
-// One server can't hold this. Can't index this. Can't write this fast.
-// Sharding is the only path forward.`
-            },
-            {
               type: "warning-callout",
-              text: "⚠️ Sharding is complex — it adds mongos routers, config servers, shard key decisions, and cross-shard query overhead. Don't shard early. Swiggy didn't shard from day one. They scaled vertically first, added read replicas, optimised indexes — and sharded only when those options ran out. Premature sharding creates problems that don't exist yet."
+              text: "⚠️ Sharding is not free — it adds complexity. You must choose your shard key carefully upfront. A bad shard key causes hotspots where all traffic slams one shard while others sit idle. The next topic covers exactly how to pick the right one."
             },
             {
               type: "success-callout",
-              text: "✅ Swiggy needs sharding because 10 billion orders can't live on one server — not in storage, not in RAM, not in write throughput. Sharding splits the problem across many servers so each one handles a manageable fraction. It's the only way to scale a database that grows by a billion records a year."
+              text: "✅ Sharding splits one massive collection across multiple servers called shards. MongoDB uses the shard key to decide which document lives on which shard. mongos routes every query to the right shard automatically. Your app sees one database — underneath, it's a fleet of servers sharing the load."
             }
           ],
+
+
+
 
 
           "Shard Key — How to Choose the Right One": [
             {
               type: "paragraph",
-              text: "Sharding splits your collection across servers. But MongoDB doesn't randomly scatter documents — it uses one field (or a combination of fields) to decide which shard each document belongs to. That field is called the shard key. It's the single most important decision in your sharding setup. The right shard key means even data distribution and fast queries. The wrong one means one shard drowns in traffic while the others sit idle — or every query has to ask every shard for the answer."
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Swiggy's orders collection has orderId, userId, city, restaurantId, createdAt. Which field should be the shard key — and what happens if you pick the wrong one?"
+              text: "Sharding is only as good as the shard key you choose. The shard key is the field MongoDB uses to decide which document goes to which shard. Pick the right one — data spreads evenly, queries are fast, every shard pulls its weight. Pick the wrong one — all traffic slams into one shard while the rest sit idle. This is called a hotspot. Swiggy can't afford that at scale."
             },
             {
               type: "heading",
-              text: "What a Shard Key Does"
+              text: "What Makes a Good Shard Key?"
             },
             {
               type: "paragraph",
-              text: "When a document is inserted, MongoDB hashes or ranges the shard key value to determine which shard it goes to. When a query runs, MongoDB uses the shard key to figure out which shard or shards to ask. If the query includes the shard key — MongoDB routes to exactly one shard. If it doesn't — MongoDB broadcasts to all shards and merges the results."
+              text: "A good shard key has three properties — high cardinality, even distribution, and query isolation. Miss any one of these and you'll have a sharding problem in production that's painful to fix."
+            },
+            {
+              type: "step",
+              title: "High Cardinality — enough unique values to split across shards",
+              desc: "MongoDB creates chunks based on shard key ranges. If your shard key only has 5 possible values, MongoDB can only ever create 5 chunks — meaning you can never have more than 5 useful shards. A good shard key has thousands or millions of unique values."
             },
             {
               type: "code",
-              code: `// Enable sharding on the database
-sh.enableSharding("swiggy_db")
+              code: `// ❌ Bad — low cardinality. Only ~500 cities in India
+{ city: 1 }
+// MongoDB can create at most 500 chunks — hits a ceiling fast
 
-// Shard the orders collection using city as the shard key
-sh.shardCollection("swiggy_db.orders", { city: 1 })
-
-// Now every insert uses city to determine which shard to write to
-db.orders.insertOne({ city: "Mumbai", orderId: "SWG-001", totalAmount: 487 })
-// → goes to the Mumbai shard
-
-db.orders.insertOne({ city: "Delhi", orderId: "SWG-002", totalAmount: 320 })
-// → goes to the Delhi shard`
+// ✅ Good — high cardinality. Millions of unique order IDs
+{ orderId: 1 }
+// Every document has a unique value — unlimited chunks possible`
             },
+            {
+              type: "step",
+              title: "Even Distribution — writes spread across all shards equally",
+              desc: "If most of your writes share the same shard key value, they all go to the same shard. That shard becomes a hotspot — overloaded while others are nearly empty. The shard key must distribute writes as evenly as possible."
+            },
+            {
+              type: "code",
+              code: `// ❌ Bad — status has only 4 values. Most orders are "placed"
+{ status: 1 }
+// Shard 1 → "placed"   (90% of all writes hit here) 🔥
+// Shard 2 → "preparing"
+// Shard 3 → "delivered"
+
+// ✅ Good — userId spreads writes evenly across all shards
+{ userId: 1 }
+// Millions of users → writes go to all shards equally ✅`
+            },
+            {
+              type: "step",
+              title: "Query Isolation — queries should hit one shard, not all",
+              desc: "When a query includes the shard key, mongos routes it to exactly one shard. When a query doesn't include the shard key, mongos broadcasts it to every shard — called a scatter-gather query. These are expensive. Your most common queries should always include the shard key."
+            },
+            {
+              type: "code",
+              code: `// ✅ Targeted query — shard key included, hits one shard
+db.orders.find({ userId: "karan_mumbai" })
+// mongos → routes to Shard 2 only ✅
+
+// ❌ Scatter-gather — no shard key, hits all shards
+db.orders.find({ status: "placed" })
+// mongos → broadcasts to Shard 1, 2, 3, 4, 5 simultaneously 🔥`
+            },
+
+            // ─── EXAMPLE: Swiggy picks the wrong shard key ───
             {
               type: "heading",
-              text: "Properties of a Good Shard Key"
+              text: "Example — Swiggy picks the wrong shard key first"
             },
             {
               type: "step",
-              title: "High cardinality — many distinct values",
-              desc: "The shard key needs enough distinct values to distribute data across all shards. city has 500 values across Swiggy's coverage. orderId has billions of distinct values. status has 5 values — placed, confirmed, preparing, out_for_delivery, delivered. A shard key with only 5 values can never have more than 5 shards doing meaningful work."
-            },
-            {
-              type: "step",
-              title: "Even distribution — no one value dominates",
-              desc: "Mumbai generates 40% of all Swiggy orders. If city is the shard key, the Mumbai shard gets 40% of all writes — while the Patna shard gets 0.1%. Uneven distribution defeats the purpose of sharding. A good shard key spreads writes roughly equally."
-            },
-            {
-              type: "step",
-              title: "Appears in most queries — enables targeted routing",
-              desc: "If your most common queries filter by userId, then userId should be part of the shard key. MongoDB can route those queries to exactly one shard. If queries never include the shard key, every query broadcasts to all shards — scatter-gather — which is slow and expensive."
+              title: "Step 1 — Swiggy shards orders by createdAt (timestamp)",
+              desc: "The team thinks timestamps are unique and sequential — seems like a good key. They shard the orders collection by createdAt. This is a classic mistake."
             },
             {
               type: "code",
-              code: `// Evaluating shard key candidates for Swiggy's orders collection
+              code: `// ❌ Sharding by timestamp — looks fine, breaks under load
+sh.shardCollection("swiggyDB.orders", { createdAt: 1 })
 
-// ❌ Bad — status (low cardinality, only 5 values, huge hotspots)
-sh.shardCollection("swiggy_db.orders", { status: 1 })
-// All "placed" orders → one shard. All "delivered" → another. Max 5 shards useful.
-
-// ❌ Bad — createdAt (monotonically increasing → all new writes go to last shard)
-sh.shardCollection("swiggy_db.orders", { createdAt: 1 })
-// Every new order has the latest timestamp → always hits the same "last" shard
-
-// ⚠️  Okay — city (high cardinality but uneven: Mumbai >> Patna)
-sh.shardCollection("swiggy_db.orders", { city: 1 })
-// Mumbai shard overloaded. Small city shards underloaded.
-
-// ✅ Good — hashed orderId (unique, even distribution, in most queries)
-sh.shardCollection("swiggy_db.orders", { orderId: "hashed" })
-// Every orderId is unique → perfectly even distribution across all shards
-
-// ✅ Good — compound: { city, orderId } (zone sharding + even within city)
-sh.shardCollection("swiggy_db.orders", { city: 1, orderId: 1 })
-// Orders grouped by city for geographic queries, orderId for even spread within city`
+// Chunks split by time range:
+// Shard 1 → Jan orders
+// Shard 2 → Feb orders
+// Shard 3 → Mar orders
+// Shard 4 → Apr orders`
             },
             {
-              type: "warning-callout",
-              text: "⚠️ The shard key is permanent. Once a collection is sharded on a key, you cannot change it without resharding — which means reading and rewriting every document in the collection. In MongoDB 5.0+ resharding is possible but expensive. Choose carefully before sharding in production."
+              type: "step",
+              title: "Step 2 — All writes hammer the last shard",
+              desc: "Every new order has today's timestamp — the highest value. MongoDB always writes new documents to the last chunk. That chunk lives on one shard. Every single write in production goes to that one shard. The others are frozen in time with old data — never touched."
             },
+            {
+              type: "code",
+              code: `// It's April — every new order goes to Shard 4
+// Shard 1 → Jan orders — 0 writes  😴
+// Shard 2 → Feb orders — 0 writes  😴
+// Shard 3 → Mar orders — 0 writes  😴
+// Shard 4 → Apr orders — ALL writes 🔥 ← hotspot`
+            },
+            {
+              type: "step",
+              title: "Step 3 — Swiggy fixes it by switching to a compound shard key",
+              desc: "The team rethinks. Most queries filter by userId. userId has millions of unique values, distributes evenly, and is always present in order queries. They add orderId for extra uniqueness. This spreads writes evenly across all shards."
+            },
+            {
+              type: "code",
+              code: `// ✅ Compound shard key — userId + orderId
+sh.shardCollection("swiggyDB.orders", { userId: 1, orderId: 1 })
+
+// Writes now spread evenly:
+// Shard 1 → users aarav*, ananya*, ...
+// Shard 2 → users karan*, kavya*, ...
+// Shard 3 → users priya*, rahul*, ...
+// Shard 4 → users swati*, vikram*, ...
+// All shards equally loaded ✅`
+            },
+            {
+              type: "step",
+              title: "Step 4 — Queries are now targeted, not scattered",
+              desc: "Karan checks his order history. The query includes userId — mongos routes it directly to Shard 2. No other shard is touched. At millions of queries per minute, this makes an enormous difference."
+            },
+            {
+              type: "code",
+              code: `// Targeted — userId in query, hits one shard
+db.orders.find({ userId: "karan_mumbai" })
+// mongos → Shard 2 only ✅  — fast, cheap
+
+// Still works without orderId — userId alone is enough to route
+db.orders.find({ userId: "karan_mumbai", status: "delivered" })
+// mongos → Shard 2 only ✅`
+            },
+
             {
               type: "table",
-              headers: ["Shard Key Candidate", "Cardinality", "Distribution", "Query targeting", "Verdict"],
+              headers: ["Shard Key", "Cardinality", "Distribution", "Query Isolation", "Verdict"],
               rows: [
-                ["status", "Very low (5)", "Terrible — hotspots", "Poor", "❌ Never use"],
-                ["createdAt", "High", "Terrible — always last shard", "Poor", "❌ Never use alone"],
-                ["city", "Medium (500)", "Uneven — Mumbai dominates", "Good", "⚠️ Risky for Swiggy"],
-                ["orderId (hashed)", "Very high (billions)", "Perfect", "Good", "✅ Strong choice"],
-                ["userId (hashed)", "Very high", "Even", "Good if user queries dominate", "✅ Good choice"],
-                ["{city, orderId}", "Very high", "Even within city", "Excellent", "✅ Best of both"],
+                ["createdAt", "High", "❌ All writes to latest chunk", "❌ Scatter-gather on most queries", "❌ Hotspot — avoid"],
+                ["status", "Low (4 values)", "❌ Uneven — most orders are 'placed'", "❌ Always scatter-gather", "❌ Terrible choice"],
+                ["city", "Medium (~500)", "⚠️ Mumbai dominates", "✅ Targeted by city", "⚠️ Risky at scale"],
+                ["userId", "Very High", "✅ Millions of users, even spread", "✅ Targeted for user queries", "✅ Good choice"],
+                ["userId + orderId", "Extremely High", "✅ Perfectly even", "✅ Targeted for all order queries", "✅ Best choice"],
               ]
             },
             {
+              type: "warning-callout",
+              text: "⚠️ You cannot change the shard key after a collection is sharded without dropping and re-sharding the collection. Choose carefully before you shard — a bad shard key in production is one of the most painful problems to fix in MongoDB."
+            },
+            {
               type: "success-callout",
-              text: "✅ A good shard key has high cardinality, distributes writes evenly, and appears in your most frequent queries. For Swiggy's orders, hashed orderId gives perfect distribution. A compound {city, orderId} key gives geographic grouping plus even spread. Avoid low-cardinality fields like status and monotonically increasing fields like createdAt as standalone shard keys."
+              text: "✅ A good shard key has high cardinality (many unique values), even distribution (writes spread across all shards), and query isolation (your common queries include the key). For Swiggy's orders — userId + orderId checks all three boxes. Data spreads evenly, writes are distributed, and every user query hits exactly one shard."
             }
           ],
 
@@ -8908,7 +9031,7 @@ db.orders.aggregate([
       {
         "id": 9,
         "title": "Performance & Optimization",
-        "level": "freshers",
+        "level": "experienced",
         "topics": [
           "TTL Indexes — Auto-deleting Expired OTPs & Sessions",
           "Capped Collections — Storing Last N Delivery Logs",
@@ -9472,7 +9595,7 @@ db.orders.aggregate([
       {
         id: 10,
         title: "MongoDB at Production Scale",
-        level: "freshers",
+        level: "experienced",
         topics: [
           "Connection Pooling",
           "Write Concern & Read Concern",

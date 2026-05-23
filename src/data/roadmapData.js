@@ -14936,7 +14936,7 @@ await dynamodb.updateItem({
     category: "Backend Concepts",
     sortOrder: 5,
     image: "https://play-lh.googleusercontent.com/2BQu8Y7Ah9Gh9CZvmaMSYIcZvdO4KfdJ26EZ1WGyaOG_xxeDxNn-AZYxOtQJvyQQPFY",
-    title: "Rate Limiting Explained Through Razorpay",
+    title: "Rate Limiting Explained Through Google",
     description:
       "Learn rate limiting from scratch — fixed windows, token buckets, distributed limiting, DDoS protection, and real-world abuse prevention — through Swiggy's order system, OTP flows, and flash sale scenarios.",
     tags: ["Rate Limiting", "Redis", "DDoS"],
@@ -15598,21 +15598,282 @@ await dynamodb.updateItem({
           "Custom Rate Limit Rules",
           "Returning 429 Too Many Requests",
           "Rate Limit Headers (X-RateLimit-*)"
-        ]
+        ],
+        topicDetails: {
+          "Limiting by IP Address": [
+            {
+              type: "paragraph",
+              text: "Google Hotels lets anyone search hotels without logging in. But if someone — or a bot — starts hammering the search API thousands of times a minute from the same IP, it eats server resources and ruins performance for real users. IP-based rate limiting puts a hard cap on how many requests one IP can make in a time window."
+            },
+            {
+              type: "heading",
+              text: "How It Works"
+            },
+            {
+              type: "step",
+              title: "Every request carries an IP address",
+              desc: "When you search 'hotels in Goa' on Google Hotels, your request arrives with your IP — say 103.21.58.1. The server reads this IP before doing anything else. This is the key it uses to track and limit you."
+            },
+            {
+              type: "step",
+              title: "A counter tracks requests per IP in a time window",
+              desc: "Google keeps a counter for each IP in Redis — fast, in-memory storage. Every request increments the counter. The counter resets after the time window (say, 1 minute). If you stay under the limit, every request goes through normally."
+            },
+            {
+              type: "code",
+              code: `const key = \`rate_limit:ip:\${req.ip}\`   // "rate_limit:ip:103.21.58.1"
+const count = await redis.incr(key)
+await redis.expire(key, 60)           // reset after 60 seconds
+
+if (count > 100) {
+  return res.status(429).json({ error: "Too many requests" })
+}`
+            },
+            {
+              type: "step",
+              title: "Example — normal user searching hotels in Goa",
+              desc: "Priya opens Google Hotels and searches Goa, filters by price, clicks a hotel, goes back, searches again. She makes maybe 8 requests in a minute. Counter sits at 8 out of 100. Every response is instant — she never hits the limit."
+            },
+            {
+              type: "step",
+              title: "Example — scraper bot hammering the API",
+              desc: "A competitor's bot starts scraping all hotel prices from Google Hotels — sending 500 requests a minute from IP 45.33.12.7. The counter hits 100 at request 101, Google returns a 429 and blocks every subsequent request from that IP for the rest of the window. The bot gets nothing. Real users are unaffected."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ IP-based limiting breaks down when many users share one IP — like an office building or a university on the same network. A whole office could get blocked because one person's script hit the limit. This is why IP limiting is usually combined with User ID limiting."
+            },
+            {
+              type: "success-callout",
+              text: "✅ IP rate limiting is the first line of defence — no login required to enforce it. Every request gets checked, counters live in Redis, and bots get blocked before they cause damage."
+            }
+          ],
+
+          "Limiting by User ID": [
+            {
+              type: "paragraph",
+              text: "Once a user is logged in to Google Hotels, their identity is known. Instead of tracking by IP — which is shared and unreliable — Google now tracks by User ID. Each account gets its own quota. A power user can't burn through the quota of everyone else on their network."
+            },
+            {
+              type: "heading",
+              text: "How It Works"
+            },
+            {
+              type: "step",
+              title: "The auth token reveals the user",
+              desc: "When Karan is logged into his Google account and searches hotels, his request carries a session token. The server decodes it and extracts his User ID — uid_karan_8821. This becomes the rate limit key instead of his IP."
+            },
+            {
+              type: "step",
+              title: "Each user gets their own counter and quota",
+              desc: "Google keeps a separate Redis counter per User ID. Karan's requests count against Karan's quota. Priya's requests count against Priya's. They never interfere with each other — even if they're on the same office WiFi."
+            },
+            {
+              type: "code",
+              code: `const userId = decodeToken(req.headers.authorization)  // uid_karan_8821
+const key = \`rate_limit:user:\${userId}\`
+const count = await redis.incr(key)
+await redis.expire(key, 60)
+
+if (count > 200) {
+  return res.status(429).json({ error: "User rate limit exceeded" })
+}`
+            },
+            {
+              type: "step",
+              title: "Example — Karan comparing hotels obsessively",
+              desc: "Karan is planning a Goa trip and spends an hour on Google Hotels — sorting, filtering, opening hotel pages, comparing prices. He makes 180 requests in a minute. His counter hits 180 out of 200. He's fine. Priya, on the same WiFi, has her own counter at 12. Neither affects the other."
+            },
+            {
+              type: "step",
+              title: "Example — a user abusing the price alert API",
+              desc: "Someone writes a script under their own Google account to poll hotel prices every second — 600 requests a minute. Their User ID counter hits 200 at request 201. They get 429'd for the rest of the window. Every other user on the platform is completely unaffected."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ User ID limiting only works for authenticated requests. Logged-out users fall back to IP limiting. Always run both layers together — IP for anonymous traffic, User ID for logged-in traffic."
+            },
+            {
+              type: "success-callout",
+              text: "✅ User ID limiting gives every account its own fair quota. Shared IPs stop being a problem. Abusers can only hurt themselves. Combine with IP limiting and you have solid two-layer rate limiting."
+            }
+          ],
+
+          "Custom Rate Limit Rules": [
+            {
+              type: "paragraph",
+              text: "Not all endpoints are equal. Searching hotels is cheap. Booking a hotel triggers payment processing, hotel confirmation emails, and inventory updates. Google Hotels applies different rate limit rules to different actions — tighter limits on expensive operations, looser limits on cheap ones."
+            },
+            {
+              type: "heading",
+              text: "Different Endpoints, Different Rules"
+            },
+            {
+              type: "step",
+              title: "Search — high limit, cheap operation",
+              desc: "Hotel search is a read query — fast, stateless, cached heavily. Google allows 200 searches per minute per user. Priya can search all she wants while planning her trip."
+            },
+            {
+              type: "step",
+              title: "Booking — tight limit, expensive operation",
+              desc: "Booking triggers a payment charge, hotel confirmation, calendar update, and email. Google limits this to 5 booking attempts per minute per user. Hitting 5 bookings in a minute is almost certainly a bot or a bug."
+            },
+            {
+              type: "step",
+              title: "Price alerts — medium limit, background operation",
+              desc: "Setting a price alert writes to the database and schedules a background job. Google allows 20 per minute. Useful for normal users, throttles aggressive scrapers trying to monitor thousands of hotels."
+            },
+            {
+              type: "code",
+              code: `const rules = {
+  "/search":        { limit: 200, window: 60 },  // cheap — generous
+  "/book":          { limit: 5,   window: 60 },  // expensive — tight
+  "/price-alerts":  { limit: 20,  window: 60 },  // background — medium
+}
+
+const rule = rules[req.path]
+const key = \`rate_limit:\${req.path}:\${userId}\`
+const count = await redis.incr(key)
+await redis.expire(key, rule.window)
+
+if (count > rule.limit) return res.status(429).json({ error: "Rate limit exceeded" })`
+            },
+            {
+              type: "step",
+              title: "Example — Karan searches and books normally",
+              desc: "Karan searches hotels 40 times in a minute browsing options — well under 200. He then books one hotel — counter hits 1 out of 5 on the booking endpoint. Everything goes through. Custom rules don't affect normal users at all."
+            },
+            {
+              type: "step",
+              title: "Example — bot tries to spam bookings",
+              desc: "A bot tries to make 50 bookings a minute to test stolen credit cards. The booking endpoint allows only 5. On the 6th attempt the bot gets 429. The payment processor never gets hit with the other 44 attempts. Google saved 44 fraudulent payment calls."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Custom rules let you protect expensive endpoints tightly while keeping cheap endpoints generous. Search can be 200/min. Booking can be 5/min. Same user, same session — different rules per operation."
+            }
+          ],
+
+          "Returning 429 Too Many Requests": [
+            {
+              type: "paragraph",
+              text: "When a user or bot crosses the rate limit, the server doesn't silently drop the request or return a vague error. It returns HTTP 429 — Too Many Requests. This is a standard status code that tells the client exactly what happened and what to do next."
+            },
+            {
+              type: "heading",
+              text: "What a 429 Response Looks Like"
+            },
+            {
+              type: "step",
+              title: "The server returns 429 with a clear body",
+              desc: "Google Hotels returns a 429 response the moment a client crosses the limit. The response body explains why it happened and how long to wait before trying again."
+            },
+            {
+              type: "code",
+              code: `// 429 response from Google Hotels API
+HTTP/1.1 429 Too Many Requests
+Retry-After: 30
+X-RateLimit-Limit: 100
+X-RateLimit-Remaining: 0
+X-RateLimit-Reset: 1716201660
+
+{
+  "error": "rate_limit_exceeded",
+  "message": "Too many requests. Please wait 30 seconds.",
+  "retryAfter": 30
+}`
+            },
+            {
+              type: "step",
+              title: "Example — Priya's app handles 429 gracefully",
+              desc: "Priya's travel app integrates the Google Hotels API. When it gets a 429, the app reads the Retry-After header — 30 seconds. It shows Priya a message: 'Results loading, please wait a moment' and automatically retries after 30 seconds. Priya doesn't even know a rate limit was hit."
+            },
+            {
+              type: "step",
+              title: "Example — a badly written bot ignores 429 and keeps hammering",
+              desc: "A scraper bot hits the limit and gets 429. It ignores the Retry-After header and immediately retries. Every retry returns 429. The bot spins in a loop getting nowhere. Google's server handles each 429 response in microseconds — the bot wastes its own resources, not Google's."
+            },
+            {
+              type: "step",
+              title: "Example — a well written client backs off exponentially",
+              desc: "A smarter client gets a 429 and waits 30 seconds as instructed. If it gets another 429, it waits 60. Then 120. This is called exponential backoff. It respects the server, recovers cleanly, and never gets permanently blocked."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Never return 200 OK with an error message in the body when rate limited — clients won't know they're being throttled. Always return a proper 429 with Retry-After so well-behaved clients can recover automatically."
+            },
+            {
+              type: "success-callout",
+              text: "✅ 429 is the correct, standard response for rate limiting. Include Retry-After so clients know when to try again. Well-written clients recover automatically. Badly written bots spin out harmlessly."
+            }
+          ],
+
+          "Rate Limit Headers (X-RateLimit-*)": [
+            {
+              type: "paragraph",
+              text: "A good API doesn't just block you when you hit the limit — it tells you how close you are before you hit it. Google Hotels sends rate limit headers on every single response so clients can see their current quota, how many requests they have left, and exactly when the window resets."
+            },
+            {
+              type: "heading",
+              text: "The Three Key Headers"
+            },
+            {
+              type: "step",
+              title: "X-RateLimit-Limit — your total quota",
+              desc: "This tells the client the maximum requests allowed in the window. Karan's account gets 200 searches per minute. Every response from Google Hotels includes X-RateLimit-Limit: 200 so his app always knows the ceiling."
+            },
+            {
+              type: "step",
+              title: "X-RateLimit-Remaining — how many you have left",
+              desc: "This counts down with every request. Karan has made 45 searches this minute — the header reads X-RateLimit-Remaining: 155. His travel app can read this and slow down proactively before hitting the limit."
+            },
+            {
+              type: "step",
+              title: "X-RateLimit-Reset — when the window resets",
+              desc: "This is a Unix timestamp telling the client exactly when the counter resets to zero. Karan's app reads this and knows — in 18 seconds, the full quota of 200 is back. No need to guess or wait blindly."
+            },
+            {
+              type: "code",
+              code: `// Headers on every Google Hotels API response
+X-RateLimit-Limit: 200       // total allowed per minute
+X-RateLimit-Remaining: 155   // requests left this window
+X-RateLimit-Reset: 1716201660  // unix timestamp — resets at this moment
+
+// Client reads Remaining and slows down before hitting 0
+if (headers['X-RateLimit-Remaining'] < 20) {
+  await sleep(1000) // slow down proactively
+}`
+            },
+            {
+              type: "step",
+              title: "Example — Priya's app paces itself using headers",
+              desc: "Priya's travel app is auto-fetching hotel prices for her saved list — 180 hotels. It reads X-RateLimit-Remaining on each response. When it drops below 20, the app slows down and spaces requests 2 seconds apart instead of firing as fast as possible. It finishes fetching all 180 hotels without ever hitting a 429."
+            },
+            {
+              type: "step",
+              title: "Example — app shows Priya a live quota indicator",
+              desc: "Priya's app builds a small UI indicator using these headers — '155 requests remaining, resets in 18s'. Priya can see exactly how much quota is left. When she's close to the limit, the UI dims the auto-refresh button. No surprises, no 429s."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Rate limit headers turn limiting from a surprise wall into a visible budget. Clients can pace themselves, build quota indicators, and never hit 429 accidentally. Send them on every response — not just when the limit is hit."
+            }
+          ]
+        }
       },
 
-      {
-        id: 4,
-        title: "Rate Limiting with Redis",
-        level: "freshers",
-        topics: [
-          "Why Redis for Rate Limiting?",
-          "Storing counters in Redis",
-          "TTL based expiry in Redis",
-          "rate-limiter-flexible library",
-          "Distributed Rate Limiting basics"
-        ]
-      },
+      // {
+      //   id: 4,
+      //   title: "Rate Limiting with Redis",
+      //   level: "freshers",
+      //   topics: [
+      //     "Why Redis for Rate Limiting?",
+      //     "Storing counters in Redis",
+      //     "TTL based expiry in Redis",
+      //     "rate-limiter-flexible library",
+      //     "Distributed Rate Limiting basics"
+      //   ]
+      // },
 
       {
         id: 5,

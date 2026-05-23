@@ -7630,7 +7630,7 @@ session.withTransaction(async () => {
       {
         id: 7,
         title: "Replication",
-        level: "freshers",
+        level: "intermediate",
         topics: [
           "What is Replication?",
           "Primary & Secondary Nodes",
@@ -8252,7 +8252,7 @@ db.orders.insertOne(
       {
         id: 8,
         title: "Sharding",
-        level: "freshers",
+        level: "intermediate",
         topics: [
           "What is Sharding?",
           "Shard Key — How to Choose the Right One",

@@ -10989,7 +10989,241 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
         topics: [
           "What is Rate Limiting and why it is needed?",
           "Client-side vs Server-side Rate Limiting"
-        ]
+        ],
+        topicDetails: {
+          "What is Rate Limiting and why it is needed?": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "You open Google Maps. You search 'Pizza near me'. Tap a restaurant. Check reviews. Get directions. In 10 seconds — you made 6 API calls without knowing it. Now imagine 10 million people doing the same thing simultaneously. And one developer's app doing it 50,000 times per second by mistake. Without any control — Google's servers would collapse under that load. That control has a name — Rate Limiting."
+            },
+            { type: "image", src: "ratelimit.png" },
+
+            // 🔴 PROBLEM
+            {
+              type: "heading",
+              text: "The Problem — What Happens Without Rate Limiting"
+            },
+            {
+              type: "paragraph",
+              text: "Let's make this real. A food delivery startup builds their app on Google Maps API. Everything works fine in testing. Launch day — 50,000 users download the app. Their backend has a bug — every time a user opens the app, it fires 10 API calls instead of 1. That's 5 lakh API calls per second flooding into Google."
+            },
+            {
+              type: "error-callout",
+              title: "What happens next — without Rate Limiting:",
+              list: [
+                "Google's Maps API servers start getting overwhelmed",
+                "A student using Google Maps to navigate to their exam — map stops loading",
+                "A cab driver using Maps for directions — app freezes mid-route",
+                "A hospital using Maps to dispatch ambulances — location API times out",
+                "Millions of real users, broken experience — because of one startup's bug"
+              ],
+              footer: "One bad app shouldn't ruin Google Maps for everyone on Earth. That's exactly what Rate Limiting prevents."
+            },
+
+            // 💡 WHAT IS IT
+            {
+              type: "heading",
+              text: "So What is Rate Limiting?"
+            },
+            {
+              type: "paragraph",
+              text: "Rate Limiting is a simple rule — you can only make X requests in Y time. Cross that line and your request is rejected. Wait for the timer to reset and you're allowed again. That's it."
+            },
+            {
+              type: "code",
+              code: "Google Maps API — Free Tier Rule:\n\n60 requests per minute per API key\n\nRequest 1  → ✅ Allowed  (59 remaining)\nRequest 2  → ✅ Allowed  (58 remaining)\n...\nRequest 60 → ✅ Allowed  (0 remaining)\nRequest 61 → ❌ Rejected → HTTP 429 Too Many Requests\n\nWait 60 seconds → ✅ Counter resets → 60 more allowed"
+            },
+            {
+              type: "info-callout",
+              text: "🎟️ Think of it like a movie theatre. 60 seats per show. Ticket 61 — sorry, next show. The theatre doesn't collapse. Everyone with a ticket gets a great experience. The crowd outside waits for the next slot."
+            },
+
+            // WHY IT'S NEEDED — WITH REAL EXAMPLES
+            ,
+
+            // REAL WALK THROUGH
+            {
+              type: "heading",
+              text: "A Real Walk — What You See vs What's Happening"
+            },
+            {
+              type: "step",
+              title: "You open Google Maps and search 'Coffee near me'",
+              desc: "Behind the scenes — your app fires a Places API request. Google receives it, checks your API key's counter. You've made 3 requests this minute. Limit is 60. Counter goes to 4. Request allowed. Coffee shops appear on your screen."
+            },
+            {
+              type: "step",
+              title: "You tap a coffee shop to see its details",
+              desc: "Another API call. Counter goes to 5. Still under 60. Allowed instantly. You see the shop's address, rating, photos, opening hours."
+            },
+            {
+              type: "step",
+              title: "You tap 'Get Directions'",
+              desc: "Directions API call. Counter goes to 6. Still fine. Route loads in under a second."
+            },
+            {
+              type: "step",
+              title: "Now your app has a bug — it starts refetching directions every second",
+              desc: "Counter hits 60 in under a minute. Request 61 fires — Google's API Gateway rejects it instantly. Your app receives a 429. The bug is contained. Nobody else using Maps is affected. Just your key, just your app."
+            },
+            {
+              type: "code",
+              code: "HTTP/1.1 429 Too Many Requests\nRetry-After: 38\nX-RateLimit-Limit: 60\nX-RateLimit-Remaining: 0\n\n{\n  \"error\": {\n    \"code\": 429,\n    \"status\": \"RESOURCE_EXHAUSTED\",\n    \"message\": \"Quota exceeded. Retry after 38 seconds.\"\n  }\n}"
+            },
+            {
+              type: "paragraph",
+              text: "The response tells your app exactly what happened and exactly when to retry. No guessing. No timeout. No silent failure. A clean, actionable rejection."
+            },
+            {
+              type: "success-callout",
+              text: "✅ The student navigating to their exam — unaffected. The cab driver mid-route — unaffected. The hospital dispatching an ambulance — unaffected. Your buggy app got blocked. Everyone else kept going. That's Rate Limiting doing exactly its job."
+            },
+
+            // CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ But here's the thing — rate limiting can be enforced in two very different places. Your app can limit itself before sending requests. Or Google can block requests after they arrive. Both exist. Both matter. Knowing which one to use — and when — is exactly what Client-side vs Server-side Rate Limiting is about."
+            }
+          ],
+
+          "Client-side vs Server-side Rate Limiting": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "Priya is a developer. She builds a travel app — users search destinations, check hotel prices, get directions. All powered by Google Maps and Places API. Everything works perfectly in testing with 10 users. She launches. 10,000 users sign up on day one. Every user opening the app fires 5 API calls. That's 50,000 calls per minute — way over her 60/min quota. Her app breaks. Maps go blank. Users uninstall. Priya stares at a screen full of 429 errors. What went wrong? She never decided where the rate limiting should live."
+            },
+            { type: "image", src: "clientserver.png" },
+
+            // CORE IDEA
+            {
+              type: "heading",
+              text: "Two Places. One Decision."
+            },
+            {
+              type: "paragraph",
+              text: "Every API request takes a journey — from your app, across the internet, to Google's servers. Rate limiting can stop or control that request at two completely different points in that journey."
+            },
+            {
+              type: "code",
+              code: "Client-side:  Priya's App → [SLOW DOWN HERE] ────────→ Google API\nServer-side:  Priya's App ─────────────────→ Google API → [BLOCK HERE]"
+            },
+            {
+              type: "paragraph",
+              text: "One stops the request before it leaves. The other stops it after it arrives. Same outcome — controlled traffic. Completely different mechanism."
+            },
+
+            // CLIENT-SIDE — WITH PRIYA EXAMPLE
+            {
+              type: "heading",
+              text: "Client-side Rate Limiting — Priya Controls Herself"
+            },
+            {
+              type: "paragraph",
+              text: "Client-side rate limiting means Priya's own app decides how many requests to send — and holds back the rest. Google never even sees the overflow. The control lives entirely in Priya's code."
+            },
+            {
+              type: "step",
+              title: "Step 1 — User opens Priya's travel app",
+              desc: "Rohit opens the app. He searches 'Hotels in Goa'. The app needs to call Google Places API. Before firing — Priya's code checks its internal counter. 'How many requests have I sent in the last 60 seconds?' Answer: 45. Limit: 60. Safe to send."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Counter hits 60. Next request waits.",
+              desc: "Sunita opens the app at the same time. She searches 'Flights to Manali'. The counter is now at 60 — limit reached. Priya's code doesn't fire the request. It queues it locally and waits. Sunita sees a small loading spinner for a second. No error. No broken screen."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Window resets. Queued request fires.",
+              desc: "60 seconds pass. Counter resets to 0. Sunita's queued request fires immediately. Results load. She never knew anything was held back. Google never saw a single request over the limit."
+            },
+            {
+              type: "code",
+              code: "Priya's app — client-side throttle:\n\nRohit searches 'Hotels in Goa'    → counter: 45 → ✅ Fire immediately\nAnanya searches 'Resorts in Ooty'  → counter: 58 → ✅ Fire immediately\nSunita searches 'Flights to Manali'→ counter: 60 → ⏳ Hold. Wait 8 seconds.\n                                                      Counter resets → ✅ Fire\n\nGoogle API never sees request 61.\nGoogle API never returns a 429.\nNo broken screens. No errors."
+            },
+            {
+              type: "info-callout",
+              text: "🚕 Think of it like Priya managing her own Ola cab bookings. She knows she has a budget of 60 rides per month. She tracks it herself. On ride 61 she says — 'I'll take the metro today.' The cab company never has to reject her. She manages herself."
+            },
+
+            // SERVER-SIDE — WITH GOOGLE EXAMPLE
+            {
+              type: "heading",
+              text: "Server-side Rate Limiting — Google Controls the Gate"
+            },
+            {
+              type: "paragraph",
+              text: "Now imagine Priya never added any client-side throttle. Her app fires every request the moment a user taps. Google's API Gateway is the last line of defence."
+            },
+            {
+              type: "step",
+              title: "Step 1 — 10,000 users open Priya's app simultaneously",
+              desc: "Every user triggers 5 API calls on app open. 50,000 requests per minute start flying toward Google. Priya's app has zero throttle — it fires everything immediately."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Requests arrive at Google's API Gateway",
+              desc: "Google's gateway receives each request and checks: 'Which API key is this? How many requests has this key sent in the last 60 seconds?' It finds Priya's key in its quota store. Counter is at 61. Limit is 60."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Request 61 onwards — rejected at the gate",
+              desc: "Google's gateway blocks the request instantly. It never reaches Google's Maps servers. Google sends back a 429 with a Retry-After header. Priya's app receives the error. Her users see a blank map."
+            },
+            {
+              type: "code",
+              code: "Priya's app fires request #61 to Google Maps API\n        ↓\nGoogle API Gateway checks: key_priya → 61 requests this minute\n        ↓\n61 > 60 ❌ — blocked at gateway\n        ↓\nHTTP 429 RESOURCE_EXHAUSTED\nRetry-After: 23 seconds\n\nGoogle Maps servers: never contacted ✅\nPriya's app: receives 429, map goes blank ❌\nPriya's users: confused, start uninstalling"
+            },
+            {
+              type: "info-callout",
+              text: "🏛️ Think of it like Google's API as a government office. There's a security guard at the entrance counting people. 60 per hour allowed. Person 61 — 'Sorry, wait outside.' Doesn't matter if you think you're under the limit. The guard counts. The guard decides."
+            },
+
+            // HEAD TO HEAD
+            {
+              type: "heading",
+              text: "Head to Head — Priya's App vs Google's Gateway"
+            },
+            {
+              type: "table",
+              headers: ["", "Client-side (Priya's app)", "Server-side (Google's gateway)"],
+              rows: [
+                ["Who enforces it", "Priya's own code", "Google's API Gateway"],
+                ["Where it happens", "Before request is sent", "After request arrives"],
+                ["User experience", "✅ Smooth — small delay at worst", "❌ Broken — blank maps, 429 errors"],
+                ["429 errors", "✅ Never happen", "❌ Returned when exceeded"],
+                ["Protects Google", "✅ If Priya's code is correct", "✅ Always — no exceptions"],
+                ["Stops attackers", "❌ Attacker ignores your code", "✅ Blocked at Google's gate"]
+              ]
+            },
+
+            // BOTH TOGETHER
+            {
+              type: "heading",
+              text: "The Right Answer — Use Both"
+            },
+            {
+              type: "paragraph",
+              text: "After launch day disaster, Priya fixes her app. She adds client-side throttling. Now both layers work together."
+            },
+            {
+              type: "code",
+              code: "Normal day — 10,000 users using Priya's app:\n\nPriya's app (client-side):\n→ Tracks requests internally\n→ Queues overflow locally\n→ Never sends more than 55 req/min to Google\n→ Users get smooth experience — tiny delays at worst\n\nGoogle Gateway (server-side):\n→ Priya's key stays at ~55 req/min\n→ Well under 60 limit\n→ Gateway never needs to block anything\n\nBug scenario — Priya pushes a bad update:\n→ Client-side throttle breaks\n→ App starts firing 500 req/min\n→ Google's gateway catches it at request 61\n→ Returns 429\n→ Priya's monitoring alerts fire\n→ Fix deployed. Crisis over in 4 minutes."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Client-side limiting is Priya being a responsible developer — her users never see errors, experience stays smooth. Server-side limiting is Google's safety net — it catches what Priya misses. Together they make the API reliable for Priya's users and every other developer on Google's platform."
+            },
+
+            // CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ We know rate limiting exists and where it's enforced. But HOW does it actually count requests under the hood? A simple counter seems obvious — but it has a critical flaw. What if 60 requests hit in the last second of one window and 60 more hit in the first second of the next? That's 120 requests in 2 seconds — technically within the rule, but double the load. The algorithm underneath the counter is what actually determines fairness. That's exactly what Rate Limiting Algorithms breaks down next."
+            }
+          ],
+        }
       },
 
       {
@@ -11001,7 +11235,397 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
           "Sliding Window Algorithm",
           "Token Bucket Algorithm",
           "Leaky Bucket Algorithm"
-        ]
+        ], topicDetails: {
+          "Fixed Window Algorithm": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "You open Google Search. You type a query. Hit enter. Google's API receives your request and does one thing before anything else — it checks a counter. A simple number sitting in memory. 'How many requests has this user sent this minute?' If the number is under the limit — you're through. If not — blocked. That counter, that window, that reset — that's the Fixed Window Algorithm. The simplest rate limiting algorithm that exists."
+            },
+            { type: "image", src: "fixedwindow.png" },
+
+            // CORE IDEA
+            {
+              type: "heading",
+              text: "The Core Idea — A Counter That Resets on a Clock"
+            },
+            {
+              type: "paragraph",
+              text: "Fixed Window divides time into equal chunks — say, every 60 seconds. Each chunk is a window. Every API key gets a counter per window. Counter goes up with each request. Hit the limit — blocked for the rest of that window. Window ends — counter resets to zero. New window begins."
+            },
+            {
+              type: "code",
+              code: "Window size: 60 seconds\nLimit: 5 requests per window\n\n12:00:00 → Window 1 starts. Counter = 0\n12:00:10 → Request 1 ✅  Counter = 1\n12:00:20 → Request 2 ✅  Counter = 2\n12:00:35 → Request 3 ✅  Counter = 3\n12:00:45 → Request 4 ✅  Counter = 4\n12:00:55 → Request 5 ✅  Counter = 5\n12:00:58 → Request 6 ❌  Counter = 5 → 429 Rejected\n12:01:00 → Window 2 starts. Counter resets = 0\n12:01:01 → Request 7 ✅  Counter = 1"
+            },
+
+            // REAL EXAMPLE
+            {
+              type: "heading",
+              text: "Real Example — Arjun Uses Google Maps"
+            },
+            {
+              type: "paragraph",
+              text: "Arjun is a delivery driver. He uses a logistics app built on Google Maps API. His app checks traffic, recalculates routes, and fetches ETAs throughout his shift. Google's API uses Fixed Window — 5 requests per minute per key."
+            },
+            {
+              type: "step",
+              title: "Step 1 — Arjun starts his shift at 10:00 AM",
+              desc: "Window opens at 10:00:00. Counter is at zero. Arjun's app fetches his first route. Request fires — counter goes to 1. Allowed."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Traffic jam. App recalculates 4 more times.",
+              desc: "10:00:15 — recalculate. Counter 2. ✅\n10:00:28 — recalculate. Counter 3. ✅\n10:00:41 — recalculate. Counter 4. ✅\n10:00:52 — recalculate. Counter 5. ✅"
+            },
+            {
+              type: "step",
+              title: "Step 3 — Road closed. App tries to recalculate again.",
+              desc: "10:00:57 — 6th request fires. Counter is already at 5. Limit hit. Google returns 429. Arjun's app shows 'Route unavailable'. He has to wait 3 seconds for the next window."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Window resets at 10:01:00",
+              desc: "New window. Counter back to zero. App retries. Request goes through. New route loads. Arjun continues his delivery."
+            },
+            {
+              type: "code",
+              code: "10:00:00  Window opens           counter = 0\n10:00:10  Route fetch            counter = 1 ✅\n10:00:15  Recalculate            counter = 2 ✅\n10:00:28  Recalculate            counter = 3 ✅\n10:00:41  Recalculate            counter = 4 ✅\n10:00:52  Recalculate            counter = 5 ✅\n10:00:57  Road closed → retry    counter = 5 ❌ 429\n10:01:00  Window resets          counter = 0\n10:01:01  Retry fires            counter = 1 ✅ Route loads"
+            },
+
+            // THE FLAW
+            {
+              type: "heading",
+              text: "The Problem — The Boundary Burst"
+            },
+            {
+              type: "paragraph",
+              text: "Fixed Window has one well-known flaw. Because the window resets on a hard clock boundary — not from your first request — two bursts can legally hit back to back and double the load on Google's servers."
+            },
+            {
+              type: "code",
+              code: "Limit: 5 requests per minute\n\n12:00:50 → Request 1 ✅  (Window 1, counter 1)\n12:00:55 → Request 2 ✅  (Window 1, counter 2)\n12:00:57 → Request 3 ✅  (Window 1, counter 3)\n12:00:58 → Request 4 ✅  (Window 1, counter 4)\n12:00:59 → Request 5 ✅  (Window 1, counter 5)\n\n── window resets at 12:01:00 ──\n\n12:01:01 → Request 6  ✅  (Window 2, counter 1)\n12:01:02 → Request 7  ✅  (Window 2, counter 2)\n12:01:03 → Request 8  ✅  (Window 2, counter 3)\n12:01:04 → Request 9  ✅  (Window 2, counter 4)\n12:01:05 → Request 10 ✅  (Window 2, counter 5)\n\n10 requests in 15 seconds. Both windows say ✅.\nGoogle's server sees double the expected load. 😬"
+            },
+            {
+              type: "info-callout",
+              text: "⚠️ Both windows are technically fine — 5 requests each. But in reality, 10 requests hit Google in just 15 seconds. The fixed boundary created a loophole. This is called the Boundary Burst Problem — and it's the reason Sliding Window Algorithm exists."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Fixed Window is fast, simple, and cheap to run. For most use cases — like Google Maps free tier quotas — it works perfectly well. The boundary burst problem exists, but at Google's scale, a small occasional spike is acceptable. When it's not acceptable — that's when you upgrade to Sliding Window."
+            },
+
+            // CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ Fixed Window resets on a hard clock. That boundary is its weakness — 10 requests can legally sneak through in 15 seconds. Sliding Window fixes exactly this by rolling the window forward with every single request — no hard boundary, no burst loophole. That's up next."
+            }
+          ],
+          "Sliding Window Algorithm": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "Fixed Window let 10 requests sneak through in 15 seconds because two windows lined up perfectly at the boundary. Sliding Window fixes this with one simple idea — instead of resetting on a clock, the window follows YOU. Every time you make a request, it looks back exactly 60 seconds from that moment. Not from 12:00:00. From right now."
+            },
+            { type: "image", src: "slidingwindow.png" },
+
+            // CORE IDEA
+            {
+              type: "heading",
+              text: "The Core Idea — The Window Moves With You"
+            },
+            {
+              type: "paragraph",
+              text: "In Fixed Window, the clock decides when to reset. In Sliding Window, YOUR requests decide the window. Every time a new request comes in, Google looks back exactly 60 seconds from that moment and counts how many requests you made in that period. If it's under the limit — allowed. If not — blocked."
+            },
+            {
+              type: "code",
+              code: "Limit: 5 requests per 60 seconds\n\nNew request arrives at 12:01:05\nGoogle looks back → counts requests from 12:00:05 to 12:01:05\nIf count < 5 → ✅ Allowed\nIf count >= 5 → ❌ Blocked"
+            },
+            {
+              type: "info-callout",
+              text: "🪟 Think of it like a sliding glass door. The door is always exactly 60 seconds wide. As time moves forward, the door moves with it — always showing the last 60 seconds. No hard reset. No boundary. Just a constant rolling view."
+            },
+
+            // REAL EXAMPLE
+            {
+              type: "heading",
+              text: "Real Example — Arjun's App, Sliding Window Style"
+            },
+            {
+              type: "paragraph",
+              text: "Same Arjun. Same delivery app. Same 5 requests per 60 seconds. But now Google uses Sliding Window."
+            },
+            {
+              type: "step",
+              title: "Step 1 — Arjun makes 5 requests between 10:00:50 and 10:00:59",
+              desc: "All 5 go through fine. Window is filling up. Counter tracking the last 60 seconds shows 5 requests."
+            },
+            {
+              type: "step",
+              title: "Step 2 — At 10:01:01 Arjun's app tries again",
+              desc: "Google slides the window back — looks from 10:00:01 to 10:01:01. All 5 previous requests are still inside that window. Count = 5. Limit hit. ❌ Blocked. No sneaking through the boundary this time."
+            },
+            {
+              type: "step",
+              title: "Step 3 — At 10:01:51 Arjun's app tries again",
+              desc: "Google slides the window back — looks from 10:00:51 to 10:01:51. Now only 4 of the original requests fall inside the window. The earliest one has slipped out. Count = 4. Under limit. ✅ Allowed."
+            },
+            {
+              type: "code",
+              code: "10:00:50  Request 1 ✅   window sees: 1 request\n10:00:55  Request 2 ✅   window sees: 2 requests\n10:00:57  Request 3 ✅   window sees: 3 requests\n10:00:58  Request 4 ✅   window sees: 4 requests\n10:00:59  Request 5 ✅   window sees: 5 requests\n\n10:01:01  Request 6 ❌   window sees: 5 requests (all still inside)\n\n10:01:51  Request 6 ✅   window sees: 4 requests (earliest slipped out)"
+            },
+
+            // FIXED VS SLIDING
+            {
+              type: "heading",
+              text: "Fixed Window vs Sliding Window — The Key Difference"
+            },
+            {
+              type: "paragraph",
+              text: "The boundary burst that tricked Fixed Window? Sliding Window catches it every time."
+            },
+            {
+              type: "code",
+              code: "Fixed Window — boundary burst allowed ❌\n10:00:58  5 requests fired  → Window 1 says ✅\n12:01:02  5 more requests   → Window 2 says ✅\n10 requests in 4 seconds. Both windows happy.\n\nSliding Window — boundary burst blocked ✅\n10:00:58  5 requests fired  → window sees 5 ✅\n12:01:02  1 more request    → window looks back 60s\n                              still sees all 5 → ❌ Blocked"
+            },
+
+            // TRADEOFF
+            {
+              type: "heading",
+              text: "The Tradeoff — Accuracy Costs Memory"
+            },
+            {
+              type: "paragraph",
+              text: "Sliding Window needs to remember the exact timestamp of every request — not just a single counter. For Google, serving millions of API keys simultaneously, that's a lot of data to store and query per request."
+            },
+            {
+              type: "table",
+              headers: ["", "Fixed Window", "Sliding Window"],
+              rows: [
+                ["Accuracy", "❌ Boundary burst possible", "✅ Always accurate"],
+                ["Memory needed", "✅ Just one counter", "❌ Every timestamp stored"],
+                ["Speed", "✅ Very fast", "😐 Slightly slower"],
+                ["Fairness", "❌ Uneven at boundaries", "✅ Perfectly even"],
+                ["Best for", "Simple quotas", "Strict fairness requirements"]
+              ]
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Sliding Window is what Google uses for APIs where fairness really matters — like Gemini API where one user hogging capacity affects AI response quality for everyone. The extra memory cost is worth the accuracy."
+            },
+
+            // CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ Both Fixed and Sliding Window count requests and block at the ceiling. But what if you don't want to block at all — you want to smooth out the traffic instead? What if instead of rejecting request 61, you just... slow it down? That's a completely different philosophy — and it's exactly how Token Bucket Algorithm works."
+            }
+          ],
+          "Token Bucket Algorithm": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "Meera is planning a road trip. She opens Google Maps, searches the starting point, drops a pin on the destination, checks toll routes, switches to satellite view, checks traffic, and gets live ETAs for 3 different routes — all in 20 seconds. That's 8 API calls in a burst. Fixed Window would have sweated. Sliding Window would have tracked every timestamp. But Google Maps handles it smoothly — because for bursts like this, Google uses Token Bucket."
+            },
+            { type: "image", src: "tokenbucket.png" },
+
+            // CORE IDEA
+            {
+              type: "heading",
+              text: "The Core Idea — Spend Tokens, Watch Them Refill"
+            },
+            {
+              type: "paragraph",
+              text: "Every API key gets a bucket. The bucket holds tokens. Each Maps API request costs one token. Use them up — you're blocked until tokens refill. But here's the key difference from Fixed and Sliding Window — tokens refill continuously, at a steady rate, every second. You don't wait for a window to reset. Tokens trickle back in non-stop."
+            },
+            {
+              type: "code",
+              code: "Bucket capacity: 10 tokens\nRefill rate:     2 tokens per second\n\nStart:    bucket = 10 tokens (full)\nRequest:  spend 1 token  → bucket = 9\nRequest:  spend 1 token  → bucket = 8\n1 second passes          → bucket = 10 (refilled 2, capped at 10)\nRequest:  spend 1 token  → bucket = 9"
+            },
+            {
+              type: "info-callout",
+              text: "🪣 Imagine a bucket with a small hole at the bottom — tokens slowly drip out as refills. You can scoop tokens out fast (burst), but the drip refills it steadily over time. Empty the bucket too fast — you wait for the drip to fill it back up."
+            },
+
+            // REAL EXAMPLE
+            {
+              type: "heading",
+              text: "Real Example — Meera Plans Her Road Trip"
+            },
+            {
+              type: "paragraph",
+              text: "Meera's travel app uses Google Maps API. Token Bucket config: 10 tokens max, refills 1 token every 2 seconds."
+            },
+            {
+              type: "step",
+              title: "Step 1 — Meera opens the app. Bucket is full.",
+              desc: "She hasn't used the app in a while. Her bucket has all 10 tokens sitting ready. She searches 'Mumbai to Pune'. That's 1 token spent. Bucket now has 9."
+            },
+            {
+              type: "step",
+              title: "Step 2 — She explores routes quickly. Tokens drain fast.",
+              desc: "Check toll route — 1 token. Satellite view — 1 token. Live traffic — 1 token. ETA route 1 — 1 token. ETA route 2 — 1 token. ETA route 3 — 1 token. Six requests in 10 seconds. Bucket now has 3 tokens left."
+            },
+            {
+              type: "step",
+              title: "Step 3 — She keeps going. Tokens run out.",
+              desc: "Check petrol stations on route — 1 token. Bucket = 2. Check food stops — 1 token. Bucket = 1. Check rest areas — 1 token. Bucket = 0. Next request — no tokens. ❌ Blocked."
+            },
+            {
+              type: "step",
+              title: "Step 4 — She waits 2 seconds. Token refills. She's back.",
+              desc: "2 seconds pass. 1 token drips back in. Bucket = 1. Her next request fires. Then she waits 2 more seconds — another token. No hard window reset. Just a steady, continuous refill."
+            },
+            {
+              type: "code",
+              code: "App open          bucket = 10\nSearch Mumbai-Pune bucket = 9  ✅\nToll route        bucket = 8  ✅\nSatellite view    bucket = 7  ✅\nLive traffic      bucket = 6  ✅\nETA route 1       bucket = 5  ✅\nETA route 2       bucket = 4  ✅\nETA route 3       bucket = 3  ✅\nPetrol stations   bucket = 2  ✅\nFood stops        bucket = 1  ✅\nRest areas        bucket = 0  ✅\nNext request      bucket = 0  ❌ wait...\n+2 seconds        bucket = 1  ✅ fires"
+            },
+
+            // WHY BETTER THAN FIXED/SLIDING
+            {
+              type: "heading",
+              text: "Why Token Bucket Handles Bursts Better"
+            },
+            {
+              type: "paragraph",
+              text: "Fixed and Sliding Window punish bursts. They count every request in a window — so 10 quick requests look the same as 10 spread-out requests. Token Bucket rewards patients and handles natural usage bursts without blocking."
+            },
+            {
+              type: "table",
+              headers: ["Scenario", "Fixed Window", "Sliding Window", "Token Bucket"],
+              rows: [
+                ["10 requests in 5 seconds", "❌ Blocked at limit", "❌ Blocked at limit", "✅ Uses stored tokens"],
+                ["Steady 1 req/sec", "✅ Fine", "✅ Fine", "✅ Fine"],
+                ["Idle for 30 seconds then burst", "😐 Same limit applies", "😐 Same limit applies", "✅ Bucket refilled — burst allowed"],
+                ["Empty bucket, 1 request", "❌ Wait for window reset", "❌ Wait for window reset", "✅ Wait just 2 seconds for 1 token"]
+              ]
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Token Bucket is why Google Maps feels smooth even when you're frantically exploring routes. You saved up tokens while idle. You spend them in a burst. Tokens refill quietly in the background. No hard walls. No waiting 60 seconds for a window. Just natural, human-like usage — handled gracefully."
+            },
+
+            // CLIFFHANGER
+            {
+              type: "warning-callout",
+              text: "⚠️ Token Bucket lets you burst — spend saved up tokens fast. But what if Google wants the opposite? Not 'burst now, wait later' — but a perfectly smooth, constant stream. No spikes. No bursts. Every request spaced out evenly. That's a completely different algorithm — and it's exactly what Leaky Bucket does."
+            }
+          ],
+          "Leaky Bucket Algorithm": [
+
+            // 🎬 HOOK
+            {
+              type: "paragraph",
+              text: "Imagine Google Maps is processing turn-by-turn navigation for 10 million drivers simultaneously. Some drivers are in heavy traffic — barely moving, 1 API call per minute. Some are on highways — frequent location updates, 10 calls per minute. The traffic pattern is chaotic and unpredictable. But Google's backend servers need a smooth, steady, predictable load — not random spikes. Token Bucket can't help here — it allows bursts. Google needs something that flattens everything into a perfectly even stream. That's Leaky Bucket."
+            },
+            { type: "image", src: "leakybucket.png" },
+
+            // CORE IDEA
+            {
+              type: "heading",
+              text: "The Core Idea — Pour In Fast, Drip Out Slow"
+            },
+            {
+              type: "paragraph",
+              text: "Think of an actual bucket with a small hole at the bottom. You can pour water in at any speed — fast, slow, all at once. But water only drips out from the hole at one fixed rate. Always steady. Always the same. The bucket absorbs the chaos on top and delivers calm at the bottom."
+            },
+            {
+              type: "paragraph",
+              text: "In API terms — requests pile into the bucket (a queue). Google processes them out at a fixed rate — say, 1 request every 200ms. Bucket full and more requests arriving? They get dropped. No exceptions."
+            },
+            {
+              type: "code",
+              code: "Bucket size:    10 requests (queue capacity)\nDrain rate:     1 request every 200ms (fixed)\n\nRequests pour in fast → queue fills up\nRequests drain out    → always 1 per 200ms, no faster\nQueue full + new request → ❌ dropped immediately"
+            },
+            {
+              type: "info-callout",
+              text: "🪣 Pour a whole bottle of water into a bucket with a tiny hole. The hole doesn't care how fast you poured. It drips at its own pace. Always. The bucket just absorbs the overflow — up to a point."
+            },
+
+            // REAL EXAMPLE
+            {
+              type: "heading",
+              text: "Real Example — Live Navigation on Google Maps"
+            },
+            {
+              type: "paragraph",
+              text: "Karan is driving Mumbai to Nashik. His Google Maps navigation fires location update requests every few seconds. Google uses Leaky Bucket on their navigation API — bucket size 5, drains 1 request every 500ms."
+            },
+            {
+              type: "step",
+              title: "Step 1 — Karan starts navigation. Requests trickle in normally.",
+              desc: "One location update every 2 seconds. Bucket has space. Each request joins the queue and drains out smoothly at 1 per 500ms. Everything flowing perfectly."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Karan hits a confusing junction. App fires 6 requests at once.",
+              desc: "Recalculate route, fetch traffic, reload map tiles, check alternate route, get ETA, fetch toll data — all in 1 second. 6 requests pile into the bucket simultaneously. Bucket capacity is 5. First 5 join the queue. Request 6 — bucket full. Dropped instantly."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Bucket drains steadily. Queued requests process one by one.",
+              desc: "Every 500ms, one request drips out and gets processed by Google's server. No rush. No spike. Google's backend sees a perfectly even stream — regardless of how chaotically Karan's app fired them."
+            },
+            {
+              type: "step",
+              title: "Step 4 — Back to highway. Normal pace resumes.",
+              desc: "One request every 2 seconds. Bucket is mostly empty. Each request goes in, drains out almost immediately. Smooth navigation continues."
+            },
+            {
+              type: "code",
+              code: "t=0.0s  6 requests arrive simultaneously\n        → 5 enter queue  ✅\n        → 1 dropped       ❌ bucket full\n\nt=0.5s  1 drains out → Google processes it\nt=1.0s  1 drains out → Google processes it\nt=1.5s  1 drains out → Google processes it\nt=2.0s  1 drains out → Google processes it\nt=2.5s  1 drains out → Google processes it\n\nGoogle's server saw: 1 request every 500ms\nKaran's app sent:   6 requests in 0 seconds\nResult: chaos in, calm out ✅"
+            },
+
+            // TOKEN VS LEAKY
+            {
+              type: "heading",
+              text: "Token Bucket vs Leaky Bucket — Key Difference"
+            },
+            {
+              type: "paragraph",
+              text: "This is the comparison that trips everyone up. Both involve buckets. Both handle bursts. But they do completely opposite things with those bursts."
+            },
+
+            {
+              type: "info-callout",
+              text: "🚿 Token Bucket is a shower — blast hot water when you want, slower when the tank runs low. Leaky Bucket is a drip irrigation system — water goes in whenever, but only one drop per second comes out. Always. No exceptions."
+            },
+
+            // WHERE GOOGLE USES IT
+
+
+            {
+              type: "success-callout",
+              text: "✅ Leaky Bucket is why Google's backend servers don't melt during peak hours — when millions of navigation sessions fire chaotic, unpredictable bursts simultaneously. Chaos goes in. Calm comes out. Every time."
+            },
+
+            // FINAL WRAP — ALL 4 ALGORITHMS
+            {
+              type: "heading",
+              text: "All 4 Algorithms — When Google Uses What"
+            },
+            {
+              type: "table",
+              headers: ["Algorithm", "Core Idea", "Burst Allowed", "Google Uses It For"],
+              rows: [
+                ["Fixed Window", "Counter resets on clock", "😐 At boundary", "Basic API quotas"],
+                ["Sliding Window", "Rolling window per request", "❌ No", "Strict fairness quotas"],
+                ["Token Bucket", "Spend tokens, refill over time", "✅ Yes", "Developer API limits"],
+                ["Leaky Bucket", "Queue in, drip out at fixed rate", "❌ Smoothed out", "Internal traffic shaping"]
+              ]
+            },
+
+            {
+              type: "warning-callout",
+              text: "⚠️ Now you know what rate limiting is, where it's enforced, and how it counts. But there's one more layer — what happens when multiple servers are enforcing rate limits together? One server counting requests is simple. Ten servers counting the same user's requests across a distributed system? That's a completely different problem — and it's exactly what Distributed Rate Limiting covers next."
+            }
+          ],
+        }
       },
 
       {

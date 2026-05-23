@@ -448,12 +448,12 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
               onClick={() => updateStatus(selectedTopic._id)}
               disabled={isProgressLoading}
               className={`shrink-0 flex items-center gap-1.5 px-4 py-2 rounded-full text-[12px] font-extrabold transition-all shadow-sm active:scale-95 border ${isProgressLoading
-                  ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed shadow-none'
-                  : topicStatus[selectedTopic._id] === 'done'
-                    ? 'bg-emerald-500 text-white shadow-emerald-100 hover:bg-emerald-600 border-transparent'
-                    : !user
-                      ? 'bg-white text-[#2563eb] hover:bg-blue-50/50 border-[#2563eb]/20 hover:border-[#2563eb]/40'
-                      : 'bg-white text-slate-600 hover:bg-slate-50 border-slate-200 hover:border-slate-300'
+                ? 'bg-slate-50 text-slate-400 border-slate-200 cursor-not-allowed shadow-none'
+                : topicStatus[selectedTopic._id] === 'done'
+                  ? 'bg-emerald-500 text-white shadow-emerald-100 hover:bg-emerald-600 border-transparent'
+                  : !user
+                    ? 'bg-white text-[#2563eb] hover:bg-blue-50/50 border-[#2563eb]/20 hover:border-[#2563eb]/40'
+                    : 'bg-white text-slate-600 hover:bg-slate-50 border-slate-200 hover:border-slate-300'
                 }`}
             >
               {isProgressLoading ? (
@@ -481,7 +481,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
           </div>
 
           {/* View Toggle */}
-          {hasImages && (
+          {/* {hasImages && (
             <div className="flex bg-slate-100/50 p-1 rounded-xl mb-10 w-full border border-slate-200/50">
               <button
                 onClick={() => setViewMode("concept")}
@@ -502,7 +502,7 @@ export function RoadmapContent({ roadmap, selectedNode, selectedTopic, onSelectT
                 Image View
               </button>
             </div>
-          )}
+          )} */}
 
           <div className="mb-10 animate-in fade-in duration-500">
             {filteredBlocks.length > 0 ? (

@@ -6888,7 +6888,7 @@ session.withTransaction(async () => {
       },
 
       {
-        "id": 7,
+        "id": 9,
         "title": "Performance & Optimization",
         "level": "freshers",
         "topics": [
@@ -7453,7 +7453,7 @@ session.withTransaction(async () => {
       },
 
       {
-        id: 8,
+        id: 7,
         title: "Replication",
         level: "freshers",
         topics: [
@@ -8032,7 +8032,7 @@ db.orders.insertOne(
         }
       },
       {
-        id: 9,
+        id: 8,
         title: "Sharding",
         level: "freshers",
         topics: [

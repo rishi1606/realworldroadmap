@@ -334,10 +334,7 @@ export const roadmapData = [
           "What is the Event Loop?",
           "Call Stack, Callback Queue & Microtask Queue",
           "setTimeout vs setImmediate vs process.nextTick",
-          "What is libuv?",
-          "Thread Pool in Node.js",
-          "How File System & Network Requests Work Internally",
-          "CPU Intensive Tasks Problem"
+          "libuv & Thread Pool in Node.js",
         ],
 
         "topicDetails": {
@@ -345,67 +342,152 @@ export const roadmapData = [
           "What is the Event Loop?": [
             {
               type: "paragraph",
-              text: "Amazon receives millions of requests every minute — product searches, payments, order tracking, recommendations, notifications. But Node.js mainly runs JavaScript on ONE main thread. So how does it handle thousands of users simultaneously without freezing? The answer is the Event Loop."
+              text: "Imagine Amazon during a huge sale. Millions of users are searching products, adding items to cart, making payments, tracking deliveries, and receiving notifications — all simultaneously. But surprisingly, Node.js mainly runs JavaScript on ONE main thread. So how does Amazon-like systems handle so many users together without the server freezing? The answer is the Event Loop."
             },
-            {
-              type: "image",
-              src: "event-loop-flow.png"
-            },
+
             {
               type: "curious-callout",
-              text: "❓ Rahul searches 'iPhone', Priya adds an item to cart, Aman makes payment, Sneha tracks delivery — all at the same time. How can ONE Node.js thread manage all these users together?"
+              text: "❓ Rahul searches 'iPhone', Priya adds shoes to cart, Aman makes payment, Sneha tracks her order, and Vikram receives delivery notifications — all at the same time. How can ONE Node.js thread manage all these users together?"
             },
+
+            {
+              type: "heading",
+              text: "The Core Problem"
+            },
+
+            {
+              type: "paragraph",
+              text: "Some operations are extremely slow compared to CPU speed. Database queries, API calls, payment gateways, file reads, image processing, and network requests may take milliseconds or even seconds. If Node.js waited for every task to finish before handling the next user, Amazon would become painfully slow."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead of waiting, Node.js uses an Event Loop architecture. The main thread quickly delegates slow operations to background systems and immediately becomes free to handle new incoming users."
+            },
+
             {
               type: "heading",
               text: "What Exactly is the Event Loop?"
             },
+
             {
               type: "paragraph",
-              text: "The Event Loop is the heart of Node.js. It continuously checks whether asynchronous tasks like database calls, file reads, timers, or API requests are completed. Once completed, it pushes their callbacks back into execution."
+              text: "The Event Loop is the traffic manager of Node.js. It continuously checks whether background asynchronous tasks are completed. Once completed, their callbacks are pushed back into the main execution queue so JavaScript can continue processing them."
             },
+
             {
               type: "code",
-              code: "Amazon User Request\n        ↓\nNode.js Main Thread\n        ↓\nSlow Task Delegated (DB/API/File)\n        ↓\nMain Thread Continues Handling New Users\n        ↓\nTask Finishes in Background\n        ↓\nEvent Loop Detects Completion\n        ↓\nCallback Executes"
+              code: "User Request Arrives\n        ↓\nNode.js Main Thread Receives Request\n        ↓\nSlow Task Identified (DB/API/File/Payment)\n        ↓\nTask Delegated to Background System\n        ↓\nMain Thread Immediately Becomes Free\n        ↓\nNode.js Handles Other Users Meanwhile\n        ↓\nBackground Task Completes\n        ↓\nEvent Loop Detects Completion\n        ↓\nCallback Added Back to Queue\n        ↓\nMain Thread Executes Callback\n        ↓\nResponse Sent to User"
             },
+
             {
               type: "heading",
-              text: "Real Amazon Search Flow"
+              text: "Amazon Search Flow — Step by Step"
             },
+
+            {
+              type: "paragraph",
+              text: "This is the real power of Node.js non-blocking architecture. While one user's database query, payment verification, or API request is waiting in the background, the main thread immediately becomes free to serve other users instead of sitting idle."
+            },
+
+            {
+              type: "paragraph",
+              text: "Because Node.js never blocks while waiting for slow I/O operations, a single server can efficiently handle thousands of concurrent Amazon users performing searches, payments, cart updates, and tracking requests simultaneously."
+            },
+
             {
               type: "step",
-              title: "Rahul searches iPhone",
-              desc: "Amazon API request reaches Node.js server."
+              title: " Rahul searches for iPhone",
+              desc: "Rahul opens Amazon and searches 'iPhone 16'. The request reaches the Node.js server."
             },
+
             {
               type: "step",
-              title: "Database query starts",
-              desc: "Fetching product data from DB is slow."
+              title: " Node.js starts processing request",
+              desc: "The main thread checks what work needs to be done. Amazon now needs product data from the database."
             },
+
             {
               type: "step",
-              title: "Node.js delegates the task",
-              desc: "Instead of waiting, Node.js sends DB work to background systems."
+              title: " Database query is slow",
+              desc: "Fetching thousands of product records, prices, offers, ratings, and stock information can take time."
             },
+
             {
               type: "step",
-              title: "Main thread becomes free instantly",
-              desc: "Node.js immediately starts handling Priya's cart request."
+              title: " Node.js delegates the database work",
+              desc: "Instead of blocking the thread, Node.js sends the database operation to external systems like databases, libuv, operating system networking, or thread pools."
             },
+
             {
               type: "step",
-              title: "Database finishes query",
-              desc: "Background system returns completed product data."
+              title: " Main thread becomes free instantly",
+              desc: "Node.js does NOT wait for Rahul's database query. The main thread is now free to handle other users immediately."
             },
+
             {
               type: "step",
-              title: "Event Loop notices completion",
-              desc: "The Event Loop pushes Rahul's callback into execution."
+              title: " Priya adds shoes to cart",
+              desc: "While Rahul's database query is still running, Priya clicks 'Add to Cart'. Node.js instantly starts handling her request."
             },
+
             {
               type: "step",
-              title: "Rahul receives products",
-              desc: "Amazon app finally displays iPhone results."
+              title: " Aman starts payment",
+              desc: "At the same time, Aman makes a UPI payment. Node.js sends payment verification requests to payment gateways asynchronously."
             },
+
+            {
+              type: "step",
+              title: " Sneha tracks delivery",
+              desc: "Another request comes in for delivery tracking. Node.js again delegates tracking API calls without blocking the thread."
+            },
+
+            {
+              type: "step",
+              title: " Background database query finishes",
+              desc: "Rahul's product search data is finally ready. The database sends the completed result back."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop notices completion",
+              desc: "The Event Loop continuously checks completed async operations. It detects Rahul's database task has finished."
+            },
+
+            {
+              type: "step",
+              title: " Callback enters execution queue",
+              desc: "The Event Loop pushes Rahul's callback function into the callback queue so JavaScript can process the result."
+            },
+
+            {
+              type: "step",
+              title: " Main thread executes callback",
+              desc: "Once the Call Stack becomes free, Node.js executes Rahul's callback and prepares the final response."
+            },
+
+            {
+              type: "step",
+              title: " Rahul receives product results",
+              desc: "Amazon finally sends the iPhone product list back to Rahul's screen."
+            },
+
+            {
+              type: "heading",
+              text: "Visual Flow of Multiple Amazon Users"
+            },
+
+            {
+              type: "code",
+              code: "Rahul → Search iPhone ─────┐\nPriya → Add to Cart ──────┤\nAman → Payment ──────────┤\nSneha → Track Order ─────┤\n                             ↓\n                    Node.js Main Thread\n                             ↓\n         Delegates Slow Tasks to Background Systems\n                             ↓\n      Main Thread Keeps Serving New Incoming Users\n                             ↓\n             Completed Tasks Return Back\n                             ↓\n              Event Loop Detects Completion\n                             ↓\n               Callbacks Execute One-by-One"
+            },
+
+            {
+              type: "heading",
+              text: "Why This Architecture is Powerful"
+            },
+
             {
               type: "table",
               headers: ["Traditional Blocking Server", "Node.js Event Loop"],
@@ -416,84 +498,265 @@ export const roadmapData = [
                 ],
                 [
                   "One thread per user",
-                  "One event loop handles many users"
+                  "Single event loop handles many users"
                 ],
                 [
-                  "Heavy memory usage",
-                  "Lightweight async architecture"
+                  "High memory consumption",
+                  "Very lightweight architecture"
                 ],
                 [
-                  "Slow under massive concurrency",
-                  "Excellent for high traffic APIs"
+                  "Slow under huge traffic",
+                  "Excellent for massive concurrency"
+                ],
+                [
+                  "Threads stay blocked often",
+                  "Async tasks run in background"
+                ],
+                [
+                  "Scaling becomes expensive",
+                  "Handles thousands of users efficiently"
                 ]
               ]
             },
+
             {
               type: "info-callout",
-              text: "💡 Node.js itself is NOT magically doing database work. It delegates async operations to the operating system, libuv, thread pool, databases, or external systems — while the Event Loop keeps the main thread free."
+              text: "💡 Important: Node.js itself is NOT magically doing database queries or network operations. Async tasks are handled by databases, operating system networking, libuv, browser APIs, thread pools, or external services. The Event Loop simply manages when callbacks should execute."
             },
+
+
             {
               type: "success-callout",
-              text: "✅ The Event Loop is what makes Node.js scalable. It allows one lightweight server process to manage thousands of concurrent users efficiently."
+              text: "✅ The Event Loop is the reason Node.js can efficiently power high-traffic systems like Amazon, Netflix, Paytm, Uber, and LinkedIn using lightweight asynchronous architecture."
             }
           ],
 
           "Call Stack, Callback Queue & Microtask Queue": [
             {
               type: "paragraph",
-              text: "The Event Loop doesn't randomly execute code. Internally, Node.js manages execution using multiple structures: the Call Stack, Callback Queue, and Microtask Queue. Together they decide what runs first, what waits, and what executes next."
+              text: "Inside Amazon-like systems, thousands of operations happen every second — searching products, placing orders, verifying payments, sending notifications, and updating deliveries. But Node.js does not execute everything randomly. Internally, it uses structures like the Call Stack, Callback Queue, and Microtask Queue to decide what runs immediately, what waits, and what gets priority."
             },
+
             {
-              type: "image",
-              src: "callstack-callbackqueue.png"
+              type: "curious-callout",
+              text: "❓ Rahul searches for iPhone, Priya completes payment, and Amazon sends order confirmation — but which task executes first inside Node.js? How does the Event Loop decide execution order?"
             },
+
+            {
+              type: "heading",
+              text: "Big Picture — How Node.js Internally Manages Tasks"
+            },
+
+            {
+              type: "code",
+              code: "Incoming Requests\n        ↓\nCall Stack Executes Sync Code\n        ↓\nAsync Tasks Delegated to Background Systems\n        ↓\nCompleted Tasks Enter Queues\n        ↓\nMicrotask Queue Checked First\n        ↓\nCallback Queue Checked Next\n        ↓\nEvent Loop Pushes Tasks Back To Call Stack"
+            },
+
             {
               type: "heading",
               text: "1. Call Stack — Where Functions Execute"
             },
+
             {
               type: "paragraph",
-              text: "The Call Stack is where JavaScript executes functions one by one. Only ONE function executes at a time on the main thread."
+              text: "The Call Stack is where JavaScript executes functions one by one. Since JavaScript is single-threaded, only ONE function can execute at a time on the main thread."
             },
+
+            {
+              type: "paragraph",
+              text: "Imagine Rahul searching for 'iPhone' on Amazon. The search function enters the Call Stack and starts executing immediately."
+            },
+
             {
               type: "code",
-              code: "function searchProduct() {\n  console.log('Search Started')\n}\n\nsearchProduct()"
+              code: "function searchProduct() {\n  console.log('Searching iPhone')\n}\n\nsearchProduct()"
             },
+
             {
               type: "code",
-              code: "Call Stack:\n\nsearchProduct()\nconsole.log()\n"
+              code: "Call Stack:\n\nsearchProduct()\nconsole.log()"
+            },
+
+            {
+              type: "paragraph",
+              text: "The Call Stack is the execution area where JavaScript runs functions one by one. Whenever a function starts executing, it gets pushed into the Call Stack, and once execution finishes, it gets removed. Since JavaScript is single-threaded, only one function can execute in the Call Stack at a time."
+            },
+
+            {
+              type: "paragraph",
+              text: "Every API request in Node.js eventually enters the Call Stack for execution. The Event Loop can only process new tasks when the Call Stack becomes empty again."
+            },
+
+            {
+              type: "step",
+              title: " Rahul clicks Search",
+              desc: "Amazon sends request to Node.js server."
+            },
+
+            {
+              type: "step",
+              title: " searchProduct() enters Call Stack",
+              desc: "JavaScript starts executing the function."
+            },
+
+            {
+              type: "step",
+              title: " console.log() executes",
+              desc: "The message prints on screen."
+            },
+
+            {
+              type: "step",
+              title: " Function removed from stack",
+              desc: "Once execution finishes, the Call Stack becomes free again."
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 The Call Stack can only execute one function at a time. If a heavy task blocks it, the entire application feels frozen."
             },
             {
               type: "heading",
-              text: "2. Callback Queue — Completed Async Tasks Wait Here"
+              text: "2. Callback Queue — Where Completed Async Tasks Wait"
             },
+
             {
               type: "paragraph",
-              text: "When async tasks like setTimeout, database calls, or file reads finish, their callbacks move into the Callback Queue."
+              text: "The Callback Queue is the waiting area for completed asynchronous operations in Node.js. When background tasks like database queries, payment verification, API calls, file reads, or timers finish execution, their callback functions are pushed into the Callback Queue."
             },
+
+            {
+              type: "paragraph",
+              text: "These callbacks cannot execute immediately because JavaScript can run only one task at a time on the main thread. The Event Loop continuously checks whether the Call Stack is empty. Once the stack becomes free, callbacks are removed from the Callback Queue and pushed into the Call Stack for execution."
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine Priya makes a payment on Amazon. Payment verification takes time because Amazon must communicate with external banking systems and payment gateways. Instead of blocking the main thread while waiting, Node.js runs the operation asynchronously in the background."
+            },
+
             {
               type: "code",
-              code: "setTimeout(() => {\n  console.log('Payment Success')\n}, 2000)"
+              code: "setTimeout(() => {\n  console.log('Payment Successful')\n}, 2000)"
             },
+
             {
               type: "paragraph",
-              text: "After 2 seconds, the callback waits inside the Callback Queue until the Call Stack becomes empty."
+              text: "The timer runs outside the Call Stack in the background. After 2 seconds complete, its callback function moves into the Callback Queue and waits there until the Event Loop finds the Call Stack empty."
+            },
+
+            {
+              type: "code",
+              code: "Background Timer Running...\n        ↓\n2 Seconds Completed\n        ↓\nCallback Added To Callback Queue\n        ↓\nEvent Loop Waits For Empty Call Stack\n        ↓\nCallback Executes"
+            },
+
+            {
+              type: "step",
+              title: " Priya clicks Pay",
+              desc: "Amazon starts payment verification asynchronously."
+            },
+
+            {
+              type: "step",
+              title: " Timer/API runs in background",
+              desc: "Node.js does not block the main thread."
+            },
+
+            {
+              type: "step",
+              title: " Payment verification finishes",
+              desc: "Callback enters the Callback Queue."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop waits",
+              desc: "If Call Stack is busy, callback must wait."
+            },
+
+            {
+              type: "step",
+              title: " Callback executes",
+              desc: "Once stack becomes empty, payment success message prints."
             },
             {
               type: "heading",
-              text: "3. Microtask Queue — Higher Priority Queue"
+              text: "3. Microtask Queue — VIP Priority Queue"
             },
+
             {
               type: "paragraph",
-              text: "Promises and process.nextTick callbacks go into the Microtask Queue. This queue has HIGHER priority than the normal Callback Queue."
+              text: "The Microtask Queue is a high-priority queue inside Node.js used mainly for Promise callbacks and process.nextTick() functions. Whenever Promises resolve or nextTick callbacks are scheduled, they do not enter the normal Callback Queue. Instead, they move into the Microtask Queue which the Event Loop processes with higher priority."
             },
+
+            {
+              type: "paragraph",
+              text: "Before executing timers, I/O callbacks, or other normal async tasks, the Event Loop first completely empties the Microtask Queue. This makes Promise-based operations extremely fast and efficient for lightweight asynchronous workflows."
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon heavily relies on Promises for real-time async operations like order confirmations, inventory checks, recommendation engines, payment status updates, notifications, and analytics pipelines because microtasks execute faster than normal callback queue tasks."
+            },
+
             {
               type: "code",
-              code: "Promise.resolve().then(() => {\n  console.log('Promise Executed')\n})"
+              code: "Promise.resolve().then(() => {\n  console.log('Order Confirmation Sent')\n})"
             },
+
+            {
+              type: "paragraph",
+              text: "Once the Promise resolves, its callback moves into the Microtask Queue. Even if timers or other completed async operations already exist in the Callback Queue, the Event Loop executes all microtasks first before touching normal callbacks."
+            },
+
+            {
+              type: "code",
+              code: "Promise Resolved\n        ↓\nCallback Added To Microtask Queue\n        ↓\nEvent Loop Prioritizes Microtasks\n        ↓\nCallback Executes Before Timers"
+            },
+
+            {
+              type: "step",
+              title: " Customer places order",
+              desc: "Amazon starts multiple async operations like payment verification and inventory checks."
+            },
+
+            {
+              type: "step",
+              title: " Promise resolves quickly",
+              desc: "Order confirmation Promise completes successfully."
+            },
+
+            {
+              type: "step",
+              title: " Callback enters Microtask Queue",
+              desc: "Promise callback gets high-priority placement."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop checks Call Stack",
+              desc: "Once the stack becomes empty, Event Loop processes microtasks first."
+            },
+
+            {
+              type: "step",
+              title: " Order confirmation executes immediately",
+              desc: "Confirmation message sends before normal timer or callback queue tasks."
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 process.nextTick() in Node.js has even higher priority and executes before Promise microtasks."
+            },
+
+            {
+              type: "heading",
+              text: "Priority Order Inside Node.js"
+            },
+
             {
               type: "table",
-              headers: ["Queue", "Contains", "Priority"],
+              headers: ["Structure", "Contains", "Priority"],
               rows: [
                 [
                   "Call Stack",
@@ -501,156 +764,484 @@ export const roadmapData = [
                   "Highest"
                 ],
                 [
+                  "process.nextTick Queue",
+                  "process.nextTick callbacks",
+                  "Very High"
+                ],
+                [
                   "Microtask Queue",
-                  "Promises, process.nextTick",
+                  "Promises, queueMicrotask",
                   "High"
                 ],
                 [
                   "Callback Queue",
-                  "Timers, setTimeout, I/O callbacks",
+                  "setTimeout, setInterval, I/O callbacks",
                   "Normal"
                 ]
               ]
             },
+
             {
               type: "heading",
-              text: "Execution Flow"
+              text: "Amazon Execution Flow Example"
             },
+
             {
               type: "code",
-              code: "console.log('1')\n\nsetTimeout(() => {\n  console.log('2')\n}, 0)\n\nPromise.resolve().then(() => {\n  console.log('3')\n})\n\nconsole.log('4')"
+              code: "console.log('1 - Rahul Searches Product')\n\nsetTimeout(() => {\n  console.log('2 - Payment Verification Complete')\n}, 0)\n\nPromise.resolve().then(() => {\n  console.log('3 - Order Confirmation Sent')\n})\n\nconsole.log('4 - Product Page Loaded')"
             },
+
             {
               type: "code",
-              code: "Output:\n1\n4\n3\n2"
+              code: "Output:\n1 - Rahul Searches Product\n4 - Product Page Loaded\n3 - Order Confirmation Sent\n2 - Payment Verification Complete"
             },
+
+            {
+              type: "heading",
+              text: "Step-by-Step Internal Flow"
+            },
+
             {
               type: "step",
-              title: "Call Stack executes sync code first",
-              desc: "1 and 4 print immediately."
+              title: " Sync code enters Call Stack",
+              desc: "console.log('1') executes immediately."
             },
+
             {
               type: "step",
-              title: "Promise enters Microtask Queue",
-              desc: "Promise callback waits in high-priority queue."
+              title: " setTimeout delegated",
+              desc: "Timer starts in background and callback waits for completion."
             },
+
             {
               type: "step",
-              title: "setTimeout enters Callback Queue",
-              desc: "Timer callback waits in normal queue."
+              title: " Promise resolves quickly",
+              desc: "Promise callback enters Microtask Queue."
             },
+
+            {
+              type: "step",
+              title: " console.log('4') executes",
+              desc: "Remaining synchronous code finishes first."
+            },
+
             {
               type: "step",
               title: "Event Loop checks Microtasks first",
-              desc: "Promise callback executes before timers."
+              desc: "Promise callback executes before timer callback."
             },
+
             {
               type: "step",
-              title: "Timer callback executes last",
+              title: "Callback Queue executes last",
               desc: "Finally setTimeout callback runs."
             },
+
+            {
+              type: "heading",
+              text: "Visual Internal Execution Flow"
+            },
+
+            {
+              type: "code",
+              code: "Call Stack Executes Sync Code\n            ↓\n---------------------------------\nMicrotask Queue (High Priority)\n• Promises\n• process.nextTick\n---------------------------------\n            ↓\n---------------------------------\nCallback Queue (Normal Priority)\n• setTimeout\n• setInterval\n• I/O Callbacks\n---------------------------------\n            ↓\nEvent Loop Picks Tasks Continuously"
+            },
+
             {
               type: "success-callout",
               text: "✅ Microtasks always execute before normal callback queue tasks. That's why Promises often run before setTimeout even with 0ms delay."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ This priority system helps Amazon-like systems execute critical async operations quickly while still handling massive concurrent traffic efficiently."
             }
           ],
 
           "setTimeout vs setImmediate vs process.nextTick": [
             {
               type: "paragraph",
-              text: "Node.js has multiple ways to schedule asynchronous callbacks — but they don't execute at the same time. Understanding setTimeout, setImmediate, and process.nextTick is crucial for understanding Node.js internals."
+              text: "Inside Amazon-like systems, not all asynchronous callbacks execute at the same time. Some operations need ultra-high priority, some should execute after I/O operations, while others should wait for a delay. Node.js provides multiple scheduling mechanisms like process.nextTick, setImmediate, and setTimeout to control exactly WHEN callbacks should run."
             },
+
             {
-              type: "image",
-              src: "timeout-vs-immediate.png"
+              type: "curious-callout",
+              text: "❓ Rahul adds an iPhone to cart, payment verification starts, stock updates happen, and recommendation APIs execute — but how does Node.js decide which callback should execute FIRST?"
             },
+
+            {
+              type: "heading",
+              text: "The Big Idea"
+            },
+
+            {
+              type: "paragraph",
+              text: "Node.js Event Loop works in phases. Different async callbacks enter different queues, and each queue has different execution priority."
+            },
+
+            {
+              type: "code",
+              code: "Current Sync Code Executes\n            ↓\nprocess.nextTick Queue\n            ↓\nPromise Microtask Queue\n            ↓\nTimers Phase (setTimeout)\n            ↓\nPoll Phase (I/O Operations)\n            ↓\nCheck Phase (setImmediate)"
+            },
+
+            {
+              type: "heading",
+              text: "Execution Priority Table"
+            },
+
             {
               type: "table",
-              headers: ["Function", "Queue", "Runs When"],
+              headers: ["Function", "Queue/Phase", "Runs When"],
               rows: [
                 [
                   "process.nextTick",
-                  "Microtask Queue",
+                  "nextTick Queue",
                   "Immediately after current operation"
                 ],
                 [
                   "Promise.then",
                   "Microtask Queue",
-                  "After current stack"
+                  "After current stack finishes"
                 ],
                 [
                   "setTimeout",
-                  "Timers Queue",
+                  "Timers Phase",
                   "After minimum delay"
                 ],
                 [
                   "setImmediate",
-                  "Check Phase Queue",
+                  "Check Phase",
                   "After I/O operations"
                 ]
               ]
             },
+
+            {
+              type: "heading",
+              text: "1. process.nextTick — Ultra High Priority"
+            },
+
+            {
+              type: "paragraph",
+              text: "process.nextTick executes BEFORE the Event Loop moves to the next phase. It runs immediately after the current operation finishes."
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine Rahul clicks 'Add To Cart' on Amazon. Before anything else happens, Amazon may instantly validate the cart internally."
+            },
+
             {
               type: "code",
-              code: "setTimeout(() => console.log('timeout'))\n\nsetImmediate(() => console.log('immediate'))\n\nprocess.nextTick(() => console.log('nextTick'))\n\nconsole.log('sync')"
+              code: "process.nextTick(() => {\n  console.log('Cart Validation Completed')\n})"
             },
+
             {
-              type: "code",
-              code: "Output:\nsync\nnextTick\nimmediate OR timeout"
+              type: "step",
+              title: " Rahul clicks Add To Cart",
+              desc: "Amazon receives cart request."
             },
+
+            {
+              type: "step",
+              title: " Cart validation scheduled",
+              desc: "Node.js adds callback into nextTick queue."
+            },
+
+            {
+              type: "step",
+              title: " Current operation finishes",
+              desc: "Node.js immediately executes nextTick callback."
+            },
+
             {
               type: "info-callout",
-              text: "💡 process.nextTick is extremely high priority. Overusing it can block the Event Loop because Node.js keeps executing nextTick callbacks before moving to other phases."
+              text: "💡 process.nextTick is extremely high priority. If abused heavily, it can block the Event Loop because Node.js keeps executing nextTick callbacks before moving to other phases."
             },
-            {
-              type: "heading",
-              text: "Real Amazon Example"
-            },
-            {
-              type: "table",
-              headers: ["Feature", "Possible Internal Usage"],
-              rows: [
-                [
-                  "Immediate payment validation",
-                  "process.nextTick"
-                ],
-                [
-                  "API response cleanup",
-                  "setImmediate"
-                ],
-                [
-                  "Retry after delay",
-                  "setTimeout"
-                ]
-              ]
-            },
-            {
-              type: "success-callout",
-              text: "✅ process.nextTick > Promise Microtasks > setTimeout/setImmediate in execution priority."
-            }
-          ],
 
-          "What is libuv?": [
-            {
-              type: "paragraph",
-              text: "Many beginners think Node.js itself handles async operations internally. That's not fully true. The real hero behind Node.js asynchronous behavior is a C library called libuv."
-            },
-            {
-              type: "image",
-              src: "libuv.png"
-            },
             {
               type: "heading",
-              text: "What Does libuv Do?"
+              text: "2. Promise.then — High Priority Microtask"
             },
+
             {
               type: "paragraph",
-              text: "libuv handles asynchronous operations like file systems, networking, sockets, DNS lookups, and thread pool management."
+              text: "Promise callbacks go into the Microtask Queue. They execute after process.nextTick but before timers and I/O callbacks."
             },
+
+            {
+              type: "paragraph",
+              text: "Amazon may use Promises for fast async operations like updating recommendations after Rahul adds an iPhone to cart."
+            },
+
             {
               type: "code",
-              code: "JavaScript Code\n      ↓\nV8 Engine Executes JS\n      ↓\nlibuv Handles Async Work\n      ↓\nOperating System\n      ↓\nCompleted Result Returns"
+              code: "Promise.resolve().then(() => {\n  console.log('Recommended Accessories Loaded')\n})"
             },
+
+            {
+              type: "step",
+              title: " Cart updated successfully",
+              desc: "Promise resolves quickly."
+            },
+
+            {
+              type: "step",
+              title: " Callback enters Microtask Queue",
+              desc: "It waits until current stack finishes."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop executes microtask",
+              desc: "Recommendations load before timers execute."
+            },
+
+            {
+              type: "heading",
+              text: "3. setTimeout — Run After Delay"
+            },
+
+            {
+              type: "paragraph",
+              text: "setTimeout schedules callbacks in the Timers Phase. Even with 0ms delay, it does NOT execute immediately."
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon may use setTimeout for retrying failed inventory checks or delayed notifications."
+            },
+
+            {
+              type: "code",
+              code: "setTimeout(() => {\n  console.log('Retry Inventory Check')\n}, 2000)"
+            },
+
+            {
+              type: "step",
+              title: " Inventory API temporarily fails",
+              desc: "Amazon schedules retry after 2 seconds."
+            },
+
+            {
+              type: "step",
+              title: " Timer starts in background",
+              desc: "Node.js continues handling other users."
+            },
+
+            {
+              type: "step",
+              title: " Timer completes",
+              desc: "Callback enters Timers Queue."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop executes timer callback",
+              desc: "Retry operation finally runs."
+            },
+
+            {
+              type: "heading",
+              text: "4. setImmediate — Run After I/O"
+            },
+
+            {
+              type: "paragraph",
+              text: "setImmediate callbacks execute during the Check Phase, usually after I/O operations complete."
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon may use setImmediate to clean up API responses or trigger background analytics after database operations."
+            },
+
+            {
+              type: "code",
+              code: "setImmediate(() => {\n  console.log('Cart Analytics Updated')\n})"
+            },
+
+            {
+              type: "step",
+              title: " Database operation finishes",
+              desc: "Cart successfully stored in database."
+            },
+
+            {
+              type: "step",
+              title: " setImmediate callback queued",
+              desc: "Callback enters Check Phase queue."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop reaches Check Phase",
+              desc: "Analytics callback executes."
+            },
+
+            {
+              type: "heading",
+              text: "Complete Amazon Cart Example"
+            },
+
+            {
+              type: "code",
+              code: "setTimeout(() => {\n  console.log('Retry Failed Coupon Validation')\n}, 0)\n\nsetImmediate(() => {\n  console.log('Update Cart Analytics')\n})\n\nprocess.nextTick(() => {\n  console.log('Validate Cart Instantly')\n})\n\nPromise.resolve().then(() => {\n  console.log('Load Product Recommendations')\n})\n\nconsole.log('User Added iPhone To Cart')"
+            },
+
+            {
+              type: "code",
+              code: "Possible Output:\nUser Added iPhone To Cart\nValidate Cart Instantly\nLoad Product Recommendations\nUpdate Cart Analytics\nRetry Failed Coupon Validation"
+            },
+
+            {
+              type: "heading",
+              text: "Step-by-Step Internal Flow"
+            },
+
+            {
+              type: "step",
+              title: "Sync code executes first",
+              desc: "User Added iPhone To Cart prints immediately."
+            },
+
+            {
+              type: "step",
+              title: " process.nextTick executes",
+              desc: "nextTick queue has highest priority."
+            },
+
+            {
+              type: "step",
+              title: "Promise microtask executes",
+              desc: "Microtask queue runs after nextTick."
+            },
+
+            {
+              type: "step",
+              title: " Event Loop enters next phases",
+              desc: "Timers and Check phases now execute."
+            },
+
+            {
+              type: "step",
+              title: " setImmediate or setTimeout executes",
+              desc: "Their order can vary depending on Event Loop timing and I/O conditions."
+            },
+
+            {
+              type: "heading",
+              text: "Why setImmediate vs setTimeout Order Changes"
+            },
+
+            {
+              type: "paragraph",
+              text: "Outside I/O operations, setTimeout(0) and setImmediate can execute in different orders depending on system timing. Inside I/O callbacks, setImmediate usually executes first."
+            },
+
+            {
+              type: "code",
+              code: "Priority Order:\n\n1. Current Sync Code\n2. process.nextTick\n3. Promise Microtasks\n4. Timers (setTimeout)\n5. Poll Phase (I/O)\n6. Check Phase (setImmediate)"
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ process.nextTick has the highest priority among async callbacks in Node.js."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Promises execute before timers because Microtask Queue has higher priority than the Callback Queue."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Amazon-like systems use different scheduling mechanisms to prioritize critical operations like payments, cart validation, recommendations, and analytics efficiently."
+            }
+          ],
+          "libuv & Thread Pool in Node.js": [
+            {
+              type: "paragraph",
+              text: "Many beginners think Node.js itself magically handles asynchronous operations like database queries, file reads, networking, and timers. But the real engine behind Node.js async behavior is a powerful C library called libuv."
+            },
+
+            {
+              type: "curious-callout",
+              text: "❓ Rahul uploads an invoice PDF on Amazon, Priya downloads a bill, Aman makes payment, and thousands of users search products simultaneously. JavaScript runs on ONE thread — so who is actually doing all the heavy background work?"
+            },
+
+            {
+              type: "heading",
+              text: "What is libuv?"
+            },
+
+            {
+              type: "paragraph",
+              text: "libuv is a low-level C library used internally by Node.js. It powers the Event Loop and manages asynchronous operations like file systems, networking, sockets, timers, DNS lookups, and background worker threads."
+            },
+
+            {
+              type: "paragraph",
+              text: "JavaScript itself cannot directly perform async operating system tasks. Instead, Node.js delegates those operations to libuv."
+            },
+
+            {
+              type: "code",
+              code: "JavaScript Code\n        ↓\nV8 Engine Executes JS\n        ↓\nlibuv Receives Async Task\n        ↓\nOperating System / Thread Pool Handles Work\n        ↓\nTask Completes\n        ↓\nEvent Loop Gets Result\n        ↓\nCallback Executes"
+            },
+
+            {
+              type: "heading",
+              text: "Amazon Real-World Flow"
+            },
+
+            {
+              type: "step",
+              title: " Rahul uploads invoice PDF",
+              desc: "Amazon backend receives file upload request."
+            },
+
+            {
+              type: "step",
+              title: "JavaScript starts execution",
+              desc: "V8 engine runs the Node.js code."
+            },
+
+            {
+              type: "step",
+              title: " File operation delegated to libuv",
+              desc: "Reading or writing files is slow, so Node.js sends the task to libuv."
+            },
+
+            {
+              type: "step",
+              title: "libuv uses background worker thread",
+              desc: "The file operation executes outside the main thread."
+            },
+
+            {
+              type: "step",
+              title: " Main thread stays free",
+              desc: "Meanwhile Node.js continues serving other Amazon users."
+            },
+
+            {
+              type: "step",
+              title: "File operation finishes",
+              desc: "libuv notifies the Event Loop that work is completed."
+            },
+
+            {
+              type: "step",
+              title: " Callback executes",
+              desc: "Node.js finally sends upload success response."
+            },
+
+            {
+              type: "heading",
+              text: "What Exactly Does libuv Handle?"
+            },
+
             {
               type: "table",
               headers: ["Responsibility", "Handled By"],
@@ -664,60 +1255,78 @@ export const roadmapData = [
                   "libuv"
                 ],
                 [
-                  "File System Async",
+                  "File System Operations",
                   "libuv"
                 ],
                 [
-                  "Thread Pool",
+                  "Thread Pool Management",
                   "libuv"
                 ],
                 [
                   "Timers",
                   "libuv"
+                ],
+                [
+                  "DNS Lookups",
+                  "libuv"
+                ],
+                [
+                  "Sockets & Networking",
+                  "Operating System + libuv"
                 ]
               ]
             },
-            {
-              type: "success-callout",
-              text: "✅ libuv is the backbone of Node.js async architecture. Without libuv, Node.js could not perform non-blocking I/O operations."
-            }
-          ],
 
-          "Thread Pool in Node.js": [
-            {
-              type: "paragraph",
-              text: "Even though JavaScript runs on one thread, Node.js secretly uses background threads internally through libuv's Thread Pool."
-            },
-            {
-              type: "image",
-              src: "threadpool.png"
-            },
             {
               type: "heading",
-              text: "Why Thread Pool Exists"
+              text: "What is the Thread Pool?"
             },
+
             {
               type: "paragraph",
-              text: "Some operations are too slow for the Event Loop — especially file systems, cryptography, compression, and DNS lookups."
+              text: "Even though JavaScript runs on one main thread, Node.js secretly uses multiple background worker threads internally through libuv's Thread Pool."
             },
+
+            {
+              type: "paragraph",
+              text: "The Thread Pool exists because some tasks are too slow and blocking for the Event Loop."
+            },
+
             {
               type: "code",
-              code: "fs.readFile('products.json', () => {\n  console.log('File Read Complete')\n})"
+              code: "const fs = require('fs')\n\nfs.readFile('products.json', () => {\n  console.log('Products Loaded')\n})"
             },
+
             {
               type: "paragraph",
-              text: "The file reading operation gets delegated to libuv's thread pool instead of blocking the main thread."
+              text: "The file reading operation does NOT happen on the main JavaScript thread. libuv sends this task to a background worker thread from the Thread Pool."
             },
+
+            {
+              type: "heading",
+              text: "Why Thread Pool is Needed"
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine Amazon trying to read huge product files, encrypt passwords, compress invoices, or process images directly on the main thread. The entire server would freeze for other users."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead, libuv offloads these expensive operations to worker threads while the Event Loop keeps serving new incoming requests."
+            },
+
             {
               type: "table",
-              headers: ["Uses Thread Pool", "Does NOT Use Thread Pool"],
+              headers: ["Uses Thread Pool", "Usually Does NOT Use Thread Pool"],
               rows: [
                 [
-                  "File System",
+                  "File System Operations",
                   "Most Network Requests"
                 ],
                 [
-                  "Crypto",
+                  "Password Hashing / Crypto",
                   "HTTP APIs"
                 ],
                 [
@@ -725,168 +1334,62 @@ export const roadmapData = [
                   "Sockets"
                 ],
                 [
-                  "DNS lookup",
+                  "DNS.lookup()",
                   "Timers"
                 ]
               ]
             },
+
+            {
+              type: "heading",
+              text: "Internal Architecture Flow"
+            },
+
+            {
+              type: "code",
+              code: "Amazon User Request\n        ↓\nNode.js Main Thread\n        ↓\nHeavy Task Detected\n        ↓\nlibuv Delegates Work\n        ↓\nThread Pool Executes Task\n        ↓\nMain Thread Keeps Handling Users\n        ↓\nTask Finishes\n        ↓\nEvent Loop Receives Completion\n        ↓\nCallback Executes"
+            },
+
             {
               type: "info-callout",
-              text: "💡 By default libuv creates 4 background worker threads. This can be increased using UV_THREADPOOL_SIZE."
+              text: "💡 By default, libuv creates 4 worker threads internally. This can be increased using the UV_THREADPOOL_SIZE environment variable."
             },
+
+            {
+              type: "info-callout",
+              text: "💡 Not all async operations use the Thread Pool. Many network operations are handled directly by the operating system asynchronously."
+            },
+
+            {
+              type: "heading",
+              text: "Simple Restaurant Analogy"
+            },
+
+            {
+              type: "paragraph",
+              text: "Imagine a restaurant manager taking customer orders. The manager does not personally cook food, wash dishes, or pack parcels. Instead, those heavy tasks are delegated to kitchen staff working in the background. The manager stays free to handle new customers continuously."
+            },
+
+            {
+              type: "paragraph",
+              text: "In Node.js:\n• Manager = Event Loop\n• Kitchen Workers = libuv Thread Pool\n• Restaurant System = Operating System"
+            },
+
             {
               type: "success-callout",
-              text: "✅ Thread Pool allows Node.js to offload expensive tasks without blocking the Event Loop."
+              text: "✅ libuv is the backbone of Node.js asynchronous architecture."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ The Thread Pool allows Node.js to perform expensive operations without blocking the Event Loop."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ This is why Amazon-like systems can process uploads, payments, encryption, invoices, and massive traffic efficiently on lightweight Node.js servers."
             }
           ],
-
-          "How File System & Network Requests Work Internally": [
-            {
-              type: "paragraph",
-              text: "When Amazon fetches products from databases or reads invoices from disk, Node.js does NOT pause and wait. Internally, the request gets delegated to background systems."
-            },
-            {
-              type: "image",
-              src: "fs-network-flow.png"
-            },
-            {
-              type: "heading",
-              text: "File System Flow"
-            },
-            {
-              type: "code",
-              code: "fs.readFile('invoice.pdf', callback)\n        ↓\nlibuv sends task to Thread Pool\n        ↓\nBackground thread reads file\n        ↓\nTask completes\n        ↓\nCallback enters Callback Queue\n        ↓\nEvent Loop executes callback"
-            },
-            {
-              type: "heading",
-              text: "Network Request Flow"
-            },
-            {
-              type: "code",
-              code: "fetch('https://amazon-api.com/products')\n        ↓\nOperating System handles socket networking\n        ↓\nResponse arrives\n        ↓\nCallback queued\n        ↓\nEvent Loop executes response callback"
-            },
-            {
-              type: "table",
-              headers: ["Operation", "Handled By"],
-              rows: [
-                [
-                  "File Reads",
-                  "Thread Pool"
-                ],
-                [
-                  "Database Queries",
-                  "Database Engines"
-                ],
-                [
-                  "HTTP Requests",
-                  "Operating System Networking"
-                ],
-                [
-                  "Timers",
-                  "libuv Timers"
-                ]
-              ]
-            },
-            {
-              type: "success-callout",
-              text: "✅ Node.js itself rarely performs heavy work directly. It coordinates async systems efficiently while keeping the Event Loop free."
-            }
-          ],
-
-          "CPU Intensive Tasks Problem": [
-            {
-              type: "paragraph",
-              text: "Node.js is excellent for APIs and networking — but CPU-heavy tasks can completely block the Event Loop."
-            },
-            {
-              type: "image",
-              src: "cpu-blocking.png"
-            },
-            {
-              type: "curious-callout",
-              text: "❓ Amazon's API suddenly starts generating huge PDFs and video processing inside the main thread. Why does the entire server become slow for ALL users?"
-            },
-            {
-              type: "heading",
-              text: "Why CPU Tasks Are Dangerous"
-            },
-            {
-              type: "paragraph",
-              text: "JavaScript runs on ONE main thread. If heavy computation starts, the Event Loop cannot process new requests until computation finishes."
-            },
-            {
-              type: "code",
-              code: "while(true) {\n  // Infinite CPU work\n}"
-            },
-            {
-              type: "paragraph",
-              text: "During this loop, NO API requests, NO timers, NO callbacks, and NO user requests can execute."
-            },
-            {
-              type: "heading",
-              text: "Real Amazon Problem"
-            },
-            {
-              type: "table",
-              headers: ["Heavy CPU Task", "Impact"],
-              rows: [
-                [
-                  "Large PDF generation",
-                  "Blocks API responses"
-                ],
-                [
-                  "Video rendering",
-                  "Freezes Event Loop"
-                ],
-                [
-                  "AI model execution",
-                  "High CPU usage"
-                ],
-                [
-                  "Image processing",
-                  "Delays all requests"
-                ]
-              ]
-            },
-            {
-              type: "heading",
-              text: "Solutions"
-            },
-            {
-              type: "table",
-              headers: ["Solution", "Purpose"],
-              rows: [
-                [
-                  "Worker Threads",
-                  "Run CPU tasks separately"
-                ],
-                [
-                  "Clustering",
-                  "Use multiple CPU cores"
-                ],
-                [
-                  "Microservices",
-                  "Move heavy work to separate services"
-                ],
-                [
-                  "Queues",
-                  "Process heavy tasks asynchronously"
-                ]
-              ]
-            },
-            {
-              type: "code",
-              code: "Main API Server\n      ↓\nHeavy Task Sent to Worker Service\n      ↓\nMain Event Loop Stays Fast"
-            },
-            {
-              type: "success-callout",
-              text: "✅ Node.js shines for I/O-heavy applications like APIs, chats, streaming, and real-time systems. CPU-intensive work should usually be offloaded to workers or separate services."
-            },
-            {
-              type: "warning-callout",
-              text: "⚠️ Understanding the Event Loop is the foundation of mastering Node.js. Almost every advanced backend concept — streams, WebSockets, scaling, clustering, microservices, queues — builds on top of this architecture."
-            }
-          ]
         }
       },
 
@@ -900,378 +1403,874 @@ export const roadmapData = [
           "Sharing Data Between Threads",
           "What is Clustering?",
           "Using Multiple CPU Cores",
-          "process.nextTick and setImmediate",
-          "workerData and isMainThread",
           "MessageChannel and Advanced Communication",
-          "Thread Pools in Node.js",
-          "PM2 for Production Clustering",
-          "How Amazon/Netflix Scale Node.js Servers"
         ],
 
         "topicDetails": {
           "Why Worker Threads Exist": [
             {
-              "type": "paragraph",
-              "text": "Node.js became extremely popular because it can efficiently handle thousands of users using its non-blocking asynchronous architecture. The Event Loop continuously processes completed I/O operations without waiting, making Node.js very fast for database queries, API calls, file handling, and network requests."
+              type: "paragraph",
+              text: "Node.js became extremely popular because of its fast non-blocking Event Loop architecture. A single Node.js server can efficiently handle thousands of concurrent users performing API calls, database queries, file uploads, streaming, and real-time socket communication without creating one thread per user. This makes Node.js excellent for I/O-heavy applications like Amazon, Netflix, Flipkart, and Paytm."
             },
+
             {
-              "type": "step",
-              "title": "Why Node.js Performs Well",
-              "desc": "Node.js uses a non-blocking asynchronous architecture that allows it to handle thousands of concurrent users efficiently without creating separate threads for every request."
+              type: "paragraph",
+              text: "However, JavaScript execution itself still runs on a single main thread. CPU-heavy operations such as PDF generation, image processing, video compression, machine learning, fraud detection, and massive calculations execute directly on the main thread and can completely block the Event Loop. While this heavy computation is running, Node.js cannot process new requests, execute callbacks, or respond to users."
             },
+
             {
-              "type": "step",
-              "title": "Single Thread Limitation",
-              "desc": "All JavaScript code in Node.js runs on a single main thread. Async operations are delegated to the OS and libuv thread pool, but CPU-heavy tasks still execute directly on the main thread."
+              type: "paragraph",
+              text: "Worker Threads were introduced to solve this limitation. They allow CPU-intensive JavaScript code to run on separate threads so the main Event Loop remains free and responsive while heavy tasks execute independently in parallel."
             },
+
             {
-              "type": "step",
-              "title": "CPU Heavy Tasks Block the Event Loop",
-              "desc": "Tasks like PDF generation, image processing, video compression, machine learning predictions, and report generation can block the Event Loop and freeze the application temporarily."
+              type: "curious-callout",
+              text: "❓ Imagine Amazon is generating lakhs of PDF invoices during a flash sale. If invoice generation happens on the main thread, what happens to checkout and payment APIs?"
             },
+
             {
-              "type": "paragraph",
-              "text": "A real-world example is Amazon during the Great Indian Festival sale. Millions of users browse products, place orders, apply coupons, and make payments while the backend generates thousands of PDF invoices every second."
+              type: "heading",
+              text: "Why Node.js Performs So Well"
             },
+
             {
-              "type": "step",
-              "title": "Problem During Flash Sales",
-              "desc": "If even one heavy PDF generation task runs on the main Node.js thread, APIs like checkout, payment, and product search can stop responding until the computation finishes."
+              type: "step",
+              title: "Non-blocking architecture",
+              desc: "Node.js delegates async operations like DB queries and API calls to background systems."
             },
+
             {
-              "type": "step",
-              "title": "Worker Threads Solve the Problem",
-              "desc": "Worker Threads move CPU-intensive work to separate threads, keeping the Event Loop responsive and allowing the server to continue handling incoming requests smoothly."
+              type: "step",
+              title: "Single Event Loop",
+              desc: "One lightweight thread handles thousands of concurrent users efficiently."
             },
+
             {
-              "type": "image",
-              "src": "workerthreads.png"
+              type: "step",
+              title: "Excellent for I/O operations",
+              desc: "Perfect for APIs, databases, sockets, streaming, and networking."
             },
+
             {
-              "type": "curious-callout",
-              "text": "❓ Imagine Amazon is generating lakhs of invoices during a huge sale. PDF generation is CPU-heavy. If Node.js generates all PDFs on the main thread itself, what happens to checkout APIs and payment APIs? Every user trying to pay would see a timeout error while the server is stuck generating a single invoice."
+              type: "heading",
+              text: "The Main Limitation"
             },
+
             {
-              "type": "heading",
-              "text": "The Real Problem — Event Loop Blocking"
+              type: "paragraph",
+              text: "CPU-heavy tasks still run directly on the main thread because JavaScript execution itself is single-threaded. Even though Node.js handles asynchronous I/O efficiently, expensive calculations can still freeze the Event Loop and block all incoming requests."
             },
+
             {
-              "type": "paragraph",
-              "text": "The Event Loop is the heart of Node.js. It continuously monitors the Call Stack and the callback queues. The Event Loop can only pick up and process new callbacks if the Call Stack is completely empty. If a long-running CPU task occupies the Call Stack for even 5 seconds, the Event Loop is completely frozen during that time. It cannot accept new connections, respond to health checks, process payment confirmations, or handle any other incoming request. The entire server appears dead to users."
-            },
-            {
-              "type": "paragraph",
-              "text": "This is not a Node.js bug — it is how JavaScript was designed. JavaScript was originally a single-threaded language built for browser interactions. Worker Threads were introduced in Node.js v10 and became stable in v12 specifically to address this limitation in server-side applications where CPU-intensive work is common."
-            },
-            {
-              "type": "code",
-              "code": "// BAD EXAMPLE — This blocks the entire server\nfunction heavyCalculation() {\n  let total = 0;\n\n  // This loop runs for several seconds on the MAIN THREAD\n  // During this time NO other request can be processed\n  for (let i = 0; i < 10_000_000_000; i++) {\n    total += i;\n  }\n\n  return total;\n}\n\napp.get('/report', (req, res) => {\n  // All users hitting ANY endpoint will be stuck\n  // until this single calculation finishes\n  const result = heavyCalculation();\n  res.send(`Report total: ${result}`);\n});\n\napp.get('/checkout', (req, res) => {\n  // Even this simple checkout will NOT respond\n  // while /report is still calculating above\n  res.send('Order placed!');\n});"
-            },
-            {
-              "type": "step",
-              "title": "User A requests report generation",
-              "desc": "Node.js starts executing the heavyCalculation() function on the main thread. The Call Stack is now occupied."
-            },
-            {
-              "type": "step",
-              "title": "CPU-heavy loop starts running",
-              "desc": "The for-loop iterates 10 billion times. This takes several seconds. The main thread is 100% occupied with this work."
-            },
-            {
-              "type": "step",
-              "title": "Event Loop gets completely blocked",
-              "desc": "Node.js cannot process any incoming requests, run any callbacks, or respond to any health checks while the calculation runs."
-            },
-            {
-              "type": "step",
-              "title": "User B tries to checkout",
-              "desc": "User B's checkout request arrives but sits in the queue. The Event Loop cannot pick it up because the Call Stack is still busy."
-            },
-            {
-              "type": "step",
-              "title": "Entire server appears frozen",
-              "desc": "Checkout APIs, login APIs, payment APIs, and even health check endpoints all stop responding. Users see timeouts."
-            },
-            {
-              "type": "heading",
-              "text": "How Worker Threads Solve This"
-            },
-            {
-              "type": "paragraph",
-              "text": "Worker Threads move CPU-heavy JavaScript execution completely away from the main thread onto a separate thread. Instead of blocking the Event Loop, expensive calculations run in their own isolated environment while the main server continues handling thousands of users normally. The main thread simply creates a worker, gives it the heavy job, and immediately goes back to processing user requests. When the worker finishes, it sends the result back to the main thread through a message."
-            },
-            {
-              "type": "paragraph",
-              "text": "Going back to the Amazon example — with Worker Threads, every invoice generation request spins up a worker thread that handles the PDF creation independently. The main thread keeps processing checkout requests, payment confirmations, and order status updates without any delay. Users experience zero slowdown even while thousands of invoices are being generated simultaneously in the background."
-            },
-            {
-              "type": "table",
-              "headers": ["Without Worker Threads", "With Worker Threads"],
-              "rows": [
-                ["Main thread blocked during CPU work", "Heavy work moved to separate thread"],
-                ["All APIs become slow or timeout", "APIs stay fully responsive"],
-                ["Server appears frozen to users", "Server continues handling requests"],
-                ["Single CPU core utilized", "Multiple CPU cores can be utilized"],
-                ["PDF generation blocks checkout", "PDF generation runs alongside checkout"],
-                ["Poor scalability under load", "Better parallel processing capacity"],
-                ["Bad for image/video processing", "Perfect for any CPU-heavy work"]
+              type: "table",
+              headers: ["Good for Node.js", "Bad for Main Thread"],
+              rows: [
+                [
+                  "API calls",
+                  "PDF generation"
+                ],
+                [
+                  "Database queries",
+                  "Video compression"
+                ],
+                [
+                  "Sockets",
+                  "Image processing"
+                ],
+                [
+                  "File uploads",
+                  "Machine learning"
+                ],
+                [
+                  "Streaming",
+                  "Huge calculations"
+                ]
               ]
             },
+
             {
-              "type": "success-callout",
-              "text": "✅ Worker Threads exist because Node.js's single-threaded architecture is excellent for I/O operations but struggles with heavy CPU calculations. Workers solve this by running computations in completely separate threads, keeping the Event Loop always free."
+              type: "heading",
+              text: "Amazon Flash Sale Problem"
+            },
+
+            {
+              type: "paragraph",
+              text: "During Amazon Great Indian Festival sales, millions of users continuously search products, place orders, complete payments, and refresh checkout pages. At the same time Amazon also generates invoices, processes images, runs fraud detection systems, updates analytics, and calculates recommendations. These operations can become extremely CPU-intensive during traffic spikes."
+            },
+
+            {
+              type: "paragraph",
+              text: "If heavy operations like invoice PDF generation run directly on the main thread, the Event Loop becomes blocked. As a result, checkout APIs slow down, payment requests timeout, carts freeze, and the server starts feeling unresponsive for all users."
+            },
+
+            {
+              type: "step",
+              title: "User places an order",
+              desc: "Amazon starts invoice PDF generation."
+            },
+
+            {
+              type: "step",
+              title: "Heavy PDF generation starts",
+              desc: "CPU becomes busy generating layouts, images, taxes, and QR codes."
+            },
+
+            {
+              type: "step",
+              title: "Main thread gets blocked",
+              desc: "The Event Loop cannot process new incoming requests."
+            },
+
+            {
+              type: "step",
+              title: "Checkout APIs stop responding",
+              desc: "Other users trying payments now experience delays and timeouts."
+            },
+
+            {
+              type: "step",
+              title: "Entire server feels frozen",
+              desc: "Search, payments, carts, and health checks become slow."
+            },
+
+            {
+              type: "heading",
+              text: "The Real Problem — Event Loop Blocking"
+            },
+
+            {
+              type: "paragraph",
+              text: "The Event Loop only works when the Call Stack is empty. Long CPU-heavy tasks occupy the Call Stack for several seconds or even minutes. During that time Node.js cannot execute callbacks, process APIs, handle timers, or respond to incoming users because the single main thread remains fully occupied."
+            },
+
+            {
+              type: "code",
+              code: "// BAD EXAMPLE — Blocks entire server\nfunction heavyCalculation() {\n  let total = 0;\n\n  for (let i = 0; i < 10_000_000_000; i++) {\n    total += i;\n  }\n\n  return total;\n}\n\napp.get('/report', (req, res) => {\n  const result = heavyCalculation();\n  res.send(`Report total: ${result}`);\n});\n\napp.get('/checkout', (req, res) => {\n  res.send('Order placed!');\n});"
+            },
+
+            {
+              type: "heading",
+              text: "What Happens Internally"
+            },
+
+            {
+              type: "step",
+              title: "Report API starts",
+              desc: "heavyCalculation() enters the Call Stack."
+            },
+
+            {
+              type: "step",
+              title: "CPU-heavy loop runs",
+              desc: "The main thread becomes fully occupied."
+            },
+
+            {
+              type: "step",
+              title: "Event Loop freezes",
+              desc: "No new callbacks or requests can execute."
+            },
+
+            {
+              type: "step",
+              title: "Another user tries checkout",
+              desc: "Checkout request waits because the Call Stack is still busy."
+            },
+
+            {
+              type: "step",
+              title: "Users experience timeout",
+              desc: "The entire server appears dead temporarily."
+            },
+
+            {
+              type: "heading",
+              text: "How Worker Threads Solve This"
+            },
+
+            {
+              type: "paragraph",
+              text: "Worker Threads move CPU-heavy JavaScript execution away from the main thread onto separate threads. Each worker has its own V8 engine, memory, Event Loop, and Call Stack, allowing expensive calculations to run independently without blocking the main server."
+            },
+
+            {
+              type: "paragraph",
+              text: "This allows the main Event Loop to stay responsive while heavy background processing continues in parallel on different CPU cores."
+            },
+
+            {
+              type: "code",
+              code: "Incoming Request\n        ↓\nMain Thread Receives Request\n        ↓\nHeavy CPU Task Detected\n        ↓\nWorker Thread Created\n        ↓\nHeavy Calculation Runs In Worker\n        ↓\nMain Thread Continues Handling APIs\n        ↓\nWorker Finishes Task\n        ↓\nResult Sent Back To Main Thread"
+            },
+
+            {
+              type: "heading",
+              text: "Amazon Worker Thread Flow"
+            },
+
+            {
+              type: "paragraph",
+              text: "Amazon uses Worker Threads for CPU-intensive operations that should not block checkout APIs. When customers place orders, the main server quickly delegates expensive tasks like invoice generation or fraud detection to worker threads while continuing to serve other users normally."
+            },
+
+            {
+              type: "step",
+              title: "User places order",
+              desc: "Invoice generation request arrives."
+            },
+
+            {
+              type: "step",
+              title: "Main thread creates worker",
+              desc: "Heavy PDF generation moves to separate thread."
+            },
+
+            {
+              type: "step",
+              title: "Worker generates invoice",
+              desc: "CPU-intensive work runs independently."
+            },
+
+            {
+              type: "step",
+              title: "Main thread stays responsive",
+              desc: "Payments, search, and checkout APIs continue normally."
+            },
+
+            {
+              type: "step",
+              title: "Worker sends final PDF",
+              desc: "Completed invoice returns back to main thread."
+            },
+
+            {
+              type: "table",
+              headers: ["Without Worker Threads", "With Worker Threads"],
+              rows: [
+                [
+                  "Main thread blocked",
+                  "Heavy work moved away"
+                ],
+                [
+                  "Checkout APIs freeze",
+                  "APIs remain responsive"
+                ],
+                [
+                  "Single CPU core used",
+                  "Multiple CPU cores utilized"
+                ],
+                [
+                  "Poor scalability",
+                  "Better parallel processing"
+                ],
+                [
+                  "Users see timeouts",
+                  "Smooth user experience"
+                ]
+              ]
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 Worker Threads are mainly used for CPU-heavy work, NOT normal database or API operations."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Worker Threads exist because Node.js is excellent for async I/O but struggles with CPU-heavy calculations on a single thread."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Workers keep the Event Loop free by running expensive computations in completely separate threads."
+            }
+          ],
+          "How Worker Threads Run in Parallel": [
+            {
+              type: "paragraph",
+              text: "Normally, Node.js runs JavaScript on a single main thread. This works extremely well for APIs and I/O operations, but CPU-heavy tasks like image processing, PDF generation, analytics, fraud detection, or video processing can block the Event Loop and slow down the entire server."
+            },
+
+            {
+              type: "paragraph",
+              text: "Worker Threads solve this limitation by creating real OS-level threads that run JavaScript in parallel on multiple CPU cores. Unlike async/await, which still runs on the same thread, Worker Threads allow multiple pieces of JavaScript code to execute simultaneously."
+            },
+
+            {
+              type: "paragraph",
+              text: "Each Worker Thread gets its own isolated V8 engine, memory heap, Call Stack, and Event Loop. This isolation keeps heavy background tasks separate from the main server so APIs remain fast and responsive."
+            },
+
+            {
+              type: "curious-callout",
+              text: "❓ During Amazon Great Indian Festival, millions of users place orders together. At the same time Amazon must generate invoices, process images, calculate recommendations, and verify fraud checks. How can all these heavy tasks run simultaneously without freezing checkout APIs?"
+            },
+
+            {
+              type: "heading",
+              text: "Important Difference"
+            },
+
+            {
+              type: "paragraph",
+              text: "Many developers think async/await creates parallel execution, but that is not true. async/await only avoids blocking during I/O waiting. Worker Threads are what provide actual parallel JavaScript execution."
+            },
+
+            {
+              type: "table",
+              headers: ["Feature", "async/await", "Worker Threads"],
+              rows: [
+                [
+                  "JavaScript Execution",
+                  "Still single-threaded",
+                  "Runs on separate threads"
+                ],
+                [
+                  "Purpose",
+                  "Avoid waiting during I/O",
+                  "Run CPU-heavy work"
+                ],
+                [
+                  "Parallel Execution",
+                  "No",
+                  "Yes"
+                ],
+                [
+                  "Uses Multiple CPU Cores",
+                  "No",
+                  "Yes"
+                ],
+                [
+                  "Heavy Calculations",
+                  "Can still block Event Loop",
+                  "Runs independently"
+                ]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "Amazon Real-World Example"
+            },
+
+            {
+              type: "paragraph",
+              text: "Large systems like Amazon continuously run expensive background computations while users continue browsing products and placing orders normally."
+            },
+
+            {
+              type: "paragraph",
+              text: "When a customer places an order, Amazon may need to generate PDF invoices, resize product images, run fraud detection algorithms, calculate recommendations, process analytics, and update inventory systems together."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead of blocking the main checkout API with these heavy operations, Amazon can move them into separate Worker Threads so all tasks run simultaneously across multiple CPU cores."
+            },
+
+            {
+              type: "code",
+              code: "Customer Places Order\n      ↓\nWorker 1 → Generate PDF Invoice\nWorker 2 → Resize Product Images\nWorker 3 → Fraud Detection Calculation\nWorker 4 → Recommendation Engine\nWorker 5 → Analytics Processing\n      ↓\nAll Tasks Run Simultaneously"
+            },
+
+            {
+              type: "step",
+              title: " Order placed",
+              desc: "Amazon backend receives a new customer order request."
+            },
+
+            {
+              type: "step",
+              title: " Main thread creates workers",
+              desc: "Separate Worker Threads are created for each CPU-intensive background task."
+            },
+
+            {
+              type: "step",
+              title: " OS schedules threads",
+              desc: "Operating system distributes workers across multiple CPU cores."
+            },
+
+            {
+              type: "step",
+              title: " Heavy tasks run in parallel",
+              desc: "Invoice generation, fraud detection, analytics, and image processing all execute simultaneously."
+            },
+
+            {
+              type: "step",
+              title: " Main thread stays responsive",
+              desc: "Checkout APIs, payment APIs, and product APIs continue serving users normally."
+            },
+
+            {
+              type: "heading",
+              text: "Main Thread vs Worker Thread"
+            },
+
+            {
+              type: "table",
+              headers: ["Main Thread", "Worker Thread"],
+              rows: [
+                [
+                  "Handles APIs and Event Loop",
+                  "Handles assigned heavy task"
+                ],
+                [
+                  "Shared by all users",
+                  "Separate parallel thread"
+                ],
+                [
+                  "Must stay responsive",
+                  "Can run long calculations"
+                ],
+                [
+                  "Runs application server",
+                  "Runs isolated JavaScript"
+                ],
+                [
+                  "Cannot block",
+                  "Designed for CPU-heavy work"
+                ]
+              ]
+            },
+
+            {
+              type: "heading",
+              text: "Creating a Worker Thread"
+            },
+
+            {
+              type: "code",
+              code: "// main.js\nconst { Worker } = require('worker_threads');\n\nconsole.log('Main thread started');\n\nconst worker = new Worker('./worker.js');\n\nworker.on('message', (result) => {\n  console.log('Worker Result:', result);\n});\n\nconsole.log('Main thread continues serving users');"
+            },
+
+            {
+              type: "paragraph",
+              text: "The main thread creates a Worker Thread and immediately continues handling APIs without waiting for the heavy task to finish."
+            },
+
+            {
+              type: "heading",
+              text: "Worker Thread Code"
+            },
+
+            {
+              type: "code",
+              code: "// worker.js\nconst { parentPort } = require('worker_threads');\n\nlet total = 0;\n\nfor (let i = 0; i < 1_000_000_000; i++) {\n  total += i;\n}\n\nparentPort.postMessage(total);"
+            },
+
+            {
+              type: "paragraph",
+              text: "This heavy calculation runs entirely inside the Worker Thread, keeping the main Event Loop free and responsive."
+            },
+
+            {
+              type: "heading",
+              text: "Internal Parallel Flow"
+            },
+
+            {
+              type: "code",
+              code: "Main Thread\n    ↓\nCreates Worker Thread\n    ↓\n--------------------------------\nWorker Thread Starts\nHeavy Calculation Runs\n--------------------------------\n    ↓\nMain Thread Continues APIs\n    ↓\nWorker Finishes Task\n    ↓\nResult Sent Back Using Message"
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 Worker Threads run in isolated environments, so worker crashes usually do NOT crash the main server."
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 Workers communicate using message passing instead of directly sharing variables or objects."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Worker Threads provide true parallel JavaScript execution in Node.js using multiple CPU cores."
             }
           ],
 
-          "How Worker Threads Run in Parallel": [
-            {
-              "type": "paragraph",
-              "text": "Worker Threads are actual OS-level threads managed by the operating system itself. This is a crucial distinction that many developers misunderstand. When you use async/await or Promises in Node.js, your JavaScript code still executes on the same single main thread — the async pattern just means Node.js doesn't sit idle while waiting for I/O responses. Worker Threads are fundamentally different. They create genuinely separate threads that the OS schedules on different CPU cores, allowing true simultaneous JavaScript execution."
-            },
-            {
-              "type": "paragraph",
-              "text": "Each Worker Thread gets its own completely isolated environment — its own V8 JavaScript engine instance, its own heap memory, its own Call Stack, and its own Event Loop. This isolation means workers cannot accidentally corrupt the main thread's variables or state. A crash inside a worker also does not crash the main process, which is extremely important for production reliability. Workers communicate with the main thread only through structured message passing, which keeps the system safe and predictable."
-            },
-            {
-              "type": "paragraph",
-              "text": "Consider how Netflix uses this in practice. When a new movie is uploaded to Netflix, the platform needs to generate multiple video quality versions — 4K, 1080p, 720p, 480p, 360p — simultaneously, along with generating thumbnail images, extracting subtitles, running content analysis for recommendations, and creating preview clips. Without Worker Threads, each of these tasks would have to run one after another on a single thread, taking hours per movie. With Worker Threads, Netflix can launch separate workers for each task and complete all processing in parallel, dramatically reducing the time before content becomes available to users."
-            },
-            {
-              "type": "image",
-              "src": "parallelworkers.png"
-            },
-            {
-              "type": "heading",
-              "text": "Main Thread vs Worker Thread — Key Differences"
-            },
-            {
-              "type": "table",
-              "headers": ["Main Thread", "Worker Thread"],
-              "rows": [
-                ["Handles all incoming APIs and Event Loop", "Handles only assigned CPU-heavy task"],
-                ["Single thread shared by all users", "Separate parallel thread per task"],
-                ["Must stay responsive at all times", "Can run long calculations without worrying"],
-                ["Manages application entry point", "Independent execution environment"],
-                ["Has access to express app context", "Isolated V8 instance and memory"],
-                ["Communicates via messages to workers", "Communicates via messages to main thread"],
-                ["Cannot do heavy work without blocking", "Designed exactly for heavy work"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Creating and Using a Worker Thread"
-            },
-            {
-              "type": "code",
-              "code": "// main.js — Main thread creates a worker for heavy calculation\nconst { Worker } = require('worker_threads');\n\nconsole.log('Main thread: Starting server...');\n\n// Create a new worker thread and point it to worker.js\nconst worker = new Worker('./worker.js');\n\n// Listen for messages sent back from the worker\nworker.on('message', (result) => {\n  console.log('Worker finished. Total:', result);\n});\n\n// Handle worker errors without crashing main process\nworker.on('error', (err) => {\n  console.error('Worker error:', err);\n});\n\n// Know when the worker has completely finished\nworker.on('exit', (code) => {\n  console.log('Worker exited with code:', code);\n});\n\n// Main thread continues serving users IMMEDIATELY\n// It does NOT wait for the worker to finish\nconsole.log('Main thread: Continuing to handle user requests...');"
-            },
-            {
-              "type": "code",
-              "code": "// worker.js — Runs in a completely separate thread\nconst { parentPort } = require('worker_threads');\n\nconsole.log('Worker thread: Starting heavy calculation...');\n\nlet total = 0;\n\n// This loop runs on the WORKER THREAD, not the main thread\n// Main thread is completely free during this entire computation\nfor (let i = 0; i < 1_000_000_000; i++) {\n  total += i;\n}\n\nconsole.log('Worker thread: Calculation complete!');\n\n// Send the result back to the main thread\nparentPort.postMessage(total);"
-            },
-            {
-              "type": "step",
-              "title": "Main thread creates the worker",
-              "desc": "Node.js asks the operating system to create a brand new OS thread. The new thread loads its own V8 engine and starts executing worker.js independently."
-            },
-            {
-              "type": "step",
-              "title": "Both threads run simultaneously",
-              "desc": "Worker starts its billion-iteration loop on one CPU core. Main thread continues accepting and responding to user requests on another CPU core. Both run truly in parallel."
-            },
-            {
-              "type": "step",
-              "title": "Worker completes its task",
-              "desc": "The heavy calculation finishes inside the worker. The worker sends the result to the main thread using parentPort.postMessage()."
-            },
-            {
-              "type": "step",
-              "title": "Main thread receives the result",
-              "desc": "The worker's message arrives in the main thread's Event Loop as a regular callback. Main thread processes it and responds to the waiting user."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 async/await does NOT create parallel execution. It only avoids idle waiting during I/O. Worker Threads provide true multi-threaded JavaScript execution where multiple lines of JavaScript code run at exactly the same time on different CPU cores."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Worker Threads allow Node.js to fully utilize modern multi-core CPUs for JavaScript execution, making it possible to run CPU-intensive workloads without ever freezing the main server."
-            }
-          ],
 
           "Sharing Data Between Threads": [
             {
-              "type": "paragraph",
-              "text": "Worker Threads do not automatically share variables, objects, or state with the main thread. Every worker runs in a completely isolated memory environment with its own heap. This isolation is intentional and important — it prevents race conditions, memory corruption, and unpredictable bugs that commonly occur in traditional multi-threaded languages like Java or C++. When a worker is created, its memory is separate from the main thread from the very beginning."
+              type: "paragraph",
+              text: "Worker Threads do not automatically share variables, objects, or memory with the main thread. Every worker runs inside its own isolated memory environment with a separate V8 engine, Event Loop, and heap memory."
             },
+
             {
-              "type": "paragraph",
-              "text": "There are two primary ways threads can exchange data in Node.js: message passing through postMessage() which copies data safely between threads, and SharedArrayBuffer which allows multiple threads to read and write to the exact same memory location simultaneously. Each approach has different performance characteristics and safety tradeoffs. Most production applications use message passing because it is simpler, safer, and sufficient for most use cases."
+              type: "paragraph",
+              text: "This isolation is extremely important because it prevents accidental data corruption, race conditions, and unpredictable bugs that commonly happen in traditional multi-threaded systems."
             },
+
             {
-              "type": "paragraph",
-              "text": "In Amazon's order processing system, when a worker thread finishes calculating the final invoice total including taxes, discounts, and delivery charges, it needs to return that result to the main thread so the API can send the response to the user. The worker sends a structured JavaScript object through postMessage(), and the main thread receives it like a regular event callback. The data transfer is handled safely by Node.js internally — the worker's copy and the main thread's copy are completely independent after the message is sent."
+              type: "paragraph",
+              text: "Node.js mainly uses message passing to safely exchange data between threads. The main thread sends data using postMessage(), and workers return results back using parentPort.postMessage()."
             },
+
             {
-              "type": "image",
-              "src": "threadcommunication.png"
+              type: "curious-callout",
+              text: "❓ Amazon's invoice worker calculates taxes, discounts, and final totals. How does the result safely return back to the checkout API?"
             },
+
             {
-              "type": "heading",
-              "text": "Method 1 — Message Passing with postMessage()"
+              type: "heading",
+              text: "How Threads Communicate"
             },
+
             {
-              "type": "paragraph",
-              "text": "Message passing is the standard and recommended way to communicate between Worker Threads. The main thread sends data to a worker using worker.postMessage(), and the worker sends results back using parentPort.postMessage(). Node.js uses the structured clone algorithm to copy the data, which supports complex objects, arrays, nested structures, and even certain types like Map and Set."
+              type: "paragraph",
+              text: "Node.js provides multiple ways for threads to exchange data depending on performance and safety requirements."
             },
+
             {
-              "type": "code",
-              "code": "// main.js — Sending data to worker and receiving results\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./invoice-worker.js');\n\n// Send order details to the worker for processing\nworker.postMessage({\n  orderId: 'AMZ-123456',\n  items: [\n    { name: 'Laptop', price: 75000, qty: 1 },\n    { name: 'Mouse', price: 999, qty: 2 }\n  ],\n  userId: 'USR-789',\n  discountCode: 'SAVE10'\n});\n\n// Listen for the completed invoice from the worker\nworker.on('message', (invoice) => {\n  console.log('Invoice ready:', invoice);\n  // Now send the invoice response to the waiting user\n  res.json(invoice);\n});"
-            },
-            {
-              "type": "code",
-              "code": "// invoice-worker.js — Runs in worker thread\nconst { parentPort } = require('worker_threads');\n\n// Listen for data sent from the main thread\nparentPort.on('message', (orderData) => {\n  console.log('Processing order:', orderData.orderId);\n\n  // Heavy CPU calculations happen here — safely isolated\n  const subtotal = orderData.items.reduce(\n    (sum, item) => sum + item.price * item.qty, 0\n  );\n\n  const discount = orderData.discountCode === 'SAVE10'\n    ? subtotal * 0.10\n    : 0;\n\n  const tax = (subtotal - discount) * 0.18;\n  const total = subtotal - discount + tax;\n\n  // Send completed invoice back to main thread\n  parentPort.postMessage({\n    orderId: orderData.orderId,\n    subtotal,\n    discount,\n    tax,\n    total\n  });\n});"
-            },
-            {
-              "type": "step",
-              "title": "Main thread sends order data",
-              "desc": "postMessage() deep-clones the order object and transfers it safely to the worker's memory space. The main thread does not wait — it immediately continues processing other requests."
-            },
-            {
-              "type": "step",
-              "title": "Worker receives and processes the message",
-              "desc": "The worker's message event fires. Worker performs all heavy calculations including tax, discounts, and totals independently on its own thread."
-            },
-            {
-              "type": "step",
-              "title": "Worker sends result back",
-              "desc": "Worker calls parentPort.postMessage() with the completed invoice. The data is cloned and transferred back to the main thread."
-            },
-            {
-              "type": "step",
-              "title": "Main thread receives the result",
-              "desc": "The message callback fires in the main thread's Event Loop. Main thread sends the invoice response to the user's HTTP request."
-            },
-            {
-              "type": "heading",
-              "text": "Method 2 — Shared Memory with SharedArrayBuffer"
-            },
-            {
-              "type": "paragraph",
-              "text": "For high-performance scenarios where copying large amounts of data repeatedly would be too slow, Node.js allows multiple threads to directly access the same block of memory using SharedArrayBuffer. Instead of copying data back and forth, both the main thread and worker thread hold a reference to the exact same memory region and can read or modify it directly. This is much faster for large datasets but requires careful coordination to avoid race conditions."
-            },
-            {
-              "type": "code",
-              "code": "// Shared Memory Example — Both threads access same buffer\nconst { Worker, isMainThread } = require('worker_threads');\n\nif (isMainThread) {\n  // Create a shared buffer — 4 bytes for one 32-bit integer\n  const sharedBuffer = new SharedArrayBuffer(4);\n  const sharedArray = new Int32Array(sharedBuffer);\n\n  // Initial value\n  sharedArray[0] = 0;\n\n  const worker = new Worker(__filename, {\n    workerData: { sharedBuffer }\n  });\n\n  worker.on('exit', () => {\n    // Worker directly modified the shared memory\n    console.log('Final value from worker:', sharedArray[0]);\n    // Output: 999\n  });\n\n} else {\n  const { workerData } = require('worker_threads');\n  const sharedArray = new Int32Array(workerData.sharedBuffer);\n\n  // Worker writes directly to shared memory\n  // No postMessage needed — same memory location\n  sharedArray[0] = 999;\n}"
-            },
-            {
-              "type": "table",
-              "headers": ["Communication Method", "How it Works", "Speed", "Safety", "Best For"],
-              "rows": [
-                ["postMessage()", "Deep copies data between threads", "Good for small/medium data", "Very safe — isolated copies", "Most production applications"],
-                ["SharedArrayBuffer", "Both threads access same memory block", "Very fast — zero copying", "Risky — needs synchronization", "Large data, real-time systems"],
-                ["Atomics", "Locks shared memory during modification", "Slightly slower than raw shared", "Safe shared memory access", "Prevent race conditions in shared memory"]
+              type: "table",
+              headers: ["Method", "How it Works", "Best For"],
+              rows: [
+                [
+                  "postMessage()",
+                  "Copies data safely between threads",
+                  "Most applications"
+                ],
+                [
+                  "SharedArrayBuffer",
+                  "Both threads access same memory",
+                  "High-performance systems"
+                ],
+                [
+                  "Atomics",
+                  "Controls shared memory safely",
+                  "Prevent race conditions"
+                ]
               ]
             },
+
             {
-              "type": "warning-callout",
-              "text": "⚠️ Shared memory is powerful but dangerous. If two threads modify the same memory location simultaneously without proper synchronization using Atomics, you can end up with corrupted data, impossible-to-debug race conditions, or completely wrong results. Always use Atomics when multiple threads write to SharedArrayBuffer."
+              type: "heading",
+              text: "Amazon Real-World Example"
+            },
+
+            {
+              type: "paragraph",
+              text: "Large platforms like Amazon constantly perform heavy background calculations while users continue browsing products and placing orders normally."
+            },
+
+            {
+              type: "paragraph",
+              text: "When a customer places an order, Amazon may need to calculate taxes, discounts, coupon offers, delivery charges, cashback, and final invoice totals. Instead of blocking the main checkout API, this heavy work is moved to a Worker Thread."
+            },
+
+            {
+              type: "paragraph",
+              text: "The main thread sends order details to the worker thread, the worker performs all calculations independently, and the final invoice result is safely sent back to the checkout API using message passing."
             },
             {
-              "type": "success-callout",
-              "text": "✅ Most real-world production applications use message passing because it is safer, easier to debug, and sufficient for the majority of use cases. Only switch to SharedArrayBuffer when profiling shows data copying is a genuine performance bottleneck."
+              type: "code",
+              code: "Main Thread\n    ↓\nSend Order Data Using postMessage()\n    ↓\nWorker Thread Calculates:\n- Tax\n- Discount\n- Final Total\n    ↓\nWorker Sends Final Invoice Back\n    ↓\nCheckout API Responds to User"
+            },
+
+            {
+              type: "heading",
+              text: "Sending Data to Worker"
+            },
+
+            {
+              type: "code",
+              code: "// main.js\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./invoice-worker.js');\n\nworker.postMessage({\n  product: 'Laptop',\n  price: 75000,\n  discount: 10\n});\n\nworker.on('message', (invoice) => {\n  console.log(invoice);\n});"
+            },
+
+            {
+              type: "heading",
+              text: "Worker Processing"
+            },
+
+            {
+              type: "code",
+              code: "// invoice-worker.js\nconst { parentPort } = require('worker_threads');\n\nparentPort.on('message', (data) => {\n  const finalPrice = data.price - (data.price * data.discount / 100);\n\n  parentPort.postMessage({\n    finalPrice\n  });\n});"
+            },
+
+            {
+              type: "step",
+              title: " Main thread sends order data",
+              desc: "postMessage() safely copies data into worker memory."
+            },
+
+            {
+              type: "step",
+              title: " Worker processes calculation",
+              desc: "Heavy invoice logic runs independently on another thread."
+            },
+
+            {
+              type: "step",
+              title: " Worker sends result back",
+              desc: "Final invoice is returned using parentPort.postMessage()."
+            },
+
+            {
+              type: "step",
+              title: " Main thread responds to user",
+              desc: "Checkout API sends the final result to the customer."
+            },
+
+            {
+              type: "heading",
+              text: "Shared Memory Example"
+            },
+
+            {
+              type: "paragraph",
+              text: "For extremely large datasets or high-performance systems, threads can directly share the same memory using SharedArrayBuffer instead of copying data repeatedly."
+            },
+
+            {
+              type: "code",
+              code: "Main Thread\n    ↓\nCreates Shared Memory\n    ↓\nWorker Reads/Writes Same Memory\n    ↓\nNo Data Copy Needed"
+            },
+
+            {
+              type: "warning-callout",
+              text: "⚠️ Shared memory is fast but risky. Multiple threads writing together can cause race conditions without Atomics."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Most production systems use postMessage() because it is simpler, safer, and easier to debug."
             }
           ],
 
+
           "What is Clustering?": [
             {
-              "type": "paragraph",
-              "text": "Worker Threads are excellent for solving CPU-heavy computation problems within a single Node.js process. But there is another separate and equally important limitation — one Node.js process only runs one Event Loop, and that Event Loop runs on one CPU core. This means no matter how many concurrent users are sending requests, only one CPU core is actually handling all the incoming traffic routing, middleware execution, and response sending. Modern cloud servers at Amazon, Netflix, Google, and Flipkart have machines with 16, 32, 64, or even 128 CPU cores. Without clustering, you are paying for 32 cores but only using one of them to handle user traffic."
+              type: "paragraph",
+              text: "A single Node.js process can use only one CPU core, even if the server has many cores available. Clustering solves this limitation by creating multiple separate Node.js worker processes so all CPU cores can handle incoming traffic together. Each clustered worker runs independently with its own memory, Event Loop, and V8 engine."
+            },
+
+            {
+              type: "image",
+              src: "cluster.png"
+            },
+
+            {
+              type: "curious-callout",
+              text: "❓ During Amazon Great Indian Festival, millions of users search products, add items to cart, and place orders simultaneously. How can one server handle such huge traffic without crashing?"
+            },
+
+            {
+              type: "heading",
+              text: "Why Clustering is Needed"
+            },
+
+            {
+              type: "paragraph",
+              text: "Without clustering, only one CPU core handles all incoming requests while the remaining CPU cores stay mostly unused. During flash sales or traffic spikes, this single core becomes overloaded, causing slow APIs, request queues, timeouts, and server bottlenecks."
             },
             {
-              "type": "paragraph",
-              "text": "The Cluster module in Node.js solves this by allowing you to create multiple completely separate Node.js processes, each running its own full copy of your application with its own Event Loop, its own memory space, and its own JavaScript runtime. These worker processes all listen on the same port, and the operating system distributes incoming network connections across all of them. From a user's perspective, they are all talking to the same server. In reality, 32 separate processes are handling requests in parallel across all 32 CPU cores."
+              type: "heading",
+              text: "Amazon Real-World Example"
             },
+
             {
-              "type": "paragraph",
-              "text": "Think about how Amazon handles their checkout service. During Diwali sales, millions of users are simultaneously clicking 'Buy Now'. A single Node.js process running on one CPU core can handle maybe 10,000 to 15,000 requests per second under ideal conditions. But with clustering across 32 CPU cores, that same machine can now handle 320,000 to 480,000 requests per second. Amazon achieves this scale by running clustered Node.js processes behind load balancers across hundreds of machines worldwide."
+              type: "paragraph",
+              text: "During massive sales like Amazon Great Indian Festival, millions of users simultaneously open product pages, search items, add products to carts, and place orders."
             },
+
             {
-              "type": "image",
-              "src": "cluster.png"
+              type: "paragraph",
+              text: "Handling such enormous traffic using only one Node.js process would quickly overload a single CPU core and create severe bottlenecks."
             },
+
             {
-              "type": "curious-callout",
-              "text": "❓ Amazon's backend machine has 32 CPU cores. If only ONE core handles all incoming traffic while the other 31 cores sit completely idle, Amazon is wasting approximately 97% of that machine's computing power. During a flash sale, this single overloaded core would become a bottleneck while users see slow checkouts and payment timeouts."
+              type: "paragraph",
+              text: "Amazon servers may have 32 CPU cores, and clustering allows all 32 cores to process incoming user requests together in parallel by running multiple Node.js worker processes."
             },
+
             {
-              "type": "heading",
-              "text": "How Clustering Works — Master and Worker Processes"
+              type: "code",
+              code: "Amazon Server (32 CPU Cores)\n        ↓\nMaster Process\n        ↓\n------------------------------------------------\nWorker 1  → Checkout APIs\nWorker 2  → Payment APIs\nWorker 3  → Search APIs\nWorker 4  → Cart APIs\nWorker 5  → Product APIs\n...\nWorker 32 → User Requests\n------------------------------------------------\n        ↓\nTraffic Distributed Across All CPU Cores"
             },
+
             {
-              "type": "paragraph",
-              "text": "The Cluster module creates one Master process and multiple Worker processes. The Master process is the coordinator — it creates all the workers, monitors their health, and restarts them if they crash. Worker processes are where actual user requests are handled. Each worker is a complete separate Node.js process running your full application code. The OS uses round-robin load balancing to distribute incoming connections across all workers."
+              type: "step",
+              title: " User requests arrive",
+              desc: "Millions of Amazon users send requests during the sale."
             },
+
             {
-              "type": "code",
-              "code": "// server.js — Production-ready clustering setup\nconst cluster = require('cluster');\nconst os = require('os');\nconst express = require('express');\n\nconst totalCPUs = os.cpus().length;\n\nif (cluster.isMaster) {\n  console.log(`Master process ${process.pid} is running`);\n  console.log(`Starting ${totalCPUs} workers for ${totalCPUs} CPU cores...`);\n\n  // Create one worker process per CPU core\n  for (let i = 0; i < totalCPUs; i++) {\n    cluster.fork();\n  }\n\n  // Auto-restart any worker that crashes\n  cluster.on('exit', (worker, code, signal) => {\n    console.log(`Worker ${worker.process.pid} died. Restarting...`);\n    cluster.fork(); // Immediately spawn a replacement worker\n  });\n\n  cluster.on('online', (worker) => {\n    console.log(`Worker ${worker.process.pid} is online`);\n  });\n\n} else {\n  // All workers run the actual Express application\n  const app = express();\n\n  app.get('/checkout', (req, res) => {\n    res.json({\n      status: 'Order placed!',\n      handledBy: `Worker ${process.pid}` // Shows which worker handled this\n    });\n  });\n\n  app.listen(3000, () => {\n    console.log(`Worker ${process.pid} listening on port 3000`);\n  });\n}"
+              type: "step",
+              title: " Master process starts",
+              desc: "The master process checks how many CPU cores are available on the server."
             },
+
             {
-              "type": "step",
-              "title": "Master process starts on boot",
-              "desc": "The master process reads the machine's CPU count using os.cpus().length. On a 32-core machine, this returns 32."
+              type: "step",
+              title: " Workers are created",
+              desc: "One worker process is created for each CPU core."
             },
+
             {
-              "type": "step",
-              "title": "Master forks worker processes",
-              "desc": "Master calls cluster.fork() 32 times. Each fork creates a completely independent Node.js process with its own memory, Event Loop, and copy of the application."
+              type: "step",
+              title: " Workers listen on same port",
+              desc: "All workers can accept incoming API requests."
             },
+
             {
-              "type": "step",
-              "title": "All workers bind to port 3000",
-              "desc": "All 32 workers listen on the same port. The OS handles distributing incoming connections using round-robin, sending each new connection to a different worker."
+              type: "step",
+              title: " Traffic distributes automatically",
+              desc: "The operating system spreads requests across all workers."
             },
+
             {
-              "type": "step",
-              "title": "Traffic distributes automatically",
-              "desc": "User 1's checkout request goes to Worker 1. User 2's request goes to Worker 2. User 33's request cycles back to Worker 1. All handled truly in parallel."
+              type: "step",
+              title: " APIs run in parallel",
+              desc: "Checkout, payment, cart, and search APIs process simultaneously."
             },
+
             {
-              "type": "step",
-              "title": "Crashed workers restart automatically",
-              "desc": "If Worker 5 crashes due to an unhandled error, the master's exit event fires immediately and forks a fresh replacement worker. Zero downtime."
+              type: "step",
+              title: " Server handles massive traffic",
+              desc: "All CPU cores work together to serve millions of users efficiently."
             },
+
             {
-              "type": "table",
-              "headers": ["Worker Threads", "Clustering"],
-              "rows": [
-                ["Multiple threads inside same process", "Multiple completely separate processes"],
-                ["Used for CPU-heavy computation tasks", "Used for scaling incoming request traffic"],
-                ["All share same process memory space", "Each has completely separate memory"],
-                ["SharedArrayBuffer allows shared memory", "Separate memory — no accidental sharing"],
-                ["Parallel calculations within one server", "Parallel request handling across CPU cores"],
-                ["One process crashes = all threads affected", "Worker crash = master restarts just that worker"],
-                ["Good for invoice, image, video processing", "Good for API servers, high-traffic applications"]
+              type: "heading",
+              text: "How Clustering Internally Works"
+            },
+
+            {
+              type: "paragraph",
+              text: "The master process mainly manages workers, while worker processes handle actual user requests."
+            },
+
+            {
+              type: "code",
+              code: "Incoming User Requests\n          ↓\nMaster Process\n          ↓\n--------------------------------\nWorker 1 → Handles User A\nWorker 2 → Handles User B\nWorker 3 → Handles User C\nWorker 4 → Handles User D\n--------------------------------\n          ↓\nAll Workers Process Requests Together"
+            },
+
+            {
+              type: "heading",
+              text: "Using Multiple CPU Cores"
+            },
+
+            {
+              type: "paragraph",
+              text: "With clustering, every CPU core gets its own Node.js worker process."
+            },
+
+            {
+              type: "paragraph",
+              text: "Instead of one overloaded process handling everything, traffic gets divided across all available CPU cores."
+            },
+
+            {
+              type: "code",
+              code: "Without Clustering\n----------------------\nCPU Core 1  → Handles ALL Traffic\nCPU Core 2  → Idle\nCPU Core 3  → Idle\nCPU Core 4  → Idle\n\nWith Clustering\n----------------------\nCPU Core 1  → Worker 1\nCPU Core 2  → Worker 2\nCPU Core 3  → Worker 3\nCPU Core 4  → Worker 4\n\nAll Cores Handle Traffic Together"
+            },
+
+            {
+              type: "paragraph",
+              text: "This massively increases throughput and allows Node.js servers to handle far more users simultaneously."
+            },
+
+            {
+              type: "heading",
+              text: "Cluster Example"
+            },
+
+            {
+              type: "code",
+              code: "const cluster = require('cluster');\nconst os = require('os');\n\nif (cluster.isMaster) {\n  const totalCPUs = os.cpus().length;\n\n  console.log(`Starting ${totalCPUs} workers...`);\n\n  // Create one worker per CPU core\n  for (let i = 0; i < totalCPUs; i++) {\n    cluster.fork();\n  }\n\n  // Restart crashed workers\n  cluster.on('exit', () => {\n    cluster.fork();\n  });\n\n} else {\n  console.log(`Worker ${process.pid} started`);\n}"
+            },
+
+            {
+              type: "paragraph",
+              text: "Every worker runs independently with its own Event Loop and memory space."
+            },
+
+            {
+              type: "heading",
+              text: "Master Process vs Worker Process"
+            },
+
+            {
+              type: "table",
+              headers: ["Master Process", "Worker Process"],
+              rows: [
+                [
+                  "Creates workers",
+                  "Handles user requests"
+                ],
+                [
+                  "Monitors worker health",
+                  "Runs APIs"
+                ],
+                [
+                  "Restarts crashed workers",
+                  "Processes traffic"
+                ],
+                [
+                  "Controls clustering",
+                  "Uses CPU core independently"
+                ]
               ]
             },
+
             {
-              "type": "success-callout",
-              "text": "✅ Clustering helps Node.js scale request handling across all available CPU cores. It is the foundation of how high-traffic Node.js servers handle millions of requests per day in production."
+              type: "heading",
+              text: "Worker Threads vs Clustering"
+            },
+
+            {
+              type: "table",
+              headers: ["Worker Threads", "Clustering"],
+              rows: [
+                [
+                  "Used for CPU-heavy tasks",
+                  "Used for scaling traffic"
+                ],
+                [
+                  "Multiple threads in one process",
+                  "Multiple separate processes"
+                ],
+                [
+                  "Good for calculations",
+                  "Good for API scaling"
+                ],
+                [
+                  "Runs background computations",
+                  "Handles more users"
+                ],
+                [
+                  "Invoice generation",
+                  "Checkout API scaling"
+                ],
+                [
+                  "Image/video processing",
+                  "High traffic handling"
+                ]
+              ]
+            },
+
+            {
+              type: "info-callout",
+              text: "💡 If one worker crashes, the master process can immediately create a replacement worker without stopping the server."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Clustering allows Node.js to fully utilize all CPU cores for handling massive traffic."
+            },
+
+            {
+              type: "success-callout",
+              text: "✅ Companies like Amazon use clustering to scale APIs during huge sales and traffic spikes."
             }
           ],
 
           "Using Multiple CPU Cores": [
             {
               "type": "paragraph",
-              "text": "Modern cloud infrastructure is incredibly powerful. When Amazon deploys an EC2 instance for running Node.js APIs, they often use machines with 16 or 32 virtual CPU cores. When Flipkart provisions servers for their checkout service, they may use instances with 64 cores. Without clustering, all of that hardware capability goes completely unused — only a single CPU core does any work while the rest sit idle. This means companies are spending huge amounts on server infrastructure but only utilizing a tiny fraction of what they are paying for."
-            },
-            {
-              "type": "paragraph",
               "text": "With clustering, every single CPU core gets its own Node.js worker process. Each worker independently handles incoming HTTP connections, runs middleware, queries databases, and sends responses. The OS kernel efficiently schedules all these processes across the physical CPU cores, achieving true hardware-level parallelism. On a 32-core machine, you can theoretically handle 32 times more concurrent requests compared to running a single Node.js process."
-            },
-            {
-              "type": "paragraph",
-              "text": "Netflix provides a great real-world illustration of this. When you press Play on a movie, Netflix's Node.js API servers need to simultaneously process your playback request, check your subscription status, fetch the video CDN URLs, record the viewing event for recommendations, and return the response — all within 100-200 milliseconds. Netflix runs these API servers with full clustering enabled, so thousands of users can trigger these simultaneous workflows without any single server becoming a bottleneck. Each CPU core on each machine is handling different users' playback requests at exactly the same time."
             },
             {
               "type": "image",
@@ -1321,132 +2320,6 @@ export const roadmapData = [
             }
           ],
 
-          "process.nextTick and setImmediate": [
-            {
-              "type": "paragraph",
-              "text": "Understanding process.nextTick() and setImmediate() is essential when working with Worker Threads and Clustering because they control the exact execution order of callbacks within a single Node.js thread. Both are mechanisms to schedule code to run asynchronously, but they operate at different points in the Event Loop cycle. Getting their behavior wrong can cause subtle bugs in multi-threaded and clustered environments where timing and execution order matter."
-            },
-            {
-              "type": "paragraph",
-              "text": "The Node.js Event Loop processes tasks in distinct phases — timers (setTimeout, setInterval), pending callbacks, idle and prepare, poll (I/O), check (setImmediate), and close callbacks. There is also a special microtask queue that exists outside these phases and gets processed between every phase transition. process.nextTick() adds callbacks to this microtask queue and they run before the Event Loop moves to its next phase, regardless of what that phase is. setImmediate() schedules callbacks to run in the check phase, which comes after the poll phase where I/O callbacks execute."
-            },
-            {
-              "type": "paragraph",
-              "text": "In Amazon's order service, when a checkout request arrives and the worker sends back the invoice result via postMessage(), the main thread receives it as a message event. If the main thread needs to do some cleanup after receiving the result — like updating an internal counter or logging — using process.nextTick() ensures that cleanup runs immediately after the current operation completes, before any I/O callbacks or timer callbacks. This guarantees predictable execution order even when dozens of workers are sending messages back to the main thread simultaneously."
-            },
-            {
-              "type": "image",
-              "src": "nexttick.png"
-            },
-            {
-              "type": "heading",
-              "text": "process.nextTick() — Runs Before Next Event Loop Phase"
-            },
-            {
-              "type": "paragraph",
-              "text": "process.nextTick() is not technically part of the Event Loop itself. It uses a dedicated nextTick queue that is processed after every C++ to JavaScript transition and before the Event Loop moves to its next phase. This makes it the highest priority asynchronous scheduling mechanism available. If you recursively call process.nextTick() inside a nextTick callback, you can actually starve the Event Loop — no I/O, no timers, and no incoming requests will be processed until all nextTick callbacks are exhausted."
-            },
-            {
-              "type": "code",
-              "code": "// Understanding execution order in Node.js Event Loop\nconsole.log('1 — Synchronous code starts');\n\nsetTimeout(() => {\n  console.log('4 — setTimeout fires (Timers phase)');\n}, 0);\n\nsetImmediate(() => {\n  console.log('5 — setImmediate fires (Check phase)');\n});\n\nPromise.resolve().then(() => {\n  console.log('3 — Promise microtask resolves');\n});\n\nprocess.nextTick(() => {\n  console.log('2 — process.nextTick runs FIRST among async');\n});\n\nconsole.log('1b — More synchronous code');\n\n// Output ORDER:\n// 1 — Synchronous code starts\n// 1b — More synchronous code\n// 2 — process.nextTick runs FIRST among async\n// 3 — Promise microtask resolves\n// 4 — setTimeout fires (Timers phase)\n// 5 — setImmediate fires (Check phase)"
-            },
-            {
-              "type": "heading",
-              "text": "setImmediate() — Runs After I/O in Check Phase"
-            },
-            {
-              "type": "paragraph",
-              "text": "setImmediate() is designed specifically to run callbacks after the current poll phase completes — meaning after all I/O events for the current iteration have been processed. This makes it the right choice when you want to run something after I/O operations complete but before any timers fire. Unlike process.nextTick(), setImmediate() callbacks cannot starve the Event Loop because they only run once per iteration of the loop."
-            },
-            {
-              "type": "code",
-              "code": "// Real-world usage pattern in clustered worker message handling\nconst { Worker } = require('worker_threads');\n\nconst worker = new Worker('./heavy-worker.js');\n\nworker.on('message', (result) => {\n  console.log('Received worker result:', result);\n\n  // Use process.nextTick when you need guaranteed\n  // immediate execution before any I/O callbacks\n  process.nextTick(() => {\n    console.log('Updating in-memory cache immediately');\n    // This runs before any pending I/O callbacks\n  });\n\n  // Use setImmediate when you want to defer processing\n  // until after all pending I/O for this loop iteration\n  setImmediate(() => {\n    console.log('Sending analytics event after I/O clears');\n    // This runs in the check phase — after I/O phase\n  });\n\n  // Use setTimeout for minimum delay scheduling\n  setTimeout(() => {\n    console.log('Cleanup task runs after at least 100ms');\n  }, 100);\n});"
-            },
-            {
-              "type": "table",
-              "headers": ["Method", "Queue Type", "Runs When", "Can Starve Loop?", "Best Use Case"],
-              "rows": [
-                ["process.nextTick()", "nextTick queue (microtask)", "Before next Event Loop phase, immediately after current op", "Yes — use carefully", "Ensure callback runs before any I/O or timers"],
-                ["Promise.then()", "Microtask queue", "After nextTick queue, before next phase", "Yes — in theory", "Chained async operations, API results"],
-                ["setImmediate()", "Check phase queue", "After I/O poll phase completes", "No — once per loop", "After I/O work, deferring non-critical work"],
-                ["setTimeout(fn, 0)", "Timers phase queue", "After minimum timer threshold, timers phase", "No", "Minimum delay scheduling, animations"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Why This Matters in Multi-threaded Code"
-            },
-            {
-              "type": "code",
-              "code": "// Practical example — Handling multiple worker results correctly\nconst { Worker } = require('worker_threads');\nconst workers = [];\n\n// Create 4 workers for parallel processing\nfor (let i = 0; i < 4; i++) {\n  const worker = new Worker('./calculation-worker.js');\n\n  worker.on('message', (result) => {\n    // When worker sends result back:\n\n    // 1. nextTick — Update critical in-memory state first\n    process.nextTick(() => {\n      updateResultCache(result); // Runs before any more I/O\n    });\n\n    // 2. setImmediate — Non-critical logging after I/O clears\n    setImmediate(() => {\n      logResultToDatabase(result); // Deferred, non-blocking\n    });\n  });\n\n  workers.push(worker);\n}\n\nfunction updateResultCache(result) {\n  console.log('Cache updated:', result);\n}\n\nfunction logResultToDatabase(result) {\n  console.log('Logged to DB:', result);\n}"
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Avoid calling process.nextTick() recursively or in tight loops. Each recursive nextTick call gets added to the queue before the Event Loop can move forward, effectively starving all I/O operations, timer callbacks, and incoming network connections. In a clustered server, this can make an entire worker process appear unresponsive."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Use process.nextTick() when you need guaranteed execution before any I/O or timers. Use setImmediate() when you want to defer work until after current I/O completes. Both are essential tools for writing precise, predictable async code in Worker Thread and Cluster environments."
-            }
-          ],
-
-          "workerData and isMainThread": [
-            {
-              "type": "paragraph",
-              "text": "When you create a Worker Thread, you often need to pass initial configuration or input data to it before it starts processing. Node.js provides the workerData option for exactly this purpose. You pass data when creating the Worker, and the worker receives it immediately on startup through require('worker_threads').workerData. This is different from postMessage() — workerData is available the instant the worker starts executing, before any messages are sent, making it perfect for passing configuration, task parameters, worker IDs, or initial datasets."
-            },
-            {
-              "type": "paragraph",
-              "text": "The isMainThread property is a boolean that tells you whether the current execution context is the main thread or a worker thread. This is particularly powerful because it allows you to write the main thread logic and worker thread logic in the same single file — Node.js will execute different code branches based on whether it is running as the master or as a worker. This pattern is commonly used in clustering and worker thread code to keep everything organized in one place."
-            },
-            {
-              "type": "paragraph",
-              "text": "In a real-world scenario like Netflix's video transcoding service, when a new video upload triggers processing, the main thread creates multiple worker threads — one for each quality level needed. Using workerData, the main thread passes each worker its specific task: Worker 1 receives { quality: '4K', bitrate: 40000, inputFile: 'raw_upload.mp4' }, Worker 2 receives { quality: '1080p', bitrate: 8000, inputFile: 'raw_upload.mp4' }, and so on. Each worker knows exactly what to do from the very start without needing any additional postMessage calls."
-            },
-            {
-              "type": "heading",
-              "text": "Using isMainThread to Write Single-File Worker Code"
-            },
-            {
-              "type": "code",
-              "code": "// transcoder.js — Single file handles both main and worker logic\nconst {\n  Worker,\n  isMainThread,\n  parentPort,\n  workerData\n} = require('worker_threads');\n\nif (isMainThread) {\n  // === MAIN THREAD CODE ===\n  console.log('Main thread: Starting video transcoding service...');\n\n  const videoFile = 'upload_movie_123.mp4';\n\n  const qualityProfiles = [\n    { quality: '4K',   bitrate: 40000, width: 3840, height: 2160 },\n    { quality: '1080p', bitrate: 8000,  width: 1920, height: 1080 },\n    { quality: '720p',  bitrate: 4000,  width: 1280, height: 720  },\n    { quality: '480p',  bitrate: 2000,  width: 854,  height: 480  },\n    { quality: '360p',  bitrate: 800,   width: 640,  height: 360  }\n  ];\n\n  const results = [];\n\n  qualityProfiles.forEach((profile) => {\n    // Create a worker for each quality level\n    // Pass config via workerData — available immediately on startup\n    const worker = new Worker(__filename, {\n      workerData: {\n        inputFile: videoFile,\n        quality: profile.quality,\n        bitrate: profile.bitrate,\n        width: profile.width,\n        height: profile.height,\n        workerId: profile.quality\n      }\n    });\n\n    worker.on('message', (result) => {\n      results.push(result);\n      console.log(`✅ ${result.quality} transcoding complete:`, result.outputFile);\n\n      if (results.length === qualityProfiles.length) {\n        console.log('\\n🎬 All quality versions ready for streaming!');\n      }\n    });\n\n    worker.on('error', (err) => {\n      console.error(`❌ Worker ${profile.quality} failed:`, err.message);\n    });\n  });\n\n  console.log('Main thread: All workers launched. Handling other requests...');\n\n} else {\n  // === WORKER THREAD CODE ===\n  // workerData is immediately available here — no postMessage needed\n  const { inputFile, quality, bitrate, width, height } = workerData;\n\n  console.log(`Worker [${quality}]: Starting transcoding...`);\n  console.log(`Worker [${quality}]: Input: ${inputFile}, Bitrate: ${bitrate}kbps`);\n\n  // Simulate CPU-intensive video transcoding\n  function simulateTranscoding(duration) {\n    const start = Date.now();\n    let frames = 0;\n    // Simulate heavy frame processing\n    while (Date.now() - start < duration) {\n      frames++;\n    }\n    return frames;\n  }\n\n  // Different qualities take different amounts of time\n  const processingTime = quality === '4K' ? 3000 :\n                         quality === '1080p' ? 2000 :\n                         quality === '720p' ? 1500 :\n                         quality === '480p' ? 1000 : 500;\n\n  const framesProcessed = simulateTranscoding(processingTime);\n\n  const outputFile = `output_${quality}_${width}x${height}.mp4`;\n\n  // Send result back to main thread\n  parentPort.postMessage({\n    quality,\n    outputFile,\n    framesProcessed,\n    bitrate,\n    status: 'success'\n  });\n}"
-            },
-            {
-              "type": "step",
-              "title": "Main thread reads isMainThread as true",
-              "desc": "When Node.js runs this file as the entry point, isMainThread is true. The main thread block executes, creating 5 worker instances for 5 quality levels."
-            },
-            {
-              "type": "step",
-              "title": "Workers start with workerData already populated",
-              "desc": "Each new Worker receives its quality profile via workerData. The worker's isMainThread is false, so it executes the worker block and immediately has access to inputFile, quality, bitrate, width, and height."
-            },
-            {
-              "type": "step",
-              "title": "All 5 workers run in parallel",
-              "desc": "4K, 1080p, 720p, 480p, and 360p transcoding all run simultaneously on different CPU cores. Total time is approximately the duration of the slowest task — not the sum of all tasks."
-            },
-            {
-              "type": "step",
-              "title": "Main thread stays fully responsive",
-              "desc": "While all 5 transcoding workers are running, the main thread can still accept new upload requests, respond to health checks, and handle user API calls."
-            },
-            {
-              "type": "table",
-              "headers": ["Feature", "workerData", "postMessage()"],
-              "rows": [
-                ["When available", "Immediately on worker startup", "Only after message is sent"],
-                ["Direction", "Main → Worker only (one-way, one-time)", "Bidirectional, any time"],
-                ["Use case", "Initial configuration, task parameters", "Ongoing data exchange"],
-                ["Mutability", "Read-only inside worker", "Received copy can be modified"],
-                ["Complexity", "Simple, no event listeners needed", "Requires on('message') handler"]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Use workerData for passing initial configuration and task parameters to workers. Use isMainThread to write clean single-file code that handles both master and worker logic elegantly."
-            }
-          ],
 
           "MessageChannel and Advanced Communication": [
             {
@@ -1492,225 +2365,6 @@ export const roadmapData = [
               "text": "✅ MessageChannel enables sophisticated multi-threaded communication patterns. Use it when you need dedicated channels for different message types or when workers need to communicate with each other directly without routing through the main thread."
             }
           ],
-
-          "Thread Pools in Node.js": [
-            {
-              "type": "paragraph",
-              "text": "Before Worker Threads were introduced, Node.js already had an internal thread pool that it used invisibly for certain types of operations. This thread pool is managed by libuv, the C++ library that powers Node.js's Event Loop. The libuv thread pool handles operations that don't have native async OS support — things like reading/writing files, DNS lookups, and some cryptographic operations. By default, this pool has 4 threads, though it can be configured up to 1024 threads using the UV_THREADPOOL_SIZE environment variable."
-            },
-            {
-              "type": "paragraph",
-              "text": "Understanding the libuv thread pool is crucial because it can become a hidden bottleneck in Node.js applications. If your server is making many simultaneous file reads, DNS lookups, or bcrypt password hashes, and only 4 libuv threads are available, the 5th concurrent operation will queue up and wait even though your Node.js code is completely async. Increasing UV_THREADPOOL_SIZE or redesigning to use streaming operations can eliminate this bottleneck."
-            },
-            {
-              "type": "paragraph",
-              "text": "Worker Threads and the libuv thread pool are two completely separate systems. The libuv pool is managed automatically by Node.js for specific built-in operations. Worker Threads are OS threads that you explicitly create and control for running your own JavaScript code. In production systems like Flipkart's image processing service, engineers need to be aware of both — the libuv pool handles background file I/O while Worker Threads handle the CPU-intensive image manipulation code itself."
-            },
-            {
-              "type": "image",
-              "src": "threadpool.png"
-            },
-            {
-              "type": "heading",
-              "text": "libuv Thread Pool — What It Handles"
-            },
-            {
-              "type": "table",
-              "headers": ["Operation", "Uses libuv Thread Pool?", "Notes"],
-              "rows": [
-                ["fs.readFile()", "Yes", "File I/O uses pool threads"],
-                ["fs.writeFile()", "Yes", "File writes use pool threads"],
-                ["dns.lookup()", "Yes", "DNS resolution uses pool"],
-                ["crypto.pbkdf2()", "Yes", "CPU-heavy crypto uses pool"],
-                ["bcrypt hashing", "Yes (via native addon)", "Why bcrypt can bottleneck"],
-                ["http.get()", "No", "Uses OS network events directly"],
-                ["setTimeout()", "No", "Uses OS timer events"],
-                ["Worker Threads", "No", "Separate OS threads you control"]
-              ]
-            },
-            {
-              "type": "code",
-              "code": "// Demonstrating libuv thread pool bottleneck\n// Default UV_THREADPOOL_SIZE is 4\n\nconst crypto = require('crypto');\nconst start = Date.now();\n\n// Launch 8 concurrent bcrypt-like crypto operations\n// Operations 1-4 run immediately in the 4 pool threads\n// Operations 5-8 WAIT until a pool thread becomes free\nfor (let i = 1; i <= 8; i++) {\n  crypto.pbkdf2('password', 'salt', 100000, 512, 'sha512', (err, key) => {\n    console.log(`Operation ${i} completed at ${Date.now() - start}ms`);\n  });\n}\n\nconsole.log('All 8 crypto operations launched asynchronously');\n\n// With default 4 threads, output shows:\n// Operations 1-4 complete around the same time (~1000ms)\n// Operations 5-8 complete in the SECOND BATCH (~2000ms)\n// Because they had to wait for pool threads to free up\n\n// FIX: Increase thread pool size before Node.js starts\n// UV_THREADPOOL_SIZE=8 node server.js"
-            },
-            {
-              "type": "code",
-              "code": "// Setting UV_THREADPOOL_SIZE programmatically\n// Must be set BEFORE any async operations begin\nprocess.env.UV_THREADPOOL_SIZE = 16; // Increase to 16 threads\n\nconst crypto = require('crypto');\n\n// Now 16 crypto operations can run truly in parallel\n// Useful when your server does many simultaneous file or crypto operations\nconsole.log('libuv thread pool size:', process.env.UV_THREADPOOL_SIZE);"
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Setting UV_THREADPOOL_SIZE too high can backfire. Each thread consumes memory and the OS has overhead managing thread context switches. A good rule of thumb is to set it to match your CPU core count. For CPU-bound work, prefer Worker Threads which you explicitly control."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Node.js has two separate threading systems — the libuv thread pool (automatic, for built-in async operations) and Worker Threads (manual, for your own JavaScript CPU work). Understanding both helps you eliminate hidden bottlenecks in production applications."
-            }
-          ],
-
-          "PM2 for Production Clustering": [
-            {
-              "type": "paragraph",
-              "text": "While Node.js's built-in cluster module works well, managing clusters in production manually is complex. You need to handle worker crashes, graceful shutdowns, zero-downtime restarts, log aggregation, memory monitoring, and CPU monitoring — all while keeping the server running for users. PM2 is the industry-standard process manager that automates all of this. It is used by thousands of companies including major e-commerce platforms, fintech applications, and SaaS products running Node.js in production."
-            },
-            {
-              "type": "paragraph",
-              "text": "PM2's cluster mode does exactly what manual clustering does — it creates one Node.js process per CPU core — but it adds a robust management layer on top. PM2 automatically restarts crashed workers, supports zero-downtime restarts where new workers start before old ones stop, provides a built-in dashboard showing CPU and memory usage per worker, aggregates logs from all workers into single streams, and can automatically respawn workers that exceed memory limits before they cause problems."
-            },
-            {
-              "type": "paragraph",
-              "text": "When Zomato deploys their order tracking API, they use PM2 in cluster mode on their Node.js servers. The deployment command starts one worker per CPU core, monitors each worker's memory, and automatically performs a rolling restart when they push new code — meaning some workers always stay running and serving users while others are restarting with the new code. Users experience zero downtime during deployments, which happen multiple times per day."
-            },
-            {
-              "type": "heading",
-              "text": "PM2 Cluster Mode Commands"
-            },
-            {
-              "type": "code",
-              "code": "# Install PM2 globally\nnpm install -g pm2\n\n# Start your app in cluster mode using ALL CPU cores\npm2 start server.js --name 'amazon-checkout' -i max\n# -i max = one worker process per CPU core\n# -i 4   = exactly 4 workers regardless of core count\n# -i 0   = same as max\n\n# Check status of all workers\npm2 status\n\n# Watch real-time CPU and memory per worker\npm2 monit\n\n# Zero-downtime restart (workers restart one by one)\npm2 reload amazon-checkout\n\n# Hard restart (all workers restart simultaneously)\npm2 restart amazon-checkout\n\n# View aggregated logs from all workers\npm2 logs amazon-checkout\n\n# Stop all workers\npm2 stop amazon-checkout\n\n# Delete from PM2 registry\npm2 delete amazon-checkout\n\n# Auto-start on server reboot\npm2 startup\npm2 save"
-            },
-            {
-              "type": "code",
-              "code": "// ecosystem.config.js — PM2 configuration file\n// Version control this file for consistent deployments\nmodule.exports = {\n  apps: [\n    {\n      name: 'amazon-checkout-service',\n      script: './server.js',\n\n      // Cluster mode — one process per CPU core\n      instances: 'max',\n      exec_mode: 'cluster',\n\n      // Auto-restart if memory exceeds 500MB\n      max_memory_restart: '500M',\n\n      // Environment variables\n      env: {\n        NODE_ENV: 'development',\n        PORT: 3000\n      },\n      env_production: {\n        NODE_ENV: 'production',\n        PORT: 3000,\n        UV_THREADPOOL_SIZE: 16\n      },\n\n      // Log configuration\n      error_file: './logs/error.log',\n      out_file: './logs/output.log',\n      log_date_format: 'YYYY-MM-DD HH:mm:ss',\n\n      // Watch for file changes (use only in development)\n      watch: false,\n\n      // Restart delay after crash\n      restart_delay: 1000,\n\n      // Max consecutive restarts before stopping\n      max_restarts: 10\n    }\n  ]\n};\n\n// Deploy with: pm2 start ecosystem.config.js --env production"
-            },
-            {
-              "type": "table",
-              "headers": ["Feature", "Manual cluster module", "PM2 cluster mode"],
-              "rows": [
-                ["Auto-restart crashed workers", "Must write manually", "Built-in, automatic"],
-                ["Zero-downtime restart", "Complex to implement", "pm2 reload — one command"],
-                ["Memory limit per worker", "Must write manually", "max_memory_restart option"],
-                ["Log aggregation", "Manual file management", "Built-in unified logs"],
-                ["CPU/Memory monitoring", "No built-in dashboard", "pm2 monit — real-time dashboard"],
-                ["Deployment with env vars", "Manual scripts needed", "ecosystem.config.js"],
-                ["Auto-start on server reboot", "Manual systemd setup", "pm2 startup — one command"]
-              ]
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ For any production Node.js application, use PM2 instead of managing the cluster module manually. PM2 provides production-grade process management with zero-downtime restarts, automatic crash recovery, memory monitoring, and simple deployment workflows."
-            }
-          ],
-
-          "How Amazon/Netflix Scale Node.js Servers": [
-            {
-              "type": "paragraph",
-              "text": "Companies like Amazon and Netflix never rely on a single Node.js server or even a single cluster on one machine. Their systems are globally distributed across multiple data centers, regions, and availability zones. Each individual service within their architecture — the checkout service, the recommendation service, the video streaming service, the user authentication service — is a completely separate Node.js application running on its own clustered infrastructure. Scaling happens at multiple layers simultaneously: clustering at the process level, load balancing at the machine level, auto-scaling at the infrastructure level, and geographic distribution at the global level."
-            },
-            {
-              "type": "paragraph",
-              "text": "During Amazon's Prime Day sale, their traffic can spike to 10-15 times normal levels within minutes of the sale starting. Their infrastructure uses auto-scaling groups that monitor CPU utilization and request latency across all servers. When CPU usage on the checkout service exceeds 70%, AWS Auto Scaling automatically provisions new EC2 instances, starts PM2 clusters on them, registers them with the load balancer, and begins routing traffic to them — all within 3-4 minutes. When the sale ends and traffic drops, it scales back down to save costs. This entire process happens automatically without any human intervention."
-            },
-            {
-              "type": "paragraph",
-              "text": "Netflix has an even more sophisticated setup because they need to handle both API traffic and media streaming simultaneously. Their Node.js API services handle metadata requests — what movies are available, personalized recommendations, playback URLs — while the actual video bytes are served from their Open Connect CDN. The Node.js API layer runs in clustered mode behind Netflix's Zuul API Gateway, which itself handles thousands of requests per second for routing, authentication, and rate limiting. Worker Threads inside each Node.js process handle CPU-intensive tasks like generating personalized thumbnails, running A/B test logic, and compressing recommendation payloads."
-            },
-            {
-              "type": "image",
-              "src": "amazonscale.png"
-            },
-            {
-              "type": "heading",
-              "text": "Amazon Checkout Service — Complete Architecture Flow"
-            },
-            {
-              "type": "step",
-              "title": "User clicks 'Buy Now' on Amazon",
-              "desc": "The request first hits Amazon's CloudFront CDN edge location closest to the user — possibly in Mumbai, Singapore, or Dublin. CloudFront handles SSL termination and routes the request to the nearest AWS region."
-            },
-            {
-              "type": "step",
-              "title": "API Gateway receives the request",
-              "desc": "Amazon API Gateway authenticates the JWT token, checks rate limits, validates the request format, and routes it to the correct checkout microservice based on the URL path."
-            },
-            {
-              "type": "step",
-              "title": "Load Balancer distributes traffic",
-              "desc": "AWS Application Load Balancer uses the least-connections algorithm to forward the request to the least busy EC2 instance running the Node.js checkout service. Each instance has a full PM2 cluster running."
-            },
-            {
-              "type": "step",
-              "title": "PM2 Cluster Worker handles the request",
-              "desc": "One of the 32 clustered Node.js worker processes on that EC2 instance receives the connection. It processes the checkout logic — validating inventory, applying discounts, calculating taxes — all asynchronously."
-            },
-            {
-              "type": "step",
-              "title": "Worker Threads handle CPU-heavy subtasks",
-              "desc": "Within the Node.js process, Worker Threads are spawned to handle PDF invoice generation, fraud detection scoring algorithms, and complex discount calculation trees simultaneously, without blocking the main thread."
-            },
-            {
-              "type": "step",
-              "title": "Distributed systems complete the order",
-              "desc": "The Node.js service publishes an order event to Amazon SQS/SNS. Redis cache updates the session. DynamoDB records the order. Downstream services (warehouse, payment, email) consume the event asynchronously."
-            },
-            {
-              "type": "step",
-              "title": "Auto-scaling responds to load",
-              "desc": "If all EC2 instances reach 75% CPU, CloudWatch triggers Auto Scaling to add 10 more instances. New instances start PM2 clusters, register with the load balancer, and begin taking traffic within 4 minutes."
-            },
-            {
-              "type": "heading",
-              "text": "Netflix Architecture Flow"
-            },
-            {
-              "type": "step",
-              "title": "User opens Netflix app",
-              "desc": "Request hits Netflix's Zuul API Gateway via the nearest CDN edge node. Zuul handles authentication using Netflix Passport and routes to the appropriate microservice."
-            },
-            {
-              "type": "step",
-              "title": "Gateway routes to Node.js API service",
-              "desc": "The metadata API service — running as a PM2 cluster on multiple EC2 instances — receives the request to load the user's home screen with personalized content."
-            },
-            {
-              "type": "step",
-              "title": "Clustered workers handle concurrent users",
-              "desc": "Multiple PM2 cluster workers on each instance handle different users' requests simultaneously. Each worker independently queries Redis for cached recommendations, Cassandra for user watch history, and Elasticsearch for content metadata."
-            },
-            {
-              "type": "step",
-              "title": "Worker Threads run personalization algorithms",
-              "desc": "Thumbnail A/B testing, recommendation ranking algorithms, and content compression all run in Worker Threads within the Node.js process to avoid blocking the Event Loop while processing complex machine learning outputs."
-            },
-            {
-              "type": "step",
-              "title": "Hystrix circuit breakers prevent cascade failures",
-              "desc": "Netflix's Hystrix library wraps all downstream service calls. If a recommendation service becomes slow, the circuit breaker opens and returns cached recommendations instead — preventing the slowdown from cascading to affect all users."
-            },
-            {
-              "type": "heading",
-              "text": "Complete Technology Stack Used at Scale"
-            },
-            {
-              "type": "table",
-              "headers": ["Technology", "Purpose", "Where it Fits"],
-              "rows": [
-                ["PM2 Clustering", "Use all CPU cores on each machine", "Each EC2 instance — process level"],
-                ["Worker Threads", "Run CPU-heavy jobs without blocking", "Inside each Node.js worker process"],
-                ["process.nextTick", "Priority async callback scheduling", "Inside Event Loop of each worker"],
-                ["AWS Auto Scaling", "Automatically add/remove EC2 machines", "Infrastructure level"],
-                ["Application Load Balancer", "Distribute traffic across EC2 instances", "Network level between machines"],
-                ["Redis Cluster", "Shared session data and caching across all workers", "Data layer"],
-                ["Kafka / SQS", "Async event-driven communication between services", "Service communication"],
-                ["Microservices", "Split system into independently deployable pieces", "Architecture level"],
-                ["CDN (CloudFront)", "Serve static assets and edge routing globally", "Global network layer"],
-                ["API Gateway (Zuul/Kong)", "Auth, routing, rate limiting at entry point", "Entry point layer"],
-                ["Circuit Breakers (Hystrix)", "Prevent cascade failures between services", "Resilience layer"],
-                ["Docker + Kubernetes", "Container orchestration at massive scale", "Deployment layer"],
-                ["Distributed Tracing", "Monitor request flow across all services", "Observability layer"]
-              ]
-            },
-            {
-              "type": "code",
-              "code": "// Complete Request Flow Diagram\n\nUser Browser / Mobile App\n         ↓\n    CDN Edge Node\n   (CloudFront / Fastly)\n         ↓\n    API Gateway\n   (Auth + Routing + Rate Limiting)\n         ↓\n  Application Load Balancer\n   (Distributes across EC2 instances)\n         ↓\n  EC2 Instance — PM2 Cluster\n  ┌─────────────────────────────┐\n  │  Worker 1 │ Worker 2        │\n  │  Worker 3 │ Worker 4  ...   │\n  │          ...                │\n  │  Worker 31 │ Worker 32      │\n  └─────────────────────────────┘\n         ↓\n  Inside Each Worker Process\n  ┌────────────────────────────────┐\n  │  Main Thread — Event Loop      │\n  │  Worker Thread 1 (Invoice PDF) │\n  │  Worker Thread 2 (Fraud Score) │\n  │  Worker Thread 3 (Tax Calc)    │\n  └────────────────────────────────┘\n         ↓\n  Data Layer\n  Redis │ DynamoDB │ Kafka │ S3\n         ↓\n  Downstream Microservices\n  Payment │ Warehouse │ Email │ Analytics"
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Large-scale systems like Amazon and Netflix scale horizontally by adding more machines rather than relying on making one machine more powerful. Clustering maximizes each machine's capacity, while auto-scaling adds more machines when demand grows. Worker Threads handle computation. Everything else — coordination, communication, resilience — is handled by the distributed infrastructure layer."
-            },
-            {
-              "type": "success-callout",
-              "text": "✅ Real-world Node.js scaling at Amazon and Netflix scale combines PM2 clustering, Worker Threads, process.nextTick for precise scheduling, load balancers, Redis caching, Kafka event queues, microservices architecture, auto-scaling infrastructure, and CDN delivery — all working together as a unified system."
-            }
-          ]
         }
       },
 
@@ -6530,33 +7184,1016 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
       {
         id: 6,
         title: "Transactions & Data Integrity",
-        level: "intermediate",
+        level: "freshers",
         topics: [
           "What are Transactions?",
           "ACID in MongoDB",
           "Single Document Atomicity",
           "Multi-Document Transactions — Order + Payment Together",
           "When to Use Transactions vs Embedded Documents",
-        ]
+        ],
+        topicDetails: {
+
+          "What are Transactions?": [
+            {
+              type: "paragraph",
+              text: "You place a Domino's order on Swiggy. Two things must happen: your order gets created, and ₹487 gets deducted from your wallet. What if the order is created successfully — but the payment deduction fails? You'd get free pizza. What if the payment is deducted — but the order creation crashes? You've paid for nothing. Either both happen, or neither happens. That guarantee is called a Transaction."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If MongoDB writes to two different collections and the server crashes halfway through — what happens to your order and your money?"
+            },
+            {
+              type: "heading",
+              text: "Definition"
+            },
+            {
+              type: "paragraph",
+              text: "A transaction is a group of database operations that are treated as one unit. Either all of them succeed together — or none of them apply. There is no halfway state. In Swiggy's case: insert into orders AND deduct from wallets. Both succeed or both are rolled back, as if nothing happened."
+            },
+            {
+              type: "step",
+              title: "You tap Place Order",
+              desc: "MongoDB starts a transaction. It's now tracking every operation inside it as one bundle."
+            },
+            {
+              type: "step",
+              title: "Order document is created",
+              desc: "A new document is inserted into the orders collection with status 'placed'. This is step 1 inside the transaction."
+            },
+            {
+              type: "step",
+              title: "Wallet is debited",
+              desc: "₹487 is deducted from your Swiggy wallet in the wallets collection. This is step 2 inside the same transaction."
+            },
+            {
+              type: "step",
+              title: "Both succeed — transaction commits",
+              desc: "MongoDB permanently saves both changes. Your order is confirmed and your wallet reflects ₹487 less."
+            },
+            {
+              type: "step",
+              title: "Payment fails — transaction aborts",
+              desc: "If the wallet deduction fails for any reason, MongoDB rolls back step 1 as well. The order document is removed. Your wallet is untouched. Nothing happened."
+            },
+            {
+              type: "code",
+              code: `// A transaction wrapping two operations — both succeed or both roll back
+const session = client.startSession()
+
+session.withTransaction(async () => {
+  // Step 1 — create the order
+  await db.collection("orders").insertOne(
+    { orderId: "SWG-10239847", restaurantId: "rst_4421", totalAmount: 487, status: "placed" },
+    { session }
+  )
+
+  // Step 2 — deduct from wallet
+  await db.collection("wallets").updateOne(
+    { userId: "usr_982341" },
+    { $inc: { balance: -487 } },
+    { session }
+  )
+  // If this throws — Step 1 is automatically rolled back
+})`
+            },
+            {
+              type: "success-callout",
+              text: "✅ A transaction is an all-or-nothing bundle. Your order and your payment happen together or not at all. No free pizza. No lost money."
+            }
+          ],
+
+
+          "ACID in MongoDB": [
+            {
+              type: "paragraph",
+              text: "Swiggy processes lakhs of orders a day. Multiple users ordering at the same time. Servers crashing mid-operation. Network failures halfway through a payment. How does MongoDB ensure none of this corrupts your data? The answer is ACID — four properties that every transaction in MongoDB guarantees."
+            },
+            {
+              type: "heading",
+              text: "A — Atomicity"
+            },
+            {
+              type: "paragraph",
+              text: "Atomicity means all-or-nothing. Your order creation and wallet deduction are one atomic unit. If the wallet deduction fails, the order insert is rolled back automatically. MongoDB never leaves you in a state where the order exists but payment didn't go through."
+            },
+            {
+              type: "code",
+              code: `// Atomicity — if the wallet update fails, the order insert is undone
+await db.orders.insertOne({ orderId: "SWG-10239847", totalAmount: 487 }, { session })
+await db.wallets.updateOne({ userId: "usr_982341" }, { $inc: { balance: -487 } }, { session })
+// Server crash here → both are rolled back. Clean state.`
+            },
+            {
+              type: "heading",
+              text: "C — Consistency"
+            },
+            {
+              type: "paragraph",
+              text: "Consistency means the database is always in a valid state before and after the transaction. Swiggy's rule: wallet balance can never go below ₹0. If you have ₹200 and try to pay ₹487, the transaction is rejected. The database doesn't go into an invalid state — it simply doesn't apply the operation."
+            },
+            {
+              type: "code",
+              code: `// Consistency — a rule violation aborts the whole transaction
+// User has ₹200. Order is ₹487.
+await db.wallets.updateOne(
+  { userId: "usr_982341", balance: { $gte: 487 } }, // only update if sufficient balance
+  { $inc: { balance: -487 } },
+  { session }
+)
+// If balance is insufficient — no match, transaction aborts, order not placed`
+            },
+            {
+              type: "heading",
+              text: "I — Isolation"
+            },
+            {
+              type: "paragraph",
+              text: "Isolation means two transactions running at the same time don't interfere with each other. You and your roommate both place Swiggy orders from your shared wallet at the same second. Isolation ensures each transaction reads the wallet balance as it was before the other transaction touched it — no double-spend, no race condition."
+            },
+            {
+              type: "code",
+              code: `// Isolation — two simultaneous orders don't corrupt the wallet
+// Transaction A (you):       reads ₹800, deducts ₹487 → ₹313 remaining
+// Transaction B (roommate):  reads ₹800, deducts ₹350 → would give ₹450 remaining
+// Without isolation: both read ₹800, both deduct, wallet ends at wrong value
+// With isolation: Transaction B waits or retries, sees the updated ₹313 balance`
+            },
+            {
+              type: "heading",
+              text: "D — Durability"
+            },
+            {
+              type: "paragraph",
+              text: "Durability means once MongoDB confirms a transaction is committed, it is permanent — even if the server crashes the next millisecond. Your order confirmation screen shows up. That order is on disk. A server restart won't erase it."
+            },
+            {
+              type: "code",
+              code: `// Durability — committed = permanent, no matter what happens next
+// Transaction commits at 2:14:07 PM
+// Server crashes at 2:14:08 PM
+// Server restarts — your order is still there, wallet balance is still updated ✅`
+            },
+            {
+              type: "table",
+              headers: ["Property", "What it guarantees", "Swiggy example"],
+              rows: [
+                ["Atomicity", "All operations succeed or none apply", "Order + payment both succeed or both roll back"],
+                ["Consistency", "Database stays in a valid state", "Wallet never goes negative"],
+                ["Isolation", "Concurrent transactions don't interfere", "Two simultaneous orders don't corrupt the wallet"],
+                ["Durability", "Committed data survives crashes", "Confirmed order persists across server restarts"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ ACID is the set of guarantees MongoDB makes inside a transaction. Atomicity keeps it all-or-nothing. Consistency keeps rules intact. Isolation keeps concurrent operations separate. Durability keeps committed data safe. Together they mean your Swiggy order and payment are always in a trustworthy state."
+            }
+          ],
+
+
+          "Single Document Atomicity": [
+            {
+              type: "paragraph",
+              text: "Your Domino's order is out for delivery. Ravi the delivery partner picks it up. Swiggy updates three fields at once — status changes to 'out_for_delivery', deliveryPartnerId is set, and pickedUpAt timestamp is recorded. All three fields are in the same order document. MongoDB guarantees this update is atomic — you will never see the document in a half-updated state."
+            },
+            {
+              type: "heading",
+              text: "What Single Document Atomicity Means"
+            },
+            {
+              type: "paragraph",
+              text: "MongoDB has always guaranteed that a write to a single document is atomic — even without starting an explicit transaction. When you updateOne on an order document, either all the $set fields are applied together or none of them are."
+            },
+            {
+              type: "code",
+              code: `// Three fields updated in one operation — atomic by default, no transaction needed
+db.orders.updateOne(
+  { _id: ObjectId("ord_10239847") },
+  { $set: {
+    status:            "out_for_delivery",
+    deliveryPartnerId: "dp_7731",
+    pickedUpAt:        new Date()
+  } }
+)
+
+// Any reader who queries this order gets either:
+// — the old state (all three fields unchanged), OR
+// — the new state (all three fields updated)
+// Never a mix of old and new ✅`
+            },
+            {
+              type: "step",
+              title: "Why this matters for Swiggy",
+              desc: "Swiggy's live tracking reads order documents millions of times a day. If a reader could see status as 'out_for_delivery' but deliveryPartnerId still null — the tracking screen would crash. Single document atomicity prevents this entirely."
+            },
+            {
+              type: "step",
+              title: "Embedding is what makes this powerful",
+              desc: "Because Swiggy stores order items, payment, and timeline all inside one document — almost every order update is a single document write. This means Swiggy gets atomicity for free, without the overhead of multi-document transactions."
+            },
+            {
+              type: "code",
+              code: `// Order delivered — update status, deliveredAt, and payment confirmation
+// All inside one document — one atomic write
+db.orders.updateOne(
+  { _id: ObjectId("ord_10239847") },
+  { $set: {
+    status:      "delivered",
+    deliveredAt: new Date(),
+    "payment.status": "settled"
+  } }
+)`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Single document atomicity only covers one document. If your update touches two collections — like orders AND wallets — that's two separate documents. A plain updateOne on each is NOT atomic across both. For that, you need a multi-document transaction."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Every write to a single document in MongoDB is atomic by default — no transaction needed. This is why embedding data inside one document isn't just a performance decision — it's also a data integrity decision. One document = one atomic unit."
+            }
+          ],
+
+
+          "Multi-Document Transactions — Order + Payment Together": [
+            {
+              type: "paragraph",
+              text: "You place a Swiggy order and pay via your Swiggy Money wallet. Swiggy needs to do two things: insert a new document into the orders collection, and deduct ₹487 from your document in the wallets collection. These are two separate documents in two separate collections. Single document atomicity doesn't cover this. You need a multi-document transaction."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ What happens if the order is inserted successfully but the server dies before the wallet is debited? Without a transaction — Swiggy loses ₹487. With one — neither change survives."
+            },
+            {
+              type: "heading",
+              text: "How Multi-Document Transactions Work in MongoDB"
+            },
+            {
+              type: "paragraph",
+              text: "Multi-document transactions work like a session that wraps multiple operations. You start a session, begin a transaction, run your operations passing the session along, then commit. If anything fails — MongoDB rolls back every operation in that session automatically."
+            },
+            {
+              type: "step",
+              title: "Step 1 — Start a session",
+              desc: "A session is a MongoDB concept that tracks a sequence of operations. The transaction runs inside this session."
+            },
+            {
+              type: "step",
+              title: "Step 2 — Run operations inside the transaction",
+              desc: "Insert the order document AND update the wallet document — both passing the same session. MongoDB holds these as pending, not yet committed."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Commit or abort",
+              desc: "If both operations succeed, commitTransaction() makes them permanent. If anything throws, MongoDB automatically aborts and rolls back both operations."
+            },
+            {
+              type: "code",
+              code: `const session = client.startSession()
+
+try {
+  session.startTransaction()
+
+  // Operation 1 — create the order
+  await db.collection("orders").insertOne({
+    orderId:      "SWG-20240318-10239847",
+    restaurantId: "rst_4421",
+    userId:       "usr_982341",
+    totalAmount:  487,
+    status:       "placed"
+  }, { session })
+
+  // Operation 2 — deduct from wallet
+  const result = await db.collection("wallets").updateOne(
+    { userId: "usr_982341", balance: { $gte: 487 } },
+    { $inc: { balance: -487 } },
+    { session }
+  )
+
+  // If wallet had insufficient balance — no document matched, abort
+  if (result.matchedCount === 0) {
+    throw new Error("Insufficient wallet balance")
+  }
+
+  // Both succeeded — make it permanent
+  await session.commitTransaction()
+
+} catch (error) {
+  // Something failed — roll back everything
+  await session.abortTransaction()
+  throw error
+
+} finally {
+  session.endSession()
+}`
+            },
+            {
+              type: "step",
+              title: "What happens on commit",
+              desc: "Both the new order document and the updated wallet balance are written to disk permanently. Swiggy sends you the order confirmation."
+            },
+            {
+              type: "step",
+              title: "What happens on abort",
+              desc: "The order document that was inserted disappears as if it never existed. The wallet balance is unchanged. You see a payment failure screen instead."
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Multi-document transactions in MongoDB require a replica set or sharded cluster — they don't work on a standalone server. They also add latency and lock overhead. Use them only when you genuinely need cross-document atomicity."
+            },
+            {
+              type: "table",
+              headers: ["", "Single Document", "Multi-Document Transaction"],
+              rows: [
+                ["Atomicity", "Automatic — always", "Manual — wrap in a transaction"],
+                ["Collections involved", "One document in one collection", "Multiple documents across collections"],
+                ["Performance", "Fast, no overhead", "Slower — coordination cost"],
+                ["Swiggy example", "Updating order status + timestamp", "Creating order + debiting wallet"],
+                ["Setup required", "None", "Replica set or sharded cluster"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Multi-document transactions let Swiggy treat an order insert and a wallet debit as one atomic operation. Either your order is confirmed and your wallet is debited — or neither happens. No free pizza, no lost money."
+            }
+          ],
+
+
+          "When to Use Transactions vs Embedded Documents": [
+            {
+              type: "paragraph",
+              text: "Now you know two tools: embed related data inside one document for automatic atomicity, or use a multi-document transaction when you must write to two separate collections. Swiggy uses both — but for very different situations. Choosing wrong means either slow, over-engineered writes or silent data corruption."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If embedding gives you atomicity for free — why would you ever pay the cost of a multi-document transaction?"
+            },
+            {
+              type: "heading",
+              text: "When Embedding is the Right Answer"
+            },
+            {
+              type: "paragraph",
+              text: "If the data you're updating belongs to one order, changes together with the order, and is always read as part of the order — embed it. Swiggy's order items, payment details, and delivery timeline are all embedded inside the order document. Updating them is a single document write — atomic for free."
+            },
+            {
+              type: "code",
+              code: `// Order delivered — status, deliveredAt, and payment.status all live inside one document
+// One atomic write, zero transaction overhead
+db.orders.updateOne(
+  { _id: ObjectId("ord_10239847") },
+  { $set: {
+    status:           "delivered",
+    deliveredAt:      new Date(),
+    "payment.status": "settled"
+  } }
+)
+// ✅ Atomic. Fast. No transaction needed.`
+            },
+            {
+              type: "step",
+              title: "Delivery timeline inside the order",
+              desc: "placedAt, confirmedAt, pickedUpAt, deliveredAt — all inside one order document. Every status change is a single document update. No transaction needed for any of it."
+            },
+            {
+              type: "step",
+              title: "Items inside the order",
+              desc: "Your Biryani, Raita, and Soft Drink are embedded inside the order. Adding or removing items during an active order is one atomic write on one document."
+            },
+            {
+              type: "heading",
+              text: "When a Transaction is the Right Answer"
+            },
+            {
+              type: "paragraph",
+              text: "When an operation must touch two separate collections and both must succeed or fail together — you need a transaction. Swiggy uses transactions in a handful of critical flows where the data genuinely cannot be embedded."
+            },
+            {
+              type: "step",
+              title: "Order + Wallet deduction",
+              desc: "The order lives in the orders collection. The wallet lives in the wallets collection. They can't be merged into one document — a wallet belongs to a user, not to one order. Use a transaction."
+            },
+            {
+              type: "step",
+              title: "Order cancellation + Refund",
+              desc: "Cancelling an order means updating status in orders AND adding money back to wallets. Two collections, two documents. Use a transaction."
+            },
+            {
+              type: "step",
+              title: "Inventory update when order is placed",
+              desc: "Swiggy Instamart decrements item stock in the inventory collection and creates the order in the orders collection simultaneously. Two documents, two collections. Use a transaction."
+            },
+            {
+              type: "code",
+              code: `// Refund on cancellation — order collection + wallet collection — must be atomic
+session.withTransaction(async () => {
+  await db.collection("orders").updateOne(
+    { _id: ObjectId("ord_10239847") },
+    { $set: { status: "cancelled", cancelledAt: new Date() } },
+    { session }
+  )
+  await db.collection("wallets").updateOne(
+    { userId: "usr_982341" },
+    { $inc: { balance: 487 } },   // refund
+    { session }
+  )
+  // Both succeed or both roll back ✅
+})`
+            },
+            {
+              type: "table",
+              headers: ["Scenario", "Approach", "Why"],
+              rows: [
+                ["Update order status + timestamp", "Embed — single doc write", "Same document, no coordination needed"],
+                ["Add items during active order", "Embed — single doc write", "Items live inside the order"],
+                ["Place order + debit wallet", "Transaction", "Two separate collections"],
+                ["Cancel order + refund wallet", "Transaction", "Two separate collections"],
+                ["Instamart order + inventory decrement", "Transaction", "Two separate collections"],
+                ["Update restaurant rating", "Single doc write on restaurants", "One document, no order involved"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Don't reach for transactions by default. They add latency, require a replica set, and create lock contention on busy collections. If you find yourself needing transactions everywhere — your schema design likely needs revisiting. Better embedding usually eliminates the need."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Embed when data belongs to one document — you get atomicity for free and zero overhead. Use transactions only when two separate collections must change together and neither can be embedded into the other. On Swiggy: order details are embedded, wallet deductions are transacted."
+            }
+          ]
+
+        }
       },
 
       {
-        id: 7,
-        title: "Performance & Optimization",
-        level: "intermediate",
-        topics: [
+        "id": 7,
+        "title": "Performance & Optimization",
+        "level": "freshers",
+        "topics": [
           "TTL Indexes — Auto-deleting Expired OTPs & Sessions",
           "Capped Collections — Storing Last N Delivery Logs",
           "Projection — Fetching Only What You Need",
           "Pagination — Loading Swiggy Order History Page by Page",
           "Read vs Write Heavy Design Decisions",
-        ]
+          "Bulk Write Operations — Batching Updates at Scale",
+          "Query Selectivity — Writing Filters That Actually Help",
+          "In-Memory Sorting vs Index Sorting"
+        ],
+        "topicDetails": {
+
+          "TTL Indexes — Auto-deleting Expired OTPs & Sessions": [
+            {
+              "type": "paragraph",
+              "text": "You enter your phone number on Swiggy. An OTP lands — valid for 10 minutes. After 10 minutes, it's useless. But it's still sitting in MongoDB's otp collection unless something deletes it. Swiggy doesn't want engineers writing cron jobs to clean up expired OTPs, stale sessions, and temporary tokens. MongoDB has a built-in mechanism for this: TTL Indexes — Time To Live indexes that automatically expire and delete documents after a set duration."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Swiggy generates millions of OTPs a day. If expired ones are never cleaned up, the otp collection grows forever. Who deletes them — and how?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a TTL Index?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A TTL index is a special single-field index on a date field. You specify an expireAfterSeconds value. MongoDB runs a background thread every 60 seconds that scans for documents where the indexed date field plus the TTL duration is in the past — and deletes them automatically. No cron job, no application code, no manual cleanup."
+            },
+            {
+              "type": "step",
+              "title": "You request an OTP",
+              "desc": "Swiggy inserts a document into the otps collection with your phone number, the OTP code, and a createdAt timestamp set to now."
+            },
+            {
+              "type": "step",
+              "title": "10 minutes pass — OTP expires",
+              "desc": "MongoDB's TTL background thread checks: createdAt + 600 seconds < now? Yes. The document is automatically deleted. No Swiggy code ran. The database handled it."
+            },
+            {
+              "type": "step",
+              "title": "You try the OTP after 10 minutes",
+              "desc": "Swiggy queries the otps collection. The document is gone. Returns 'OTP expired' — because MongoDB already cleaned it up."
+            },
+            {
+              "type": "code",
+              "code": "// Create TTL index — deletes OTP documents 600 seconds after createdAt\ndb.otps.createIndex(\n  { createdAt: 1 },\n  { expireAfterSeconds: 600 }  // 10 minutes\n)\n\n// Insert an OTP — MongoDB auto-deletes this document at 2:24 PM\ndb.otps.insertOne({\n  phone:     \"+91-9876543210\",\n  otp:       \"847291\",\n  createdAt: new Date()        // 2:14 PM — expires at 2:24 PM automatically\n})"
+            },
+            {
+              "type": "heading",
+              "text": "Swiggy's TTL Use Cases"
+            },
+            {
+              "type": "step",
+              "title": "OTPs — expire after 10 minutes",
+              "desc": "Login OTPs, payment OTPs. If unused after 600 seconds, MongoDB deletes them. No stale OTPs accumulating in the collection."
+            },
+            {
+              "type": "code",
+              "code": "// OTPs — 10 minute expiry\ndb.otps.createIndex({ createdAt: 1 }, { expireAfterSeconds: 600 })"
+            },
+            {
+              "type": "step",
+              "title": "User sessions — expire after 30 days of inactivity",
+              "desc": "Each session document has a lastAccessedAt field. Every time the user opens Swiggy, lastAccessedAt is updated to now. If they don't open the app for 30 days, the session document expires and they're logged out automatically."
+            },
+            {
+              "type": "code",
+              "code": "// Sessions — expire 30 days after last access\ndb.sessions.createIndex(\n  { lastAccessedAt: 1 },\n  { expireAfterSeconds: 2592000 }  // 30 days\n)\n\n// Every app open — refresh the TTL clock\ndb.sessions.updateOne(\n  { sessionId: \"sess_abc123\" },\n  { $set: { lastAccessedAt: new Date() } }\n)"
+            },
+            {
+              "type": "step",
+              "title": "Temporary cart data — expire after 2 hours",
+              "desc": "If a user adds items to cart but never places the order, the cart document is auto-deleted after 2 hours. No orphaned cart documents from abandoned sessions."
+            },
+            {
+              "type": "code",
+              "code": "// Carts — expire 2 hours after last modification\ndb.carts.createIndex(\n  { updatedAt: 1 },\n  { expireAfterSeconds: 7200 }  // 2 hours\n)"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ TTL deletion is approximate — MongoDB's background thread runs every 60 seconds. An OTP set to expire at 2:14 PM might not be deleted until 2:15 PM. Always validate expiry in your application logic too — don't rely solely on the document being gone."
+            },
+            {
+              "type": "table",
+              "headers": ["Use case", "TTL field", "expireAfterSeconds", "Swiggy benefit"],
+              "rows": [
+                ["Login OTP", "createdAt", "600 (10 min)", "Stale OTPs auto-deleted"],
+                ["Payment OTP", "createdAt", "300 (5 min)", "Shorter window for sensitive actions"],
+                ["User sessions", "lastAccessedAt", "2592000 (30 days)", "Inactive sessions auto-expire"],
+                ["Abandoned carts", "updatedAt", "7200 (2 hrs)", "No orphaned cart data"],
+                ["Push notification tokens", "createdAt", "7776000 (90 days)", "Stale device tokens removed"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ TTL indexes are Swiggy's automatic janitor. OTPs, sessions, carts — anything with a natural expiry — gets cleaned up by MongoDB itself. No cron jobs, no manual deletes, no ever-growing collection of stale data. Create the index once, and MongoDB handles cleanup forever."
+            }
+          ],
+
+          "Capped Collections — Storing Last N Delivery Logs": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy's delivery tracking system logs every location ping from every delivery partner — every 5 seconds. That's 200,000 delivery partners × 12 pings per minute = 2.4 million log entries per minute. Swiggy only needs the last 100 pings per partner to show the live route on your screen. They don't need millions of historical pings accumulating forever. A Capped Collection solves this: a fixed-size collection that automatically overwrites the oldest documents when it fills up — like a circular buffer."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What if you need a MongoDB collection that never grows beyond a certain size — automatically discarding old entries as new ones come in?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Capped Collection?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Capped Collection has a fixed maximum size in bytes and optionally a maximum document count. When either limit is hit, MongoDB automatically overwrites the oldest document with the newest insert — in insertion order. Think of it as a circular log buffer baked into the database."
+            },
+            {
+              "type": "code",
+              "code": "// Create a capped collection for delivery location pings\n// Max 50MB, max 500,000 documents\ndb.createCollection(\"deliveryPings\", {\n  capped:  true,\n  size:    52428800,  // 50MB in bytes — required\n  max:     500000     // optional document count cap\n})\n\n// Check if a collection is capped\ndb.deliveryPings.isCapped()  // true"
+            },
+            {
+              "type": "step",
+              "title": "Ravi pings his location every 5 seconds",
+              "desc": "Each ping inserts a small document — partnerId, lat, lng, timestamp. The capped collection accepts it immediately."
+            },
+            {
+              "type": "step",
+              "title": "The collection hits its size limit",
+              "desc": "The 500,001st document comes in. MongoDB overwrites the oldest document — Ravi's ping from 40 minutes ago — with this new one. The collection stays at exactly 500,000 documents. No manual cleanup needed."
+            },
+            {
+              "type": "step",
+              "title": "Your screen shows Ravi's live route",
+              "desc": "Swiggy queries the last 50 pings for Ravi's partnerId. Because capped collections preserve insertion order, the most recent pings are always at the end. Fast read, no index needed for recent data."
+            },
+            {
+              "type": "code",
+              "code": "// Insert a location ping — no special syntax, just insertOne\ndb.deliveryPings.insertOne({\n  partnerId:  \"dp_7731\",\n  lat:        19.0596,\n  lng:        72.8295,\n  speed:      24,       // kmph\n  recordedAt: new Date()\n})\n\n// Get last 50 pings for a partner — natural order = insertion order\ndb.deliveryPings.find(\n  { partnerId: \"dp_7731\" },\n  { lat: 1, lng: 1, recordedAt: 1, _id: 0 }\n).sort({ $natural: -1 }).limit(50)\n// $natural: -1 = reverse insertion order = most recent first"
+            },
+            {
+              "type": "heading",
+              "text": "Other Swiggy Use Cases for Capped Collections"
+            },
+            {
+              "type": "step",
+              "title": "Order status event log — last 20 events",
+              "desc": "Every status change for an order is logged — placed, confirmed, preparing, out_for_delivery, delivered. A capped collection keeps only the last 20 events per order, enough to display the full timeline without storing every intermediate state forever."
+            },
+            {
+              "type": "step",
+              "title": "Restaurant activity log — last 1000 actions",
+              "desc": "Every time a restaurant confirms an order, updates availability, or changes a menu item, it's logged. Capped at 1000 events, the log shows recent restaurant activity without growing unboundedly."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Capped collections have real limitations. You CANNOT delete individual documents — only the whole collection can be dropped. You CANNOT update a document if the update increases its size. And you cannot shard a capped collection. Use them only for append-only, fixed-window use cases like logs and event streams."
+            },
+            {
+              "type": "table",
+              "headers": ["", "Regular Collection", "Capped Collection"],
+              "rows": [
+                ["Size", "Grows forever", "Fixed max size — auto-wraps"],
+                ["Delete old docs", "Manual delete or TTL", "Automatic — oldest overwritten"],
+                ["Document order", "No guaranteed order", "Insertion order preserved"],
+                ["Use case", "General purpose", "Logs, circular buffers, recent-N data"],
+                ["Sharding", "✅ Supported", "❌ Not supported"],
+                ["Individual deletes", "✅ deleteOne/deleteMany", "❌ Not allowed"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Capped collections are Swiggy's circular buffer for high-volume, recent-data-only workloads. Delivery pings, status event logs, activity streams — fixed size, automatic overwrite, insertion order preserved. Never grows, never needs cleanup, always fast."
+            }
+          ],
+
+          "Projection — Fetching Only What You Need": [
+            {
+              "type": "paragraph",
+              "text": "You open Swiggy's order history screen. It shows 20 orders — each with just the restaurant name, total amount, status, and a thumbnail. But each order document in MongoDB is 4KB — packed with items arrays, payment details, delivery timelines, addresses, and metadata. If Swiggy fetches full documents for 20 orders, that's 80KB transferred from MongoDB to the app server, parsed in memory, then 90% of it thrown away. Projection solves this: tell MongoDB exactly which fields to return, and it sends only those — nothing else."
+            },
+            {
+              "type": "heading",
+              "text": "How Projection Works"
+            },
+            {
+              "type": "paragraph",
+              "text": "Projection is the second argument to find() — a document that specifies which fields to include (1) or exclude (0). MongoDB applies projection before sending results over the network, so you save bandwidth, memory allocation, and serialization cost."
+            },
+            {
+              "type": "code",
+              "code": "// Without projection — full 4KB document sent for each order\ndb.orders.find({ userId: \"usr_982341\" })\n// Returns: orderId, status, totalAmount, restaurant{}, items[], payment{},\n//          deliveryAddress, timeline{}, deliveryPartnerId... everything\n\n// With inclusion projection — only these 4 fields sent\ndb.orders.find(\n  { userId: \"usr_982341\", status: \"delivered\" },\n  { orderId: 1, totalAmount: 1, status: 1, \"restaurant.name\": 1, _id: 0 }\n)\n// Returns: orderId, totalAmount, status, restaurant.name only\n// From 4KB per document → ~80 bytes per document\n// 20 orders: 80KB → 1.6KB ✅"
+            },
+            {
+              "type": "step",
+              "title": "Inclusion projection — specify what to include",
+              "desc": "Set fields to 1. Only those fields are returned. Everything else is excluded. Note: _id is included by default — set _id: 0 to explicitly exclude it."
+            },
+            {
+              "type": "step",
+              "title": "Exclusion projection — specify what to exclude",
+              "desc": "Set fields to 0. Everything except those fields is returned. Useful when you want most of the document but need to hide a few sensitive or large fields."
+            },
+            {
+              "type": "code",
+              "code": "// Exclusion projection — return everything EXCEPT items array and payment details\n// Useful when items[] is large but you don't need it\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { items: 0, \"payment.cardDetails\": 0 }\n)\n\n// ⚠️ You cannot mix inclusion and exclusion in one projection\n// This will throw an error:\ndb.orders.find({}, { orderId: 1, items: 0 })  // ❌ invalid"
+            },
+            {
+              "type": "heading",
+              "text": "Projecting Nested Fields and Array Elements"
+            },
+            {
+              "type": "paragraph",
+              "text": "Swiggy's order documents have nested objects and arrays. Projection can reach into them — fetch only the restaurant name from the nested restaurant object, or fetch just the first item from the items array."
+            },
+            {
+              "type": "code",
+              "code": "// Fetch nested field — only restaurant name, not the whole restaurant object\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { \"restaurant.name\": 1, totalAmount: 1, status: 1, _id: 0 }\n)\n// Result: { restaurant: { name: \"Behrouz Biryani\" }, totalAmount: 487, status: \"delivered\" }\n\n// $slice — fetch only the first 2 items from the items array\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { items: { $slice: 2 }, totalAmount: 1, status: 1 }\n)\n// Useful for order cards that show \"Biryani + 3 more items\""
+            },
+            {
+              "type": "heading",
+              "text": "Covered Queries — The Performance Peak"
+            },
+            {
+              "type": "paragraph",
+              "text": "If every field in your query filter AND every field in your projection exists in a single index, MongoDB can answer the query entirely from the index — without touching any document at all. This is called a covered query and it's the fastest possible read in MongoDB."
+            },
+            {
+              "type": "code",
+              "code": "// Index covers both the filter field and the projection fields\ndb.orders.createIndex({ userId: 1, status: 1, totalAmount: 1, orderId: 1 })\n\n// Covered query — MongoDB answers entirely from the index, never reads a document\ndb.orders.find(\n  { userId: \"usr_982341\", status: \"delivered\" },\n  { totalAmount: 1, orderId: 1, _id: 0 }       // all projected fields are in the index\n)\n// explain() shows: IXSCAN with no FETCH stage ← that's a covered query ✅"
+            },
+            {
+              "type": "table",
+              "headers": ["Swiggy screen", "Query", "Projection fields"],
+              "rows": [
+                ["Order history list", "userId + status", "orderId, restaurant.name, totalAmount, status"],
+                ["Order detail screen", "orderId", "Everything — no projection needed"],
+                ["Support dashboard", "restaurantId + status", "orderId, totalAmount, customerPhone, status"],
+                ["Analytics export", "city + date range", "city, totalAmount, restaurantId — exclude items[]"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Projection is the simplest performance win in MongoDB. Fetch 4 fields instead of 40 and you reduce network transfer, memory usage, and serialization cost by 90%. Every high-traffic query on Swiggy uses projection. Order history doesn't need delivery partner GPS coordinates. Restaurant dashboard doesn't need payment card details. Fetch only what you render."
+            }
+          ],
+
+          "Pagination — Loading Swiggy Order History Page by Page": [
+            {
+              "type": "paragraph",
+              "text": "You've placed 200 orders on Swiggy over 3 years. When you open order history, you don't want all 200 returned at once — that's 200 full documents parsed, transferred, and rendered. Swiggy shows 10 at a time. Tap 'Load more' and the next 10 appear. This is pagination — fetching data in manageable chunks instead of all at once. MongoDB offers two approaches: offset-based pagination (skip + limit) and cursor-based pagination. They look similar but perform very differently at scale."
+            },
+            {
+              "type": "heading",
+              "text": "Offset-based Pagination — skip() + limit()"
+            },
+            {
+              "type": "paragraph",
+              "text": "The simplest approach: use skip() to jump to the right position and limit() to fetch N documents. Page 1 skips 0, page 2 skips 10, page 3 skips 20."
+            },
+            {
+              "type": "code",
+              "code": "// Page 1 — first 10 orders\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { orderId: 1, restaurant: 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).skip(0).limit(10)\n\n// Page 2 — next 10 orders\ndb.orders.find(\n  { userId: \"usr_982341\" },\n  { orderId: 1, restaurant: 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).skip(10).limit(10)\n\n// Page 21 — orders 201-210\n.skip(200).limit(10)\n// ⚠️ MongoDB scans and discards 200 documents to find position 201\n// The bigger the skip, the more expensive the query"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ skip() is expensive. MongoDB cannot jump to position N — it must scan and count N documents to find where to start. For Swiggy's most active users with thousands of orders, skip(900).limit(10) scans 900 documents and throws them away. Never use skip() on large collections with deep pagination."
+            },
+            {
+              "type": "heading",
+              "text": "Cursor-based Pagination — The Right Approach"
+            },
+            {
+              "type": "paragraph",
+              "text": "Instead of skipping to a position, cursor-based pagination remembers where the last page ended. The next query filters for documents that come after the last seen document — using an indexed field like createdAt or _id as the cursor. MongoDB doesn't scan anything it doesn't need to return."
+            },
+            {
+              "type": "step",
+              "title": "Page 1 — fetch first 10 orders, newest first",
+              "desc": "No cursor yet. Fetch the first 10 orders sorted by createdAt descending. Return the createdAt of the last document in the results — that's the cursor for the next page."
+            },
+            {
+              "type": "code",
+              "code": "// Page 1 — no cursor needed\nconst page1 = db.orders.find(\n  { userId: \"usr_982341\" },\n  { orderId: 1, \"restaurant.name\": 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).limit(10).toArray()\n\n// Last document's createdAt becomes the cursor\nconst cursor = page1[page1.length - 1].createdAt\n// cursor = ISODate(\"2024-02-14T19:32:00Z\")"
+            },
+            {
+              "type": "step",
+              "title": "Page 2 — use cursor to start exactly where page 1 ended",
+              "desc": "Filter for orders with createdAt less than the cursor. MongoDB uses the index on createdAt to jump directly to that point — no skip, no scan, no wasted reads."
+            },
+            {
+              "type": "code",
+              "code": "// Page 2 — cursor-based, no skip\nconst page2 = db.orders.find(\n  {\n    userId:    \"usr_982341\",\n    createdAt: { $lt: cursor }  // only orders before the last seen one\n  },\n  { orderId: 1, \"restaurant.name\": 1, totalAmount: 1, status: 1, createdAt: 1, _id: 0 }\n).sort({ createdAt: -1 }).limit(10).toArray()\n\n// New cursor for page 3\nconst nextCursor = page2[page2.length - 1].createdAt\n\n// ✅ No skip — MongoDB jumps straight to the cursor position via the index\n// Works identically whether this is page 2 or page 200"
+            },
+            {
+              "type": "step",
+              "title": "Index that makes cursor pagination fast",
+              "desc": "Create a compound index on userId and createdAt. MongoDB uses it to filter userId AND seek to the cursor position in one index lookup — O(log n) regardless of how deep the page is."
+            },
+            {
+              "type": "code",
+              "code": "// This index makes cursor-based pagination on order history O(log n) always\ndb.orders.createIndex({ userId: 1, createdAt: -1 })\n\n// Every page request — index seek to userId + cursor position, fetch 10, done\n// Page 1, page 50, page 200 — same cost ✅"
+            },
+            {
+              "type": "table",
+              "headers": ["", "skip() + limit()", "Cursor-based"],
+              "rows": [
+                ["Page 1 performance", "Fast", "Fast"],
+                ["Page 10 performance", "Slower — scans 90 docs", "Same as page 1"],
+                ["Page 100 performance", "Slow — scans 990 docs", "Same as page 1"],
+                ["Works with random access (jump to page 50)", "Yes", "No — sequential only"],
+                ["New items inserted mid-session", "May cause duplicates or gaps", "Stable — cursor anchors position"],
+                ["Swiggy use case", "Admin tools with low page counts", "Order history, restaurant listing, search results"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ For Swiggy's order history — cursor-based pagination with a compound index on {userId, createdAt}. Every page load costs the same regardless of depth. skip() + limit() works for admin tools with small datasets and numbered page navigation. For infinite scroll and 'load more' patterns — cursor is always the right choice."
+            }
+          ],
+
+          "Read vs Write Heavy Design Decisions": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy's restaurant listing page is read millions of times a day. A restaurant's menu changes a few times a week. The order placement flow writes thousands of orders per minute. These two workloads have opposite performance pressures — and designing one schema to serve both equally well is the core challenge of MongoDB performance. Your schema, indexes, and collection structure should be shaped by your ratio of reads to writes."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Swiggy reads restaurant data 10,000 times for every 1 write. Orders are written 500 times per minute but read 50,000 times per minute. How do these ratios change what you build?"
+            },
+            {
+              "type": "heading",
+              "text": "Read-Heavy Design — Optimize for Fast Fetches"
+            },
+            {
+              "type": "paragraph",
+              "text": "Restaurant listing and menu pages are read-dominant. A restaurant's name, rating, and menu barely change. Swiggy can afford to denormalize — duplicate data and embed more — because writes are rare and read speed is everything."
+            },
+            {
+              "type": "step",
+              "title": "Denormalize aggressively",
+              "desc": "Embed the restaurant's top 3 categories and cuisine tags directly inside the restaurant document. The home screen filter query reads one document — no second lookup. The data duplicates slightly, but updates are rare and the read win is massive."
+            },
+            {
+              "type": "step",
+              "title": "Add more indexes without fear",
+              "desc": "A read-heavy collection benefits from multiple indexes. Restaurants queried by city, by cuisine, by rating, by isOpen status — add compound indexes for all major access patterns. Write overhead is low since restaurants update rarely."
+            },
+            {
+              "type": "step",
+              "title": "Cache at the collection level with projection",
+              "desc": "The restaurant listing screen only needs name, rating, deliveryTime, thumbnailUrl, cuisine. Project exactly those fields. Combine with secondaryPreferred reads so this workload never touches the Primary."
+            },
+            {
+              "type": "code",
+              "code": "// Read-heavy: restaurants collection\n// Denormalized — cuisine, tags, and summary menu embedded for fast home screen reads\n{\n  _id:          \"rst_4421\",\n  name:         \"Behrouz Biryani\",\n  city:         \"Mumbai\",\n  rating:       4.5,\n  isOpen:       true,\n  deliveryTime: 35,\n  cuisine:      [\"Biryani\", \"Mughlai\"],   // embedded — no lookup needed\n  tags:         [\"Bestseller\", \"Pure Veg available\"],\n  topDishes:    [\"Dum Gosht Biryani\", \"Chicken 65\"]\n}\n\n// Multiple indexes for every read pattern\ndb.restaurants.createIndex({ city: 1, isOpen: 1, rating: -1 })\ndb.restaurants.createIndex({ city: 1, cuisine: 1, isOpen: 1 })\ndb.restaurants.createIndex({ city: 1, deliveryTime: 1, isOpen: 1 })\n\n// Home screen query — hits compound index, projection keeps it tiny\ndb.restaurants.find(\n  { city: \"Mumbai\", isOpen: true },\n  { name: 1, rating: 1, deliveryTime: 1, cuisine: 1, _id: 0 }\n).sort({ rating: -1 }).readPref(\"secondaryPreferred\")"
+            },
+            {
+              "type": "heading",
+              "text": "Write-Heavy Design — Optimize for Fast Inserts and Updates"
+            },
+            {
+              "type": "paragraph",
+              "text": "The orders collection is write-heavy at insertion time — 500+ orders per minute during peak. Every order insert also triggers status updates throughout the delivery lifecycle. Over-indexing this collection makes every write expensive. Design for write throughput."
+            },
+            {
+              "type": "step",
+              "title": "Minimize indexes on write-heavy collections",
+              "desc": "Every index on the orders collection gets updated on every insert and update. Swiggy has 6 indexes on orders — not 20. Only indexes that directly support high-traffic queries survive. Unused indexes are dropped after profiling."
+            },
+            {
+              "type": "step",
+              "title": "Use $inc for counters, not read-modify-write",
+              "desc": "Swiggy tracks an order count per restaurant. Never read the count, add 1 in code, and write it back — that's a race condition and two round trips. Use MongoDB's atomic $inc operator. One network round trip, no race condition."
+            },
+            {
+              "type": "step",
+              "title": "Batch writes with insertMany or bulkWrite",
+              "desc": "When Swiggy processes analytics events — search clicks, impression logs, scroll depth — they're buffered in memory and flushed to MongoDB in batches of 500. One insertMany call instead of 500 insertOne calls. Dramatically lower overhead per document."
+            },
+            {
+              "type": "code",
+              "code": "// Write-heavy: orders collection\n// Minimal indexes — only what high-traffic queries actually need\ndb.orders.createIndex({ userId: 1, createdAt: -1 })      // order history pagination\ndb.orders.createIndex({ restaurantId: 1, status: 1 })    // restaurant dashboard\ndb.orders.createIndex({ status: 1, city: 1 })            // ops monitoring\n// That's it — 3 indexes. Not 15.\n\n// Atomic counter update — no read-modify-write\ndb.restaurants.updateOne(\n  { _id: \"rst_4421\" },\n  { $inc: { orderCount: 1, totalRevenue: 487 } }  // atomic, no race condition\n)\n\n// Batch insert — 500 analytics events in one call\nconst events = [/* 500 event objects */]\ndb.analyticsEvents.insertMany(events, { ordered: false })\n// ordered: false — skip failed documents, don't stop the batch on one error"
+            },
+            {
+              "type": "table",
+              "headers": ["Decision", "Read-heavy (restaurants)", "Write-heavy (orders)"],
+              "rows": [
+                ["Indexes", "Many — every read pattern covered", "Few — only proven high-traffic queries"],
+                ["Schema", "Denormalized — embed for fast reads", "Normalized where needed — writes are frequent"],
+                ["Read routing", "secondaryPreferred — spread load", "primary — latest status required"],
+                ["Write pattern", "Rare updates — batch acceptable", "High-frequency — optimize individual writes"],
+                ["Counter updates", "Can read-modify-write (rare)", "Always use $inc — atomic, no race condition"],
+                ["Insert pattern", "Single inserts fine", "Batch with insertMany where possible"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ The read/write ratio is the first question to answer before designing any MongoDB collection. Swiggy's restaurants are read 10,000× per write — so denormalize, add indexes freely, and route reads to secondaries. Swiggy's orders are written 500× per minute — so minimize indexes, batch writes, and use atomic operators. Know your workload before you design your schema."
+            }
+          ],
+
+          "Bulk Write Operations — Batching Updates at Scale": [
+            {
+              "type": "paragraph",
+              "text": "It's Sunday night. A Domino's branch in Mumbai shuts unexpectedly. Swiggy needs to cancel 4,000 pending orders for that branch and notify each customer. If Swiggy runs 4,000 individual updateOne calls — that's 4,000 round trips to MongoDB, 4,000 network acknowledgements, 4,000 separate write operations. At peak load, that takes seconds and hammers the database. bulkWrite() solves this: send all 4,000 updates in one network call, let MongoDB execute them, get one acknowledgement back."
+            },
+            {
+              "type": "heading",
+              "text": "What bulkWrite Does"
+            },
+            {
+              "type": "paragraph",
+              "text": "bulkWrite() sends a batch of different write operations — inserts, updates, deletes, replaces — in a single command. MongoDB executes them and returns a combined result with counts for each operation type. One round trip, any mix of write types."
+            },
+            {
+              "type": "code",
+              "code": "// 4,000 order cancellations — one bulkWrite call\nconst cancelOps = pendingOrderIds.map(orderId => ({\n  updateOne: {\n    filter: { _id: orderId, status: \"placed\" },\n    update: { $set: { status: \"cancelled\", cancelledAt: new Date(), reason: \"restaurant_closed\" } }\n  }\n}))\n\nconst result = await db.collection(\"orders\").bulkWrite(cancelOps, {\n  ordered: false   // don't stop on individual failures — cancel as many as possible\n})\n\nconsole.log(result.modifiedCount)   // how many were actually cancelled\nconsole.log(result.matchedCount)    // how many matched the filter\n// One network round trip for 4,000 operations ✅"
+            },
+            {
+              "type": "step",
+              "title": "ordered: true vs ordered: false",
+              "desc": "ordered: true (default) runs operations sequentially — stops at the first error. ordered: false runs all operations and skips failures. For Swiggy's batch cancellation, use ordered: false — if 3 orders are already cancelled and don't match, continue cancelling the rest."
+            },
+            {
+              "type": "step",
+              "title": "Mix operation types in one call",
+              "desc": "bulkWrite can contain insertOne, updateOne, updateMany, deleteOne, deleteMany, and replaceOne all in the same batch. Swiggy can cancel some orders, insert refund records, and delete draft carts — all in one round trip."
+            },
+            {
+              "type": "code",
+              "code": "// Mixed bulk write — cancel orders + create refund records in one call\nconst ops = [\n  // Cancel the order\n  {\n    updateOne: {\n      filter: { _id: \"ord_001\", status: \"placed\" },\n      update: { $set: { status: \"cancelled\", cancelledAt: new Date() } }\n    }\n  },\n  // Insert a refund record\n  {\n    insertOne: {\n      document: { orderId: \"ord_001\", amount: 487, reason: \"restaurant_closed\", createdAt: new Date() }\n    }\n  },\n  // Delete the associated cart\n  {\n    deleteOne: {\n      filter: { orderId: \"ord_001\" }\n    }\n  }\n]\n\ndb.orders.bulkWrite(ops)"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ bulkWrite is not a transaction. If the batch has 4,000 operations and number 2,500 fails (with ordered: false), operations 1–2,499 and 2,501–4,000 all committed independently. If you need all-or-nothing, wrap bulkWrite in a multi-document transaction."
+            },
+            {
+              "type": "table",
+              "headers": ["Approach", "Network round trips", "Use when"],
+              "rows": [
+                ["4,000 × updateOne", "4,000", "Never for bulk operations"],
+                ["updateMany with shared filter", "1", "All documents match the same filter"],
+                ["bulkWrite with 4,000 ops", "1", "Each document needs individual filter/update"],
+                ["bulkWrite + transaction", "1 + commit overhead", "Need all-or-nothing guarantee"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ bulkWrite turns 4,000 network round trips into 1. For any Swiggy operation that touches many documents with per-document logic — batch cancellations, price updates per item, individualized notifications — bulkWrite is the right tool. One call, one acknowledgement, dramatically lower database load."
+            }
+          ],
+
+          "Query Selectivity — Writing Filters That Actually Help": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy creates an index on the status field of the orders collection. status has 5 values — placed, confirmed, preparing, out_for_delivery, delivered. 70% of all orders have status 'delivered'. A query for status: 'delivered' hits the index — but the index points to 70% of the collection. MongoDB still has to fetch 350 million documents from a 500 million document collection. The index exists but it barely helps. This is the problem of low query selectivity — and it's one of the most common performance traps in MongoDB."
+            },
+            {
+              "type": "heading",
+              "text": "What is Query Selectivity?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Selectivity measures how much a filter narrows down the result set. A highly selective filter eliminates most documents — like filtering by a unique orderId (returns 1 document from 500 million). A low-selectivity filter barely narrows anything — like filtering by status: 'delivered' (returns 350 million from 500 million). High selectivity = fast query. Low selectivity = slow query even with an index."
+            },
+            {
+              "type": "code",
+              "code": "// Low selectivity — status alone eliminates only 30% of documents\ndb.orders.find({ status: \"delivered\" })\n// Even with index on status: scans 350 million index entries\n// explain() shows: IXSCAN but totalDocsExamined: 350,000,000 ❌\n\n// High selectivity — orderId is unique, eliminates 499,999,999 documents\ndb.orders.find({ orderId: \"SWG-20240318-10239847\" })\n// explain() shows: IXSCAN, totalDocsExamined: 1 ✅\n\n// Medium selectivity — combine status with city for far better filtering\ndb.orders.find({ status: \"out_for_delivery\", city: \"Mumbai\" })\n// out_for_delivery = 5% of orders, Mumbai = 35% → combined = ~1.75% → much better ✅"
+            },
+            {
+              "type": "step",
+              "title": "Put the most selective field first in a compound index",
+              "desc": "MongoDB uses compound indexes left-to-right. The first field eliminates the most documents. If orderId is in your filter alongside city and status — put orderId first in the index. It eliminates 499,999,999 documents in one step; the rest barely matter."
+            },
+            {
+              "type": "code",
+              "code": "// ❌ Poor compound index — low-selectivity field first\ndb.orders.createIndex({ status: 1, city: 1, orderId: 1 })\n// status: 'delivered' leaves 350M docs → then filters by city → then orderId\n// Three index levels but first level does almost nothing\n\n// ✅ Better compound index — high-selectivity field first\ndb.orders.createIndex({ userId: 1, status: 1, createdAt: -1 })\n// userId: 'usr_982341' immediately leaves ~200 documents for that user\n// Then status and createdAt filter from 200, not from 500 million ✅"
+            },
+            {
+              "type": "step",
+              "title": "Avoid low-selectivity fields as standalone indexes",
+              "desc": "An index on status alone, or isOpen alone on restaurants, or paymentMethod alone on orders — these fields have very few distinct values. Standalone indexes on them provide minimal benefit and slow down every write. Only include them as trailing fields in compound indexes where higher-selectivity fields come first."
+            },
+            {
+              "type": "step",
+              "title": "Use explain() to measure actual selectivity",
+              "desc": "Run explain('executionStats') on any slow query. Compare totalDocsExamined to nReturned. The closer these numbers are, the more selective your query is. A ratio of 1:1 is perfect. A ratio of 350,000,000:12 means your index isn't helping."
+            },
+            {
+              "type": "code",
+              "code": "// Measure selectivity with explain\ndb.orders.find({ status: \"delivered\", city: \"Mumbai\", createdAt: { $gte: today } })\n  .explain(\"executionStats\")\n\n// Good selectivity result:\n// totalDocsExamined: 1243, nReturned: 1198\n// Ratio: 1.04:1 — nearly perfect ✅\n\n// Poor selectivity result:\n// totalDocsExamined: 350000000, nReturned: 1198\n// Ratio: 292,000:1 — index barely helps ❌ — add more selective fields to filter"
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Selectivity determines whether an index actually helps or just pretends to. Swiggy's status field has 5 values — it's never a good standalone index. Combined with userId (high selectivity) and createdAt (narrows to a time window), the same query goes from scanning 350 million to scanning 200. Design indexes around the fields that eliminate the most documents — not the fields that appear most often in queries."
+            }
+          ],
+
+          "In-Memory Sorting vs Index Sorting": [
+            {
+              "type": "paragraph",
+              "text": "Swiggy's restaurant listing page sorts results by rating. The query fetches 5,000 open restaurants in Mumbai and sorts them by rating descending. If there's no index that covers this sort, MongoDB fetches all 5,000 documents into memory, sorts them, then returns the top 20. If there's a compound index that already has the data sorted by rating — MongoDB reads the documents in sorted order directly from the index. No in-memory sort needed. This difference — index sort vs in-memory sort — is often the gap between a 2ms query and a 2000ms query."
+            },
+            {
+              "type": "heading",
+              "text": "In-Memory Sort — When it Happens and Why It Hurts"
+            },
+            {
+              "type": "paragraph",
+              "text": "MongoDB performs an in-memory sort when the query's sort order cannot be satisfied by an index. It fetches all matching documents first, loads them into a sort buffer, sorts them, then returns results. This has two problems: it uses RAM proportional to the result set size, and it has a hard 100MB memory limit — queries that exceed it fail unless allowDiskUse is enabled."
+            },
+            {
+              "type": "code",
+              "code": "// No index on rating — in-memory sort\ndb.restaurants.find({ city: \"Mumbai\", isOpen: true })\n  .sort({ rating: -1 })\n  .limit(20)\n\n// explain() shows:\n// stage: \"SORT\"   ← in-memory sort happening\n// memUsage: 4200000  ← 4.2MB used for sorting\n// hasSortStage: true  ← this is the warning sign\n\n// If result set is huge — query fails with:\n// \"Sort exceeded memory limit of 104857600 bytes\" ❌\n\n// Workaround (not ideal — spills to disk, slow)\ndb.restaurants.find({ city: \"Mumbai\", isOpen: true })\n  .sort({ rating: -1 })\n  .allowDiskUse(true)"
+            },
+            {
+              "type": "heading",
+              "text": "Index Sort — How to Eliminate the Sort Stage"
+            },
+            {
+              "type": "paragraph",
+              "text": "If the index key pattern matches the sort order, MongoDB reads documents from the index in already-sorted order. No sort buffer, no memory allocation, no 100MB limit. The documents come out sorted as a natural property of how the index is structured."
+            },
+            {
+              "type": "code",
+              "code": "// Create compound index that covers filter AND sort\ndb.restaurants.createIndex({ city: 1, isOpen: 1, rating: -1 })\n//                          ↑ filter   ↑ filter    ↑ sort direction must match\n\n// Same query now — no in-memory sort\ndb.restaurants.find({ city: \"Mumbai\", isOpen: true })\n  .sort({ rating: -1 })\n  .limit(20)\n\n// explain() shows:\n// stage: \"IXSCAN\" with no SORT stage above it ✅\n// hasSortStage: false  ← index sort — no memory used for sorting\n// totalDocsExamined: 20  ← fetched only what was needed after limit"
+            },
+            {
+              "type": "step",
+              "title": "Sort direction must match the index",
+              "desc": "If your index has rating: -1 (descending), the query sort({ rating: -1 }) uses it. The query sort({ rating: 1 }) (ascending) also uses it — MongoDB can traverse the index in reverse. But sort({ rating: -1, city: 1 }) with a { rating: -1, city: -1 } index won't work — mixed directions in compound sorts only work if every field's direction matches OR is exactly reversed."
+            },
+            {
+              "type": "step",
+              "title": "Filter fields come before sort fields in the index",
+              "desc": "The compound index must start with equality filter fields, then range filter fields, then sort fields. { city: 1, isOpen: 1, rating: -1 } — city and isOpen are equality filters, rating is the sort. This order allows MongoDB to use the index for both filtering and sorting without a separate sort stage."
+            },
+            {
+              "type": "code",
+              "code": "// ESR rule: Equality fields, then Sort fields, then Range fields\n// Query: city=Mumbai (equality), sort by rating (sort), rating > 4.0 (range)\ndb.restaurants.createIndex({ city: 1, rating: -1 })  // E then S — covers filter + sort\n\ndb.restaurants.find({ city: \"Mumbai\" })\n  .sort({ rating: -1 })\n  .limit(20)\n// ✅ Index scan in sorted order — no SORT stage\n\n// Adding the range filter\ndb.restaurants.find({ city: \"Mumbai\", rating: { $gt: 4.0 } })\n  .sort({ rating: -1 })\n// ✅ Still uses index — range on the sort field works because it's already sorted"
+            },
+            {
+              "type": "table",
+              "headers": ["Scenario", "Sort stage?", "Performance", "Fix"],
+              "rows": [
+                ["Index covers filter + sort", "No — index sort", "Fast — no memory overhead", "Already optimal"],
+                ["Index covers filter only, not sort", "Yes — in-memory", "Slower — RAM proportional to result set", "Add sort field to compound index"],
+                ["No index at all", "Yes — in-memory after COLLSCAN", "Terrible", "Create index covering filter and sort"],
+                ["Result set > 100MB and no index sort", "Fails without allowDiskUse", "Unusable in production", "Index sort is the only real fix"]
+              ]
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ In-memory sorts are MongoDB's hidden performance tax. Every query with a sort stage that isn't satisfied by an index is loading documents into RAM, sorting them, then throwing most away. For Swiggy's restaurant listing — a compound index on {city, isOpen, rating} means the top 20 restaurants come back already sorted, in 20 document reads, with zero sort overhead. Check explain() for hasSortStage: true — that's your signal to redesign the index."
+            }
+          ]
+
+        }
       },
 
       {
         id: 8,
         title: "Replication",
-        level: "experienced",
+        level: "freshers",
         topics: [
           "What is Replication?",
           "Replica Sets in MongoDB",
@@ -6564,13 +8201,578 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
           "Automatic Failover — What Happens When Swiggy's DB Goes Down",
           "Read from Secondary — Scaling Read Traffic",
           "Replication Lag & Stale Reads",
-        ]
-      },
+        ],
+        topicDetails: {
 
+          "What is Replication?": [
+            {
+              type: "paragraph",
+              text: "It's Friday night. Swiggy is processing 50,000 orders a minute. Your Domino's order is confirmed — the data is written to MongoDB. One second later, the server that holds that data crashes. Hard drive failure. Gone. Without replication, your order is lost, Swiggy's entire order history is inaccessible, and the app is down until the server is restored. With replication, two other servers already have an exact copy of that data. Nothing is lost. Nothing goes down. That's what replication is."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Swiggy's MongoDB server holds crores of order records. What stops a single hardware failure from wiping all of it?"
+            },
+            {
+              type: "heading",
+              text: "Definition"
+            },
+            {
+              type: "paragraph",
+              text: "Replication means MongoDB automatically copies your data to multiple servers in real time. Every write that lands on the primary server is replicated to one or more secondary servers. If the primary goes down, a secondary takes over. Your data is safe, and the application keeps running."
+            },
+            {
+              type: "step",
+              title: "You place a Swiggy order",
+              desc: "The order document is written to the primary MongoDB server. MongoDB immediately starts copying this write to all secondary servers."
+            },
+            {
+              type: "step",
+              title: "Seconds later — secondaries are in sync",
+              desc: "Each secondary has applied the same write. All three servers now have your order document. The data is replicated."
+            },
+            {
+              type: "step",
+              title: "Primary server crashes",
+              desc: "The secondaries detect the failure. They elect a new primary automatically. Swiggy's app reconnects to the new primary. Your order is still there — it was already copied."
+            },
+            {
+              type: "code",
+              code: `// Without replication — one server, one point of failure
+MongoDB Server ──► crash ──► data gone, app down ❌
+
+// With replication — three servers, data on all three
+Primary   ──► your order is written here
+Secondary 1 ──► copy of your order ✅
+Secondary 2 ──► copy of your order ✅
+
+// Primary crashes → Secondary 1 becomes new Primary → app keeps running ✅`
+            },
+            {
+              type: "table",
+              headers: ["Without Replication", "With Replication"],
+              rows: [
+                ["One server holds all data", "Data copied to 2+ servers automatically"],
+                ["Server crash = data loss", "Server crash = failover to secondary"],
+                ["Maintenance = downtime", "Maintenance on one node, others serve traffic"],
+                ["One server handles all reads", "Reads can be distributed across secondaries"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Replication is MongoDB automatically keeping identical copies of your data on multiple servers. Swiggy's orders, restaurants, and users are never on one server alone — every write is copied in real time so a single failure never takes down the app or loses data."
+            }
+          ],
+
+
+          "Replica Sets in MongoDB": [
+            {
+              type: "paragraph",
+              text: "Swiggy doesn't just run one MongoDB server and hope for the best. It runs a Replica Set — a cluster of MongoDB servers that all hold the same data and work together as one logical unit. Your application talks to the replica set as if it's one database. Under the hood, MongoDB handles all the copying, coordination, and failover automatically."
+            },
+            {
+              type: "heading",
+              text: "What is a Replica Set?"
+            },
+            {
+              type: "paragraph",
+              text: "A replica set is a group of MongoDB servers — typically three — that all contain the same data. One member is the Primary, which handles all writes. The rest are Secondaries, which continuously replicate from the Primary. There is optionally an Arbiter — a lightweight member that holds no data but votes in elections."
+            },
+            {
+              type: "code",
+              code: `// Swiggy's replica set — 3 members
+rs.initiate({
+  _id: "swiggyRS",
+  members: [
+    { _id: 0, host: "mongo1.swiggy.internal:27017" },  // Primary
+    { _id: 1, host: "mongo2.swiggy.internal:27017" },  // Secondary
+    { _id: 2, host: "mongo3.swiggy.internal:27017" },  // Secondary
+  ]
+})
+
+// Check replica set status
+rs.status()`
+            },
+            {
+              type: "step",
+              title: "Your app connects to the replica set — not one server",
+              desc: "The connection string lists all three members. MongoDB's driver figures out who the Primary is and routes writes there automatically. If the Primary changes, the driver reconnects without your app doing anything."
+            },
+            {
+              type: "code",
+              code: `// Connection string includes all replica set members
+mongodb://mongo1.swiggy.internal:27017,mongo2.swiggy.internal:27017,mongo3.swiggy.internal:27017/?replicaSet=swiggyRS
+
+// The driver:
+// — discovers which member is Primary
+// — sends all writes to Primary
+// — can optionally send reads to Secondaries
+// — detects failover and reconnects automatically`
+            },
+            {
+              type: "step",
+              title: "Why 3 members and not 2?",
+              desc: "Elections require a majority vote to elect a new Primary. With 2 members — if one goes down, the remaining one can't form a majority of 2. It can't elect itself Primary. The replica set becomes read-only. With 3 members — one goes down, the other two form a majority and elect a new Primary in seconds."
+            },
+            {
+              type: "step",
+              title: "The oplog — how replication actually works",
+              desc: "Every write on the Primary is recorded in a special capped collection called the oplog (operations log). Secondaries continuously tail the oplog and replay every operation on their own copy of the data. This is how they stay in sync."
+            },
+            {
+              type: "code",
+              code: `// The oplog — a capped collection on every replica set member
+use local
+db.oplog.rs.find().sort({ $natural: -1 }).limit(3)
+
+// Each entry is one operation that was applied
+// { op: "i", ns: "swiggy.orders", o: { _id: ..., orderId: "SWG-001", ... } }  // insert
+// { op: "u", ns: "swiggy.orders", o: { $set: { status: "delivered" } } }      // update
+// { op: "d", ns: "swiggy.orders", o: { _id: ... } }                           // delete
+
+// Secondaries tail this log and apply every operation to their own data`
+            },
+            {
+              type: "table",
+              headers: ["Member", "Role", "Holds Data?", "Votes?"],
+              rows: [
+                ["Primary", "Accepts all writes, replicates to secondaries", "Yes", "Yes"],
+                ["Secondary", "Replicates from primary, can serve reads", "Yes", "Yes"],
+                ["Arbiter", "Breaks ties in elections only", "No", "Yes"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Never run a replica set with an even number of voting members without an arbiter. 2 members = no majority possible on failure. Always use 3 voting members minimum — 3 full data-bearing members is the recommended standard for production."
+            },
+            {
+              type: "success-callout",
+              text: "✅ A replica set is a self-managing cluster of MongoDB servers all holding the same data. One Primary accepts writes. Secondaries replicate every operation via the oplog. Your app connects to the set — not a single server — and MongoDB handles the rest automatically."
+            }
+          ],
+
+
+          "Primary & Secondary Nodes": [
+            {
+              type: "paragraph",
+              text: "Every member of Swiggy's replica set has a role. The Primary is the single source of truth — every order placed, every status update, every restaurant change goes through it. The Secondaries are live mirrors — they apply every change the Primary makes, stay in sync, and are ready to take over at any moment. Understanding what each node does tells you exactly where your reads and writes go — and why."
+            },
+            {
+              type: "heading",
+              text: "The Primary — All Writes Go Here"
+            },
+            {
+              type: "paragraph",
+              text: "There is exactly one Primary in a replica set at any time. All writes — insertOne, updateMany, deleteOne — must go to the Primary. MongoDB's driver routes them there automatically. The Primary writes the data and records every operation in its oplog."
+            },
+            {
+              type: "code",
+              code: `// These all go to the Primary — no configuration needed
+db.orders.insertOne({ orderId: "SWG-001", status: "placed", totalAmount: 487 })
+db.orders.updateOne({ _id: ObjectId("ord_001") }, { $set: { status: "delivered" } })
+db.restaurants.updateMany({ city: "Mumbai" }, { $set: { isOpen: false } })
+
+// Check which member is currently Primary
+rs.isMaster()  // returns { ismaster: true } on Primary
+// or
+rs.status()    // shows all members with their stateStr: "PRIMARY" / "SECONDARY"`
+            },
+            {
+              type: "heading",
+              text: "The Secondary — Replication in Action"
+            },
+            {
+              type: "paragraph",
+              text: "Every Secondary continuously tails the Primary's oplog and replays each operation on its own dataset. The moment your Swiggy order is inserted on the Primary, that insert is queued in the oplog, the Secondary reads it, and applies the same insert to its own copy — usually within milliseconds."
+            },
+            {
+              type: "code",
+              code: `// On the Primary — your order is written
+db.orders.insertOne({ orderId: "SWG-001", totalAmount: 487, status: "placed" })
+
+// oplog entry created:
+// { op: "i", ns: "swiggy.orders", o: { orderId: "SWG-001", totalAmount: 487, status: "placed" } }
+
+// Secondary tails the oplog → applies the same insert → now has your order too
+// Happens automatically, continuously, in the background ✅`
+            },
+            {
+              type: "step",
+              title: "Secondaries are read-only by default",
+              desc: "You cannot write to a Secondary directly. If you try, MongoDB returns an error: 'not primary'. All writes must go through the Primary — the Secondary's job is to replicate, not to accept new data."
+            },
+            {
+              type: "step",
+              title: "Secondaries can serve reads — with a caveat",
+              desc: "By default, reads also go to the Primary. But you can configure your app to read from Secondaries to distribute load. The caveat: the Secondary might be a few milliseconds behind the Primary — you might read slightly stale data. More on this in Replication Lag."
+            },
+            {
+              type: "step",
+              title: "A Secondary can be hidden or delayed",
+              desc: "Swiggy can configure a Secondary to be hidden from the app — it replicates but never serves reads. Or configure a delayed Secondary that is always 1 hour behind the Primary — useful as a safety net if someone accidentally drops a collection."
+            },
+            {
+              type: "code",
+              code: `// Configure a hidden secondary — replicates but never receives app traffic
+rs.reconfig({
+  _id: "swiggyRS",
+  members: [
+    { _id: 0, host: "mongo1.swiggy.internal:27017" },
+    { _id: 1, host: "mongo2.swiggy.internal:27017" },
+    { _id: 2, host: "mongo3.swiggy.internal:27017", hidden: true, priority: 0 }
+    // hidden: true — app never reads from it
+    // priority: 0 — can never become Primary
+  ]
+})
+
+// Configure a delayed secondary — always 1 hour behind Primary
+{ _id: 2, host: "mongo3.swiggy.internal:27017", secondaryDelaySecs: 3600, priority: 0 }
+// If someone runs db.orders.drop() at 2PM — you have until 3PM to recover from the delayed node`
+            },
+            {
+              type: "table",
+              headers: ["", "Primary", "Secondary"],
+              rows: [
+                ["Writes", "✅ All writes go here", "❌ Cannot accept writes"],
+                ["Reads", "✅ Reads here by default", "✅ Optional, with read preference"],
+                ["Count per replica set", "Exactly 1 at any time", "1 or more"],
+                ["On failure", "Secondaries elect a new Primary", "Primary continues, replication resumes on recovery"],
+                ["oplog", "Writes operations here", "Reads and replays from here"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Primary is the single write destination — every Swiggy order, update, and delete goes through it. Secondaries mirror everything via the oplog in near real time. Your app talks to one logical replica set — MongoDB's driver handles routing to the right node automatically."
+            }
+          ],
+
+
+          "Automatic Failover — What Happens When Swiggy's DB Goes Down": [
+            {
+              type: "paragraph",
+              text: "It's Saturday night — peak dinner rush. Swiggy is handling 80,000 orders a minute. The server running MongoDB's Primary suddenly crashes — power failure, hardware fault, network partition. Without automatic failover, every Swiggy user gets an error. Orders fail. Payments hang. With automatic failover, the replica set detects the failure, elects a new Primary, and Swiggy's app reconnects — typically within 10–30 seconds. Most users don't notice."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ How does MongoDB decide which Secondary becomes the new Primary — and how fast does it happen?"
+            },
+            {
+              type: "heading",
+              text: "How Automatic Failover Works — Step by Step"
+            },
+            {
+              type: "step",
+              title: "Step 1 — Primary stops responding",
+              desc: "The Primary crashes. Secondaries send heartbeats to every replica set member every 2 seconds. When a Secondary gets no heartbeat response from the Primary for 10 seconds (electionTimeoutMillis), it concludes the Primary is down."
+            },
+            {
+              type: "step",
+              title: "Step 2 — A Secondary calls an election",
+              desc: "The Secondary that detected the failure nominates itself as the new Primary and requests votes from all other members. Each member votes yes if the candidate has the most up-to-date oplog — meaning it hasn't missed any writes."
+            },
+            {
+              type: "step",
+              title: "Step 3 — Majority votes — new Primary elected",
+              desc: "The candidate needs votes from a majority of the replica set. With 3 members — it needs 2 votes. If the candidate is up to date, it wins instantly. It steps up to Primary and starts accepting writes."
+            },
+            {
+              type: "step",
+              title: "Step 4 — App driver reconnects automatically",
+              desc: "MongoDB's driver detects the topology change. It discovers the new Primary and reroutes all writes to it. Your application code doesn't change. The connection string already lists all members — the driver handles the rest."
+            },
+            {
+              type: "step",
+              title: "Step 5 — Old Primary comes back",
+              desc: "When the crashed server recovers, it rejoins the replica set — but as a Secondary. It tails the new Primary's oplog and catches up on everything it missed. It doesn't reclaim Primary status automatically."
+            },
+            {
+              type: "code",
+              code: `// Timeline of a failover event on Swiggy's replica set
+
+// T+0s  — mongo1 (Primary) crashes
+// T+2s  — mongo2 and mongo3 miss first heartbeat from mongo1
+// T+10s — heartbeat timeout reached — mongo2 initiates election
+// T+11s — mongo2 requests vote from mongo3 — mongo3 checks oplog, votes yes
+// T+12s — mongo2 has majority (2/3 votes) — mongo2 is elected Primary
+// T+13s — Swiggy's app driver detects new topology
+// T+14s — app reconnects — writes now going to mongo2
+// T+15s — Swiggy's order placement is working again ✅
+
+// Total downtime: ~12–15 seconds on a healthy replica set`
+            },
+            {
+              type: "heading",
+              text: "Priority — Controlling Who Becomes Primary"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy runs its replica set across two data centres — Mumbai (primary DC) and Pune (DR). They want the Mumbai server to be Primary whenever possible — lower latency for app servers also in Mumbai. MongoDB lets you assign a priority to each member. Higher priority = preferred Primary candidate."
+            },
+            {
+              type: "code",
+              code: `rs.reconfig({
+  _id: "swiggyRS",
+  members: [
+    { _id: 0, host: "mongo-mumbai-1:27017", priority: 2 },  // preferred Primary
+    { _id: 1, host: "mongo-mumbai-2:27017", priority: 1 },  // can be Primary
+    { _id: 2, host: "mongo-pune-1:27017",   priority: 0 },  // DR node — never Primary
+    // priority: 0 means this member never becomes Primary
+    // priority: 2 means this is the most preferred candidate
+  ]
+})`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ During failover — typically 10–30 seconds — MongoDB will refuse all write operations. Your app should handle this with retryable writes enabled. MongoDB drivers can automatically retry a write once after a failover without your application code doing anything special."
+            },
+            {
+              type: "code",
+              code: `// Enable retryable writes in your connection string — handles failover transparently
+mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=swiggyRS&retryWrites=true
+
+// During failover, the driver retries the failed write on the new Primary automatically
+// Your app sees a slight delay — not an error ✅`
+            },
+            {
+              type: "table",
+              headers: ["Event", "What MongoDB Does", "Time"],
+              rows: [
+                ["Primary crashes", "Secondaries detect missing heartbeat", "0–10 seconds"],
+                ["Heartbeat timeout", "Secondary initiates election", "~10 seconds"],
+                ["Election", "Majority votes for new Primary", "1–2 seconds"],
+                ["Driver reconnects", "Discovers new Primary, reroutes writes", "1–3 seconds"],
+                ["Total failover", "App back to normal", "~12–30 seconds"],
+                ["Old Primary recovers", "Rejoins as Secondary, catches up", "Minutes (depends on lag)"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Automatic failover means Swiggy's database self-heals. Primary goes down → election in seconds → new Primary elected → app reconnects → orders flow again. No human intervention, no data loss, no permanent outage. The replica set handles it entirely on its own."
+            }
+          ],
+
+
+          "Read from Secondary — Scaling Read Traffic": [
+            {
+              type: "paragraph",
+              text: "Swiggy's app home screen loads restaurant listings, banners, and your order history every time you open the app. Millions of users do this simultaneously. All of these are reads — and by default, every single read goes to the Primary. At peak load, this overwhelms one server. MongoDB lets you distribute reads across Secondary nodes to spread the load — this is called configuring a Read Preference."
+            },
+            {
+              type: "heading",
+              text: "Read Preference Modes"
+            },
+            {
+              type: "paragraph",
+              text: "Read preference tells MongoDB's driver where to send read operations. There are five modes — each with a different tradeoff between consistency and load distribution."
+            },
+            {
+              type: "code",
+              code: `// Set read preference at the connection level
+const client = new MongoClient(uri, {
+  readPreference: "secondaryPreferred"
+})
+
+// Or per operation
+db.restaurants.find({ city: "Mumbai" }).readPref("secondary")`
+            },
+            {
+              type: "step",
+              title: "primary (default)",
+              desc: "All reads go to the Primary. Guaranteed to always return the latest data. Use this for anything where stale data is unacceptable — order status, payment confirmation, wallet balance."
+            },
+            {
+              type: "step",
+              title: "primaryPreferred",
+              desc: "Reads go to the Primary if it's available. Falls back to a Secondary if the Primary is down. Good for reads that usually need fresh data but can tolerate a brief moment of staleness during failover."
+            },
+            {
+              type: "step",
+              title: "secondary",
+              desc: "All reads go to a Secondary, never the Primary. Maximises load distribution but data may be slightly behind. Use for analytics, reports, and background jobs where a few milliseconds of lag don't matter."
+            },
+            {
+              type: "step",
+              title: "secondaryPreferred",
+              desc: "Reads go to a Secondary if one is available. Falls back to Primary if no Secondary is up. The most common choice for scaling read-heavy applications like Swiggy's restaurant listing page."
+            },
+            {
+              type: "step",
+              title: "nearest",
+              desc: "Reads go to whichever member has the lowest network latency — Primary or Secondary. Used when response time matters more than freshness. Useful for Swiggy's geographically distributed setup."
+            },
+            {
+              type: "table",
+              headers: ["Mode", "Reads from", "Stale data possible?", "Swiggy use case"],
+              rows: [
+                ["primary", "Primary only", "No", "Order status, wallet balance, payment confirmation"],
+                ["primaryPreferred", "Primary, fallback Secondary", "Only during failover", "User profile, recent orders"],
+                ["secondary", "Secondary only", "Yes", "Analytics, weekly reports, ML data exports"],
+                ["secondaryPreferred", "Secondary, fallback Primary", "Yes", "Restaurant listings, home screen, menu pages"],
+                ["nearest", "Lowest latency member", "Yes", "Latency-sensitive reads across regions"],
+              ]
+            },
+            {
+              type: "heading",
+              text: "What Swiggy Reads from Secondary"
+            },
+            {
+              type: "paragraph",
+              text: "Not all reads are equal. Swiggy's engineering team categorises reads by how critical data freshness is — and routes accordingly."
+            },
+            {
+              type: "code",
+              code: `// Restaurant listings — secondaryPreferred
+// Millions of reads, data changes slowly, slight lag is fine
+db.restaurants.find({ city: "Mumbai", isOpen: true })
+  .readPref("secondaryPreferred")
+
+// Order status — primary (always fresh)
+// User is watching the live tracker — must show latest state
+db.orders.findOne({ _id: ObjectId("ord_10239847") })
+  .readPref("primary")
+
+// Weekly sales report — secondary
+// Background job, runs at 2AM, slight lag is irrelevant
+db.orders.aggregate([
+  { $match: { createdAt: { $gte: weekStart } } },
+  { $group: { _id: "$restaurantId", totalRevenue: { $sum: "$totalAmount" } } }
+]).readPref("secondary")`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Reading from a Secondary means you might get data that is milliseconds to seconds behind the Primary. For Swiggy's order tracker, wallet balance, or payment status — always read from Primary. For restaurant listings or past order history — secondaryPreferred is safe and dramatically reduces Primary load."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Read preference lets Swiggy spread millions of daily reads across all replica set members instead of hammering one Primary. Critical reads — order status, payments — stay on Primary. High-volume, tolerance-friendly reads — restaurant listings, menus, reports — go to secondaryPreferred. Same data, smarter routing."
+            }
+          ],
+
+
+          "Replication Lag & Stale Reads": [
+            {
+              type: "paragraph",
+              text: "You place a Swiggy order and immediately check your order history. The order doesn't appear. You refresh — it's there. What happened? Your insert went to the Primary. Your read went to a Secondary. But the Secondary hadn't yet applied that insert from the oplog when you read. This gap — the time between a write landing on the Primary and that write being applied on the Secondary — is called replication lag."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If your order is confirmed on the Primary but the Secondary hasn't caught up yet — what does a user see when they read from that Secondary?"
+            },
+            {
+              type: "heading",
+              text: "What Causes Replication Lag?"
+            },
+            {
+              type: "step",
+              title: "Network latency between Primary and Secondary",
+              desc: "Swiggy's Primary is in Mumbai, one Secondary is in Pune. Every oplog entry has to travel over the network. Under normal conditions this is milliseconds. During a network hiccup it can stretch to seconds."
+            },
+            {
+              type: "step",
+              title: "Secondary is under heavy load",
+              desc: "If Swiggy configured a Secondary to also serve read traffic and the read load is intense, the Secondary's CPU and I/O are busy. Oplog replay falls behind. Lag grows."
+            },
+            {
+              type: "step",
+              title: "A large write burst on the Primary",
+              desc: "Swiggy runs a bulk update — updateMany to cancel 50,000 orders from a closed restaurant. The Primary processes this instantly. The Secondary has to replay 50,000 individual operations from the oplog. It falls behind temporarily."
+            },
+            {
+              type: "code",
+              code: `// Check replication lag on each Secondary
+rs.printSecondaryReplicationInfo()
+
+// Output:
+// source: mongo2.swiggy.internal:27017
+// syncedTo: Sat Mar 18 2024 14:23:41
+// 0 secs (0 hrs) behind the primary  ← healthy
+
+// source: mongo3.swiggy.internal:27017
+// syncedTo: Sat Mar 18 2024 14:23:28
+// 13 secs (0 hrs) behind the primary ← acceptable but monitor this`
+            },
+            {
+              type: "heading",
+              text: "Stale Reads — What the User Sees"
+            },
+            {
+              type: "paragraph",
+              text: "A stale read is when your application reads data from a Secondary that hasn't yet caught up with the Primary. The data you get back is correct — it was true at some point in the past — but it doesn't reflect the most recent writes."
+            },
+            {
+              type: "code",
+              code: `// T+0ms  — your order is inserted on Primary
+db.orders.insertOne({ orderId: "SWG-001", status: "placed", totalAmount: 487 })
+
+// T+5ms  — you immediately read from Secondary (replication lag = 50ms)
+db.orders.find({ userId: "usr_982341" }).readPref("secondary")
+// → your order is NOT here yet — Secondary hasn't applied the insert yet
+// → stale read ❌
+
+// T+55ms — Secondary applies the insert from oplog
+// T+60ms — you read again from Secondary
+// → your order IS here now ✅`
+            },
+            {
+              type: "heading",
+              text: "How Swiggy Handles Stale Reads"
+            },
+            {
+              type: "step",
+              title: "Read from Primary for anything user-facing and fresh",
+              desc: "Order status, wallet balance, payment confirmation — always Primary. A user watching their live order tracker cannot see stale data. Swiggy forces primary read preference for these queries regardless of load."
+            },
+            {
+              type: "step",
+              title: "Accept staleness for slow-changing data",
+              desc: "Restaurant listings, menus, banners — this data changes at most a few times a day. A 200ms lag on a restaurant's name or rating is completely acceptable. Swiggy reads these from secondaryPreferred."
+            },
+            {
+              type: "step",
+              title: "Write concern w:majority for critical writes",
+              desc: "When Swiggy confirms your order, it uses write concern w:majority. MongoDB only acknowledges the write once a majority of replica set members have applied it — not just the Primary. This shrinks the lag window dramatically for the most important writes."
+            },
+            {
+              type: "code",
+              code: `// w:majority — wait for the write to be on 2 out of 3 members before confirming
+db.orders.insertOne(
+  { orderId: "SWG-001", totalAmount: 487, status: "placed" },
+  { writeConcern: { w: "majority", wtimeout: 5000 } }
+)
+
+// Now when the user immediately reads from secondaryPreferred —
+// the majority Secondary already has the write → much less likely to be stale ✅
+
+// w:1 (default) — acknowledged as soon as Primary writes it
+// Faster but Secondary may not have it yet when user reads`
+            },
+            {
+              type: "table",
+              headers: ["Scenario", "Read Preference", "Stale Data Risk", "Why"],
+              rows: [
+                ["Live order tracker", "primary", "None", "Must show latest status"],
+                ["Wallet balance", "primary", "None", "Financial data — always fresh"],
+                ["Restaurant listing", "secondaryPreferred", "Low — acceptable", "Changes slowly, lag is fine"],
+                ["Past order history", "secondaryPreferred", "Very low", "Historical data, doesn't change"],
+                ["Weekly analytics report", "secondary", "Irrelevant", "Background job, lag doesn't matter"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Replication lag is not a bug — it's an inherent tradeoff of distributing reads. The fix isn't to always read from Primary (that defeats the point). The fix is to be deliberate: identify which reads need freshness and pin them to Primary, and let the rest go to secondaryPreferred."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Replication lag is the gap between a write landing on the Primary and a Secondary catching up. Stale reads happen when you read from a lagging Secondary. Swiggy handles this by routing critical reads to Primary, using w:majority for important writes, and accepting small lag on slow-changing data like restaurant listings."
+            }
+          ]
+
+        }
+      },
       {
         id: 9,
         title: "Sharding",
-        level: "experienced",
+        level: "freshers",
         topics: [
           "What is Sharding?",
           "Why Swiggy Needs Sharding at Scale",
@@ -6579,13 +8781,698 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
           "Hotspot Problem with Bad Shard Keys",
           "Mongos Router & Config Servers",
           "Sharding + Replication Together",
-        ]
+        ],
+        topicDetails: {
+
+          "What is Sharding?": [
+            {
+              type: "paragraph",
+              text: "Swiggy has been running for years. The orders collection now has 2 billion documents. A single MongoDB server — even the most powerful one money can buy — can't hold 2 billion orders in RAM, can't index them fast enough, and can't handle 100,000 writes per minute without choking. You've hit the ceiling of vertical scaling. You can't make one server bigger forever. The answer is to split the data across many servers — each server holds a piece of the whole. That's sharding."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Swiggy's orders collection grows by 10 million documents every day. At what point does one server simply stop being enough — and what do you do then?"
+            },
+            {
+              type: "heading",
+              text: "Definition"
+            },
+            {
+              type: "paragraph",
+              text: "Sharding is MongoDB's way of splitting a large collection across multiple servers called shards. Each shard holds a subset of the data. Together, all shards hold the complete dataset. MongoDB routes every query to the right shard automatically — your application talks to one connection and has no idea the data is spread across ten machines."
+            },
+            {
+              type: "step",
+              title: "Without sharding — one server, all data",
+              desc: "Every Swiggy order since 2014 lives on one MongoDB server. Queries get slower as the collection grows. Inserts compete for the same disk and CPU. You add more RAM and faster SSDs — but eventually you hit the hardware ceiling."
+            },
+            {
+              type: "step",
+              title: "With sharding — data split across many servers",
+              desc: "Swiggy's 2 billion orders are split across 10 shards. Each shard holds roughly 200 million orders. Queries hit only the shard that has the relevant data. Inserts are distributed. Every shard handles a fraction of the load."
+            },
+            {
+              type: "code",
+              code: `// Without sharding — one server holds everything
+MongoDB Server ──► 2 billion orders ──► slowing down, running out of RAM ❌
+
+// With sharding — data distributed across shards
+Shard 1 ──► orders from Mumbai       (200 million)
+Shard 2 ──► orders from Delhi        (200 million)
+Shard 3 ──► orders from Bangalore    (200 million)
+Shard 4 ──► orders from Hyderabad    (200 million)
+Shard 5 ──► orders from other cities (200 million)
+...
+// Your app queries one endpoint — MongoDB routes to the right shard automatically ✅`
+            },
+            {
+              type: "table",
+              headers: ["", "Without Sharding", "With Sharding"],
+              rows: [
+                ["Data location", "All on one server", "Split across multiple servers"],
+                ["Scaling strategy", "Vertical — bigger hardware", "Horizontal — more servers"],
+                ["Write throughput", "Limited by one server's I/O", "Distributed across all shards"],
+                ["Query speed", "Degrades as data grows", "Each shard handles a fraction"],
+                ["Storage ceiling", "One server's disk size", "Sum of all shards' disks"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Sharding is horizontal scaling — splitting one massive collection across many servers so no single server is overwhelmed. Swiggy's 2 billion orders stop being one server's problem and become ten servers' manageable slices. Your app sees one database. MongoDB handles the distribution."
+            }
+          ],
+
+
+          "Why Swiggy Needs Sharding at Scale": [
+            {
+              type: "paragraph",
+              text: "In 2016, Swiggy had a few hundred thousand orders. One MongoDB server was fine. By 2024, Swiggy processes over 3 million orders a day, across 500+ cities, with Instamart, Genie, and Dineout all writing to the same database. The orders collection alone grows by 3 million documents every 24 hours. That's 1 billion new documents a year. No single server — no matter how powerful — handles this indefinitely. Sharding isn't an architecture choice at this scale. It's a necessity."
+            },
+            {
+              type: "heading",
+              text: "The Four Walls Swiggy Hits Without Sharding"
+            },
+            {
+              type: "step",
+              title: "Wall 1 — Storage",
+              desc: "2 billion order documents at ~2KB each = ~4TB of data. The largest cloud MongoDB instances offer ~32TB. But you're also storing restaurants, users, menus, delivery agents, Instamart inventory. A single server's storage ceiling gets hit fast — and you can't just keep upgrading forever."
+            },
+            {
+              type: "step",
+              title: "Wall 2 — RAM and Index Size",
+              desc: "MongoDB performs best when working indexes fit in RAM. A compound index on Swiggy's 2 billion order documents can be hundreds of GB. Once the index no longer fits in RAM, MongoDB starts hitting disk for index lookups — and query performance collapses. No amount of RAM upgrade keeps pace with unbounded data growth."
+            },
+            {
+              type: "step",
+              title: "Wall 3 — Write Throughput",
+              desc: "Peak dinner rush — 6PM to 9PM — Swiggy handles 50,000+ order writes per minute. Every write goes to one Primary. One server's disk I/O, CPU, and write lock become the bottleneck. With sharding, 50,000 writes per minute are split across 10 shards — 5,000 writes per minute each. Each shard barely notices."
+            },
+            {
+              type: "step",
+              title: "Wall 4 — Read Concurrency",
+              desc: "Swiggy's support dashboard, restaurant partner app, delivery partner app, and customer app all query orders simultaneously. Even with read replicas, all reads fan out from one Primary's dataset. With sharding, support queries hit Shard 2, restaurant queries hit Shard 5 — no overlap, no competition."
+            },
+            {
+              type: "code",
+              code: `// Swiggy's scale that forces sharding
+Orders per day:         3,000,000
+Orders per year:        1,095,000,000
+Total orders (10 yrs):  ~10,000,000,000   // 10 billion
+
+Peak writes per minute: 50,000+
+Active cities:          500+
+Collections writing:    orders, instamart_orders, genie_orders, restaurants,
+                        users, menus, inventory, delivery_agents, wallets...
+
+// One server can't hold this. Can't index this. Can't write this fast.
+// Sharding is the only path forward.`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Sharding is complex — it adds mongos routers, config servers, shard key decisions, and cross-shard query overhead. Don't shard early. Swiggy didn't shard from day one. They scaled vertically first, added read replicas, optimised indexes — and sharded only when those options ran out. Premature sharding creates problems that don't exist yet."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Swiggy needs sharding because 10 billion orders can't live on one server — not in storage, not in RAM, not in write throughput. Sharding splits the problem across many servers so each one handles a manageable fraction. It's the only way to scale a database that grows by a billion records a year."
+            }
+          ],
+
+
+          "Shard Key — How to Choose the Right One": [
+            {
+              type: "paragraph",
+              text: "Sharding splits your collection across servers. But MongoDB doesn't randomly scatter documents — it uses one field (or a combination of fields) to decide which shard each document belongs to. That field is called the shard key. It's the single most important decision in your sharding setup. The right shard key means even data distribution and fast queries. The wrong one means one shard drowns in traffic while the others sit idle — or every query has to ask every shard for the answer."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Swiggy's orders collection has orderId, userId, city, restaurantId, createdAt. Which field should be the shard key — and what happens if you pick the wrong one?"
+            },
+            {
+              type: "heading",
+              text: "What a Shard Key Does"
+            },
+            {
+              type: "paragraph",
+              text: "When a document is inserted, MongoDB hashes or ranges the shard key value to determine which shard it goes to. When a query runs, MongoDB uses the shard key to figure out which shard or shards to ask. If the query includes the shard key — MongoDB routes to exactly one shard. If it doesn't — MongoDB broadcasts to all shards and merges the results."
+            },
+            {
+              type: "code",
+              code: `// Enable sharding on the database
+sh.enableSharding("swiggy_db")
+
+// Shard the orders collection using city as the shard key
+sh.shardCollection("swiggy_db.orders", { city: 1 })
+
+// Now every insert uses city to determine which shard to write to
+db.orders.insertOne({ city: "Mumbai", orderId: "SWG-001", totalAmount: 487 })
+// → goes to the Mumbai shard
+
+db.orders.insertOne({ city: "Delhi", orderId: "SWG-002", totalAmount: 320 })
+// → goes to the Delhi shard`
+            },
+            {
+              type: "heading",
+              text: "Properties of a Good Shard Key"
+            },
+            {
+              type: "step",
+              title: "High cardinality — many distinct values",
+              desc: "The shard key needs enough distinct values to distribute data across all shards. city has 500 values across Swiggy's coverage. orderId has billions of distinct values. status has 5 values — placed, confirmed, preparing, out_for_delivery, delivered. A shard key with only 5 values can never have more than 5 shards doing meaningful work."
+            },
+            {
+              type: "step",
+              title: "Even distribution — no one value dominates",
+              desc: "Mumbai generates 40% of all Swiggy orders. If city is the shard key, the Mumbai shard gets 40% of all writes — while the Patna shard gets 0.1%. Uneven distribution defeats the purpose of sharding. A good shard key spreads writes roughly equally."
+            },
+            {
+              type: "step",
+              title: "Appears in most queries — enables targeted routing",
+              desc: "If your most common queries filter by userId, then userId should be part of the shard key. MongoDB can route those queries to exactly one shard. If queries never include the shard key, every query broadcasts to all shards — scatter-gather — which is slow and expensive."
+            },
+            {
+              type: "code",
+              code: `// Evaluating shard key candidates for Swiggy's orders collection
+
+// ❌ Bad — status (low cardinality, only 5 values, huge hotspots)
+sh.shardCollection("swiggy_db.orders", { status: 1 })
+// All "placed" orders → one shard. All "delivered" → another. Max 5 shards useful.
+
+// ❌ Bad — createdAt (monotonically increasing → all new writes go to last shard)
+sh.shardCollection("swiggy_db.orders", { createdAt: 1 })
+// Every new order has the latest timestamp → always hits the same "last" shard
+
+// ⚠️  Okay — city (high cardinality but uneven: Mumbai >> Patna)
+sh.shardCollection("swiggy_db.orders", { city: 1 })
+// Mumbai shard overloaded. Small city shards underloaded.
+
+// ✅ Good — hashed orderId (unique, even distribution, in most queries)
+sh.shardCollection("swiggy_db.orders", { orderId: "hashed" })
+// Every orderId is unique → perfectly even distribution across all shards
+
+// ✅ Good — compound: { city, orderId } (zone sharding + even within city)
+sh.shardCollection("swiggy_db.orders", { city: 1, orderId: 1 })
+// Orders grouped by city for geographic queries, orderId for even spread within city`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The shard key is permanent. Once a collection is sharded on a key, you cannot change it without resharding — which means reading and rewriting every document in the collection. In MongoDB 5.0+ resharding is possible but expensive. Choose carefully before sharding in production."
+            },
+            {
+              type: "table",
+              headers: ["Shard Key Candidate", "Cardinality", "Distribution", "Query targeting", "Verdict"],
+              rows: [
+                ["status", "Very low (5)", "Terrible — hotspots", "Poor", "❌ Never use"],
+                ["createdAt", "High", "Terrible — always last shard", "Poor", "❌ Never use alone"],
+                ["city", "Medium (500)", "Uneven — Mumbai dominates", "Good", "⚠️ Risky for Swiggy"],
+                ["orderId (hashed)", "Very high (billions)", "Perfect", "Good", "✅ Strong choice"],
+                ["userId (hashed)", "Very high", "Even", "Good if user queries dominate", "✅ Good choice"],
+                ["{city, orderId}", "Very high", "Even within city", "Excellent", "✅ Best of both"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ A good shard key has high cardinality, distributes writes evenly, and appears in your most frequent queries. For Swiggy's orders, hashed orderId gives perfect distribution. A compound {city, orderId} key gives geographic grouping plus even spread. Avoid low-cardinality fields like status and monotonically increasing fields like createdAt as standalone shard keys."
+            }
+          ],
+
+
+          "Range-based Sharding vs Hash-based Sharding": [
+            {
+              type: "paragraph",
+              text: "Once you pick a shard key, MongoDB uses one of two strategies to decide which shard a document goes to — range-based or hash-based. Range-based groups documents with similar shard key values together. Hash-based scrambles them evenly across all shards. Each has scenarios where it's the right tool — and scenarios where it destroys performance."
+            },
+            {
+              type: "heading",
+              text: "Range-based Sharding"
+            },
+            {
+              type: "paragraph",
+              text: "MongoDB divides the shard key's value space into contiguous ranges. Each shard owns a range. A document goes to the shard whose range contains its shard key value. Orders with createdAt in January go to Shard 1. February to Shard 2. March to Shard 3."
+            },
+            {
+              type: "code",
+              code: `// Range-based sharding on createdAt
+sh.shardCollection("swiggy_db.orders", { createdAt: 1 })
+
+// MongoDB splits the value space into ranges — each shard owns one range
+// Shard 1 → createdAt: Jan 2024 to Feb 2024
+// Shard 2 → createdAt: Feb 2024 to Mar 2024
+// Shard 3 → createdAt: Mar 2024 onwards
+
+// Range query — hits exactly one shard ✅
+db.orders.find({ createdAt: { $gte: new Date("2024-01-01"), $lte: new Date("2024-01-31") } })
+// MongoDB knows → all January orders are on Shard 1 → routes there directly
+
+// But all NEW orders always go to the last shard ❌
+// Shard 3 gets every new insert — hot shard problem`
+            },
+            {
+              type: "step",
+              title: "When range-based sharding works well",
+              desc: "When your most common queries are range scans on the shard key — fetch all orders from January, fetch all orders between ₹300 and ₹800. MongoDB routes the query to one or a few shards instead of broadcasting to all. Fast, targeted, efficient."
+            },
+            {
+              type: "step",
+              title: "When range-based sharding fails",
+              desc: "When the shard key is monotonically increasing — like createdAt or an auto-increment orderId. All new writes always go to the shard holding the highest range. That shard becomes a hotspot. The others sit idle. This is called a write hotspot — one of the most common sharding mistakes."
+            },
+            {
+              type: "heading",
+              text: "Hash-based Sharding"
+            },
+            {
+              type: "paragraph",
+              text: "Instead of using the shard key value directly, MongoDB hashes it — runs it through a hash function — and uses the hash to determine the shard. Similar shard key values produce completely different hashes, so documents are scattered randomly and evenly across all shards."
+            },
+            {
+              type: "code",
+              code: `// Hash-based sharding on orderId
+sh.shardCollection("swiggy_db.orders", { orderId: "hashed" })
+
+// MongoDB hashes each orderId to determine the shard
+// "SWG-001" → hash → goes to Shard 3
+// "SWG-002" → hash → goes to Shard 1
+// "SWG-003" → hash → goes to Shard 5
+// "SWG-004" → hash → goes to Shard 2
+
+// New orders are spread evenly — no hotspot ✅
+// Every shard gets roughly equal writes
+
+// But range queries must hit ALL shards ❌
+db.orders.find({ createdAt: { $gte: new Date("2024-01-01") } })
+// MongoDB doesn't know which shard has January orders
+// → broadcasts to all shards → collects and merges results
+// → scatter-gather — expensive at scale`
+            },
+            {
+              type: "step",
+              title: "When hash-based sharding works well",
+              desc: "When your primary access pattern is fetch by exact shard key — fetch order by orderId, fetch user by userId. The hash routes the query to exactly one shard. Write load is perfectly distributed. No hotspots. This is the right choice for Swiggy's orders when most reads are 'get order by ID'."
+            },
+            {
+              type: "step",
+              title: "When hash-based sharding fails",
+              desc: "When your most common queries are range scans — get all orders from this week, get all orders between ₹300 and ₹500. MongoDB can't use the hash to narrow down which shard has the data. It asks every shard. If you have 20 shards, every range query hits 20 servers and merges 20 result sets."
+            },
+            {
+              type: "table",
+              headers: ["", "Range-based", "Hash-based"],
+              rows: [
+                ["Distribution", "Uneven — depends on data distribution", "Even — hash spreads randomly"],
+                ["Write hotspots", "Yes — if key is monotonically increasing", "No — writes always distributed"],
+                ["Range query performance", "Fast — one or few shards", "Slow — scatter-gather all shards"],
+                ["Exact key lookup", "Fast", "Fast"],
+                ["Best shard key type", "Non-monotonic fields with range queries", "High-cardinality fields with point lookups"],
+                ["Swiggy example", "city for geographic range queries", "orderId for order detail lookups"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Range-based sharding keeps similar values together — great for range queries, dangerous with monotonically increasing keys. Hash-based sharding scrambles data evenly — eliminates hotspots, makes range queries expensive. Swiggy uses hashed orderId for write-heavy order insertion and point lookups. Geographic range queries on city use range-based zone sharding."
+            }
+          ],
+
+
+          "Hotspot Problem with Bad Shard Keys": [
+            {
+              type: "paragraph",
+              text: "Swiggy shards the orders collection. Everything looks fine in testing. Then peak dinner rush hits — and one MongoDB server is at 100% CPU, disk I/O maxed out, writes queuing up. The other nine servers are at 8% CPU, doing almost nothing. This is the hotspot problem — one shard drowning in traffic because the shard key funnels all the load there. It's the most dangerous mistake in sharding design, and it's caused entirely by a bad shard key choice."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If sharding is supposed to distribute load evenly — how can one shard end up handling 90% of all writes?"
+            },
+            {
+              type: "heading",
+              text: "Hotspot Type 1 — Monotonically Increasing Shard Key"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy uses createdAt as the shard key with range-based sharding. Orders placed in January go to Shard 1. February to Shard 2. Every new order being placed right now has today's timestamp — the highest value in the entire collection. MongoDB always routes the latest range to the last shard. Every new order goes to that one shard. It's called a write hotspot."
+            },
+            {
+              type: "code",
+              code: `// ❌ Bad — range sharding on createdAt (monotonically increasing)
+sh.shardCollection("swiggy_db.orders", { createdAt: 1 })
+
+// Value space split into ranges:
+// Shard 1 → Jan 2024 orders  (historical — no new writes)
+// Shard 2 → Feb 2024 orders  (historical — no new writes)
+// Shard 3 → Mar 2024 onwards (ALL new writes go here right now)
+
+// During dinner rush at 8PM:
+// Shard 1 CPU: 3%   ← sitting idle
+// Shard 2 CPU: 4%   ← sitting idle
+// Shard 3 CPU: 100% ← every new order in India is going here ❌
+
+// You sharded — but effectively you're still on one server for writes`
+            },
+            {
+              type: "heading",
+              text: "Hotspot Type 2 — Low Cardinality Shard Key"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy shards on status — placed, confirmed, preparing, out_for_delivery, delivered. Five values. MongoDB can create at most 5 meaningful shard ranges. But 60% of all active orders at any moment have status 'placed' or 'out_for_delivery'. Two shards handle 60% of the load. The other three handle 40% of historical delivered orders — no new writes. Two shards are hot, three are cold."
+            },
+            {
+              type: "code",
+              code: `// ❌ Bad — sharding on status (low cardinality)
+sh.shardCollection("swiggy_db.orders", { status: 1 })
+
+// Only 5 possible shard key values → at most 5 useful shards
+// Shard 1 → status: "placed"            (high write volume — 30% of active orders)
+// Shard 2 → status: "out_for_delivery"  (high write volume — 30% of active orders)
+// Shard 3 → status: "delivered"         (massive historical data, slow read queries)
+// Shard 4 → status: "confirmed"         (brief transitional state — low volume)
+// Shard 5 → status: "cancelled"         (moderate volume)
+
+// Shards 1 and 2 are hot. Shards 3, 4, 5 are idle during peak.
+// You have 5 servers. You're effectively using 2. ❌`
+            },
+            {
+              type: "heading",
+              text: "Hotspot Type 3 — Skewed Value Distribution"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy shards on city. Sounds reasonable — 500 cities, high cardinality. But Mumbai alone generates 35% of all Swiggy orders. The Mumbai shard handles 35% of all writes. The Patna shard handles 0.05%. Technically distributed, practically a hotspot."
+            },
+            {
+              type: "code",
+              code: `// ❌ Risky — sharding on city (skewed distribution)
+sh.shardCollection("swiggy_db.orders", { city: 1 })
+
+// Write distribution during dinner rush:
+// Mumbai shard:    35% of all writes  ← hot ❌
+// Delhi shard:     20% of all writes  ← warm
+// Bangalore shard: 15% of all writes  ← warm
+// Hyderabad shard: 8%  of all writes
+// All other cities combined: 22% across hundreds of shards
+
+// Mumbai shard needs 3x more hardware than the Hyderabad shard
+// Defeats the purpose of uniform horizontal scaling`
+            },
+            {
+              type: "heading",
+              text: "How to Fix Hotspots"
+            },
+            {
+              type: "step",
+              title: "Use hashed sharding for write-heavy collections",
+              desc: "Hash the shard key — orderId, userId — to scatter documents randomly. Eliminates all write hotspots. Every shard gets the same fraction of new writes regardless of value distribution."
+            },
+            {
+              type: "step",
+              title: "Use a compound shard key to add entropy",
+              desc: "If you need city for geographic queries but can't afford the Mumbai hotspot — use {city, orderId}. Within the Mumbai range, orderId spreads writes across chunks. You get geographic locality and even distribution within each city."
+            },
+            {
+              type: "step",
+              title: "Zone sharding for known skew",
+              desc: "Deliberately assign more shards to Mumbai. MongoDB's zone sharding lets you map Mumbai to 4 shards, Delhi to 2 shards, and all other cities to 1 shard each — proportional to their actual traffic."
+            },
+            {
+              type: "code",
+              code: `// ✅ Fix — hashed orderId eliminates all write hotspots
+sh.shardCollection("swiggy_db.orders", { orderId: "hashed" })
+// Every new order → hashed → goes to a random shard
+// All 10 shards get equal write load regardless of city, status, or time ✅
+
+// ✅ Fix — zone sharding to handle Mumbai's volume
+sh.addShardTag("shard1", "MUMBAI")
+sh.addShardTag("shard2", "MUMBAI")
+sh.addShardTag("shard3", "MUMBAI")  // 3 shards for Mumbai
+sh.addShardTag("shard4", "DELHI")
+sh.addShardTag("shard5", "DELHI")   // 2 shards for Delhi
+sh.addShardTag("shard6", "OTHER")   // 1 shard for rest
+
+sh.addTagRange("swiggy_db.orders",
+  { city: "Mumbai", orderId: MinKey },
+  { city: "Mumbai", orderId: MaxKey },
+  "MUMBAI"
+)`
+            },
+            {
+              type: "table",
+              headers: ["Bad Shard Key", "Hotspot Type", "Fix"],
+              rows: [
+                ["createdAt (range)", "Write hotspot — latest shard always hot", "Hash orderId instead"],
+                ["status", "Low cardinality — 2 shards do all the work", "Never use low-cardinality fields"],
+                ["city (range)", "Skewed — Mumbai shard overwhelmed", "Zone sharding or {city, orderId} compound"],
+                ["_id (ObjectId, range)", "Write hotspot — ObjectId is monotonically increasing", "Hash _id or use orderId hashed"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Hotspots happen when the shard key funnels disproportionate traffic to one shard — through monotonic growth, low cardinality, or skewed value distribution. For Swiggy, hashed orderId eliminates write hotspots entirely. Zone sharding handles known geographic skew. The right shard key makes all shards equally busy — that's the goal."
+            }
+          ],
+
+
+          "Mongos Router & Config Servers": [
+            {
+              type: "paragraph",
+              text: "Swiggy's orders are split across 10 shards. Your application sends a query: find the order with orderId SWG-10239847. Which of the 10 shards has it? Your app has no idea — and it shouldn't need to. Something has to receive that query, figure out which shard owns that order, forward the query there, and return the result. That something is the mongos router. And the map it uses to know which shard owns which data — that's stored in the config servers."
+            },
+            {
+              type: "heading",
+              text: "The mongos Router — Your App's Single Entry Point"
+            },
+            {
+              type: "paragraph",
+              text: "mongos is a lightweight routing process that sits between your application and the shards. Your app connects to mongos exactly like it would connect to a regular MongoDB server. mongos receives every query, consults the cluster metadata, routes the query to the right shard or shards, collects the results, and returns them to your app. The shards are completely invisible to your application."
+            },
+            {
+              type: "code",
+              code: `// Your app connects to mongos — not directly to any shard
+const client = new MongoClient("mongodb://mongos.swiggy.internal:27017")
+
+// Your app runs a normal query
+db.orders.findOne({ orderId: "SWG-10239847" })
+
+// What mongos does internally:
+// 1. Receives the query
+// 2. Checks config servers — which shard owns orderId "SWG-10239847"?
+// 3. Config servers say → Shard 4
+// 4. mongos forwards query to Shard 4
+// 5. Shard 4 returns the document
+// 6. mongos returns it to your app
+
+// Your app sees one server. mongos handles the complexity. ✅`
+            },
+            {
+              type: "step",
+              title: "Targeted query — shard key in the filter",
+              desc: "Your query includes the shard key. mongos checks the config servers, identifies exactly one shard, routes there. One shard responds. Fast, efficient — no different from querying a non-sharded collection."
+            },
+            {
+              type: "step",
+              title: "Scatter-gather query — no shard key in the filter",
+              desc: "Your query has no shard key. mongos has no way to know which shard has the matching documents. It broadcasts the query to all shards simultaneously, waits for all responses, merges the results, and returns them. Expensive — grows linearly with shard count."
+            },
+            {
+              type: "code",
+              code: `// Targeted query — orderId is the shard key — goes to exactly one shard ✅
+db.orders.findOne({ orderId: "SWG-10239847" })
+// mongos → Config: which shard? → Shard 4 → done
+
+// Scatter-gather — no shard key — goes to ALL shards ❌ (expensive)
+db.orders.find({ status: "out_for_delivery", city: "Mumbai" })
+// mongos → broadcasts to all 10 shards → waits → merges 10 result sets
+
+// Moral: design queries to include the shard key wherever possible`
+            },
+            {
+              type: "heading",
+              text: "Config Servers — The Cluster's Map"
+            },
+            {
+              type: "paragraph",
+              text: "Config servers store the metadata for the entire sharded cluster — which shards exist, what chunks they own, and what shard key ranges map to which shard. Every time a document is inserted or a chunk migrates, the config servers are updated. mongos caches this metadata locally and refreshes it when the cluster topology changes."
+            },
+            {
+              type: "code",
+              code: `// Config servers store the chunk map — which shard owns which range
+// For Swiggy's orders sharded on hashed orderId:
+
+// Chunk 1  → hash range: MinKey  to -7000000000 → Shard 1
+// Chunk 2  → hash range: -7000000000 to -4000000000 → Shard 2
+// Chunk 3  → hash range: -4000000000 to -1000000000 → Shard 3
+// Chunk 4  → hash range: -1000000000 to  2000000000 → Shard 4
+// ...
+// Chunk 10 → hash range:  8000000000 to  MaxKey     → Shard 10
+
+// Config servers always run as a 3-member replica set
+// Loss of config servers = mongos can't route = cluster unusable
+// They must always be highly available ✅`
+            },
+            {
+              type: "step",
+              title: "Chunk splitting and balancing",
+              desc: "MongoDB divides each shard's data into chunks — default 128MB each. When a chunk grows too large, MongoDB splits it. When one shard has significantly more chunks than another, the balancer migrates chunks from the heavy shard to lighter ones. Config servers track every split and migration."
+            },
+            {
+              type: "step",
+              title: "Run multiple mongos instances",
+              desc: "Swiggy doesn't run one mongos — it runs several, one per app server or cluster of app servers. If one mongos process crashes, requests route to another. mongos is stateless — it just reads the cluster map from config servers. More mongos instances = more routing capacity, no single point of failure."
+            },
+            {
+              type: "code",
+              code: `// Swiggy's sharded cluster topology
+App Servers
+    │
+    ▼
+mongos-1  mongos-2  mongos-3   ← multiple routers, stateless, load balanced
+    │         │         │
+    └─────────┴─────────┘
+                │
+         Config Servers          ← 3-member replica set, stores cluster map
+         (CSRS replica set)
+                │
+    ┌───────────┼───────────┐
+    ▼           ▼           ▼
+ Shard 1     Shard 2  ...  Shard 10   ← each shard is itself a replica set`
+            },
+            {
+              type: "table",
+              headers: ["Component", "Role", "What happens if it goes down?"],
+              rows: [
+                ["mongos", "Routes queries to correct shards", "Other mongos instances take over — stateless"],
+                ["Config Servers", "Store cluster metadata and chunk map", "Cluster becomes read-only — must recover immediately"],
+                ["Shard", "Stores the actual data", "That chunk of data is unavailable — failover within shard's replica set"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ mongos is your app's single entry point — it receives every query, checks the config servers for the chunk map, and routes to the right shard. Config servers are the brain of the cluster — they know exactly which shard owns which data. Your app talks to mongos as if it's one MongoDB server. The entire sharding infrastructure is invisible."
+            }
+          ],
+
+
+          "Sharding + Replication Together": [
+            {
+              type: "paragraph",
+              text: "Swiggy shards the orders collection across 10 servers to handle write throughput and storage. But sharding alone doesn't protect against hardware failure. Shard 4 goes down — all orders routed to Shard 4 are suddenly unavailable. You've solved the scale problem but introduced a new single point of failure per shard. The solution: every shard is itself a replica set. Sharding handles scale. Replication handles availability. In production, you always run both together."
+            },
+            {
+              type: "heading",
+              text: "Every Shard is a Replica Set"
+            },
+            {
+              type: "paragraph",
+              text: "In a production MongoDB sharded cluster, each shard isn't a single server — it's a 3-member replica set with one Primary and two Secondaries. The shard's Primary handles writes for that shard's chunk range. The shard's Secondaries replicate every write and take over automatically if the Primary fails. You get horizontal scale from sharding and high availability from replication simultaneously."
+            },
+            {
+              type: "code",
+              code: `// Swiggy's full production topology
+// 10 shards × 3 members each = 30 MongoDB servers for the orders collection
+
+Shard 1 Replica Set (swiggyRS-1):
+  mongo-s1-primary.swiggy.internal:27017   ← writes for chunk range 1
+  mongo-s1-secondary1.swiggy.internal:27017
+  mongo-s1-secondary2.swiggy.internal:27017
+
+Shard 2 Replica Set (swiggyRS-2):
+  mongo-s2-primary.swiggy.internal:27017   ← writes for chunk range 2
+  mongo-s2-secondary1.swiggy.internal:27017
+  mongo-s2-secondary2.swiggy.internal:27017
+
+// ... × 10 shards
+
+Config Servers (CSRS):                     ← also a replica set
+  mongo-cfg1.swiggy.internal:27017
+  mongo-cfg2.swiggy.internal:27017
+  mongo-cfg3.swiggy.internal:27017
+
+mongos Routers (stateless):
+  mongos-1.swiggy.internal:27017
+  mongos-2.swiggy.internal:27017
+  mongos-3.swiggy.internal:27017`
+            },
+            {
+              type: "heading",
+              text: "What Happens When a Shard's Primary Fails"
+            },
+            {
+              type: "step",
+              title: "Shard 4's Primary crashes",
+              desc: "Shard 4 holds orders with hash ranges between -1B and +2B. Its Primary crashes during dinner rush. Shard 4's two Secondaries detect the missing heartbeat within 10 seconds."
+            },
+            {
+              type: "step",
+              title: "Election within Shard 4's replica set",
+              desc: "Shard 4's Secondaries hold an election — exactly like any replica set failover. One Secondary wins with majority votes and becomes Shard 4's new Primary. Takes 10–30 seconds."
+            },
+            {
+              type: "step",
+              title: "mongos detects the new Primary",
+              desc: "mongos periodically checks the topology of every shard's replica set. It detects Shard 4's new Primary and updates its routing table. Queries for Shard 4's chunk range are now routed to the new Primary."
+            },
+            {
+              type: "step",
+              title: "All other shards unaffected",
+              desc: "Shards 1–3 and 5–10 never stopped working. Queries hitting those shards had zero disruption. Only orders on Shard 4 experienced the brief failover window."
+            },
+            {
+              type: "code",
+              code: `// Full failure scenario timeline
+// T+0s   — Shard 4 Primary crashes (mongo-s4-primary)
+// T+10s  — Shard 4 Secondaries declare election
+// T+12s  — mongo-s4-secondary1 elected new Primary
+// T+13s  — mongos detects topology change on Shard 4
+// T+14s  — mongos routes Shard 4 queries to mongo-s4-secondary1
+// T+15s  — Swiggy orders on Shard 4 working again ✅
+// T+0s to T+15s — Shards 1–3, 5–10 completely unaffected ✅`
+            },
+            {
+              type: "heading",
+              text: "Reading from Shard Secondaries"
+            },
+            {
+              type: "paragraph",
+              text: "Just like in a standalone replica set, you can direct reads to a shard's Secondaries using read preference. For Swiggy's analytics workload — weekly revenue reports, ML feature extraction — reads go to each shard's Secondary, leaving each shard's Primary free for live order writes and reads."
+            },
+            {
+              type: "code",
+              code: `// Analytics query — secondaryPreferred — reads from each shard's Secondary
+db.orders.aggregate([
+  { $match: { createdAt: { $gte: weekStart } } },
+  { $group: { _id: "$city", totalRevenue: { $sum: "$totalAmount" } } }
+], { readPreference: "secondaryPreferred" })
+
+// mongos broadcasts to all 10 shards (no shard key in $match)
+// Each shard routes to its own Secondary
+// 10 Primaries unaffected — still handling live dinner rush writes ✅`
+            },
+            {
+              type: "table",
+              headers: ["Layer", "Technology", "Problem it solves"],
+              rows: [
+                ["Sharding", "Split data across 10 shards", "Storage, write throughput, horizontal scale"],
+                ["Replication per shard", "3-member replica set per shard", "High availability, automatic failover"],
+                ["mongos", "Stateless router (multiple instances)", "Single entry point, no routing SPOF"],
+                ["Config servers", "3-member replica set", "Cluster metadata availability"],
+                ["Read preference", "secondaryPreferred on shards", "Analytics load isolated from live writes"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ A sharded cluster with 10 shards × 3 members = 30 data-bearing MongoDB servers, plus 3 config servers and 3+ mongos instances. That's 36+ processes to monitor, patch, and operate. This is serious infrastructure. Most teams use MongoDB Atlas or a managed service to run sharded clusters in production rather than operating them manually."
+            },
+            {
+              type: "success-callout",
+              text: "✅ Sharding and replication solve different problems and work together. Sharding splits Swiggy's 10 billion orders across 10 servers — solving scale. Each shard's 3-member replica set ensures no shard is a single point of failure — solving availability. mongos routes transparently. Config servers track the map. The result: a database that scales to any volume and survives any single hardware failure."
+            }
+          ]
+
+        }
       },
 
       {
         id: 10,
         title: "MongoDB at Production Scale",
-        level: "experienced",
+        level: "freshers",
         topics: [
           "Connection Pooling",
           "Write Concern & Read Concern",
@@ -6594,7 +9481,957 @@ db.orders.find({ city: "Mumbai", status: "placed" }).explain("executionStats")`
           "Data Archiving — Moving Old Orders to Cold Storage",
           "GDPR & PII — Handling User Data in MongoDB",
           "MongoDB vs Cassandra vs DynamoDB — When to Switch",
-        ]
+        ],
+        topicDetails: {
+
+          "Connection Pooling": [
+            {
+              type: "paragraph",
+              text: "Every time a Swiggy app server needs to query MongoDB — fetch a restaurant, place an order, update a status — it needs a connection to MongoDB. Opening a TCP connection, authenticating, and negotiating a session takes 50–200ms. Swiggy's servers handle thousands of requests per second. If every request opened a fresh MongoDB connection, the connection overhead alone would make the app unusably slow. Connection pooling solves this by keeping a set of pre-opened connections ready to use — like a taxi stand where cabs are always waiting instead of being summoned from across the city."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ Swiggy has 200 app servers, each handling 500 requests per second. If every request opens a fresh MongoDB connection — that's 100,000 new connections per second. MongoDB can handle ~200,000 total connections before it runs out of file descriptors. The math doesn't work without pooling."
+            },
+            {
+              type: "heading",
+              text: "How Connection Pooling Works"
+            },
+            {
+              type: "paragraph",
+              text: "When a Swiggy app server starts up, the MongoDB driver opens a pool of connections — say 50 — and keeps them open. When a request arrives and needs MongoDB, it borrows a connection from the pool, runs the query, and returns the connection when done. The connection stays open and ready for the next request. No handshake, no authentication — just an immediately usable connection."
+            },
+            {
+              type: "step",
+              title: "App server starts up",
+              desc: "The MongoDB driver initialises and opens minPoolSize connections to MongoDB. These connections are idle, authenticated, and waiting."
+            },
+            {
+              type: "step",
+              title: "Request arrives — order placement",
+              desc: "The request handler borrows a connection from the pool. Runs insertOne for the order. Returns the connection to the pool. Total connection overhead: ~0ms. The connection was already open."
+            },
+            {
+              type: "step",
+              title: "Traffic spikes at 8PM dinner rush",
+              desc: "More requests arrive simultaneously than there are idle connections. The driver opens new connections up to maxPoolSize. Once traffic drops, idle connections above minPoolSize are closed after maxIdleTimeMS."
+            },
+            {
+              type: "step",
+              title: "All pool connections are busy",
+              desc: "A new request arrives but every connection is in use. The request waits up to waitQueueTimeoutMS for a connection to become available. If none frees up in time — the driver throws a timeout error. Swiggy's app returns a 503 to the user."
+            },
+            {
+              type: "code",
+              code: `// MongoDB connection with pool configuration
+const client = new MongoClient("mongodb://mongos.swiggy.internal:27017", {
+  maxPoolSize:        100,   // max open connections per app server
+  minPoolSize:        10,    // keep at least 10 connections open always
+  maxIdleTimeMS:      30000, // close idle connections after 30 seconds
+  waitQueueTimeoutMS: 5000,  // wait up to 5s for a free connection before failing
+  connectTimeoutMS:   10000, // timeout if connection can't be established in 10s
+  socketTimeoutMS:    45000, // timeout if a query takes longer than 45s
+})
+
+// One client instance per app server process — shared across all requests
+// NEVER create a new MongoClient per request ❌
+// That defeats the entire purpose of pooling`
+            },
+            {
+              type: "heading",
+              text: "Sizing the Pool — Swiggy's Calculation"
+            },
+            {
+              type: "paragraph",
+              text: "Too small a pool and requests queue up waiting for connections — latency spikes. Too large a pool and you overwhelm MongoDB with connections — each connection uses RAM and file descriptors on the server. Getting the pool size right requires knowing your query latency and request concurrency."
+            },
+            {
+              type: "code",
+              code: `// Pool sizing formula
+// Required pool size ≈ (requests per second per app server) × (avg query time in seconds)
+
+// Swiggy app server handles 500 req/sec
+// Average MongoDB query takes 5ms = 0.005 seconds
+// Required pool size = 500 × 0.005 = 2.5 → round up to ~10 connections
+
+// But queries aren't uniform — some are fast (1ms), some are slow (50ms)
+// Add headroom for slow queries and spikes → maxPoolSize: 50–100
+
+// Total connections to MongoDB from all app servers:
+// 200 app servers × 100 maxPoolSize = 20,000 potential connections
+// MongoDB's default maxIncomingConnections is 1,000,000 — fine for this
+// But RAM per connection is ~1MB → 20,000 connections = 20GB RAM just for connections
+// Size carefully ⚠️`
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ The single most common connection pooling mistake: creating a new MongoClient inside a request handler or inside a loop. Each MongoClient creates its own pool. 1000 requests = 1000 pools = 1000 × maxPoolSize connections hammering MongoDB. Always create one MongoClient per process and reuse it across all requests."
+            },
+            {
+              type: "table",
+              headers: ["Setting", "What it controls", "Swiggy recommendation"],
+              rows: [
+                ["maxPoolSize", "Maximum open connections per app server", "50–100 for high-traffic services"],
+                ["minPoolSize", "Connections kept open always", "10 — avoids cold start on traffic burst"],
+                ["maxIdleTimeMS", "How long idle connections stay open", "30,000ms — close unused connections"],
+                ["waitQueueTimeoutMS", "How long a request waits for a free connection", "5,000ms — fail fast, don't queue forever"],
+                ["connectTimeoutMS", "How long to wait when opening a new connection", "10,000ms"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Connection pooling keeps pre-opened MongoDB connections ready so every Swiggy request reuses an existing connection instead of paying the 100–200ms cost of opening a new one. One MongoClient per process, sized to match your concurrency. The difference between a 5ms query and a 200ms query is often just whether you're using a pool."
+            }
+          ],
+
+
+          "Write Concern & Read Concern": [
+            {
+              type: "paragraph",
+              text: "You place a Swiggy order and see the confirmation screen. But how sure is MongoDB that your order is actually saved? Did it write to one server and call it done? Did it wait for two servers to confirm? What if the server crashed right after writing? Write concern controls how durable a write is before MongoDB acknowledges it. Read concern controls how fresh and committed the data is when you read it. Together they are the tunable dial between speed and safety."
+            },
+            {
+              type: "heading",
+              text: "Write Concern — How Sure Are You the Write is Safe?"
+            },
+            {
+              type: "paragraph",
+              text: "Write concern tells MongoDB how many replica set members must acknowledge a write before the driver gets a success response. A lower write concern means faster writes with more risk of data loss on failure. A higher write concern means slower writes with stronger durability guarantees."
+            },
+            {
+              type: "step",
+              title: "w:0 — Fire and forget",
+              desc: "MongoDB sends the write and doesn't wait for any acknowledgement. Fastest possible write. No guarantee the data was ever saved. Swiggy uses this only for non-critical analytics events — click tracking, impression logging — where losing a few events is acceptable."
+            },
+            {
+              type: "step",
+              title: "w:1 — Primary acknowledged (default)",
+              desc: "MongoDB waits for the Primary to write and confirm. Fast. But if the Primary crashes before replicating to a Secondary, the write is lost — the new Primary never got it. Fine for low-stakes writes."
+            },
+            {
+              type: "step",
+              title: "w:majority — Majority acknowledged",
+              desc: "MongoDB waits for a majority of replica set members to confirm the write. On a 3-member set — 2 members must confirm. Even if the Primary crashes immediately after, a Secondary already has the write and will become the new Primary with your data intact. Swiggy uses this for order placement and payment writes."
+            },
+            {
+              type: "code",
+              code: `// w:0 — fire and forget — analytics events, impression logs
+db.analytics.insertOne(
+  { event: "restaurant_viewed", restaurantId: "rst_4421", userId: "usr_982341" },
+  { writeConcern: { w: 0 } }
+)
+// Fastest — no wait. If it's lost, nobody notices.
+
+// w:1 — primary acknowledged — menu views, search logs
+db.searchLogs.insertOne(
+  { query: "biryani", city: "Mumbai", userId: "usr_982341" },
+  { writeConcern: { w: 1 } }
+)
+// Default. Fast. Small risk of loss on Primary crash.
+
+// w:majority — majority acknowledged — orders, payments, wallet
+db.orders.insertOne(
+  { orderId: "SWG-10239847", totalAmount: 487, status: "placed" },
+  { writeConcern: { w: "majority", wtimeout: 5000 } }
+)
+// Waits for 2/3 members. Survives Primary crash. Slightly slower. ✅`
+            },
+            {
+              type: "heading",
+              text: "Journal — Durability Within One Server"
+            },
+            {
+              type: "paragraph",
+              text: "Even with w:1, there's a risk — the write is in MongoDB's memory but hasn't been flushed to disk yet. A power failure wipes it. Adding j:true forces MongoDB to wait until the write is written to the journal on disk before acknowledging. For Swiggy's financial writes, always use w:majority with j:true."
+            },
+            {
+              type: "code",
+              code: `// j:true — wait for journal flush to disk
+db.wallets.updateOne(
+  { userId: "usr_982341" },
+  { $inc: { balance: -487 } },
+  { writeConcern: { w: "majority", j: true, wtimeout: 5000 } }
+)
+// Only acknowledged after written to disk on majority of members ✅
+// Survives power failures, server crashes, OS crashes`
+            },
+            {
+              type: "heading",
+              text: "Read Concern — How Fresh is the Data You're Reading?"
+            },
+            {
+              type: "paragraph",
+              text: "Read concern controls what version of data a query returns — the latest write on the Primary, or only data that has been committed to a majority of members. Relevant when you're reading immediately after writing or reading from Secondaries."
+            },
+            {
+              type: "step",
+              title: "local (default)",
+              desc: "Returns the most recent data on the node you're reading from. On Primary — latest data. On Secondary — whatever that Secondary has applied so far. May include writes that haven't reached majority yet — if the Primary crashes, these writes could roll back."
+            },
+            {
+              type: "step",
+              title: "majority",
+              desc: "Returns only data that has been acknowledged by a majority of replica set members. This data is guaranteed to never roll back — even if the Primary crashes right now. Use for reading wallet balances, payment status, anything where stale or rolled-back data causes problems."
+            },
+            {
+              type: "step",
+              title: "linearizable",
+              desc: "The strongest guarantee — reflects all writes that completed before the read started, confirmed by majority. Slowest. Used for reads that must absolutely be consistent — concurrent inventory checks in Swiggy Instamart where two users can't buy the last item."
+            },
+            {
+              type: "code",
+              code: `// local — default — Swiggy restaurant listings, menus
+db.restaurants.find({ city: "Mumbai" }, { readConcern: { level: "local" } })
+// Fast. May return writes not yet on majority. Fine for non-critical reads.
+
+// majority — Swiggy wallet balance, order confirmation
+db.wallets.findOne(
+  { userId: "usr_982341" },
+  { readConcern: { level: "majority" } }
+)
+// Only returns balance that is durably committed. Never rolls back. ✅
+
+// linearizable — Instamart last-item inventory check
+db.inventory.findOne(
+  { itemId: "itm_mango", stock: { $gt: 0 } },
+  { readConcern: { level: "linearizable" } }
+)
+// Reflects all prior writes. Prevents two users from buying the last mango. ✅`
+            },
+            {
+              type: "table",
+              headers: ["Concern", "Type", "Speed", "Guarantee", "Swiggy use case"],
+              rows: [
+                ["w:0", "Write", "Fastest", "None", "Click tracking, impression logs"],
+                ["w:1", "Write", "Fast", "Primary wrote it", "Search logs, menu views"],
+                ["w:majority", "Write", "Moderate", "Survives Primary crash", "Orders, payments, wallet debits"],
+                ["local", "Read", "Fastest", "Latest on this node", "Restaurant listings, menus"],
+                ["majority", "Read", "Moderate", "Committed, won't roll back", "Wallet balance, order status"],
+                ["linearizable", "Read", "Slowest", "Reflects all prior writes", "Instamart stock checks"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Write concern and read concern are Swiggy's tunable safety dial. For restaurant listings — fast and loose is fine. For order placement and wallet debits — w:majority + j:true + readConcern majority is non-negotiable. Match the concern level to what it costs if that data is wrong or lost."
+            }
+          ],
+
+
+          "Monitoring with MongoDB Atlas": [
+            {
+              type: "paragraph",
+              text: "Swiggy's MongoDB cluster is processing 50,000 writes per minute, serving 10 million reads per hour, and growing by 3 million documents per day. Something will go wrong — a slow query, a missing index, a shard running hot, a connection pool exhausted. The question isn't whether problems will happen. It's whether you see them before your users do. That's what monitoring is for. MongoDB Atlas — Swiggy's managed MongoDB platform — gives a real-time dashboard into every metric that matters."
+            },
+            {
+              type: "heading",
+              text: "The Metrics That Matter in Production"
+            },
+            {
+              type: "step",
+              title: "Operation latency — are queries getting slower?",
+              desc: "Atlas tracks read and write latency in real time — the p50, p95, and p99 response times. p50 is your average user. p99 is your worst 1% — often the one filing a complaint. Swiggy monitors p99 write latency on the orders collection. A spike from 5ms to 200ms at 8PM means something changed — a missing index, a slow aggregation, a new query pattern."
+            },
+            {
+              type: "step",
+              title: "Opcounters — what is MongoDB actually doing?",
+              desc: "Opcounters show operations per second broken down by type — inserts, queries, updates, deletes, getmores, commands. Swiggy watches insert rate on the orders collection. If inserts drop from 800/sec to 0 — order placement is broken. If queries spike from 10,000/sec to 100,000/sec — something is querying in a loop."
+            },
+            {
+              type: "step",
+              title: "Connections — is the pool healthy?",
+              desc: "Atlas shows current open connections per mongos and per shard Primary. If connections are near maxIncomingConnections — new connections will be refused. Swiggy sets an alert at 80% of max connections so the team knows before it becomes an outage."
+            },
+            {
+              type: "step",
+              title: "Replication lag — are secondaries keeping up?",
+              desc: "If a shard's Secondary falls behind the Primary by more than a few seconds, reads from that Secondary return stale data. Atlas shows replication lag per member. Swiggy alerts on lag > 10 seconds — that's when stale reads start being user-visible."
+            },
+            {
+              type: "step",
+              title: "Disk and memory — is the working set fitting in RAM?",
+              desc: "MongoDB performance depends on the working set — the indexes and documents accessed most frequently — fitting in RAM. Atlas shows RAM utilisation and page faults. Sudden page fault spikes mean MongoDB is hitting disk instead of RAM — queries slow down dramatically. Time to upgrade the instance or add shards."
+            },
+            {
+              type: "code",
+              code: `// Atlas alerts Swiggy configures for production
+
+// 1. High query latency — p99 read > 100ms
+{
+  metric: "QUERY_TARGETING_SCANNED_OBJECTS_PER_RETURNED",
+  threshold: 1000,   // scanning 1000 docs to return 1 → missing index
+  severity: "CRITICAL"
+}
+
+// 2. Replication lag too high
+{
+  metric: "REPLICATION_LAG",
+  threshold: 10,    // seconds behind Primary
+  severity: "WARNING"
+}
+
+// 3. Connections near limit
+{
+  metric: "CONNECTIONS",
+  threshold: 0.8,   // 80% of maxIncomingConnections
+  severity: "WARNING"
+}
+
+// 4. Disk utilisation
+{
+  metric: "DISK_PARTITION_UTILIZATION_DATA",
+  threshold: 0.85,  // 85% full — time to expand storage
+  severity: "CRITICAL"
+}`
+            },
+            {
+              type: "heading",
+              text: "Atlas Performance Advisor — Automatic Index Suggestions"
+            },
+            {
+              type: "paragraph",
+              text: "Atlas continuously analyses your slow queries and suggests indexes you should create. It compares how many documents a query scans versus how many it returns. If a query scans 500,000 documents to return 12 — Atlas flags it and suggests a compound index. Swiggy's team reviews Performance Advisor suggestions weekly and implements ones with high impact scores."
+            },
+            {
+              type: "code",
+              code: `// Atlas Performance Advisor output — example suggestion for Swiggy
+{
+  namespace: "swiggy_db.orders",
+  suggestedIndex: { city: 1, status: 1, createdAt: -1 },
+  impact: {
+    queryCount:          284930,   // queries this index would help per day
+    avgExecutionMs:      1240,     // current average execution time
+    projectedExecutionMs: 3,       // projected with this index
+  },
+  affectedQueries: [
+    { query: { city: "Mumbai", status: "out_for_delivery" }, count: 184000 },
+    { query: { city: "Delhi", status: "placed", createdAt: { $gte: ... } }, count: 100930 }
+  ]
+}
+// Creating this one index saves 1237ms per query across 284,930 daily queries ✅`
+            },
+            {
+              type: "table",
+              headers: ["Atlas Feature", "What it shows", "Swiggy action"],
+              rows: [
+                ["Real-time metrics", "Latency, opcounters, connections", "Alert on p99 > 100ms, connections > 80%"],
+                ["Performance Advisor", "Slow queries + index suggestions", "Review weekly, implement high-impact indexes"],
+                ["Query Profiler", "Individual slow query logs", "Investigate queries > 100ms"],
+                ["Replication lag", "Seconds behind Primary per member", "Alert on lag > 10s"],
+                ["Data Explorer", "Browse collections and documents", "Debug production data issues"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Atlas monitoring gives Swiggy visibility into latency, throughput, connections, replication lag, and disk — before any of them become user-visible outages. Performance Advisor turns slow query logs into actionable index suggestions. You can't fix what you can't see — and Atlas makes everything visible."
+            }
+          ],
+
+
+          "Slow Query Detection & Fixing": [
+            {
+              type: "paragraph",
+              text: "Swiggy's support dashboard starts loading slowly. The restaurant partner app times out. A new engineer pushed code last night that introduced a query on the orders collection with no index. That query now runs 50,000 times a day, scanning 2 million documents each time to return 3. MongoDB is spending 95% of its CPU on this one bad query. Finding it, understanding why it's slow, and fixing it — that's slow query detection and remediation."
+            },
+            {
+              type: "heading",
+              text: "Step 1 — Enable the Database Profiler"
+            },
+            {
+              type: "paragraph",
+              text: "MongoDB's profiler logs slow queries to a special collection called system.profile. You set a threshold — any query slower than that threshold gets logged with full details: execution time, documents scanned, documents returned, the query plan used."
+            },
+            {
+              type: "code",
+              code: `// Level 0 — profiler off (default)
+db.setProfilingLevel(0)
+
+// Level 1 — log only queries slower than slowms threshold (recommended for production)
+db.setProfilingLevel(1, { slowms: 100 })   // log queries taking > 100ms
+
+// Level 2 — log ALL queries (never use in production — massive overhead)
+db.setProfilingLevel(2)
+
+// Read slow query logs
+db.system.profile.find().sort({ ts: -1 }).limit(10)
+
+// Find the slowest queries
+db.system.profile.find({ millis: { $gt: 500 } }).sort({ millis: -1 })`
+            },
+            {
+              type: "heading",
+              text: "Step 2 — Read the Profiler Output"
+            },
+            {
+              type: "paragraph",
+              text: "Each slow query log entry tells you exactly what happened. The most important fields: millis (how long it took), docsExamined (how many documents MongoDB looked at), nreturned (how many it returned), and planSummary (what query plan was used — COLLSCAN or IXSCAN)."
+            },
+            {
+              type: "code",
+              code: `// A slow query entry from system.profile
+{
+  op:           "query",
+  ns:           "swiggy_db.orders",
+  command: {
+    find:   "orders",
+    filter: { restaurantId: "rst_4421", status: "out_for_delivery" }
+  },
+  planSummary:  "COLLSCAN",        // ❌ full collection scan — no index
+  docsExamined: 2000000,           // scanned 2 million documents
+  nreturned:    3,                 // returned 3
+  millis:       1847,              // took 1847ms — nearly 2 seconds ❌
+  ts:           ISODate("2024-03-18T20:14:07Z")
+}
+
+// docsExamined: 2,000,000 to return nreturned: 3
+// Ratio of 666,666:1 — catastrophic. Needs an index immediately.`
+            },
+            {
+              type: "heading",
+              text: "Step 3 — Use explain() to Understand the Query Plan"
+            },
+            {
+              type: "paragraph",
+              text: "explain() shows you the execution plan MongoDB chose for a query — before you run it in production. You can see if it's using an index, which index, how many documents it scans, and how long each stage takes."
+            },
+            {
+              type: "code",
+              code: `// Run explain on the slow query
+db.orders.find({
+  restaurantId: "rst_4421",
+  status: "out_for_delivery"
+}).explain("executionStats")
+
+// Output — the important parts
+{
+  queryPlanner: {
+    winningPlan: {
+      stage: "COLLSCAN",   // ❌ no index — full scan
+    }
+  },
+  executionStats: {
+    executionTimeMillis: 1847,
+    totalDocsExamined:   2000000,   // ❌ scanned everything
+    nReturned:           3,
+  }
+}
+
+// After creating index { restaurantId: 1, status: 1 }
+{
+  queryPlanner: {
+    winningPlan: {
+      stage: "FETCH",
+      inputStage: { stage: "IXSCAN", indexName: "restaurantId_1_status_1" }  // ✅
+    }
+  },
+  executionStats: {
+    executionTimeMillis: 2,         // ✅ 1847ms → 2ms
+    totalDocsExamined:   3,         // ✅ scanned exactly what was returned
+    nReturned:           3,
+  }
+}`
+            },
+            {
+              type: "heading",
+              text: "Step 4 — Fix It"
+            },
+            {
+              type: "step",
+              title: "Fix 1 — Create the missing index",
+              desc: "This is the fix for 80% of slow queries. The query scans the whole collection because there's no index on the filter fields. Create a compound index matching the query's filter and sort."
+            },
+            {
+              type: "code",
+              code: `// Create the index that fixes the slow query
+db.orders.createIndex({ restaurantId: 1, status: 1 })
+
+// Same query now takes 2ms instead of 1847ms ✅
+// docsExamined drops from 2,000,000 to 3`
+            },
+            {
+              type: "step",
+              title: "Fix 2 — Add projection to reduce document size",
+              desc: "The query returns full order documents but only needs 3 fields for the restaurant dashboard. Fetching and transmitting unnecessary fields wastes bandwidth and memory."
+            },
+            {
+              type: "code",
+              code: `// Without projection — fetches entire document including items array, timeline, etc.
+db.orders.find({ restaurantId: "rst_4421", status: "out_for_delivery" })
+
+// With projection — fetch only what's needed
+db.orders.find(
+  { restaurantId: "rst_4421", status: "out_for_delivery" },
+  { orderId: 1, totalAmount: 1, customerPhone: 1, _id: 0 }
+)
+// Smaller documents → less network transfer → faster response ✅`
+            },
+            {
+              type: "step",
+              title: "Fix 3 — Rewrite the query to use the shard key",
+              desc: "On a sharded cluster, a query without the shard key broadcasts to all shards. Adding the shard key to the filter turns a scatter-gather into a targeted single-shard query."
+            },
+            {
+              type: "code",
+              code: `// Scatter-gather — no shard key — hits all 10 shards
+db.orders.find({ restaurantId: "rst_4421", status: "out_for_delivery" })
+
+// Targeted — shard key city included — hits one shard
+db.orders.find({ city: "Mumbai", restaurantId: "rst_4421", status: "out_for_delivery" })
+// 10x faster on a 10-shard cluster ✅`
+            },
+            {
+              type: "table",
+              headers: ["Symptom", "Diagnosis", "Fix"],
+              rows: [
+                ["COLLSCAN in planSummary", "No index on query fields", "Create compound index"],
+                ["docsExamined >> nReturned", "Index missing or not selective enough", "Create or improve index"],
+                ["Slow despite IXSCAN", "Fetching large documents unnecessarily", "Add projection"],
+                ["Query hits all shards", "Shard key not in filter", "Include shard key in query"],
+                ["Aggregation pipeline slow", "$match is not first stage", "Move $match to top of pipeline"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Slow query detection on Swiggy follows a clear path: profiler catches it → explain() diagnoses it → index or query rewrite fixes it. A query scanning 2 million documents to return 3 is never a data problem — it's always a missing index. Create the index, verify with explain(), and the 1847ms query becomes a 2ms query."
+            }
+          ],
+
+
+          "Data Archiving — Moving Old Orders to Cold Storage": [
+            {
+              type: "paragraph",
+              text: "Swiggy's orders collection has 5 billion documents. 4.8 billion of them are orders delivered more than 6 months ago. Nobody queries them in real time — no user is checking their biryani order from 2 years ago every day, no ops dashboard needs 2-year-old delivery times. But they sit in MongoDB, bloating the collection, inflating index sizes, consuming expensive NVMe storage, and slowing down queries that only care about recent orders. The solution is archiving — moving old data out of the hot collection into cheaper cold storage, while keeping it accessible if someone ever needs it."
+            },
+            {
+              type: "curious-callout",
+              text: "❓ If 96% of your collection is data that nobody queries — why are you paying for fast NVMe storage and keeping it in the working set that needs to fit in RAM?"
+            },
+            {
+              type: "heading",
+              text: "The Archiving Strategy — Two Approaches"
+            },
+            {
+              type: "step",
+              title: "Approach 1 — MongoDB Atlas Online Archive",
+              desc: "Atlas Online Archive automatically moves documents older than a threshold from your live collection to Atlas Data Federation — a queryable cold store on S3. Swiggy configures: move orders older than 180 days to the archive. Atlas handles the movement, compression, and deletion from the live collection. The data is still queryable via the same connection string — just slower."
+            },
+            {
+              type: "code",
+              code: `// Atlas Online Archive configuration — via Atlas UI or API
+{
+  collectionName: "orders",
+  dbName:         "swiggy_db",
+  criteria: {
+    type:         "DATE",
+    dateField:    "createdAt",
+    dateFormat:   "%Y-%m-%dT%H:%M:%S",
+    expireAfterDays: 180    // archive orders older than 6 months
+  },
+  schedule: {
+    type:        "DAILY",
+    hour:        2,          // run at 2AM — off-peak
+    minute:      0
+  }
+}
+
+// After archiving:
+// orders collection → ~200 million documents (last 6 months) — fast ✅
+// Atlas Archive  → 4.8 billion documents (older) — queryable but slower`
+            },
+            {
+              type: "step",
+              title: "Approach 2 — Manual archiving with aggregation + $out",
+              desc: "If you're not on Atlas, run a scheduled job that reads old orders using $match, writes them to a separate cold collection or exports to S3 as JSON/Parquet, then deletes them from the live collection. Full control — no vendor dependency."
+            },
+            {
+              type: "code",
+              code: `// Step 1 — Copy old orders to archive collection
+db.orders.aggregate([
+  {
+    $match: {
+      createdAt: { $lt: new Date("2023-09-01") },  // older than 6 months
+      status:    { $in: ["delivered", "cancelled"] }  // only completed orders
+    }
+  },
+  { $out: "orders_archive_2023" }  // write to archive collection
+])
+
+// Step 2 — Verify archive has all expected documents
+const liveCount    = db.orders.countDocuments({ createdAt: { $lt: new Date("2023-09-01") } })
+const archiveCount = db.orders_archive_2023.countDocuments()
+console.log(liveCount === archiveCount ? "Archive verified ✅" : "Mismatch — do not delete ❌")
+
+// Step 3 — Delete archived documents from live collection (only after verification)
+db.orders.deleteMany({
+  createdAt: { $lt: new Date("2023-09-01") },
+  status: { $in: ["delivered", "cancelled"] }
+})
+
+// Step 4 — Move archive collection to cheaper storage tier or export to S3`
+            },
+            {
+              type: "heading",
+              text: "What Changes After Archiving"
+            },
+            {
+              type: "step",
+              title: "Collection size drops dramatically",
+              desc: "5 billion documents → 200 million. Index sizes shrink proportionally. The working set that needs to fit in RAM is now 4% of what it was. Queries that previously hit disk now run entirely from RAM."
+            },
+            {
+              type: "step",
+              title: "Index rebuild after large deletes",
+              desc: "After deleting 4.8 billion documents, MongoDB's indexes have fragmentation — empty pages from deleted entries. Run db.orders.reIndex() during a maintenance window to compact indexes and reclaim space."
+            },
+            {
+              type: "step",
+              title: "App-layer changes for historical queries",
+              desc: "If a user requests an order from 2 years ago, the app checks the live collection first — not found — then queries the archive. Two queries instead of one, but this case is rare. The vast majority of queries only need recent data."
+            },
+            {
+              type: "code",
+              code: `// App-layer fallback — check live collection first, then archive
+async function getOrder(orderId) {
+  // Check live collection first (fast — indexed, in RAM)
+  let order = await db.collection("orders").findOne({ orderId })
+  if (order) return order
+
+  // Fallback to archive (slower — cold storage)
+  order = await db.collection("orders_archive_2023").findOne({ orderId })
+  return order   // may be null if order never existed
+}`
+            },
+            {
+              type: "table",
+              headers: ["Before Archiving", "After Archiving"],
+              rows: [
+                ["5 billion documents in live collection", "200 million documents in live collection"],
+                ["Index size: ~2TB", "Index size: ~80GB — fits in RAM"],
+                ["Recent order query: 50ms", "Recent order query: 2ms"],
+                ["Storage cost: expensive NVMe", "Old data on cheap S3/object storage"],
+                ["Full collection scan: catastrophic", "Full collection scan: manageable for recent data"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ Archiving moves 96% of Swiggy's orders — the ones nobody queries — out of the live hot collection into cheap cold storage. The live collection shrinks from 5 billion to 200 million documents. Indexes fit in RAM. Queries get 25x faster. Storage costs drop dramatically. Archive early, archive often."
+            }
+          ],
+
+
+          "GDPR & PII — Handling User Data in MongoDB": [
+            {
+              type: "paragraph",
+              text: "Every Swiggy order document contains a phone number, a delivery address, sometimes a name, and a payment method fingerprint. Multiply that by 3 billion orders — and Swiggy holds one of the largest collections of personal data in India. GDPR in Europe, PDPB in India, and similar laws globally impose strict rules: users can request their data be deleted, data must be protected in transit and at rest, and personal data must not sit in logs or analytics systems unprotected. Handling PII correctly in MongoDB isn't a nice-to-have — it's a legal obligation."
+            },
+            {
+              type: "heading",
+              text: "What Counts as PII in Swiggy's MongoDB"
+            },
+            {
+              type: "code",
+              code: `// PII fields across Swiggy's collections
+{
+  // users collection
+  name:        "Rahul Sharma",         // PII ⚠️
+  phone:       "+91-9876543210",       // PII ⚠️
+  email:       "rahul@gmail.com",      // PII ⚠️
+  dateOfBirth: "1992-04-15",           // PII ⚠️
+
+  // orders collection
+  deliveryAddress: "4B Sunshine Apartments, Bandra West, Mumbai", // PII ⚠️
+  customerPhone:   "+91-9876543210",   // PII ⚠️ (duplicated here)
+  location: { type: "Point", coordinates: [72.8295, 19.0596] },   // PII ⚠️
+
+  // payments collection
+  cardLast4:   "4242",                 // PII ⚠️
+  upiId:       "rahul@okaxis",         // PII ⚠️
+}`
+            },
+            {
+              type: "heading",
+              text: "Strategy 1 — Encryption at Rest and in Transit"
+            },
+            {
+              type: "paragraph",
+              text: "All data in MongoDB Atlas is encrypted at rest using AES-256 by default. Every connection uses TLS in transit. This protects against physical disk theft and network interception. But encryption at rest means the entire database is encrypted — if someone gets valid MongoDB credentials, they can read all PII. Field-level encryption goes further."
+            },
+            {
+              type: "step",
+              title: "Client-Side Field Level Encryption (CSFLE)",
+              desc: "MongoDB's CSFLE encrypts specific fields in the application before sending them to MongoDB. The database server never sees plaintext PII — it stores ciphertext. Even a MongoDB admin with full database access can't read phone numbers or addresses. The encryption key lives in a separate key management service, not in MongoDB."
+            },
+            {
+              type: "code",
+              code: `// Client-side field level encryption — PII encrypted before hitting MongoDB
+const encryptedFieldsMap = {
+  "swiggy_db.users": {
+    fields: [
+      {
+        path:     "phone",
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic"
+        // Deterministic — same input always produces same ciphertext
+        // Allows equality queries on encrypted field
+      },
+      {
+        path:     "email",
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Deterministic"
+      },
+      {
+        path:     "deliveryAddress",
+        bsonType: "string",
+        algorithm: "AEAD_AES_256_CBC_HMAC_SHA_512-Random"
+        // Random — different ciphertext each time
+        // More secure but can't query on this field
+      }
+    ]
+  }
+}
+
+// What MongoDB stores — plaintext never reaches the server
+{
+  _id:   ObjectId("usr_982341"),
+  name:  "Rahul Sharma",
+  phone: Binary("Ew3k9mN2pXq..."),  // encrypted ✅ — server never sees +91-9876543210
+  email: Binary("Hj7rT2vKmLp..."),  // encrypted ✅
+}`
+            },
+            {
+              type: "heading",
+              text: "Strategy 2 — Right to Erasure (Delete My Data)"
+            },
+            {
+              type: "paragraph",
+              text: "GDPR Article 17 — the right to be forgotten. A Swiggy user requests account deletion. Swiggy must delete all PII associated with that user. The challenge: the phone number and address exist in the users collection, in every order document, in search logs, in analytics events, in email notification logs. You must find and erase it everywhere."
+            },
+            {
+              type: "code",
+              code: `// Right to erasure — user "usr_982341" requests deletion
+
+// Step 1 — Delete or anonymise the user document
+db.users.deleteOne({ _id: "usr_982341" })
+
+// Step 2 — Anonymise PII in orders (keep order for financial records, remove PII)
+// Can't delete orders — needed for restaurant payouts and tax records
+// So anonymise PII fields in place
+db.orders.updateMany(
+  { userId: "usr_982341" },
+  { $set: {
+    customerPhone:   "DELETED",
+    deliveryAddress: "DELETED",
+    customerName:    "DELETED",
+    "location.coordinates": [0, 0]
+  },
+  $unset: { userId: "" }
+  }
+)
+
+// Step 3 — Delete from other collections
+db.searchLogs.deleteMany({ userId: "usr_982341" })
+db.notificationLogs.deleteMany({ userId: "usr_982341" })
+db.analyticsEvents.deleteMany({ userId: "usr_982341" })
+
+// Step 4 — Document deletion in audit log (you must prove you deleted it)
+db.gdprDeletionAudit.insertOne({
+  requestId:   "GDPR-2024-08291",
+  userId:      "usr_982341",
+  requestedAt: new Date("2024-03-18"),
+  completedAt: new Date(),
+  collectionsProcessed: ["users", "orders", "searchLogs", "notificationLogs", "analyticsEvents"]
+})`
+            },
+            {
+              type: "heading",
+              text: "Strategy 3 — PII Isolation Pattern"
+            },
+            {
+              type: "paragraph",
+              text: "The deeper architectural fix: stop duplicating PII across collections. Swiggy's orders collection shouldn't store customerPhone and deliveryAddress directly. It should store userId — a reference to the users collection where PII lives in one place. When a user requests deletion, you delete one document in users and the PII is gone everywhere. No hunt-and-erase across 10 collections."
+            },
+            {
+              type: "code",
+              code: `// ❌ PII scattered — hard to delete
+// orders collection
+{ orderId: "SWG-001", customerPhone: "+91-9876543210", deliveryAddress: "Bandra...", ... }
+
+// ✅ PII isolated — easy to delete
+// orders collection — no PII
+{ orderId: "SWG-001", userId: "usr_982341", deliveryAddressId: "addr_771", ... }
+
+// users collection — all PII in one place
+{ _id: "usr_982341", phone: "+91-9876543210", name: "Rahul" }
+
+// addresses collection — address PII in one place
+{ _id: "addr_771", userId: "usr_982341", fullAddress: "4B Sunshine Apartments, Bandra..." }
+
+// To erase Rahul: delete users/usr_982341 + addresses where userId=usr_982341
+// Orders retain the reference but PII is gone from the database ✅`
+            },
+            {
+              type: "table",
+              headers: ["Requirement", "MongoDB Approach", "Swiggy implementation"],
+              rows: [
+                ["Data protection at rest", "AES-256 encryption (Atlas default)", "All Atlas clusters encrypted"],
+                ["Data protection in transit", "TLS on all connections", "TLS enforced, plaintext rejected"],
+                ["Field-level protection", "Client-Side Field Level Encryption", "Phone, email, address encrypted"],
+                ["Right to erasure", "deleteOne + updateMany to anonymise", "GDPR deletion service + audit log"],
+                ["Minimise PII surface area", "PII isolation pattern — reference, don't copy", "userId reference in orders, PII in users collection"],
+              ]
+            },
+            {
+              type: "success-callout",
+              text: "✅ PII in MongoDB needs three layers: encrypt it at rest and in transit, isolate it to one collection so deletion is simple, and have a documented erasure process that leaves an audit trail. Swiggy's order history retains financial data but PII references are anonymised on deletion. Legal compliance and operational data coexist."
+            }
+          ],
+
+
+          "MongoDB vs Cassandra vs DynamoDB — When to Switch": [
+            {
+              type: "paragraph",
+              text: "Swiggy's engineers chose MongoDB for orders and user data. But Swiggy also uses other databases — real-time delivery location tracking uses a different store, the notification event log uses another, and the session cache uses Redis. No database is the right answer to every problem. MongoDB is excellent for document-shaped, flexible data with rich query needs. But there are workloads where Cassandra or DynamoDB will outperform it by an order of magnitude — and understanding when to switch is as important as knowing how to use MongoDB well."
+            },
+            {
+              type: "heading",
+              text: "MongoDB — What It's Best At"
+            },
+            {
+              type: "paragraph",
+              text: "MongoDB shines when your data is document-shaped, your schema evolves, your queries are varied and ad-hoc, and you need rich aggregation. Swiggy's orders are a perfect MongoDB workload — nested items, payments, timelines; schema that changed when Instamart launched; queries ranging from single order lookups to complex city-level aggregations."
+            },
+            {
+              type: "code",
+              code: `// MongoDB sweet spot — document-shaped, flexible schema, rich queries
+// Swiggy order — nested, varied shape, queried many ways
+{
+  orderId:    "SWG-001",
+  items:      [{ name: "Biryani", price: 389 }],    // nested array
+  payment:    { method: "UPI", status: "success" }, // nested object
+  timeline:   { placedAt: ..., deliveredAt: ... },  // nested object
+  instamart:  { weight_kg: 2.5, shelfLife: "7d" }   // new field — no migration needed
+}
+
+// Queries MongoDB handles well:
+db.orders.find({ city: "Mumbai", status: "delivered", totalAmount: { $gt: 500 } })
+db.orders.aggregate([{ $group: { _id: "$city", revenue: { $sum: "$totalAmount" } } }])`
+            },
+            {
+              type: "heading",
+              text: "Cassandra — When to Choose It Over MongoDB"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy tracks the real-time GPS location of 200,000 delivery partners. Every partner pings their location every 5 seconds. That's 40,000 writes per second, 24/7, growing with every new city. The data is simple — partnerId, lat, lng, timestamp. Queries are always the same — get the current location of partner X. No aggregations, no schema changes, no ad-hoc queries. This is a Cassandra workload."
+            },
+            {
+              type: "step",
+              title: "Cassandra's strength — extreme write throughput",
+              desc: "Cassandra is a wide-column store designed for write-heavy workloads at massive scale. It writes to an in-memory structure and an append-only commit log — no random disk writes, no index updates on insert. 40,000 writes per second is routine for a 6-node Cassandra cluster. MongoDB would struggle with this on the same hardware because every write also updates indexes."
+            },
+            {
+              type: "step",
+              title: "Cassandra's strength — linear horizontal scaling",
+              desc: "Cassandra has no Primary — every node accepts writes. Add a node and write throughput scales linearly. MongoDB sharding adds complexity with mongos, config servers, and chunk balancing. For pure write scale, Cassandra's architecture is simpler and more efficient."
+            },
+            {
+              type: "step",
+              title: "Cassandra's weakness — no rich queries",
+              desc: "Cassandra's query language (CQL) is SQL-like but limited. No aggregations, no multi-field filters unless explicitly modelled, no ad-hoc queries. You design the table around one query pattern. Try to query Cassandra like MongoDB and you get full table scans or errors. Swiggy's order history — with dozens of query patterns — would be a nightmare in Cassandra."
+            },
+            {
+              type: "code",
+              code: `// Cassandra — right tool for Swiggy's delivery tracking
+// Table designed around ONE query: get latest location for partner X
+CREATE TABLE delivery_locations (
+  partner_id  UUID,
+  timestamp   TIMESTAMP,
+  latitude    DOUBLE,
+  longitude   DOUBLE,
+  PRIMARY KEY (partner_id, timestamp)
+) WITH CLUSTERING ORDER BY (timestamp DESC);
+
+// Write — 40,000 per second, no problem
+INSERT INTO delivery_locations (partner_id, timestamp, latitude, longitude)
+VALUES (uuid(), now(), 19.0596, 72.8295);
+
+// Read — always this exact query shape
+SELECT * FROM delivery_locations WHERE partner_id = ? LIMIT 1;
+
+// Try to query: all partners in Mumbai right now → Cassandra struggles ❌
+// MongoDB handles this easily ✅`
+            },
+            {
+              type: "heading",
+              text: "DynamoDB — When to Choose It Over MongoDB"
+            },
+            {
+              type: "paragraph",
+              text: "Swiggy builds a notification preferences service — each user's settings for which push notifications they want. 50 million users. Traffic is spiky — flat all day, massive burst when a sale starts. The access pattern is simple: get preferences for userId X, update one preference. Swiggy is already on AWS. This is a DynamoDB workload."
+            },
+            {
+              type: "step",
+              title: "DynamoDB's strength — zero ops, infinite scale",
+              desc: "DynamoDB is fully managed by AWS. No servers, no replica sets, no sharding config, no index tuning, no mongos routers. Swiggy's team writes application code, configures a table, and it scales automatically. For a small service that needs to handle massive spikes without ops overhead, DynamoDB wins."
+            },
+            {
+              type: "step",
+              title: "DynamoDB's strength — predictable latency at any scale",
+              desc: "DynamoDB guarantees single-digit millisecond latency at any scale. 50 million users all opening the app simultaneously during a sale — DynamoDB scales instantly, no pre-warming needed. MongoDB under a sudden 100x traffic spike needs manual scaling or Atlas auto-scaling to catch up."
+            },
+            {
+              type: "step",
+              title: "DynamoDB's weakness — limited query flexibility",
+              desc: "DynamoDB queries on partition key + sort key only. Any other query requires a Global Secondary Index defined upfront, or a full scan. Rich MongoDB-style queries — filter by 4 fields, aggregate by city, compute running totals — are not possible in DynamoDB. It's a lookup store, not an analytics database."
+            },
+            {
+              type: "code",
+              code: `// DynamoDB — right tool for Swiggy's notification preferences
+// Table: notification_preferences
+// Partition key: userId | Sort key: preferenceType
+
+// Get all preferences for a user — fast, single partition lookup
+const result = await dynamodb.query({
+  TableName: "notification_preferences",
+  KeyConditionExpression: "userId = :uid",
+  ExpressionAttributeValues: { ":uid": "usr_982341" }
+})
+
+// Update one preference — direct key access
+await dynamodb.updateItem({
+  TableName: "notification_preferences",
+  Key: { userId: "usr_982341", preferenceType: "order_updates" },
+  UpdateExpression: "SET enabled = :val",
+  ExpressionAttributeValues: { ":val": false }
+})
+
+// Try to query: users who disabled all notifications in Mumbai
+// → DynamoDB can't do this without a full scan ❌
+// → MongoDB: db.prefs.find({ city: "Mumbai", enabled: false }) ✅`
+            },
+            {
+              type: "table",
+              headers: ["", "MongoDB", "Cassandra", "DynamoDB"],
+              rows: [
+                ["Data model", "Documents (JSON)", "Wide-column", "Key-value / document"],
+                ["Query flexibility", "Rich — aggregations, multi-field, text", "Limited — designed per query", "Very limited — key-based only"],
+                ["Write throughput", "High — good with sharding", "Extreme — built for writes", "Very high — fully managed"],
+                ["Scaling", "Manual sharding", "Linear, automatic", "Fully automatic (serverless)"],
+                ["Ops overhead", "Medium — replica sets, sharding", "Medium — node management", "Zero — fully managed"],
+                ["Best for", "Varied queries, flexible schema", "High-volume writes, time-series", "Simple lookups, spiky traffic, AWS-native"],
+                ["Swiggy use case", "Orders, restaurants, users", "Delivery partner GPS tracking", "Notification preferences, session store"],
+              ]
+            },
+            {
+              type: "warning-callout",
+              text: "⚠️ Switching databases is expensive — data migration, application rewrites, team retraining, operational changes. Don't switch because another database is theoretically better for a workload. Switch when you have a concrete, measured problem — write throughput ceiling, ops cost, latency target — that your current database cannot solve and the alternative demonstrably can."
+            },
+            {
+              type: "success-callout",
+              text: "✅ MongoDB is Swiggy's default for flexible, document-shaped data with rich query needs. Cassandra handles the 40,000 writes/second GPS tracking firehose. DynamoDB handles simple key-based lookups with zero ops overhead. The right database is the one whose strengths match your workload's requirements — not the one with the best marketing. Know all three, choose deliberately."
+            }
+          ]
+
+        }
       }
 
     ]

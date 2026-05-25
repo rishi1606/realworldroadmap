@@ -723,10 +723,6 @@ export const roadmapData = [
               "type": "warning-callout",
               "text": "⚠️ EC2 is powerful — but a raw server does nothing by default. The moment it launches — it's just a blank Linux machine sitting in AWS. You need to connect to it, secure it, configure it, and deploy your application. The next topics walk through exactly how to do all of this step by step."
             },
-            {
-              "type": "image",
-              "src": "ec2-1.png"
-            }
           ],
 
           "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)": [
@@ -744,27 +740,43 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Launching an EC2 instance is a series of decisions — each one defining exactly what kind of server you're renting and how it behaves."
+              "text": "Launching an EC2 instance is a series of decisions — each one defining exactly what kind of server you're renting and how it behaves. Think of it like filling out a form to rent a server — you describe exactly what you need and AWS builds it for you in under 60 seconds."
             },
             {
               "type": "step",
               "title": "Choose an AMI (Amazon Machine Image)",
-              "desc": "AMI is the OS template for your server. Amazon Linux 2023 for most backend workloads. Ubuntu 22.04 if your team prefers it. Windows Server for .NET apps. YouTube's Linux-based servers would use Amazon Linux or Ubuntu."
+              "desc": "AMI is the OS template — the pre-installed operating system your server boots with. You pick this first because everything else depends on it. Amazon Linux 2023 is AWS's own optimized Linux — fastest boot, best AWS integration, what most production teams use. Ubuntu 22.04 if your team is more comfortable with it. Windows Server only if you're running .NET applications."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's video API servers run on Linux (not Windows) because Linux is faster, cheaper, and handles high-concurrency workloads better. When a YouTube engineer launches a new API server on AWS, they pick Amazon Linux 2023 AMI — it boots in seconds and comes pre-configured for production workloads. Choosing Ubuntu instead would work too — just a personal/team preference."
             },
             {
               "type": "step",
               "title": "Choose Instance Type",
-              "desc": "This defines your server's CPU and RAM. t3.micro for learning and dev. c6i.4xlarge for YouTube's video transcoding workloads. We cover instance types in detail in the next topic."
+              "desc": "Instance Type defines your server's hardware — how many CPUs and how much RAM it gets. This is the most important decision because it directly affects performance and cost. t3.micro = 1 vCPU, 1GB RAM — fine for learning and dev. m6i.xlarge = 4 vCPU, 16GB RAM — for a real API server. c6i.4xlarge = 16 vCPU, 32GB RAM — for CPU-heavy jobs like video processing."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — When YouTube launches a server just to handle the comments API (reading and writing comments), they use a General Purpose instance like m6i.2xlarge — balanced CPU and RAM, handles thousands of concurrent requests. But when they launch a server specifically to transcode a raw 4K upload into multiple resolutions — they use a Compute Optimized instance like c6i.8xlarge — maximum CPU, because transcoding is pure number-crunching. Same AWS, same EC2 — completely different instance types for different jobs."
             },
             {
               "type": "step",
-              "title": "Configure Storage",
-              "desc": "Add an EBS volume — the hard disk for your server. 8GB default for OS. Add more for application data. YouTube's upload receivers would have large temporary storage for incoming video files."
+              "title": "Configure Storage (EBS Volume)",
+              "desc": "Every EC2 instance needs a hard disk — called an EBS volume. The default is 8GB, which is just enough for the OS. For any real application you add more. This is where your app code, logs, and temporary data live on the server."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's video upload receiver servers need large temporary storage. When a creator uploads a raw 4K video file — it can be 50GB or more. That file lands on the EC2 server's EBS volume temporarily while it's being processed and moved to S3. So YouTube configures those instances with 500GB+ EBS volumes. Their API servers (comments, likes, metadata) need far less — 50GB is enough since they don't store video files."
             },
             {
               "type": "step",
               "title": "Configure Security Group",
-              "desc": "Firewall rules defining what traffic is allowed in and out. For SSH access — open port 22. For a web server — open port 80 and 443. Covered in detail in Security Groups topic."
+              "desc": "Security Group is the firewall — it controls which ports and which IP addresses can reach your server. Before your instance even launches, you define the rules. Open port 22 for SSH (so engineers can connect). Open port 443 for HTTPS (so users can reach your API). Everything else — blocked by default."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's public API servers have port 443 open to the entire internet (0.0.0.0/0) — because any user's phone or browser needs to reach it. But port 22 (SSH) is only open to YouTube's internal VPN IP range — only engineers connected to YouTube's VPN can SSH in. A random person on the internet trying to SSH into YouTube's server gets silently dropped — connection refused before it even reaches the server."
             },
             {
               "type": "heading",
@@ -772,18 +784,26 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "To connect to an EC2 instance you need a Key Pair — a pair of cryptographic keys. AWS stores the public key on your server. You download the private key (.pem file) to your laptop. The private key is your identity proof — like a physical key to the server's door."
+              "text": "Before you launch, AWS asks you to choose or create a Key Pair. This is your authentication method — how you prove to the server that it's really you connecting, not someone else. A Key Pair has two parts: a public key (AWS puts this inside your server automatically) and a private key (a .pem file you download once to your laptop)."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of it like a padlock and key. AWS puts the padlock (public key) on your server's door. You keep the physical key (private key .pem file) on your laptop. When you try to SSH in — your laptop shows the key, the server checks if it matches the padlock. Match = door opens. No key or wrong key = door stays locked. No password needed. No guessing. Pure cryptographic proof."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — When a YouTube engineer provisions a new API server, AWS generates a Key Pair. The engineer downloads the .pem file to their laptop. That .pem file is then stored in YouTube's internal secure credential vault (like HashiCorp Vault or AWS Secrets Manager) — never on personal laptops or Slack messages. When the engineer needs to SSH into that server, they pull the key from the vault. This is how teams with 1000+ engineers manage server access safely."
             },
             {
               "type": "error-callout",
               "title": "Key Pair rules you must never break:",
               "list": [
-                "Download the .pem file once — AWS never shows it again. Ever.",
-                "Never share your .pem file — whoever has it can access your server",
-                "Never commit .pem files to GitHub — your server gets compromised instantly",
-                "Store it safely — losing it means you cannot SSH into that instance"
+                "Download the .pem file once — AWS never shows it again. Ever. If you lose it, you cannot SSH into that instance — period.",
+                "Never share your .pem file over Slack, email, or WhatsApp — whoever has it has full access to your server",
+                "Never commit .pem files to GitHub — bots scan GitHub 24/7 for exposed keys. Your server gets compromised within minutes.",
+                "Store it safely — losing it means creating a new Key Pair and replacing the instance entirely"
               ],
-              "footer": "YouTube's engineers store Key Pairs in secure vaults — never on personal laptops or in code repositories."
+              "footer": "YouTube's engineers store Key Pairs in secure vaults — never on personal laptops or in code repositories. One leaked .pem file = one compromised production server."
             },
             {
               "type": "heading",
@@ -791,11 +811,19 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "SSH (Secure Shell) lets you connect to a remote Linux server securely over the internet. Once connected — you're inside the server's terminal, exactly as if you were sitting in front of it in the data center."
+              "text": "SSH (Secure Shell) is the protocol that lets you connect to a remote Linux server securely over the internet. Think of it like opening a terminal window — but instead of your laptop's terminal, you're inside a server sitting in AWS's Mumbai data center. Once connected, you can run any command on that server as if you were physically there."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — A YouTube backend engineer in Bangalore needs to debug a production API server running in AWS Mumbai. They don't fly to Mumbai. They don't call anyone. They open their terminal, run one SSH command, and in 2 seconds they're inside that server — reading logs, checking processes, restarting services. The server is 1500km away but feels like it's right in front of them."
             },
             {
               "type": "code",
-              "code": "# Give correct permissions to your .pem file first\nchmod 400 youtube-server.pem\n\n# Connect to your EC2 instance\nssh -i youtube-server.pem ec2-user@YOUR_PUBLIC_IP\n\n# For Ubuntu AMIs — username is ubuntu, not ec2-user\nssh -i youtube-server.pem ubuntu@YOUR_PUBLIC_IP\n\n# You're now inside the server ✅\n[ec2-user@ip-172-31-xx-xx ~]$"
+              "code": "# Step 1 — Set correct permissions on your .pem file\n# (Linux/Mac require this — otherwise SSH refuses to use the key)\nchmod 400 youtube-server.pem\n\n# Why chmod 400?\n# 400 = only YOU can read this file. No one else.\n# SSH refuses to work if the key file is readable by others — security rule.\n\n# Step 2 — Connect to your EC2 instance\nssh -i youtube-server.pem ec2-user@13.235.67.120\n#         │                │         │\n#         │                │         └── Your EC2 Public IP (from AWS Console)\n#         │                └──────────── Username (ec2-user for Amazon Linux)\n#         └───────────────────────────── Your private key file\n\n# For Ubuntu AMIs — username is 'ubuntu' not 'ec2-user'\nssh -i youtube-server.pem ubuntu@13.235.67.120\n\n# ✅ Success — you're now INSIDE the server\n[ec2-user@ip-172-31-24-5 ~]$\n# This prompt means you're running commands ON the AWS server in Mumbai\n# Not on your laptop anymore\n\n# Now you can do anything on the server:\nnpm install          # install packages on the server\nnode app.js          # start your YouTube API\ntail -f app.log      # watch live logs"
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — The moment a YouTube engineer is inside the server via SSH, they can check what's happening in real time. Is the Node.js process running? How much CPU is it using? Are there error logs? They run 'top' to see CPU usage, 'tail -f /var/log/youtube-api.log' to watch live logs, 'pm2 status' to check if the app is running. All of this from their Bangalore laptop, on a Mumbai server, in real time."
             },
             {
               "type": "heading",
@@ -803,24 +831,24 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Every time you stop and start an EC2 instance — AWS assigns a brand new public IP address. Your old IP is gone. If YouTube's API server IP changes every restart — every DNS record, every configuration pointing to it breaks. Elastic IP solves this."
+              "text": "Here's a problem nobody tells you about until it hits you in production. Every time you stop and start an EC2 instance — AWS throws away the old public IP and assigns a completely new one. Your server's address on the internet just changed. Everything pointing to the old IP — DNS records, mobile app configs, other servers — is now broken."
             },
             {
               "type": "info-callout",
-              "text": "💡 An Elastic IP is a static public IP address that stays yours until you release it. Attach it to an EC2 instance — it keeps that IP even through stops, starts, and restarts. YouTube's critical servers always have Elastic IPs so DNS never needs updating."
+              "text": "💡 YouTube Example — Imagine YouTube's comments API server has the IP 54.123.45.67. Their DNS record points api.youtube.com to this IP. Their mobile apps are configured to call this IP. Now an engineer stops the instance for maintenance and starts it again. New IP: 18.234.56.78. Suddenly — api.youtube.com points to a dead address. Every YouTube app in the world gets connection errors. Comments stop loading. This is the IP change problem in production."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 An Elastic IP is a static public IP address that stays yours until you explicitly release it. You allocate one from AWS, attach it to your EC2 instance — and no matter how many times you stop, start, or restart that instance, the IP never changes. It's locked to you."
             },
             {
               "type": "code",
-              "code": "# Without Elastic IP:\nStart instance  → IP: 54.123.45.67\nStop + Start    → IP: 18.234.56.78  ← completely different ❌\n\n# With Elastic IP:\nAllocate Elastic IP → 3.14.159.26\nAttach to instance  → always 3.14.159.26 ✅\nStop + Start        → still 3.14.159.26 ✅"
+              "code": "// ❌ Without Elastic IP — IP changes on every restart:\nDay 1:  Start instance  → Public IP: 54.123.45.67\n        DNS record:       api.youtube.com → 54.123.45.67 ✅\n        Mobile apps:      calling 54.123.45.67 ✅\n\nDay 2:  Stop for maintenance\nDay 3:  Start again      → Public IP: 18.234.56.78  ← NEW IP!\n        DNS record:       api.youtube.com → 54.123.45.67 ❌ BROKEN\n        Mobile apps:      calling 54.123.45.67 ❌ CONNECTION REFUSED\n        Result:           Comments not loading for 500M users 🔥\n\n// ✅ With Elastic IP — IP is permanent:\nAllocate Elastic IP:  3.14.159.26   ← yours forever until released\nAttach to instance:   EC2 → 3.14.159.26\nDNS record:           api.youtube.com → 3.14.159.26\n\nDay 2:  Stop for maintenance      → 3.14.159.26 (still yours, just not active)\nDay 3:  Start again               → 3.14.159.26 ✅ same IP\n        DNS record:               api.youtube.com → 3.14.159.26 ✅ still works\n        Mobile apps:              calling 3.14.159.26 ✅ connected\n        Result:                   Zero disruption. Engineers sleep peacefully. ✅"
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Elastic IPs are free only when attached to a running instance. If you allocate one and don't use it — AWS charges you per hour. Always release Elastic IPs you're not using. In production, most teams use Load Balancers with DNS instead of Elastic IPs directly — but understanding Elastic IP is fundamental."
+              "text": "⚠️ Elastic IPs are free only when attached to a running instance. If you allocate one and leave it unattached — AWS charges you per hour (to prevent hoarding of IPs). Always release Elastic IPs you're not using. Also — in real production at YouTube's scale, they don't use Elastic IPs directly. They put a Load Balancer in front and point DNS to the Load Balancer's DNS name — which never changes regardless of what happens to individual EC2 instances behind it. But understanding Elastic IP is fundamental — it's step one before you understand Load Balancers."
             },
-            {
-              "type": "image",
-              "src": "ec2-2.png"
-            }
           ],
 
           "EC2 Instance Types & AMIs": [
@@ -838,7 +866,7 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "An Instance Type defines the hardware profile of your EC2 server — how many virtual CPUs, how much RAM, what network speed, and what storage type. AWS organizes instance types into families — each optimized for a specific workload category."
+              "text": "An Instance Type defines the hardware profile of your EC2 server — how many virtual CPUs, how much RAM, what network speed, and what storage type. AWS organizes instance types into families — each optimized for a specific workload category. Picking the wrong one is like hiring a weightlifter to do a math exam — wrong tool, wrong job, wasted money."
             },
             {
               "type": "heading",
@@ -847,35 +875,63 @@ export const roadmapData = [
             {
               "type": "step",
               "title": "General Purpose — T and M Series",
-              "desc": "Balanced CPU and RAM. Best for web servers, APIs, small databases, and dev environments. YouTube's comment API servers run on M-series instances — steady traffic, balanced needs. t3.micro is the free-tier instance you'll use for learning."
+              "desc": "Balanced CPU and RAM — not specialized for anything, good at everything. Best for web servers, REST APIs, small databases, and dev/test environments. This is where most applications start."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's Comments API server handles requests like 'fetch top 20 comments for this video' or 'post a new comment'. This is not CPU-heavy. It's not RAM-heavy. It just needs a solid balanced server that handles thousands of concurrent HTTP requests steadily. YouTube runs this on M-series instances like m6i.2xlarge — 8 vCPU, 32GB RAM. Balanced. Reliable. Cost-effective. For your learning — t3.micro (1 vCPU, 1GB RAM) is the free-tier instance. Same family, just much smaller."
             },
             {
               "type": "step",
               "title": "Compute Optimized — C Series",
-              "desc": "High CPU, lower RAM. Best for CPU-intensive tasks. YouTube's video transcoding fleet runs on C-series instances — converting 4K raw uploads into multiple resolutions requires pure compute power. c6i.8xlarge = 32 vCPUs."
+              "desc": "Maximum CPU power with less RAM. Built for tasks where raw processing speed is everything — encoding, compression, scientific simulations, game servers. The C stands for Compute. When your bottleneck is pure CPU cycles — this is your instance."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — When you upload a raw 4K video (let's say 50GB, shot on a cinema camera), YouTube has to transcode it into 8 different formats simultaneously — 4K, 1080p, 720p, 480p, 360p, 240p, 144p, and an audio-only version. Every single one requires intense frame-by-frame video processing using ffmpeg. This is pure CPU work — no amount of RAM helps here. YouTube runs these transcoding jobs on C-series instances like c6i.8xlarge — 32 vCPUs screaming through every frame. A General Purpose m6i instance at the same price would take 3x longer to transcode the same video."
+            },
+            {
+              "type": "code",
+              "code": "// What happens when you upload a video to YouTube:\n// One raw 4K upload → 8 parallel transcoding jobs\n\nJob 1: raw_4k.mp4  →  4K_2160p.mp4    (c6i.8xlarge — 32 vCPU)\nJob 2: raw_4k.mp4  →  FHD_1080p.mp4   (c6i.4xlarge — 16 vCPU)\nJob 3: raw_4k.mp4  →  HD_720p.mp4     (c6i.2xlarge — 8 vCPU)\nJob 4: raw_4k.mp4  →  SD_480p.mp4     (c6i.xlarge  — 4 vCPU)\nJob 5: raw_4k.mp4  →  360p.mp4        (c6i.xlarge  — 4 vCPU)\nJob 6: raw_4k.mp4  →  240p.mp4        (c6i.large   — 2 vCPU)\nJob 7: raw_4k.mp4  →  144p.mp4        (c6i.large   — 2 vCPU)\nJob 8: raw_4k.mp4  →  audio_only.mp4  (c6i.large   — 2 vCPU)\n\n// All 8 run simultaneously on C-series Compute Optimized instances\n// Total time: ~3-5 minutes\n// Same jobs on General Purpose t3 instances: ~15-20 minutes ❌ too slow"
             },
             {
               "type": "step",
               "title": "Memory Optimized — R and X Series",
-              "desc": "Massive RAM, moderate CPU. Best for in-memory databases, caching, and ML model serving. YouTube's recommendation engine — holding billions of user preference vectors in memory — runs on R-series instances. r6i.32xlarge = 1TB RAM."
+              "desc": "Massive amounts of RAM — sometimes terabytes. Best when your application needs to hold enormous datasets entirely in memory for instant access. Reading from RAM is 100x faster than reading from disk. When your bottleneck is RAM — R and X series."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's recommendation engine decides what video to show you next. To do this in real time — it needs to instantly compare your watch history against billions of other users' patterns. This data cannot be fetched from a database on every request — it would take seconds. Instead YouTube loads the entire user preference model into RAM — billions of vectors, hundreds of GBs of data — and queries it in milliseconds. This is why they use R-series instances like r6i.32xlarge — 128 vCPU and 1TB of RAM. The entire recommendation model lives in memory. Query time: under 10ms. Without Memory Optimized instances — your YouTube homepage recommendations would take 3-5 seconds to load instead of being instant."
             },
             {
               "type": "step",
               "title": "Storage Optimized — I and D Series",
-              "desc": "Extremely fast local NVMe SSD storage. Best for high-throughput databases and data warehouses. YouTube's raw video intake pipeline — needing ultra-fast temporary storage for incoming uploads — uses I-series instances."
+              "desc": "Ultra-fast local NVMe SSD storage with extremely high read/write throughput. Best when your application constantly reads and writes huge amounts of data to disk at very high speed. The bottleneck is disk I/O — not CPU, not RAM."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — When a creator uploads a raw 50GB video file, it first lands on a YouTube intake server temporarily. This server is receiving hundreds of such uploads simultaneously — writing 50GB, 30GB, 80GB files to disk continuously at the same time. It needs incredibly fast disk write speeds or uploads queue up and creators see slow upload progress bars. YouTube uses I-series Storage Optimized instances for this intake pipeline — local NVMe SSDs that write at 3.5GB per second. Compare that to a regular EBS volume on a General Purpose instance at 250MB/second — 14x slower. At YouTube's upload volume, that difference means everything."
             },
             {
               "type": "step",
               "title": "Accelerated Computing — P and G Series",
-              "desc": "GPU-powered instances. Best for machine learning training and video processing. YouTube's AI models for content moderation and caption generation are trained on P-series GPU instances."
+              "desc": "GPU-powered instances. GPUs have thousands of cores designed for parallel mathematical operations — perfect for machine learning training, deep learning inference, and video processing at scale. P-series for ML training. G-series for graphics and video encoding with GPU acceleration."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's AI does two incredibly hard jobs: content moderation (detecting policy-violating videos before humans see them) and automatic caption generation (transcribing spoken words in every language). Both require deep learning models running on GPUs. Training the content moderation model — teaching it to recognize violence, nudity, and hate speech from millions of video samples — runs on P-series instances like p4d.24xlarge — 8 NVIDIA A100 GPUs, 96 vCPUs, 1.1TB RAM. A single training run that would take 3 months on a CPU instance takes 18 hours on this GPU instance. For caption generation inference (running the model on new videos in real time) — YouTube uses G-series instances — cheaper GPU power optimized for inference rather than training."
             },
             {
               "type": "heading",
               "text": "Reading Instance Type Names"
             },
             {
+              "type": "paragraph",
+              "text": "Every EC2 instance name follows a consistent pattern. Once you learn to read it — you instantly know what any instance does just from its name. No memorization needed."
+            },
+            {
               "type": "code",
-              "code": "c6i.4xlarge\n│ │ │\n│ │ └── Size: nano < micro < small < medium < large < xlarge < 2xl < 4xl < 8xl < 16xl < 32xl\n│ └──── Generation + Processor: 6 = 6th gen, i = Intel (a = AMD, g = Graviton/ARM)\n└────── Family: c = Compute Optimized\n\n// Examples:\nt3.micro    → General Purpose, 3rd gen, 1 vCPU, 1GB RAM (Free Tier)\nm6i.xlarge  → General Purpose, 6th gen Intel, 4 vCPU, 16GB RAM\nc6i.4xlarge → Compute Optimized, 6th gen Intel, 16 vCPU, 32GB RAM\nr6i.8xlarge → Memory Optimized, 6th gen Intel, 32 vCPU, 256GB RAM"
+              "code": "// Breaking down an instance name:\nc  6  i  .  4xlarge\n│  │  │     │\n│  │  │     └── Size (determines how many CPUs and RAM)\n│  │  │         nano → micro → small → medium → large → xlarge\n│  │  │         → 2xlarge → 4xlarge → 8xlarge → 16xlarge → 32xlarge\n│  │  │         Each step UP roughly doubles CPU and RAM\n│  │  │\n│  │  └── Processor type:\n│  │      i = Intel\n│  │      a = AMD (usually 10% cheaper than Intel equivalent)\n│  │      g = AWS Graviton (ARM-based — up to 40% cheaper, great performance)\n│  │\n│  └── Generation number (higher = newer, faster, cheaper per unit)\n│      6 = 6th generation (newer than 5, older than 7)\n│\n└── Instance Family:\n    t = General Purpose (burstable — good for low-traffic dev)\n    m = General Purpose (steady — good for production APIs)\n    c = Compute Optimized (CPU-heavy jobs)\n    r = Memory Optimized (RAM-heavy jobs)\n    i = Storage Optimized (disk I/O heavy jobs)\n    p = GPU Accelerated (ML training)\n    g = GPU Accelerated (ML inference, video)\n\n// Real examples decoded:\nt3.micro\n  → General Purpose (t), 3rd gen, micro size\n  → 1 vCPU, 1GB RAM\n  → FREE TIER — use this for learning ✅\n\nm6i.2xlarge\n  → General Purpose (m), 6th gen, Intel, 2xlarge\n  → 8 vCPU, 32GB RAM\n  → YouTube Comments API server\n\nc6i.8xlarge\n  → Compute Optimized (c), 6th gen, Intel, 8xlarge\n  → 32 vCPU, 64GB RAM\n  → YouTube 4K video transcoding worker\n\nr6i.32xlarge\n  → Memory Optimized (r), 6th gen, Intel, 32xlarge\n  → 128 vCPU, 1024GB (1TB) RAM\n  → YouTube recommendation engine model server\n\np4d.24xlarge\n  → GPU Accelerated (p), 4th gen, 24xlarge\n  → 96 vCPU, 1152GB RAM, 8x NVIDIA A100 GPUs\n  → YouTube AI content moderation model training"
             },
             {
               "type": "heading",
@@ -883,46 +939,58 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it as a snapshot of an entire configured server — OS, settings, installed packages, application code — all frozen into an image that can launch new identical instances in seconds."
+              "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it as a frozen snapshot of an entire configured server — OS, installed packages, application code, environment variables, security settings — all captured at one moment and reusable forever."
             },
             {
               "type": "info-callout",
-              "text": "💡 AMI is like a master stamp for your server. YouTube could configure one perfectly tuned video transcoding server — install ffmpeg, configure settings, optimize the OS — then create an AMI from it. Now they can launch 1000 identical transcoding servers from that stamp in minutes. Every single one perfectly configured."
+              "text": "💡 Think of AMI like a game save file — but for an entire server. You configure a server perfectly — install everything, tune every setting, deploy your code. Then you hit save. That save file is the AMI. Next time you need an identical server — you don't redo all that work. You just load the save file. A new perfectly configured server is running in 60 seconds."
             },
             {
               "type": "step",
-              "title": "AWS Provided AMIs",
-              "desc": "Amazon Linux 2023, Ubuntu 22.04, Windows Server 2022, Red Hat, SUSE. These are official base OS images — clean slate, you configure from here."
+              "title": "AWS Provided AMIs — The Starting Point",
+              "desc": "These are official base OS images provided by AWS and OS vendors. A completely clean operating system — nothing installed, nothing configured. You start here and build on top. Amazon Linux 2023 is the most common for backend workloads — optimized for AWS, fastest boot time, best integration with AWS services."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — A new YouTube engineer joins the team and needs to set up a development server on EC2. They pick the Ubuntu 22.04 AMI from AWS. It launches in 45 seconds — clean Ubuntu, nothing installed. Then they manually install Node.js, configure the environment, clone the YouTube API repo. This takes 20 minutes. Fine for a one-time dev setup. But doing this manually for 500 production servers during a traffic spike? Impossible. That's where Custom AMIs come in."
             },
             {
               "type": "step",
-              "title": "Custom AMIs (Golden Images)",
-              "desc": "YouTube's engineering team creates custom AMIs — pre-installed with all dependencies, security configurations, and monitoring agents. Every new server launches from this golden image — ready to serve in seconds, not hours."
+              "title": "Custom AMIs — YouTube's Golden Image",
+              "desc": "You take an AWS base AMI, configure it exactly how you need — install all software, apply security hardening, add monitoring agents, deploy app code — then capture it as your own custom AMI. Now every new EC2 instance launched from this AMI is born already configured. No setup time. No manual steps. Production-ready in 60 seconds."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — YouTube's DevOps team maintains a 'Golden AMI' for their video transcoding workers. It has: Amazon Linux 2023 base, ffmpeg pre-installed and tuned for H.264/H.265 encoding, AWS CloudWatch agent for monitoring, custom YouTube transcoding scripts pre-loaded, security hardening applied (unnecessary ports closed, logging enabled). When a viral video spikes traffic and Auto Scaling needs to launch 200 new transcoding workers in 5 minutes — each one launches from this Golden AMI. They boot, read their User Data script to pull the latest job config, and start transcoding within 90 seconds. No engineer touched a single one."
+            },
+            {
+              "type": "code",
+              "code": "// How YouTube creates and uses a Golden AMI:\n\n// Step 1 — Start with a base AWS AMI\nBase AMI: ami-0abcdef1234567890  (Amazon Linux 2023 — clean)\n\n// Step 2 — Configure the server manually (one time only)\nssh -i key.pem ec2-user@server-ip\nsudo yum install -y ffmpeg           # video transcoding tool\nsudo yum install -y amazon-cloudwatch-agent  # monitoring\ngit clone https://github.com/youtube/transcoder /opt/transcoder\nnpm install --prefix /opt/transcoder\n# Apply security hardening, configure logging...\n\n// Step 3 — Create AMI from this configured server\n// AWS Console → EC2 → Instance → Actions → Create Image\nNew AMI created: ami-youtube-transcoder-v1.4  ← Golden Image ✅\n\n// Step 4 — Use this AMI in Auto Scaling Launch Template\nLaunchTemplate: {\n  ImageId: 'ami-youtube-transcoder-v1.4',  // ← Golden AMI\n  InstanceType: 'c6i.8xlarge',\n  // Every auto-scaled instance is born from this image\n  // Pre-installed, pre-configured, production-ready in 60s\n}\n\n// Result:\n// Traffic spike → Auto Scaling launches 200 instances\n// Each instance: boots in 45s, starts transcoding in 90s\n// Zero manual configuration. Zero SSH. Zero human intervention. ✅"
             },
             {
               "type": "step",
-              "title": "AWS Marketplace AMIs",
-              "desc": "Pre-configured third-party software images — NGINX pre-installed, WordPress ready to go, security-hardened images. Pay extra per hour for the software license."
+              "title": "AWS Marketplace AMIs — Pre-built Third Party Software",
+              "desc": "The AWS Marketplace has thousands of AMIs built by third-party vendors — NGINX pre-configured as a reverse proxy, WordPress fully set up and ready, security-hardened CIS Benchmark images, VPN servers, monitoring tools. You launch these and the software is already running. You pay an additional per-hour software license fee on top of the EC2 cost."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 YouTube Example — Suppose YouTube's security team needs a pre-hardened, CIS Benchmark compliant Linux server for a compliance audit. Instead of spending a week manually hardening an Amazon Linux instance, they grab a CIS Hardened Amazon Linux AMI from the AWS Marketplace — $0.02/hour extra on top of EC2 cost. It launches pre-configured with all 200+ CIS security controls already applied. What would take a security engineer a week to configure manually is done in 60 seconds. The trade-off: you pay the vendor's license fee, and you have less control over what's pre-installed."
             },
             {
               "type": "table",
-              "headers": ["Instance Family", "Optimized For", "YouTube Use Case", "Example Type"],
+              "headers": ["Instance Family", "Optimized For", "YouTube Use Case", "Example Type", "Why This Family?"],
               "rows": [
-                ["T / M (General)", "Balanced workloads", "API servers, web backends", "t3.micro, m6i.xlarge"],
-                ["C (Compute)", "CPU intensive tasks", "Video transcoding", "c6i.4xlarge"],
-                ["R / X (Memory)", "RAM intensive workloads", "Recommendation engine", "r6i.8xlarge"],
-                ["I / D (Storage)", "Fast local disk I/O", "Video intake pipeline", "i3.2xlarge"],
-                ["P / G (GPU)", "ML and graphics", "AI model training, moderation", "p4d.24xlarge"]
+                ["T / M (General)", "Balanced CPU + RAM", "Comments API, metadata servers", "t3.micro, m6i.2xlarge", "Steady HTTP traffic — no extreme CPU or RAM needs"],
+                ["C (Compute)", "Maximum CPU", "4K video transcoding workers", "c6i.8xlarge", "Frame-by-frame encoding = pure CPU work"],
+                ["R / X (Memory)", "Maximum RAM", "Recommendation engine model server", "r6i.32xlarge", "Billion-user preference model must live in RAM"],
+                ["I / D (Storage)", "Ultra-fast disk I/O", "Raw video upload intake pipeline", "i3.2xlarge", "Receiving 50GB files simultaneously = needs fast writes"],
+                ["P / G (GPU)", "GPU parallel processing", "AI moderation model training, captions", "p4d.24xlarge", "Deep learning = thousands of GPU cores, not CPU cores"]
               ]
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ Choosing the wrong instance type is one of the most common and expensive AWS mistakes. Over-provisioning wastes money. Under-provisioning causes performance issues. Always benchmark your workload first, start with a general purpose instance, then right-size based on actual CPU and memory metrics from CloudWatch."
+              "text": "⚠️ Choosing the wrong instance type is one of the most common and expensive AWS mistakes. Real example: a team runs their video transcoding jobs on m6i General Purpose instances because 'they have enough CPU'. Transcoding takes 18 minutes per video. They switch to c6i Compute Optimized instances at the same price — transcoding drops to 6 minutes. Same cost. 3x the throughput. Always match the instance family to your workload's actual bottleneck — CPU, RAM, disk, or GPU. Start with CloudWatch metrics to identify what's actually maxing out, then right-size accordingly."
             },
-            {
-              "type": "image",
-              "src": "ec2-3.png"
-            }
           ],
 
           "Security Groups & Basic Server Security": [
@@ -1229,7 +1297,7 @@ export const roadmapData = [
       {
         "id": 5,
         "title": "AWS Databases",
-        "level": "freshers",
+        "level": "intermediate",
         "topics": [
           "RDS Basics",
           "MySQL/PostgreSQL on AWS",

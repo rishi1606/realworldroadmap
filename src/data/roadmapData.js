@@ -2565,7 +2565,7 @@ export const roadmapData = [
 
   {
     id: "nodejs-foundation",
-    category: "Backend Concepts",
+    category: "Backend Fundamentals",
     sortOrder: 1,
     image: "https://nodejs.org/static/images/logo.svg",
     title: "Learn Node.js Foundation Through Real-World Scenarios",
@@ -5519,7 +5519,7 @@ export const roadmapData = [
   {
     "id": 9,
     "title": "Understand Kafka through Zepto (Online Grocery System)",
-    "category": "Backend Concepts",
+    "category": "Distributed Systems & Messaging",
     "sortOrder": 9,
     "brand": "Zepto",
     "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Zepto_Logo.svg/3840px-Zepto_Logo.svg.png",
@@ -6218,7 +6218,7 @@ export const roadmapData = [
 
   {
     id: "authentication-nodejs",
-    category: "Backend Concepts",
+    category: "Backend Fundamentals",
     sortOrder: 2,
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/flipkart-icon.png",
     title: "Learn Authentication Through Flipkart-like Scenarios",
@@ -7979,7 +7979,7 @@ export const roadmapData = [
 
   {
     id: "caching-netflix",
-    category: "Backend Concepts",
+    category: "Performance & Scalability",
     sortOrder: 3,
     image: "https://images.icon-icons.com/2699/PNG/512/netflix_logo_icon_170919.png",
     title: "Learn Caching Through Netflix-style Architectures",
@@ -13822,7 +13822,7 @@ await dynamodb.updateItem({
   },
   {
     id: "api-irctc",
-    category: "Backend Concepts",
+    category: "Backend Fundamentals",
     sortOrder: 1,
     image: "https://upload.wikimedia.org/wikipedia/en/thumb/4/45/IRCTC_Logo.svg/1280px-IRCTC_Logo.svg.png",
     title: "Learn APIs Through IRCTC-style Architecture",
@@ -16466,7 +16466,7 @@ await dynamodb.updateItem({
   ,
   {
     id: "loadbalancer-booking",
-    category: "Backend Concepts",
+    category: "Performance & Scalability",
     sortOrder: 4,
     image: "https://upload.wikimedia.org/wikipedia/commons/6/6b/Booking.com_Icon_2022.svg",
     title: "Load Balancing Explained with Booking Platform Examples",
@@ -18194,7 +18194,7 @@ await dynamodb.updateItem({
   // },
   {
     id: "rate-limiting-razorpay",
-    category: "Backend Concepts",
+    category: "Performance & Scalability",
     sortOrder: 5,
     image: "https://play-lh.googleusercontent.com/2BQu8Y7Ah9Gh9CZvmaMSYIcZvdO4KfdJ26EZ1WGyaOG_xxeDxNn-AZYxOtQJvyQQPFY",
     title: "Rate Limiting Explained Through Google",
@@ -19255,7 +19255,7 @@ if (headers['X-RateLimit-Remaining'] < 20) {
   },
   {
     id: "cdn-zomato",
-    category: "Backend Concepts",
+    category: "Performance & Scalability",
     sortOrder: 6,
     image: "https://crystalpng.com/wp-content/uploads/2025/12/Zomato-Logo.png",
     title: "Understand CDN through Zomato",
@@ -21621,7 +21621,7 @@ if (headers['X-RateLimit-Remaining'] < 20) {
   // }
   {
     id: "websockets-gaming",
-    category: "Backend Concepts",
+    category: "Real-Time Systems",
     sortOrder: 7,
     image: "https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/steam-icon.png",
     title: "How Multiplayer Games Use WebSockets",

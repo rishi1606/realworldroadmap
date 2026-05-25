@@ -1,2564 +1,2564 @@
 export const roadmapData = [
-  {
-    id: "AWS",
-    category: "Cloud & DevOps",
-    sortOrder: 1,
-    image: "https://static.vecteezy.com/system/resources/thumbnails/042/148/649/small/youtube-logo-youtube-social-media-icon-free-png.png",
-    "title": "Learn AWS Basics Through Youtube Examples",
-    "description": "Master AWS the way it actually works in production — not just theory, but the real mechanics behind cloud infrastructure, scalability, security, and architecture. Every concept is taught through real-world backend scenarios inspired by systems like Flipkart, Swiggy, BGMI, and Netflix — so you understand not just the 'what' but the 'why' and 'when' behind every AWS decision. From core services like EC2, S3, VPC, and RDS to advanced topics like EKS, Lambda, CloudFront, and Multi-Region Architecture — this course takes you from cloud beginner to production-ready AWS engineer.",
-    "tags": [
-      "AWS",
-      "Amazon Web Services",
-      "Cloud Computing",
-      "EC2",
-      "S3",
-      "VPC",
-      "RDS",
-      "AWS Lambda",
-      "Serverless",
-      "API Gateway",
-      "Amazon ECS",
-      "Amazon EKS",
-      "CloudFront",
-      "IAM",
-      "AWS Security",
-      "Auto Scaling",
-      "Load Balancing",
-      "Cloud Architecture",
-      "DevOps on AWS",
-      "Real-World Cloud"
-    ],
-    "nodes": [
-      {
-        "id": 1,
-        "title": "Cloud Fundamentals",
-        "level": "freshers",
-        "topics": [
-          "What is Cloud Computing & Types of Cloud",
-          "On-Premise vs Cloud Computing",
-          "IaaS vs PaaS vs SaaS",
-          "AWS Global Infrastructure (Regions, AZs & Edge Locations)",
-          // "AWS Shared Responsibility Model",
-          // "Pay-As-You-Go Pricing Model",
-          "High Availability & Fault Tolerance Basics"
-        ],
-        "topicDetails": {
+  // {
+  //   id: "AWS",
+  //   category: "Cloud & DevOps",
+  //   sortOrder: 1,
+  //   image: "https://static.vecteezy.com/system/resources/thumbnails/042/148/649/small/youtube-logo-youtube-social-media-icon-free-png.png",
+  //   "title": "Learn AWS Basics Through Youtube Examples",
+  //   "description": "Master AWS the way it actually works in production — not just theory, but the real mechanics behind cloud infrastructure, scalability, security, and architecture. Every concept is taught through real-world backend scenarios inspired by systems like Flipkart, Swiggy, BGMI, and Netflix — so you understand not just the 'what' but the 'why' and 'when' behind every AWS decision. From core services like EC2, S3, VPC, and RDS to advanced topics like EKS, Lambda, CloudFront, and Multi-Region Architecture — this course takes you from cloud beginner to production-ready AWS engineer.",
+  //   "tags": [
+  //     "AWS",
+  //     "Amazon Web Services",
+  //     "Cloud Computing",
+  //     "EC2",
+  //     "S3",
+  //     "VPC",
+  //     "RDS",
+  //     "AWS Lambda",
+  //     "Serverless",
+  //     "API Gateway",
+  //     "Amazon ECS",
+  //     "Amazon EKS",
+  //     "CloudFront",
+  //     "IAM",
+  //     "AWS Security",
+  //     "Auto Scaling",
+  //     "Load Balancing",
+  //     "Cloud Architecture",
+  //     "DevOps on AWS",
+  //     "Real-World Cloud"
+  //   ],
+  //   "nodes": [
+  //     {
+  //       "id": 1,
+  //       "title": "Cloud Fundamentals",
+  //       "level": "freshers",
+  //       "topics": [
+  //         "What is Cloud Computing & Types of Cloud",
+  //         "On-Premise vs Cloud Computing",
+  //         "IaaS vs PaaS vs SaaS",
+  //         "AWS Global Infrastructure (Regions, AZs & Edge Locations)",
+  //         // "AWS Shared Responsibility Model",
+  //         // "Pay-As-You-Go Pricing Model",
+  //         "High Availability & Fault Tolerance Basics"
+  //       ],
+  //       "topicDetails": {
 
-          "What is Cloud Computing & Types of Cloud": [
-            {
-              "type": "paragraph",
-              "text": "You open YouTube. Search for a video. It loads in seconds. Now imagine doing that for 2 billion people — every single day. YouTube streams over 500 hours of video every minute. They don't own giant server rooms for all of this. They rent everything from something called 'the cloud.' Let's break down exactly what that means — step by step."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ When you hit play on a YouTube video, where does it actually come from? Is there a massive computer somewhere storing every cat video ever uploaded? Let's find out."
-            },
-            {
-              "type": "heading",
-              "text": "What is Cloud Computing?"
-            },
-            {
-              "type": "paragraph",
-              "text": "Cloud computing simply means using someone else's computers — over the internet — to store, process, and run things. Instead of buying expensive hardware, you rent exactly what you need and pay only for what you use. YouTube uses cloud computing to upload, store, process, and stream every single video to every single user — instantly."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Real-life analogy: Think of electricity at your home. You don't build your own power plant to charge your phone. You just plug in and pay your bill. Cloud computing is exactly that — but for computers. YouTube 'plugs in' to Google's cloud and pays only when videos are being watched or processed — not for idle machines sitting unused."
-            },
-            ,
-            {
-              "type": "heading",
-              "text": "Types of Cloud — Explained Simply"
-            },
-            {
-              "type": "paragraph",
-              "text": "Not every company uses cloud the same way. Depending on their size, security needs, and budget — they pick different cloud models. There are 4 main types, and each works very differently."
-            },
-            {
-              "type": "step",
-              "title": "Public Cloud — Search, Play, Upload, Comments",
-              "desc": "What it is: Infrastructure owned by a cloud provider (Google Cloud, AWS, Azure) and used by thousands of companies over the internet. You pay only for what you use. No hardware. No maintenance. Just plug in and go.\n\nYouTube Example — Search: You type 'how to make pasta' in YouTube's search bar. Within milliseconds, YouTube's search engine scans through 800 million+ videos and shows you the most relevant results. All of this — the search index, the ranking algorithm, the results delivery — runs on public cloud servers spread across the world."
-            },
-            {
-              "type": "step",
-              "title": "Private Cloud — Creator Contracts, Revenue Data, Legal Files",
-              "desc": "What it is: A cloud built exclusively for one organization. Completely isolated. No sharing with other companies. Full control over security.\n\nYouTube Example  — Creator Contracts: YouTube has contracts with thousands of creators — MrBeast, T-Series, Cocomelon — with specific revenue splits, exclusivity deals, and confidential clauses. These documents are stored on private, locked-down infrastructure. No public cloud where other companies share space. Only YouTube's internal legal team can access them."
-            },
-            {
-              "type": "step",
-              "title": "Hybrid Cloud — Live Streaming + Copyright Protection Together",
-              "desc": "What it is: Public and private cloud working together. Sensitive stuff stays private. High-scale public tasks go to public cloud. Both connected seamlessly.\n\nExample - Live Streaming a Concert: A major artist like Arijit Singh does a live concert on YouTube. The public cloud handles the massive spike — millions of simultaneous viewers streaming the live feed globally, CDN servers near every viewer delivering low-latency video. At the same time, the private cloud is running Content ID checks in real time — scanning the live audio against the private copyright database to detect and flag unlicensed music. Public cloud for scale. Private cloud for protection. Both working together in real time."
-            },
-            {
-              "type": "step",
-              "title": "Multi-Cloud — Recommendations, Translations, Analytics",
-              "desc": "What it is: Using multiple different cloud providers at the same time — each chosen because they're the best at a specific job. Not putting all eggs in one basket.\n\nYouTube Example 1 — Recommendations (Up Next): The 'Up Next' recommendation engine is one of the most powerful AI systems ever built — it drives 70% of all YouTube watch time. YouTube uses Google Cloud's TPUs (custom AI chips) specifically built for training these massive recommendation models. No other cloud does AI at this scale as efficiently."
-            }, ,
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Quick Reality Check: YouTube itself runs on Google Cloud — not AWS. But here's why AWS still matters: AWS holds over 31% of the entire global cloud market — more than Microsoft Azure and Google Cloud combined. The majority of companies you'll ever work at use AWS. The concepts are identical across all providers — learn one, understand them all."
-            },
-            ,
+  //         "What is Cloud Computing & Types of Cloud": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "You open YouTube. Search for a video. It loads in seconds. Now imagine doing that for 2 billion people — every single day. YouTube streams over 500 hours of video every minute. They don't own giant server rooms for all of this. They rent everything from something called 'the cloud.' Let's break down exactly what that means — step by step."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ When you hit play on a YouTube video, where does it actually come from? Is there a massive computer somewhere storing every cat video ever uploaded? Let's find out."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is Cloud Computing?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Cloud computing simply means using someone else's computers — over the internet — to store, process, and run things. Instead of buying expensive hardware, you rent exactly what you need and pay only for what you use. YouTube uses cloud computing to upload, store, process, and stream every single video to every single user — instantly."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Real-life analogy: Think of electricity at your home. You don't build your own power plant to charge your phone. You just plug in and pay your bill. Cloud computing is exactly that — but for computers. YouTube 'plugs in' to Google's cloud and pays only when videos are being watched or processed — not for idle machines sitting unused."
+  //           },
+  //           ,
+  //           {
+  //             "type": "heading",
+  //             "text": "Types of Cloud — Explained Simply"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Not every company uses cloud the same way. Depending on their size, security needs, and budget — they pick different cloud models. There are 4 main types, and each works very differently."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Public Cloud — Search, Play, Upload, Comments",
+  //             "desc": "What it is: Infrastructure owned by a cloud provider (Google Cloud, AWS, Azure) and used by thousands of companies over the internet. You pay only for what you use. No hardware. No maintenance. Just plug in and go.\n\nYouTube Example — Search: You type 'how to make pasta' in YouTube's search bar. Within milliseconds, YouTube's search engine scans through 800 million+ videos and shows you the most relevant results. All of this — the search index, the ranking algorithm, the results delivery — runs on public cloud servers spread across the world."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Private Cloud — Creator Contracts, Revenue Data, Legal Files",
+  //             "desc": "What it is: A cloud built exclusively for one organization. Completely isolated. No sharing with other companies. Full control over security.\n\nYouTube Example  — Creator Contracts: YouTube has contracts with thousands of creators — MrBeast, T-Series, Cocomelon — with specific revenue splits, exclusivity deals, and confidential clauses. These documents are stored on private, locked-down infrastructure. No public cloud where other companies share space. Only YouTube's internal legal team can access them."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Hybrid Cloud — Live Streaming + Copyright Protection Together",
+  //             "desc": "What it is: Public and private cloud working together. Sensitive stuff stays private. High-scale public tasks go to public cloud. Both connected seamlessly.\n\nExample - Live Streaming a Concert: A major artist like Arijit Singh does a live concert on YouTube. The public cloud handles the massive spike — millions of simultaneous viewers streaming the live feed globally, CDN servers near every viewer delivering low-latency video. At the same time, the private cloud is running Content ID checks in real time — scanning the live audio against the private copyright database to detect and flag unlicensed music. Public cloud for scale. Private cloud for protection. Both working together in real time."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Multi-Cloud — Recommendations, Translations, Analytics",
+  //             "desc": "What it is: Using multiple different cloud providers at the same time — each chosen because they're the best at a specific job. Not putting all eggs in one basket.\n\nYouTube Example 1 — Recommendations (Up Next): The 'Up Next' recommendation engine is one of the most powerful AI systems ever built — it drives 70% of all YouTube watch time. YouTube uses Google Cloud's TPUs (custom AI chips) specifically built for training these massive recommendation models. No other cloud does AI at this scale as efficiently."
+  //           }, ,
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Quick Reality Check: YouTube itself runs on Google Cloud — not AWS. But here's why AWS still matters: AWS holds over 31% of the entire global cloud market — more than Microsoft Azure and Google Cloud combined. The majority of companies you'll ever work at use AWS. The concepts are identical across all providers — learn one, understand them all."
+  //           },
+  //           ,
 
-          ],
+  //         ],
 
-          "On-Premise vs Cloud Computing": [
-            {
-              "type": "paragraph",
-              "text": "Before YouTube existed — if you wanted to build a video platform, you had to buy your own servers, rent a data center, hire a team to maintain hardware, and still pray it doesn't crash during peak traffic. That was the on-premise world. Today YouTube serves 2 billion users without owning a single public-facing server. What changed?"
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ In 2005, building something like YouTube meant buying millions of dollars of physical servers before writing a single line of code. How did cloud computing completely flip this?"
-            },
-            {
-              "type": "heading",
-              "text": "What is On-Premise?"
-            },
-            {
-              "type": "paragraph",
-              "text": "On-premise means your company owns and operates its own physical servers inside its own data center. You buy the hardware, you set it up, you maintain it, you scale it — everything is your responsibility."
-            },
-            {
-              "type": "error-callout",
-              "title": "The On-Premise nightmare for a YouTube-like platform:",
-              "list": [
-                "Buy thousands of servers upfront — millions of dollars before launch",
-                "Rent and build out data center space — cooling, power, security",
-                "Hire hardware engineers to maintain and replace failing machines",
-                "Over-provision for peak traffic — servers sit idle 90% of the time",
-                "A flood, fire, or power outage = your entire platform goes down"
-              ],
-              "footer": "On-premise means you're running a hardware company AND a software company at the same time."
-            },
-            {
-              "type": "heading",
-              "text": "What Changed With Cloud?"
-            },
-            {
-              "type": "paragraph",
-              "text": "With cloud computing — specifically AWS — you rent servers by the hour. You scale up when traffic spikes, scale down when it drops. No hardware to buy. No data center to manage. YouTube can go from serving 1 million to 100 million users without touching a single physical machine."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Imagine YouTube gets featured on the news and traffic spikes 10x in one hour. On-premise — your servers crash. On AWS — you auto-scale in minutes. This is the fundamental difference between on-premise and cloud."
-            },
-            {
-              "type": "heading",
-              "text": "On-Premise vs Cloud — Side by Side"
-            },
-            {
-              "type": "table",
-              "headers": ["", "On-Premise", "Cloud (AWS)"],
-              "rows": [
-                ["Cost Model", "Huge upfront capital expense", "Pay only for what you use"],
-                ["Scaling", "Buy more hardware — weeks/months", "Scale in minutes automatically"],
-                ["Maintenance", "Your team manages everything", "AWS manages the hardware"],
-                ["Availability", "Single location — single point of failure", "Multiple regions and AZs globally"],
-                ["Speed to Launch", "Months of setup before going live", "Live in hours"],
-                ["YouTube Example", "Own servers in own data centers", "Stream globally via distributed cloud infrastructure"]
-              ]
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ On-premise isn't dead. Banks, government systems, and defense organizations still use it for regulatory and security reasons. But for 99% of modern software companies — cloud wins on every dimension. The question is no longer on-premise vs cloud. It's which cloud and which services."
-            },
-            {
-              "type": "image",
-              "src": "cloud2.png"
-            }
-          ],
+  //         "On-Premise vs Cloud Computing": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Before YouTube existed — if you wanted to build a video platform, you had to buy your own servers, rent a data center, hire a team to maintain hardware, and still pray it doesn't crash during peak traffic. That was the on-premise world. Today YouTube serves 2 billion users without owning a single public-facing server. What changed?"
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ In 2005, building something like YouTube meant buying millions of dollars of physical servers before writing a single line of code. How did cloud computing completely flip this?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is On-Premise?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "On-premise means your company owns and operates its own physical servers inside its own data center. You buy the hardware, you set it up, you maintain it, you scale it — everything is your responsibility."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "The On-Premise nightmare for a YouTube-like platform:",
+  //             "list": [
+  //               "Buy thousands of servers upfront — millions of dollars before launch",
+  //               "Rent and build out data center space — cooling, power, security",
+  //               "Hire hardware engineers to maintain and replace failing machines",
+  //               "Over-provision for peak traffic — servers sit idle 90% of the time",
+  //               "A flood, fire, or power outage = your entire platform goes down"
+  //             ],
+  //             "footer": "On-premise means you're running a hardware company AND a software company at the same time."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What Changed With Cloud?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "With cloud computing — specifically AWS — you rent servers by the hour. You scale up when traffic spikes, scale down when it drops. No hardware to buy. No data center to manage. YouTube can go from serving 1 million to 100 million users without touching a single physical machine."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Imagine YouTube gets featured on the news and traffic spikes 10x in one hour. On-premise — your servers crash. On AWS — you auto-scale in minutes. This is the fundamental difference between on-premise and cloud."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "On-Premise vs Cloud — Side by Side"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["", "On-Premise", "Cloud (AWS)"],
+  //             "rows": [
+  //               ["Cost Model", "Huge upfront capital expense", "Pay only for what you use"],
+  //               ["Scaling", "Buy more hardware — weeks/months", "Scale in minutes automatically"],
+  //               ["Maintenance", "Your team manages everything", "AWS manages the hardware"],
+  //               ["Availability", "Single location — single point of failure", "Multiple regions and AZs globally"],
+  //               ["Speed to Launch", "Months of setup before going live", "Live in hours"],
+  //               ["YouTube Example", "Own servers in own data centers", "Stream globally via distributed cloud infrastructure"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ On-premise isn't dead. Banks, government systems, and defense organizations still use it for regulatory and security reasons. But for 99% of modern software companies — cloud wins on every dimension. The question is no longer on-premise vs cloud. It's which cloud and which services."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "cloud2.png"
+  //           }
+  //         ],
 
-          "IaaS vs PaaS vs SaaS": [
-            {
-              "type": "paragraph",
-              "text": "Not all cloud services are the same. When YouTube needs to store a video — that's storage. When a developer needs a server to run code — that's compute. When a company uses Gmail — that's software. AWS and the cloud world organizes all of these into three clean layers: IaaS, PaaS, and SaaS. Every AWS service you'll ever use fits into one of these."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube uses cloud for storage, compute, databases, and CDN. Are all of these the same type of cloud service — or are they fundamentally different layers?"
-            },
+  //         "IaaS vs PaaS vs SaaS": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Not all cloud services are the same. When YouTube needs to store a video — that's storage. When a developer needs a server to run code — that's compute. When a company uses Gmail — that's software. AWS and the cloud world organizes all of these into three clean layers: IaaS, PaaS, and SaaS. Every AWS service you'll ever use fits into one of these."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube uses cloud for storage, compute, databases, and CDN. Are all of these the same type of cloud service — or are they fundamentally different layers?"
+  //           },
 
-            {
-              "type": "heading",
-              "text": "IaaS — Infrastructure as a Service"
-            },
-            {
-              "type": "paragraph",
-              "text": "IaaS gives you raw infrastructure — virtual servers, storage, and networking. You manage everything above the hardware. AWS handles the physical machines. You handle the OS, runtime, application, and data."
-            },
-            {
-              "type": "step",
-              "title": "IaaS — YouTube Example",
-              "desc": "YouTube uses raw virtual servers (like AWS EC2) to run its video processing jobs. They control the OS, install their own software, and manage how videos get transcoded. AWS just provides the raw compute power underneath."
-            },
-            {
-              "type": "step",
-              "title": "IaaS — AWS Services",
-              "desc": "EC2 (virtual servers), S3 (raw storage), VPC (networking), EBS (block storage). You get the building — you furnish it yourself."
-            },
-            {
-              "type": "heading",
-              "text": "PaaS — Platform as a Service"
-            },
-            {
-              "type": "paragraph",
-              "text": "PaaS gives you a managed platform to build on. No OS management, no runtime setup, no infrastructure configuration. You just deploy your code and the platform handles everything underneath."
-            },
-            {
-              "type": "step",
-              "title": "PaaS — YouTube Example",
-              "desc": "If YouTube's comment system used AWS Elastic Beanstalk — they'd just upload their Node.js app. AWS automatically handles server setup, load balancing, and scaling. No DevOps needed."
-            },
-            {
-              "type": "step",
-              "title": "PaaS — AWS Services",
-              "desc": "Elastic Beanstalk, AWS Lambda, AWS RDS (managed database), AWS App Runner. You bring the code — platform runs it."
-            },
-            {
-              "type": "heading",
-              "text": "SaaS — Software as a Service"
-            },
-            {
-              "type": "paragraph",
-              "text": "SaaS is complete software delivered over the internet. No infrastructure, no platform, no code. Just open and use. The provider manages everything end to end."
-            },
-            {
-              "type": "step",
-              "title": "SaaS — YouTube Example",
-              "desc": "YouTube's internal teams use Google Workspace (Gmail, Docs, Meet) for daily operations. They don't manage any servers for email — Google runs it all. That's SaaS."
-            },
-            {
-              "type": "step",
-              "title": "SaaS — AWS Services",
-              "desc": "Amazon Chime (video calls), Amazon WorkMail (email). Also third-party SaaS on AWS infrastructure: Zoom, Slack, Salesforce."
-            },
-            {
-              "type": "table",
-              "headers": ["", "IaaS", "PaaS", "SaaS"],
-              "rows": [
-                ["You manage", "OS, runtime, app, data", "App and data only", "Nothing — just use it"],
-                ["AWS manages", "Hardware only", "Hardware + OS + runtime", "Everything"],
-                ["Flexibility", "Maximum control", "Medium control", "No control"],
-                ["Best for", "Custom infrastructure needs", "Developers who want to focus on code", "End users needing ready software"],
-                ["AWS Example", "EC2, S3, VPC", "Elastic Beanstalk, Lambda, RDS", "Amazon Chime, WorkMail"],
-                ["YouTube Parallel", "Video processing servers", "Comment service deployment", "Internal team tools"]
-              ]
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ In real AWS work — you'll mostly deal with IaaS and PaaS. EC2, S3, RDS, Lambda, ECS — these are what backend engineers use daily. Knowing which layer a service sits on tells you instantly how much responsibility you carry for that service."
-            },
-            {
-              "type": "image",
-              "src": "cloud3.png"
-            }
-          ],
+  //           {
+  //             "type": "heading",
+  //             "text": "IaaS — Infrastructure as a Service"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "IaaS gives you raw infrastructure — virtual servers, storage, and networking. You manage everything above the hardware. AWS handles the physical machines. You handle the OS, runtime, application, and data."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "IaaS — YouTube Example",
+  //             "desc": "YouTube uses raw virtual servers (like AWS EC2) to run its video processing jobs. They control the OS, install their own software, and manage how videos get transcoded. AWS just provides the raw compute power underneath."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "IaaS — AWS Services",
+  //             "desc": "EC2 (virtual servers), S3 (raw storage), VPC (networking), EBS (block storage). You get the building — you furnish it yourself."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "PaaS — Platform as a Service"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "PaaS gives you a managed platform to build on. No OS management, no runtime setup, no infrastructure configuration. You just deploy your code and the platform handles everything underneath."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "PaaS — YouTube Example",
+  //             "desc": "If YouTube's comment system used AWS Elastic Beanstalk — they'd just upload their Node.js app. AWS automatically handles server setup, load balancing, and scaling. No DevOps needed."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "PaaS — AWS Services",
+  //             "desc": "Elastic Beanstalk, AWS Lambda, AWS RDS (managed database), AWS App Runner. You bring the code — platform runs it."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "SaaS — Software as a Service"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "SaaS is complete software delivered over the internet. No infrastructure, no platform, no code. Just open and use. The provider manages everything end to end."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "SaaS — YouTube Example",
+  //             "desc": "YouTube's internal teams use Google Workspace (Gmail, Docs, Meet) for daily operations. They don't manage any servers for email — Google runs it all. That's SaaS."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "SaaS — AWS Services",
+  //             "desc": "Amazon Chime (video calls), Amazon WorkMail (email). Also third-party SaaS on AWS infrastructure: Zoom, Slack, Salesforce."
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["", "IaaS", "PaaS", "SaaS"],
+  //             "rows": [
+  //               ["You manage", "OS, runtime, app, data", "App and data only", "Nothing — just use it"],
+  //               ["AWS manages", "Hardware only", "Hardware + OS + runtime", "Everything"],
+  //               ["Flexibility", "Maximum control", "Medium control", "No control"],
+  //               ["Best for", "Custom infrastructure needs", "Developers who want to focus on code", "End users needing ready software"],
+  //               ["AWS Example", "EC2, S3, VPC", "Elastic Beanstalk, Lambda, RDS", "Amazon Chime, WorkMail"],
+  //               ["YouTube Parallel", "Video processing servers", "Comment service deployment", "Internal team tools"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ In real AWS work — you'll mostly deal with IaaS and PaaS. EC2, S3, RDS, Lambda, ECS — these are what backend engineers use daily. Knowing which layer a service sits on tells you instantly how much responsibility you carry for that service."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "cloud3.png"
+  //           }
+  //         ],
 
-          "AWS Global Infrastructure (Regions, AZs & Edge Locations)": [
-            {
-              "type": "paragraph",
-              "text": "You're in Mumbai. You open YouTube and a video loads in under a second. Your friend in New York opens the same video — also under a second. Someone in Tokyo — same thing. YouTube serves billions of users globally with near-zero latency. This isn't magic — it's infrastructure. AWS powers this kind of global reach through a carefully designed three-layer infrastructure: Regions, Availability Zones, and Edge Locations."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube has one set of videos. But users are spread across 190 countries. How does the same video load fast whether you're in Mumbai, New York, or Tokyo?"
-            },
-            {
-              "type": "heading",
-              "text": "Layer 1 — AWS Regions"
-            },
-            {
-              "type": "paragraph",
-              "text": "A Region is a physical geographic location in the world where AWS has built a cluster of data centers. Each Region is completely independent — if one Region has a major outage, the others are completely unaffected."
-            },
-            {
-              "type": "step",
-              "title": "Regions — YouTube Example",
-              "desc": "YouTube stores video data in multiple AWS Regions — ap-south-1 (Mumbai) for Indian users, us-east-1 (Virginia) for US users, eu-west-1 (Ireland) for European users. Each region serves its local audience with the lowest possible latency."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 AWS has 33 Regions globally as of 2024 — with more launching every year. When you launch an AWS service, the first thing you choose is the Region. This decision affects latency, cost, compliance, and disaster recovery."
-            },
-            {
-              "type": "heading",
-              "text": "Layer 2 — Availability Zones (AZs)"
-            },
-            {
-              "type": "paragraph",
-              "text": "Inside every Region, there are multiple Availability Zones — usually 3 to 6. Each AZ is one or more physically separate data centers with independent power, cooling, and networking."
-            },
-            {
-              "type": "step",
-              "title": "AZs — YouTube Example",
-              "desc": "YouTube's Mumbai infrastructure runs across 3 AZs inside ap-south-1. If one data center catches fire or loses power — the other two AZs keep serving Indian users without a single second of downtime. This is High Availability."
-            },
-            {
-              "type": "error-callout",
-              "title": "What happens without multiple AZs:",
-              "list": [
-                "Your app runs on one data center — one AZ",
-                "That data center loses power during a storm",
-                "Your entire app goes down for millions of users",
-                "YouTube goes dark in India — every second of downtime = millions in lost revenue"
-              ],
-              "footer": "This is why production systems always deploy across multiple AZs — never a single point of failure."
-            },
-            {
-              "type": "heading",
-              "text": "Layer 3 — Edge Locations"
-            },
-            {
-              "type": "paragraph",
-              "text": "Edge Locations are AWS's global content delivery points — spread across 400+ cities worldwide. They are not full Regions or AZs. They are smaller caching servers placed as close to end users as possible. AWS CloudFront (CDN) uses Edge Locations to serve cached content at lightning speed."
-            },
-            {
-              "type": "step",
-              "title": "Edge Locations — YouTube Example",
-              "desc": "When you watch a YouTube video in Pune — the video isn't streamed from a server in Virginia. It's cached at an Edge Location in Mumbai or Pune itself. The video travels milliseconds instead of thousands of miles. This is exactly how YouTube achieves sub-second load times globally."
-            },
-            {
-              "type": "table",
-              "headers": ["", "Region", "Availability Zone", "Edge Location"],
-              "rows": [
-                ["What it is", "Geographic cluster of data centers", "Independent data center within a Region", "Content caching point close to users"],
-                ["Count", "33+ globally", "3-6 per Region", "400+ worldwide"],
-                ["Purpose", "Choose where your app lives", "High availability and fault tolerance", "Low latency content delivery"],
-                ["AWS Service", "All AWS services", "EC2, RDS Multi-AZ, ECS", "CloudFront CDN"],
-                ["YouTube Parallel", "Store videos near your users", "Keep app running if one DC fails", "Cache videos close to viewers"]
-              ]
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Choosing the right Region is one of the most important decisions in AWS architecture. It affects latency for your users, pricing (costs vary by Region), data residency laws (GDPR in Europe, data localization in India), and disaster recovery strategy. Always deploy in the Region closest to your primary users."
-            },
-            {
-              "type": "image",
-              "src": "cloud4.png"
-            }
-          ],
-
-
-
-          "High Availability & Fault Tolerance Basics": [
-            {
-              "type": "paragraph",
-              "text": "YouTube goes down for 1 hour. That's $1.7 million in lost ad revenue — gone. 2 billion users hit a blank screen. In 2018, YouTube actually went down for 1.5 hours due to a single internal issue. It was a global news story. For a platform that runs 24/7/365 — downtime is not just a technical failure, it's a business catastrophe. High Availability and Fault Tolerance are the two AWS architectural principles that exist specifically to prevent this."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube serves 2 billion users non-stop. A single server will fail eventually — it's guaranteed. So how does YouTube keep running even when servers, data centers, or entire regions go down?"
-            },
-            {
-              "type": "heading",
-              "text": "What is High Availability?"
-            },
-            {
-              "type": "paragraph",
-              "text": "High Availability (HA) means your system is designed to stay operational with minimal downtime — even when components fail. It is measured as a percentage of uptime over a year. 99.9% uptime sounds great — but that's still 8.7 hours of downtime per year. YouTube targets 99.99% or higher — just 52 minutes of downtime per year."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 High Availability is not about preventing failures — failures are inevitable. It's about designing your system so that when something fails, users don't notice. The system keeps running through the failure automatically."
-            },
-            {
-              "type": "step",
-              "title": "HA on AWS — Multi-AZ Deployment",
-              "desc": "YouTube's video serving infrastructure runs across 3 Availability Zones in each Region. If one AZ loses power — the other two AZs instantly take all the traffic. Users in Mumbai never notice a single second of interruption."
-            },
-            {
-              "type": "step",
-              "title": "HA on AWS — Load Balancing",
-              "desc": "AWS Elastic Load Balancer distributes traffic across multiple EC2 instances. If one instance crashes — the load balancer instantly routes all requests to the healthy instances. No manual intervention. No downtime."
-            },
-            {
-              "type": "step",
-              "title": "HA on AWS — Auto Scaling",
-              "desc": "When a YouTube video goes viral and traffic spikes 10x — Auto Scaling Groups automatically launch new EC2 instances within minutes. When traffic drops — instances are terminated automatically. System stays healthy under any load."
-            },
-            {
-              "type": "heading",
-              "text": "What is Fault Tolerance?"
-            },
-            [
-              {
-                "type": "paragraph",
-                "text": "Fault Tolerance is a stronger guarantee than High Availability. A fault-tolerant system continues operating at full capacity with zero degradation — even when components fail. It requires full redundancy at every layer. Think of it this way — you're watching a YouTube video. Somewhere in Google's data center, a server handling your stream just crashed and died. But your video never paused. Never buffered. Never showed an error. You had absolutely zero idea anything broke. That is Fault Tolerance — the system silently switched to a duplicate server in milliseconds, and your experience stayed completely perfect."
-              }
-            ],
-            {
-              "type": "table",
-              "headers": ["", "High Availability", "Fault Tolerance"],
-              "rows": [
-                ["Goal", "Minimize downtime", "Zero downtime and zero degradation"],
-                ["On failure", "Brief disruption possible, then recovers", "Continues fully with no impact"],
-                ["Cost", "Moderate redundancy", "Full redundancy — expensive"],
-                ["AWS approach", "Multi-AZ, Load Balancer, Auto Scaling", "Multi-Region active-active, full data replication"],
-                ["YouTube parallel", "Video serving stays up if one AZ fails", "Live stream continues perfectly even if entire region fails"]
-              ]
-            },
-            {
-              "type": "error-callout",
-              "title": "What a non-HA YouTube architecture looks like:",
-              "list": [
-                "Single EC2 instance serving all traffic — one crash = total outage",
-                "Single database with no replica — disk fails = all data inaccessible",
-                "Deployed in one AZ only — power outage = platform completely down",
-                "No auto scaling — traffic spike = servers overwhelmed, site crashes"
-              ],
-              "footer": "This is exactly how startups launch — and exactly why they go down the moment they hit the front page of Reddit."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Every AWS service you'll learn going forward — EC2, RDS, S3, ECS, Lambda — has specific HA and fault tolerance features built in. Multi-AZ RDS, S3's 11-nines durability, Lambda's automatic scaling — these are all implementations of the same two principles. Understanding HA and Fault Tolerance now means every subsequent AWS service will immediately make sense architecturally."
-            },
-            {
-              "type": "image",
-              "src": "cloud7.png"
-            }
-          ]
-
-        }
-      },
-      {
-        "id": 2,
-        "title": "AWS Compute Services",
-        "level": "freshers",
-        "topics": [
-          "What is EC2 & How AWS Servers Work",
-          "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)",
-          "EC2 Instance Types & AMIs",
-          "Security Groups & Basic Server Security",
-          // "User Data Scripts & EC2 Automation",
-          "Introduction to Auto Scaling"
-        ],
-        "topicDetails": {
-
-          "What is EC2 & How AWS Servers Work": [
-            {
-              "type": "paragraph",
-              "text": "Every time you upload a video to YouTube — something has to receive that upload, process it, transcode it into multiple resolutions, and store it. That 'something' is a server. In the AWS world, that server is EC2. Amazon Elastic Compute Cloud (EC2) is the backbone of AWS compute — it gives you virtual servers in the cloud that you can spin up in minutes, configure exactly how you need, and shut down the moment you're done."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ When you upload a 4K video to YouTube — what actually receives it, processes it, and converts it into 360p, 720p, and 1080p versions simultaneously? Where does that computation happen?"
-            },
-            {
-              "type": "heading",
-              "text": "What is EC2?"
-            },
-            {
-              "type": "paragraph",
-              "text": "EC2 is AWS's virtual server service. Instead of buying a physical machine, you rent a virtual one — choosing exactly how many CPUs, how much RAM, and what OS you want. It launches in under a minute, you pay per second of usage, and you can have 1 server or 10,000 servers running simultaneously."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of EC2 like renting a computer from AWS. You pick the size — small laptop, powerful workstation, or massive supercomputer. You install what you need. You use it. You return it when done. You only pay for the hours you kept it."
-            },
-            {
-              "type": "heading",
-              "text": "How Does EC2 Actually Work Under the Hood?"
-            },
-            {
-              "type": "paragraph",
-              "text": "AWS owns massive physical servers in its data centers globally. Using virtualization technology — specifically a hypervisor — AWS splits one powerful physical machine into dozens of isolated virtual machines. Each virtual machine is an EC2 instance. Your EC2 instance runs completely isolated from other customers' instances on the same physical hardware."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Imagine one massive apartment building (physical server). The building owner (AWS) splits it into 50 separate apartments (EC2 instances). Each tenant (you, Netflix, Swiggy) gets their own apartment — completely private walls, separate lock, independent space. You cannot see or enter your neighbor's apartment. That isolation is what the hypervisor provides."
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — You request an EC2 instance",
-              "desc": "You go to AWS Console and fill out what kind of server you need. Think of this like ordering a custom laptop online — you pick the OS, CPU power, RAM size, and storage. Example: 'I want an Ubuntu server with 4 CPUs and 16GB RAM in Mumbai.' You click Launch. That's it from your side — AWS takes over."
-            },
-            {
-              "type": "code",
-              "code": "// What you're choosing at this step:\nRegion:        ap-south-1 (Mumbai)       → where in the world your server lives\nOS (AMI):      Ubuntu 22.04              → operating system on the server\nInstance Type: t3.medium                 → 2 vCPU, 4GB RAM\nStorage:       20GB EBS                  → hard disk size\nSecurity Group: Allow port 22, 443       → who can connect to this server"
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — AWS allocates a virtual machine",
-              "desc": "The moment you click Launch — AWS finds a physical server sitting in its Mumbai data center, carves out your requested CPU and RAM from it using a hypervisor, and boots up a fresh virtual machine with Ubuntu installed. This entire process takes under 60 seconds. You didn't touch any hardware. You didn't visit any data center. AWS did it all."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Real example — AWS Mumbai data center has a physical machine with 192 CPUs and 768GB RAM. AWS splits it: EC2 for you (2 CPU, 4GB), EC2 for a startup (4 CPU, 8GB), EC2 for a bank (8 CPU, 32GB), and so on — all running completely isolated on the same physical hardware. You never know who your neighbors are, and they can never see you."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — You get a public IP address",
-              "desc": "Once the instance is running, AWS assigns it a public IP address — like 13.235.67.120. This is your server's address on the internet. Anyone who knows this IP (and your Security Group allows it) can reach your server. You use this IP to SSH into the server from your laptop and start setting it up."
-            },
-            {
-              "type": "code",
-              "code": "// Your EC2 instance is now live:\nPublic IP:   13.235.67.120        → how the internet reaches your server\nPrivate IP:  172.31.24.5          → how other AWS services reach it internally\nRegion:      ap-south-1 (Mumbai)\nStatus:      ✅ Running\n\n// You can now SSH in from your laptop:\nssh -i my-key.pem ubuntu@13.235.67.120\n\n// You're now INSIDE the server — just like sitting in front of it\nubuntu@ip-172-31-24-5:~$"
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — You install your app and serve traffic",
-              "desc": "Now you're inside the server. From here — you install Node.js, deploy your YouTube API code, start the server on port 443. The moment it's running — real users can hit your server. YouTube creators uploading videos, viewers fetching recommendations — all hitting this EC2 instance."
-            },
-            {
-              "type": "code",
-              "code": "// Inside your EC2 instance — setting it up:\nsudo apt update\nsudo apt install nodejs npm -y\n\n// Clone your YouTube API code\ngit clone https://github.com/your-org/youtube-api.git\ncd youtube-api\nnpm install\n\n// Start the server\nnode app.js\n\n// ✅ Your server is now live at:\n// https://13.235.67.120 — real traffic can hit it"
-            },
-            {
-              "type": "step",
-              "title": "Step 5 — You pay per second, stop when done",
-              "desc": "Billing started the exact second your instance launched. If you run it for 3 hours and 22 minutes — you pay for exactly 3 hours and 22 minutes. Not a full day. Not a full month. The moment you terminate the instance — billing stops completely. This is the fundamental difference from buying a physical server — you pay only for what you use."
-            },
-            {
-              "type": "code",
-              "code": "// EC2 Billing example:\nInstance Type: t3.medium\nPrice:         $0.0416 per hour (Mumbai region)\n\nRan for: 3 hours 22 minutes = 3.37 hours\nTotal cost: 3.37 × $0.0416 = $0.14\n\n// You paid 14 cents for a full server for 3 hours ✅\n// Compare: buying a physical server = $3,000+ upfront\n\n// Stop vs Terminate:\n// Stop     → Server paused. Storage still billed. Can restart.\n// Terminate → Server deleted forever. Billing stops completely."
-            },
-            {
-              "type": "heading",
-              "text": "YouTube's EC2 Use Cases"
-            },
-            {
-              "type": "step",
-              "title": "API Servers",
-              "desc": "EC2 instances run YouTube's backend APIs — handling billions of requests daily for video metadata, comments, likes, and recommendations. When you hit the Like button on a video — an EC2 instance somewhere in AWS receives that request, updates the database, and sends back the new like count. All in milliseconds."
-            },
-            {
-              "type": "error-callout",
-              "title": "Without EC2 — what YouTube would need:",
-              "list": [
-                "Buy thousands of physical servers — millions in upfront capital before launch",
-                "Build and manage data centers in every country — real estate, cooling, power",
-                "Hire hardware engineers to replace failing machines 24/7 — people, not code",
-                "Over-provision for peak traffic — paying for 1000 servers at 3am when only 50 are needed",
-                "6-month lead time to scale up for a viral video event — by then the moment is gone"
-              ],
-              "footer": "With EC2 — YouTube scales from 100 servers to 10,000 in minutes. Automatically. Without touching a single physical machine."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ EC2 is powerful — but a raw server does nothing by default. The moment it launches — it's just a blank Linux machine sitting in AWS. You need to connect to it, secure it, configure it, and deploy your application. The next topics walk through exactly how to do all of this step by step."
-            },
-          ],
-
-          "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)": [
-            {
-              "type": "paragraph",
-              "text": "Knowing what EC2 is means nothing if you can't actually use it. Launching your first EC2 instance and connecting to it is the single most fundamental hands-on skill in all of AWS. Every backend engineer at a company like YouTube has done this hundreds of times. Let's walk through exactly what happens — from clicking launch to being connected inside a live server."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube's engineers deploy code to remote servers every day. How do they actually connect to a server sitting in an AWS data center in Mumbai from their laptop in Bangalore?"
-            },
-            {
-              "type": "heading",
-              "text": "Step 1 — Launching an EC2 Instance"
-            },
-            {
-              "type": "paragraph",
-              "text": "Launching an EC2 instance is a series of decisions — each one defining exactly what kind of server you're renting and how it behaves. Think of it like filling out a form to rent a server — you describe exactly what you need and AWS builds it for you in under 60 seconds."
-            },
-            {
-              "type": "step",
-              "title": "Choose an AMI (Amazon Machine Image)",
-              "desc": "AMI is the OS template — the pre-installed operating system your server boots with. You pick this first because everything else depends on it. Amazon Linux 2023 is AWS's own optimized Linux — fastest boot, best AWS integration, what most production teams use. Ubuntu 22.04 if your team is more comfortable with it. Windows Server only if you're running .NET applications."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's video API servers run on Linux (not Windows) because Linux is faster, cheaper, and handles high-concurrency workloads better. When a YouTube engineer launches a new API server on AWS, they pick Amazon Linux 2023 AMI — it boots in seconds and comes pre-configured for production workloads. Choosing Ubuntu instead would work too — just a personal/team preference."
-            },
-            {
-              "type": "step",
-              "title": "Choose Instance Type",
-              "desc": "Instance Type defines your server's hardware — how many CPUs and how much RAM it gets. This is the most important decision because it directly affects performance and cost. t3.micro = 1 vCPU, 1GB RAM — fine for learning and dev. m6i.xlarge = 4 vCPU, 16GB RAM — for a real API server. c6i.4xlarge = 16 vCPU, 32GB RAM — for CPU-heavy jobs like video processing."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — When YouTube launches a server just to handle the comments API (reading and writing comments), they use a General Purpose instance like m6i.2xlarge — balanced CPU and RAM, handles thousands of concurrent requests. But when they launch a server specifically to transcode a raw 4K upload into multiple resolutions — they use a Compute Optimized instance like c6i.8xlarge — maximum CPU, because transcoding is pure number-crunching. Same AWS, same EC2 — completely different instance types for different jobs."
-            },
-            {
-              "type": "step",
-              "title": "Configure Storage (EBS Volume)",
-              "desc": "Every EC2 instance needs a hard disk — called an EBS volume. The default is 8GB, which is just enough for the OS. For any real application you add more. This is where your app code, logs, and temporary data live on the server."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's video upload receiver servers need large temporary storage. \nWhen a creator uploads a raw 4K video file — it can be 50GB or more. That file lands on the EC2 server's EBS volume temporarily while it's being processed and moved to S3. So YouTube configures those instances with 500GB+ EBS volumes. Their API servers (comments, likes, metadata) need far less — 50GB is enough since they don't store video files."
-            },
-            {
-              "type": "step",
-              "title": "Configure Security Group",
-              "desc": "Security Group is the firewall — it controls which ports and which IP addresses can reach your server. Before your instance even launches, you define the rules. Open port 22 for SSH (so engineers can connect). Open port 443 for HTTPS (so users can reach your API). Everything else — blocked by default."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's public API servers have port 443 open to the entire internet (0.0.0.0/0) — because any user's phone or browser needs to reach it. But port 22 (SSH) is only open to YouTube's internal VPN IP range — only engineers connected to YouTube's VPN can SSH in. A random person on the internet trying to SSH into YouTube's server gets silently dropped — connection refused before it even reaches the server."
-            },
-            {
-              "type": "heading",
-              "text": "Step 2 — Key Pairs (How SSH Authentication Works)"
-            },
-            {
-              "type": "paragraph",
-              "text": "Before you launch, AWS asks you to choose or create a Key Pair. This is your authentication method — how you prove to the server that it's really you connecting, not someone else. A Key Pair has two parts: a public key (AWS puts this inside your server automatically) and a private key (a .pem file you download once to your laptop)."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of it like a padlock and key. AWS puts the padlock (public key) on your server's door. You keep the physical key (private key .pem file) on your laptop. When you try to SSH in — your laptop shows the key, the server checks if it matches the padlock. Match = door opens. No key or wrong key = door stays locked. No password needed. No guessing. Pure cryptographic proof."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — When a YouTube engineer provisions a new API server, AWS generates a Key Pair. The engineer downloads the .pem file to their laptop. That .pem file is then stored in YouTube's internal secure credential vault (like HashiCorp Vault or AWS Secrets Manager) — never on personal laptops or Slack messages. When the engineer needs to SSH into that server, they pull the key from the vault. This is how teams with 1000+ engineers manage server access safely."
-            },
-            {
-              "type": "error-callout",
-              "title": "Key Pair rules you must never break:",
-              "list": [
-                "Download the .pem file once — AWS never shows it again. Ever. If you lose it, you cannot SSH into that instance — period.",
-                "Never share your .pem file over Slack, email, or WhatsApp — whoever has it has full access to your server",
-                "Never commit .pem files to GitHub — bots scan GitHub 24/7 for exposed keys. Your server gets compromised within minutes.",
-                "Store it safely — losing it means creating a new Key Pair and replacing the instance entirely"
-              ],
-              "footer": "YouTube's engineers store Key Pairs in secure vaults — never on personal laptops or in code repositories. One leaked .pem file = one compromised production server."
-            },
-            {
-              "type": "heading",
-              "text": "Step 3 — Connecting via SSH"
-            },
-            {
-              "type": "paragraph",
-              "text": "SSH (Secure Shell) is the protocol that lets you connect to a remote Linux server securely over the internet. Think of it like opening a terminal window — but instead of your laptop's terminal, you're inside a server sitting in AWS's Mumbai data center. Once connected, you can run any command on that server as if you were physically there."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — A YouTube backend engineer in Bangalore needs to debug a production API server running in AWS Mumbai. They don't fly to Mumbai. They don't call anyone. They open their terminal, run one SSH command, and in 2 seconds they're inside that server — reading logs, checking processes, restarting services. The server is 1500km away but feels like it's right in front of them."
-            },
-            {
-              "type": "code",
-              "code": "# Step 1 — Set correct permissions on your .pem file\n# (Linux/Mac require this — otherwise SSH refuses to use the key)\nchmod 400 youtube-server.pem\n\n# Why chmod 400?\n# 400 = only YOU can read this file. No one else.\n# SSH refuses to work if the key file is readable by others — security rule.\n\n# Step 2 — Connect to your EC2 instance\nssh -i youtube-server.pem ec2-user@13.235.67.120\n#         │                │         │\n#         │                │         └── Your EC2 Public IP (from AWS Console)\n#         │                └──────────── Username (ec2-user for Amazon Linux)\n#         └───────────────────────────── Your private key file\n\n# For Ubuntu AMIs — username is 'ubuntu' not 'ec2-user'\nssh -i youtube-server.pem ubuntu@13.235.67.120\n\n# ✅ Success — you're now INSIDE the server\n[ec2-user@ip-172-31-24-5 ~]$\n# This prompt means you're running commands ON the AWS server in Mumbai\n# Not on your laptop anymore\n\n# Now you can do anything on the server:\nnpm install          # install packages on the server\nnode app.js          # start your YouTube API\ntail -f app.log      # watch live logs"
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — The moment a YouTube engineer is inside the server via SSH, they can check what's happening in real time. Is the Node.js process running? How much CPU is it using? Are there error logs? They run 'top' to see CPU usage, 'tail -f /var/log/youtube-api.log' to watch live logs, 'pm2 status' to check if the app is running. All of this from their Bangalore laptop, on a Mumbai server, in real time."
-            },
-            {
-              "type": "heading",
-              "text": "Step 4 — Elastic IP (The Permanent IP Problem)"
-            },
-            {
-              "type": "paragraph",
-              "text": "Here's a problem nobody tells you about until it hits you in production. Every time you stop and start an EC2 instance — AWS throws away the old public IP and assigns a completely new one. Your server's address on the internet just changed. Everything pointing to the old IP — DNS records, mobile app configs, other servers — is now broken."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — Imagine YouTube's comments API server has the IP 54.123.45.67. Their DNS record points api.youtube.com to this IP. Their mobile apps are configured to call this IP. Now an engineer stops the instance for maintenance and starts it again. New IP: 18.234.56.78. Suddenly — api.youtube.com points to a dead address. Every YouTube app in the world gets connection errors. Comments stop loading. This is the IP change problem in production."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 An Elastic IP is a static public IP address that stays yours until you explicitly release it. You allocate one from AWS, attach it to your EC2 instance — and no matter how many times you stop, start, or restart that instance, the IP never changes. It's locked to you."
-            },
-            {
-              "type": "code",
-              "code": "// ❌ Without Elastic IP — IP changes on every restart:\nDay 1:  Start instance  → Public IP: 54.123.45.67\n        DNS record:       api.youtube.com → 54.123.45.67 ✅\n        Mobile apps:      calling 54.123.45.67 ✅\n\nDay 2:  Stop for maintenance\nDay 3:  Start again      → Public IP: 18.234.56.78  ← NEW IP!\n        DNS record:       api.youtube.com → 54.123.45.67 ❌ BROKEN\n        Mobile apps:      calling 54.123.45.67 ❌ CONNECTION REFUSED\n        Result:           Comments not loading for 500M users 🔥\n\n// ✅ With Elastic IP — IP is permanent:\nAllocate Elastic IP:  3.14.159.26   ← yours forever until released\nAttach to instance:   EC2 → 3.14.159.26\nDNS record:           api.youtube.com → 3.14.159.26\n\nDay 2:  Stop for maintenance      → 3.14.159.26 (still yours, just not active)\nDay 3:  Start again               → 3.14.159.26 ✅ same IP\n        DNS record:               api.youtube.com → 3.14.159.26 ✅ still works\n        Mobile apps:              calling 3.14.159.26 ✅ connected\n        Result:                   Zero disruption. Engineers sleep peacefully. ✅"
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Elastic IPs are free only when attached to a running instance. If you allocate one and leave it unattached — AWS charges you per hour (to prevent hoarding of IPs). Always release Elastic IPs you're not using. Also — in real production at YouTube's scale, they don't use Elastic IPs directly. They put a Load Balancer in front and point DNS to the Load Balancer's DNS name — which never changes regardless of what happens to individual EC2 instances behind it. But understanding Elastic IP is fundamental — it's step one before you understand Load Balancers."
-            },
-          ],
-
-          "EC2 Instance Types & AMIs": [
-            {
-              "type": "paragraph",
-              "text": "YouTube does not use the same server for uploading videos, serving recommendations, and storing thumbnails. A server that receives uploads needs massive network bandwidth. A server that transcodes video needs extreme CPU power. A server running a recommendation ML model needs enormous RAM. AWS gives you exactly the right hardware for each job — through EC2 Instance Types and AMIs."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube transcodes 500 hours of video every minute. That's an insane amount of compute. How does AWS provide the right type of processing power for such different workloads — transcoding vs API serving vs ML inference?"
-            },
-            {
-              "type": "heading",
-              "text": "What is an Instance Type?"
-            },
-            {
-              "type": "paragraph",
-              "text": "An Instance Type defines the hardware profile of your EC2 server — how many virtual CPUs, how much RAM, what network speed, and what storage type. AWS organizes instance types into families — each optimized for a specific workload category. Picking the wrong one is like hiring a weightlifter to do a math exam — wrong tool, wrong job, wasted money."
-            },
-            {
-              "type": "heading",
-              "text": "EC2 Instance Families"
-            },
-            {
-              "type": "step",
-              "title": "General Purpose — T and M Series",
-              "desc": "Balanced CPU and RAM — not specialized for anything, good at everything. Best for web servers, REST APIs, small databases, and dev/test environments. This is where most applications start."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's Comments API server handles requests like 'fetch top 20 comments for this video' or 'post a new comment'. This is not CPU-heavy. It's not RAM-heavy. It just needs a solid balanced server that handles thousands of concurrent HTTP requests steadily. YouTube runs this on M-series instances like m6i.2xlarge — 8 vCPU, 32GB RAM. Balanced. Reliable. Cost-effective. For your learning — t3.micro (1 vCPU, 1GB RAM) is the free-tier instance. Same family, just much smaller."
-            },
-            {
-              "type": "step",
-              "title": "Compute Optimized — C Series",
-              "desc": "Maximum CPU power with less RAM. Built for tasks where raw processing speed is everything — encoding, compression, scientific simulations, game servers. The C stands for Compute. When your bottleneck is pure CPU cycles — this is your instance."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — When you upload a raw 4K video (let's say 50GB, shot on a cinema camera), YouTube has to transcode it into 8 different formats simultaneously — 4K, 1080p, 720p, 480p, 360p, 240p, 144p, and an audio-only version. Every single one requires intense frame-by-frame video processing using ffmpeg. This is pure CPU work — no amount of RAM helps here. YouTube runs these transcoding jobs on C-series instances like c6i.8xlarge — 32 vCPUs screaming through every frame. A General Purpose m6i instance at the same price would take 3x longer to transcode the same video."
-            },
-            {
-              "type": "code",
-              "code": "// What happens when you upload a video to YouTube:\n// One raw 4K upload → 8 parallel transcoding jobs\n\nJob 1: raw_4k.mp4  →  4K_2160p.mp4    (c6i.8xlarge — 32 vCPU)\nJob 2: raw_4k.mp4  →  FHD_1080p.mp4   (c6i.4xlarge — 16 vCPU)\nJob 3: raw_4k.mp4  →  HD_720p.mp4     (c6i.2xlarge — 8 vCPU)\nJob 4: raw_4k.mp4  →  SD_480p.mp4     (c6i.xlarge  — 4 vCPU)\nJob 5: raw_4k.mp4  →  360p.mp4        (c6i.xlarge  — 4 vCPU)\nJob 6: raw_4k.mp4  →  240p.mp4        (c6i.large   — 2 vCPU)\nJob 7: raw_4k.mp4  →  144p.mp4        (c6i.large   — 2 vCPU)\nJob 8: raw_4k.mp4  →  audio_only.mp4  (c6i.large   — 2 vCPU)\n\n// All 8 run simultaneously on C-series Compute Optimized instances\n// Total time: ~3-5 minutes\n// Same jobs on General Purpose t3 instances: ~15-20 minutes ❌ too slow"
-            },
-            {
-              "type": "step",
-              "title": "Memory Optimized — R and X Series",
-              "desc": "Massive amounts of RAM — sometimes terabytes. Best when your application needs to hold enormous datasets entirely in memory for instant access. Reading from RAM is 100x faster than reading from disk. When your bottleneck is RAM — R and X series."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's recommendation engine decides what video to show you next. To do this in real time — it needs to instantly compare your watch history against billions of other users' patterns. This data cannot be fetched from a database on every request — it would take seconds. Instead YouTube loads the entire user preference model into RAM — billions of vectors, hundreds of GBs of data — and queries it in milliseconds. This is why they use R-series instances like r6i.32xlarge — 128 vCPU and 1TB of RAM. The entire recommendation model lives in memory. Query time: under 10ms. Without Memory Optimized instances — your YouTube homepage recommendations would take 3-5 seconds to load instead of being instant."
-            },
-            {
-              "type": "step",
-              "title": "Storage Optimized — I and D Series",
-              "desc": "Ultra-fast local NVMe SSD storage with extremely high read/write throughput. Best when your application constantly reads and writes huge amounts of data to disk at very high speed. The bottleneck is disk I/O — not CPU, not RAM."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — When a creator uploads a raw 50GB video file, it first lands on a YouTube intake server temporarily. This server is receiving hundreds of such uploads simultaneously — writing 50GB, 30GB, 80GB files to disk continuously at the same time. It needs incredibly fast disk write speeds or uploads queue up and creators see slow upload progress bars. YouTube uses I-series Storage Optimized instances for this intake pipeline — local NVMe SSDs that write at 3.5GB per second. Compare that to a regular EBS volume on a General Purpose instance at 250MB/second — 14x slower. At YouTube's upload volume, that difference means everything."
-            },
-            {
-              "type": "step",
-              "title": "Accelerated Computing — P and G Series",
-              "desc": "GPU-powered instances. GPUs have thousands of cores designed for parallel mathematical operations — perfect for machine learning training, deep learning inference, and video processing at scale. P-series for ML training. G-series for graphics and video encoding with GPU acceleration."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's AI does two incredibly hard jobs: content moderation (detecting policy-violating videos before humans see them) and automatic caption generation (transcribing spoken words in every language). Both require deep learning models running on GPUs. Training the content moderation model — teaching it to recognize violence, nudity, and hate speech from millions of video samples — runs on P-series instances like p4d.24xlarge — 8 NVIDIA A100 GPUs, 96 vCPUs, 1.1TB RAM. A single training run that would take 3 months on a CPU instance takes 18 hours on this GPU instance. For caption generation inference (running the model on new videos in real time) — YouTube uses G-series instances — cheaper GPU power optimized for inference rather than training."
-            },
-            {
-              "type": "heading",
-              "text": "Reading Instance Type Names"
-            },
-            {
-              "type": "paragraph",
-              "text": "Every EC2 instance name follows a consistent pattern. Once you learn to read it — you instantly know what any instance does just from its name. No memorization needed."
-            },
-            {
-              "type": "code",
-              "code": "// Breaking down an instance name:\nc  6  i  .  4xlarge\n│  │  │     │\n│  │  │     └── Size (determines how many CPUs and RAM)\n│  │  │         nano → micro → small → medium → large → xlarge\n│  │  │         → 2xlarge → 4xlarge → 8xlarge → 16xlarge → 32xlarge\n│  │  │         Each step UP roughly doubles CPU and RAM\n│  │  │\n│  │  └── Processor type:\n│  │      i = Intel\n│  │      a = AMD (usually 10% cheaper than Intel equivalent)\n│  │      g = AWS Graviton (ARM-based — up to 40% cheaper, great performance)\n│  │\n│  └── Generation number (higher = newer, faster, cheaper per unit)\n│      6 = 6th generation (newer than 5, older than 7)\n│\n└── Instance Family:\n    t = General Purpose (burstable — good for low-traffic dev)\n    m = General Purpose (steady — good for production APIs)\n    c = Compute Optimized (CPU-heavy jobs)\n    r = Memory Optimized (RAM-heavy jobs)\n    i = Storage Optimized (disk I/O heavy jobs)\n    p = GPU Accelerated (ML training)\n    g = GPU Accelerated (ML inference, video)\n\n// Real examples decoded:\nt3.micro\n  → General Purpose (t), 3rd gen, micro size\n  → 1 vCPU, 1GB RAM\n  → FREE TIER — use this for learning ✅\n\nm6i.2xlarge\n  → General Purpose (m), 6th gen, Intel, 2xlarge\n  → 8 vCPU, 32GB RAM\n  → YouTube Comments API server\n\nc6i.8xlarge\n  → Compute Optimized (c), 6th gen, Intel, 8xlarge\n  → 32 vCPU, 64GB RAM\n  → YouTube 4K video transcoding worker\n\nr6i.32xlarge\n  → Memory Optimized (r), 6th gen, Intel, 32xlarge\n  → 128 vCPU, 1024GB (1TB) RAM\n  → YouTube recommendation engine model server\n\np4d.24xlarge\n  → GPU Accelerated (p), 4th gen, 24xlarge\n  → 96 vCPU, 1152GB RAM, 8x NVIDIA A100 GPUs\n  → YouTube AI content moderation model training"
-            },
-            {
-              "type": "heading",
-              "text": "What is an AMI?"
-            },
-            {
-              "type": "paragraph",
-              "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it like this — imagine YouTube needs to launch 500 new servers right now to handle a traffic spike. They are not going to sit and manually install Linux, configure settings, and install software on each one. Instead they take one perfectly configured server — OS installed, software ready, settings done — and take a snapshot of it. That snapshot is the AMI. Now they can launch 500 identical servers in seconds, all booting up exactly like that original. Same OS. Same software. Same settings. Ready to go instantly."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of AMI like a game save file — but for an entire server. You configure a server perfectly — install everything, tune every setting, deploy your code. Then you hit save. That save file is the AMI. Next time you need an identical server — you don't redo all that work. You just load the save file. A new perfectly configured server is running in 60 seconds."
-            },
-            {
-              "type": "step",
-              "title": "AWS Provided AMIs — The Starting Point",
-              "desc": "These are official base OS images provided by AWS and OS vendors. A completely clean operating system — nothing installed, nothing configured. You start here and build on top. Amazon Linux 2023 is the most common for backend workloads — optimized for AWS, fastest boot time, best integration with AWS services."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — A new YouTube engineer joins the team and needs to set up a development server on EC2. They pick the Ubuntu 22.04 AMI from AWS. It launches in 45 seconds — clean Ubuntu, nothing installed. Then they manually install Node.js, configure the environment, clone the YouTube API repo. This takes 20 minutes. Fine for a one-time dev setup. But doing this manually for 500 production servers during a traffic spike? Impossible. That's where Custom AMIs come in."
-            },
-            {
-              "type": "step",
-              "title": "Custom AMIs — YouTube's Golden Image",
-              "desc": "You take an AWS base AMI, configure it exactly how you need — install all software, apply security hardening, add monitoring agents, deploy app code — then capture it as your own custom AMI. Now every new EC2 instance launched from this AMI is born already configured. No setup time. No manual steps. Production-ready in 60 seconds."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's DevOps team maintains a 'Golden AMI' for their video transcoding workers. It has: Amazon Linux 2023 base, ffmpeg pre-installed and tuned for H.264/H.265 encoding, AWS CloudWatch agent for monitoring, custom YouTube transcoding scripts pre-loaded, security hardening applied (unnecessary ports closed, logging enabled). When a viral video spikes traffic and Auto Scaling needs to launch 200 new transcoding workers in 5 minutes — each one launches from this Golden AMI. They boot, read their User Data script to pull the latest job config, and start transcoding within 90 seconds. No engineer touched a single one."
-            },
-            {
-              "type": "code",
-              "code": "// How YouTube creates and uses a Golden AMI:\n\n// Step 1 — Start with a base AWS AMI\nBase AMI: ami-0abcdef1234567890  (Amazon Linux 2023 — clean)\n\n// Step 2 — Configure the server manually (one time only)\nssh -i key.pem ec2-user@server-ip\nsudo yum install -y ffmpeg           # video transcoding tool\nsudo yum install -y amazon-cloudwatch-agent  # monitoring\ngit clone https://github.com/youtube/transcoder /opt/transcoder\nnpm install --prefix /opt/transcoder\n# Apply security hardening, configure logging...\n\n// Step 3 — Create AMI from this configured server\n// AWS Console → EC2 → Instance → Actions → Create Image\nNew AMI created: ami-youtube-transcoder-v1.4  ← Golden Image ✅\n\n// Step 4 — Use this AMI in Auto Scaling Launch Template\nLaunchTemplate: {\n  ImageId: 'ami-youtube-transcoder-v1.4',  // ← Golden AMI\n  InstanceType: 'c6i.8xlarge',\n  // Every auto-scaled instance is born from this image\n  // Pre-installed, pre-configured, production-ready in 60s\n}\n\n// Result:\n// Traffic spike → Auto Scaling launches 200 instances\n// Each instance: boots in 45s, starts transcoding in 90s\n// Zero manual configuration. Zero SSH. Zero human intervention. ✅"
-            },
-            {
-              "type": "step",
-              "title": "AWS Marketplace AMIs — Pre-built Third Party Software",
-              "desc": "The AWS Marketplace has thousands of AMIs built by third-party vendors — NGINX pre-configured as a reverse proxy, WordPress fully set up and ready, security-hardened CIS Benchmark images, VPN servers, monitoring tools. You launch these and the software is already running. You pay an additional per-hour software license fee on top of the EC2 cost."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 YouTube Example — Suppose YouTube's security team needs a pre-hardened, CIS Benchmark compliant Linux server for a compliance audit. Instead of spending a week manually hardening an Amazon Linux instance, they grab a CIS Hardened Amazon Linux AMI from the AWS Marketplace — $0.02/hour extra on top of EC2 cost. It launches pre-configured with all 200+ CIS security controls already applied. What would take a security engineer a week to configure manually is done in 60 seconds. The trade-off: you pay the vendor's license fee, and you have less control over what's pre-installed."
-            },
-            {
-              "type": "table",
-              "headers": ["Instance Family", "Optimized For", "YouTube Use Case", "Example Type", "Why This Family?"],
-              "rows": [
-                ["T / M (General)", "Balanced CPU + RAM", "Comments API, metadata servers", "t3.micro, m6i.2xlarge", "Steady HTTP traffic — no extreme CPU or RAM needs"],
-                ["C (Compute)", "Maximum CPU", "4K video transcoding workers", "c6i.8xlarge", "Frame-by-frame encoding = pure CPU work"],
-                ["R / X (Memory)", "Maximum RAM", "Recommendation engine model server", "r6i.32xlarge", "Billion-user preference model must live in RAM"],
-                ["I / D (Storage)", "Ultra-fast disk I/O", "Raw video upload intake pipeline", "i3.2xlarge", "Receiving 50GB files simultaneously = needs fast writes"],
-                ["P / G (GPU)", "GPU parallel processing", "AI moderation model training, captions", "p4d.24xlarge", "Deep learning = thousands of GPU cores, not CPU cores"]
-              ]
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Choosing the wrong instance type is one of the most common and expensive AWS mistakes. Real example: a team runs their video transcoding jobs on m6i General Purpose instances because 'they have enough CPU'. Transcoding takes 18 minutes per video. They switch to c6i Compute Optimized instances at the same price — transcoding drops to 6 minutes. Same cost. 3x the throughput. Always match the instance family to your workload's actual bottleneck — CPU, RAM, disk, or GPU. Start with CloudWatch metrics to identify what's actually maxing out, then right-size accordingly."
-            },
-          ],
-
-          "Security Groups & Basic Server Security": [
-            {
-              "type": "paragraph",
-              "text": "YouTube's EC2 servers are live on the internet — accessible from anywhere in the world. Without any protection, anyone could connect to any port, attempt to log in, run commands, or flood the server with traffic. Security Groups are AWS's first line of defense — a virtual firewall that sits in front of every EC2 instance and controls exactly what traffic is allowed in and out."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube's upload servers are publicly reachable on the internet. How does AWS ensure only legitimate video uploads get through — and attackers trying to SSH in, run malicious commands, or probe open ports get blocked?"
-            },
-            {
-              "type": "heading",
-              "text": "What is a Security Group?"
-            },
-            {
-              "type": "paragraph",
-              "text": "A Security Group is a stateful virtual firewall attached to EC2 instances. It controls inbound traffic (what can reach your server) and outbound traffic (what your server can send out). By default — all inbound traffic is blocked, all outbound traffic is allowed. You explicitly define rules to open specific ports for specific sources."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of a Security Group like a bouncer list for your server. Only traffic matching the list gets in. Everything else is silently dropped — no error, no response. The server doesn't even acknowledge the connection attempt."
-            },
-            {
-              "type": "heading",
-              "text": "Security Group Rules — How They Work"
-            },
-            {
-              "type": "code",
-              "code": "// YouTube Upload Server — Inbound Rules:\nPort 443 (HTTPS)  → Source: 0.0.0.0/0   ✅ Anyone can upload videos\nPort 22 (SSH)     → Source: 10.0.0.0/8  ✅ Only internal engineers can SSH\nPort 80 (HTTP)    → BLOCKED             ❌ Force HTTPS only\nPort 3306 (MySQL) → BLOCKED             ❌ Database never exposed publicly\n\n// Outbound Rules:\nAll traffic       → Destination: 0.0.0.0/0 ✅ Server can call any external service"
-            },
-            {
-              "type": "heading",
-              "text": "Stateful — What Does That Mean?"
-            },
-            {
-              "type": "paragraph",
-              "text": "Security Groups are stateful — meaning if you allow inbound traffic on port 443, the response traffic is automatically allowed out without needing a separate outbound rule. AWS tracks the connection state and handles return traffic automatically."
-            },
-            {
-              "type": "step",
-              "title": "Inbound Rule: Allow HTTPS (443)",
-              "desc": "You open YouTube on your phone in Mumbai and tap upload on your new video. Your phone sends that video file to YouTube's EC2 server over port 443 (HTTPS). The moment that request hits the EC2 instance — the Security Group checks its inbound rules. It sees: 'Port 443 from 0.0.0.0/0 — ALLOW'. Rule matches. Request is let through. The EC2 server starts receiving your video file."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 What if port 443 was NOT in the inbound rules? Your phone sends the upload request — it hits the Security Group — no matching rule found — request is silently dropped. Your YouTube app just spins forever showing 'Uploading...' with 0% progress. No error message. No response. Just silence. The server never even saw your request. That's how powerful Security Group rules are — they decide what the server is even allowed to know about."
-            },
-            {
-              "type": "step",
-              "title": "Response Automatically Allowed Out — Stateful Magic",
-              "desc": "Your video upload is received. Now YouTube's EC2 server needs to send back a response — 'Upload successful. Video ID: xK9mP2qL4n'. This response needs to travel from the EC2 server back to your phone in Mumbai over the same connection. Here's the key — there is NO explicit outbound rule for port 443 in YouTube's Security Group. But the response still gets through. Why? Because Security Groups are stateful."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Stateful means the Security Group remembers the conversation. When your phone opened a connection to YouTube's server on port 443 — the Security Group noted it: 'A connection was established from 103.56.78.90 on port 443.' When the server tries to respond back to your phone — the Security Group recognizes this as part of that same conversation. It automatically allows the response out — no outbound rule needed. It knows this isn't a new random outbound request — it's a reply to something it already approved."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 This is exactly why Security Groups being stateful is such a big deal. YouTube's Security Group only needs ONE inbound rule for port 443 — and the entire two-way conversation (upload in, response out) works automatically. If Security Groups were stateless like Network ACLs, YouTube would need to explicitly open outbound rules for every possible response port — a maintenance nightmare for a platform handling billions of connections a day."
-            },
-            {
-              "type": "heading",
-              "text": "Common Security Group Configurations"
-            },
-            {
-              "type": "table",
-              "headers": ["Server Type", "Allow Inbound", "Block Inbound", "YouTube Example"],
-              "rows": [
-                ["Web Server", "80, 443 from anywhere", "Everything else", "Video streaming servers"],
-                ["SSH Bastion", "22 from office IP only", "Everything else", "Engineer access gateway"],
-                ["Database", "3306 from app servers only", "Everything from internet", "YouTube's MySQL cluster"],
-                ["Internal API", "8080 from load balancer only", "Everything from internet", "Recommendation API"],
-                ["Video Processor", "No inbound needed", "Everything", "Pulls jobs from queue — no direct traffic"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Security Groups vs Network ACLs"
-            },
-            {
-              "type": "paragraph",
-              "text": "Security Groups operate at the instance level — they protect individual EC2 instances. Network ACLs (NACLs) operate at the subnet level — they protect entire subnets. Security Groups are stateful. NACLs are stateless — you must explicitly allow both inbound and outbound for each connection."
-            },
-            {
-              "type": "error-callout",
-              "title": "Most common Security Group mistakes that get servers compromised:",
-              "list": [
-                "Port 22 (SSH) open to 0.0.0.0/0 — the entire internet can attempt to login",
-                "Port 3306 (Database) open publicly — database directly exposed to attackers",
-                "All ports open (0-65535) — entire server surface area exposed",
-                "Default security group unchanged — beginners often forget to configure it"
-              ],
-              "footer": "Thousands of EC2 instances get compromised every month because of open port 22. Never open SSH to the entire internet in production."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Security Groups are your first defense — but not your only defense. YouTube also uses AWS WAF to block malicious web requests, AWS Shield for DDoS protection, and VPC private subnets to ensure database servers are never reachable from the internet at all. Defense in depth — multiple layers of security, not just one."
-            },
-            {
-              "type": "image",
-              "src": "ec2-4.png"
-            }
-          ],
-
-          "User Data Scripts & EC2 Automation": [
-            {
-              "type": "paragraph",
-              "text": "YouTube's Auto Scaling group just launched 500 new EC2 instances to handle a viral video spike. Each instance needs Node.js installed, the YouTube API server code deployed, environment variables configured, and the application started — all within minutes, automatically, without a single engineer touching any server. This is what User Data Scripts make possible."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ When YouTube auto-scales from 100 to 500 servers in 5 minutes during a viral event — who installs the software and deploys the code on those 400 new servers? No human can do that manually. So how does it happen?"
-            },
-            {
-              "type": "heading",
-              "text": "What is User Data?"
-            },
-            {
-              "type": "paragraph",
-              "text": "User Data is a shell script you provide when launching an EC2 instance. AWS runs this script automatically as root the very first time the instance boots — before it starts serving any traffic. You can install packages, download code, configure the OS, start services — anything you'd do manually on a server, automated completely."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 User Data is like leaving a to-do list for your server the moment it wakes up. The server boots, reads the list, executes every step automatically, and by the time it's fully up — it's already configured, deployed, and ready to serve traffic."
-            },
-            {
-              "type": "heading",
-              "text": "YouTube API Server — User Data Script"
-            },
-            {
-              "type": "code",
-              "code": "#!/bin/bash\n# This runs automatically on first boot — as root\n\n# Step 1 — Update the OS\nyum update -y\n\n# Step 2 — Install Node.js\ncurl -fsSL https://rpm.nodesource.com/setup_20.x | bash -\nyum install -y nodejs\n\n# Step 3 — Install PM2 (process manager — keeps Node.js running)\nnpm install -g pm2\n\n# Step 4 — Pull YouTube API server code from S3\naws s3 cp s3://youtube-deployments/api-server.tar.gz /home/ec2-user/\ntar -xzf /home/ec2-user/api-server.tar.gz -C /home/ec2-user/\n\n# Step 5 — Set environment variables\nexport NODE_ENV=production\nexport DB_HOST=youtube-db.cluster.us-east-1.rds.amazonaws.com\nexport REDIS_HOST=youtube-cache.abc123.ng.0001.use1.cache.amazonaws.com\n\n# Step 6 — Install dependencies and start the server\ncd /home/ec2-user/api-server\nnpm install\npm2 start app.js --name youtube-api\npm2 startup\npm2 save\n\n# ✅ Server is fully configured and running — automatically"
-            },
-            {
-              "type": "heading",
-              "text": "How YouTube Uses User Data at Scale"
-            },
-            {
-              "type": "step",
-              "title": "Auto Scaling Event Triggered",
-              "desc": "Traffic spikes — Auto Scaling Group decides to launch 50 new EC2 instances. Each instance gets the same User Data script."
-            },
-            {
-              "type": "step",
-              "title": "All 50 Instances Boot Simultaneously",
-              "desc": "AWS launches all 50 at once. Every single one executes the User Data script automatically on first boot."
-            },
-            {
-              "type": "step",
-              "title": "Within 3-5 Minutes",
-              "desc": "All 50 servers have Node.js installed, latest API code deployed, and the application running. Load balancer health checks pass — servers start receiving traffic."
-            },
-            {
-              "type": "step",
-              "title": "Zero Human Intervention",
-              "desc": "Not a single engineer SSHed into any server. 50 production-ready servers configured and deployed completely automatically."
-            },
-            {
-              "type": "heading",
-              "text": "Viewing User Data Logs"
-            },
-            {
-              "type": "code",
-              "code": "# SSH into the instance and check User Data execution logs\nsudo cat /var/log/cloud-init-output.log\n\n# See exactly what ran, what succeeded, what failed\n# This is your debug log when User Data scripts don't work as expected"
-            },
-            {
-              "type": "error-callout",
-              "title": "Common User Data mistakes:",
-              "list": [
-                "Forgetting #!/bin/bash at the top — script won't execute",
-                "Using relative paths — always use absolute paths in User Data",
-                "Script errors that fail silently — always check cloud-init-output.log",
-                "Hardcoding secrets in User Data — use AWS Secrets Manager instead",
-                "Forgetting User Data only runs on first boot — not on every restart"
-              ],
-              "footer": "User Data runs once. If your script fails halfway — the instance boots with a broken setup. Always test scripts manually on a dev instance first."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ User Data is the foundation of EC2 automation — but it's just the beginning. Production teams use it in combination with AMIs (pre-bake common dependencies), AWS Systems Manager (for ongoing configuration management), and CodeDeploy (for application deployments). User Data handles the bootstrap. Other tools handle ongoing management."
-            },
-            {
-              "type": "image",
-              "src": "ec2-5.png"
-            }
-          ],
-
-          "Introduction to Auto Scaling": [
-            {
-              "type": "paragraph",
-              "text": "MrBeast uploads a new video. Within minutes — 50 million people rush to YouTube simultaneously. Traffic spikes 20x in under 5 minutes. If YouTube runs a fixed number of servers — they all get overwhelmed instantly. The site crashes. 50 million users get a 503 error. Now flip it — at 4am, traffic drops to 2% of peak. If YouTube still runs 1000 servers for that tiny traffic — they're wasting millions of dollars on idle compute. Auto Scaling solves both problems simultaneously."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube traffic at 8pm on a Friday is 50x higher than at 4am on a Tuesday. How does YouTube run exactly the right number of servers for any traffic level — automatically, without anyone manually adding or removing servers?"
-            },
-            {
-              "type": "heading",
-              "text": "What is Auto Scaling?"
-            },
-            {
-              "type": "paragraph",
-              "text": "Auto Scaling automatically adjusts the number of EC2 instances running based on actual traffic and load. When traffic increases — Auto Scaling launches new instances (scale out). When traffic drops — it terminates excess instances (scale in). The right capacity at all times, automatically, with zero manual intervention."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of Auto Scaling like a smart staffing agency for YouTube. When a viral video hits — the agency instantly sends 200 more workers. When midnight comes and traffic drops — the agency sends 180 of them home. YouTube only pays for the staff hours actually worked."
-            },
-            {
-              "type": "heading",
-              "text": "The Three Core Components"
-            },
-            {
-              "type": "step",
-              "title": "Launch Template",
-              "desc": "Defines what each new instance looks like — which AMI, instance type, security group, and User Data script to use. Think of it as the blueprint. Every auto-scaled instance is born from this template — identical configuration every time.\n\n Example — YouTube's DevOps team creates a Launch Template for their video API servers. It says: use our Golden AMI (pre-installed with Node.js, monitoring agent, YouTube API code), use m6i.2xlarge instance type (8 vCPU, 32GB RAM), attach the 'youtube-api-sg' Security Group (port 443 open), run this User Data script on boot (pull latest config from S3 and start the server). Now when traffic spikes at 8pm and Auto Scaling needs 50 new servers in 3 minutes — every single one launches from this exact template. Server 1 and Server 50 are byte-for-byte identical. No engineer configured any of them manually."
-            },
-            {
-              "type": "step",
-              "title": "Auto Scaling Group (ASG)",
-              "desc": "The actual group of EC2 instances being managed. You define the minimum instances (floor), maximum instances (ceiling), and desired capacity (target). ASG ensures the number of running instances always stays within these bounds.\n\n Example — YouTube's API Auto Scaling Group is configured with: Minimum 50 instances (even at 4am with almost no traffic — these 50 always run, so YouTube is never completely empty and can handle sudden traffic without a cold start delay), Maximum 2000 instances (the hard ceiling — AWS won't launch beyond this no matter how much traffic spikes, protecting YouTube from a runaway scaling bug that could cost millions), Desired 100 instances (normal daytime traffic target — ASG tries to maintain 100 healthy instances during regular hours). At 3am — ASG scales down to 50 (the floor). At 8pm Friday — ASG scales up toward 2000 if needed. It never goes below 50. It never goes above 2000. Everything in between is automatic."
-            },
-            {
-              "type": "step",
-              "title": "Scaling Policies",
-              "desc": "The rules that trigger scaling. CPU above 70% for 2 minutes — add 10 instances. CPU below 30% for 10 minutes — remove 5 instances. Policies define when and how much to scale.\n\n Example — YouTube uses different scaling policies for different situations. For normal traffic fluctuations — Target Tracking keeps CPU at 60% by automatically adding or removing instances. For sudden viral spikes — Step Scaling kicks in hard: CPU hits 80% — immediately add 100 instances. CPU hits 90% — add 500 more. For predictable patterns — Scheduled Scaling pre-scales every Friday at 6pm before the weekend rush hits, because YouTube knows from historical data that Friday evenings see a 3x traffic spike. For truly unpredictable events like a breaking news video going viral — Predictive Scaling uses ML to detect the traffic acceleration early and scales proactively before servers get overwhelmed."
-            },
-
-            {
-              "type": "info-callout",
-              "text": "💡 Why does YouTube need all four policies? Target Tracking handles the normal ebb and flow of daily traffic smoothly. Step Scaling handles sudden unpredictable viral explosions aggressively. Scheduled Scaling handles known patterns (weekends, evenings, major events) proactively. Predictive Scaling learns from history and acts before users feel any impact. Each policy fills a gap the others can't. Using just one would leave YouTube exposed to the scenarios the others cover."
-            },
-            {
-              "type": "heading",
-              "text": "Types of Scaling Policies"
-            },
-            {
-              "type": "table",
-              "headers": ["Policy Type", "How it works", "YouTube Use Case"],
-              "rows": [
-                ["Target Tracking", "Keep a metric at a target value — like keeping CPU at 60%", "Keep API server CPU at 60% always"],
-                ["Step Scaling", "Scale by different amounts at different thresholds", "Add 10 servers at 70% CPU, add 50 at 90% CPU"],
-                ["Scheduled Scaling", "Scale based on time — predictable patterns", "Pre-scale up every Friday evening before weekend traffic"],
-                ["Predictive Scaling", "ML-based — predicts future traffic and scales proactively", "Auto-scale before MrBeast's video goes live"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "YouTube Auto Scaling — Real Scenario"
-            },
-            {
-              "type": "code",
-              "code": "// YouTube API Server Auto Scaling Group Config:\n{\n  MinSize: 50,          // Never go below 50 instances — baseline always ready\n  MaxSize: 2000,        // Can scale up to 2000 instances during viral events\n  DesiredCapacity: 100, // Normal traffic baseline\n\n  ScalingPolicy: {\n    Type: \"TargetTracking\",\n    Metric: \"CPUUtilization\",\n    Target: 60,  // Keep CPU at 60%\n    ScaleOutCooldown: 60,   // Wait 60s before adding more (avoid over-scaling)\n    ScaleInCooldown: 300    // Wait 5min before removing (avoid premature scale-in)\n  }\n}\n\n// MrBeast video drops:\n// 8:00pm → 100 instances running, CPU at 60%\n// 8:01pm → Traffic spikes, CPU hits 85%\n// 8:02pm → Auto Scaling launches 200 new instances\n// 8:05pm → 300 instances running, CPU back to 60% ✅\n// 3:00am → Traffic drops, CPU at 20%\n// 3:05am → Auto Scaling terminates 220 instances\n// 3:10am → Back to 80 instances, CPU at 60% ✅"
-            },
-            {
-              "type": "heading",
-              "text": "Auto Scaling + Load Balancer — The Complete Picture"
-            },
-            {
-              "type": "paragraph",
-              "text": "Auto Scaling works hand-in-hand with Elastic Load Balancer. When Auto Scaling launches new instances — they're automatically registered with the Load Balancer and start receiving traffic. When instances are terminated — they're deregistered first, existing requests are drained, then the instance shuts down gracefully. Zero dropped requests."
-            },
-            {
-              "type": "error-callout",
-              "title": "Without Auto Scaling — YouTube's problems:",
-              "list": [
-                "Fixed 1000 servers — MrBeast video hits → all overwhelmed → site crashes",
-                "Fixed 1000 servers at 4am → 980 servers idle → millions wasted daily",
-                "Manual scaling → engineer wakes up at 3am to add servers during viral event",
-                "Over-provisioning for peak → 10x the necessary cost for normal traffic"
-              ],
-              "footer": "Auto Scaling is not optional at scale. It is the difference between a platform that survives viral moments and one that crashes under them."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Auto Scaling is powerful but requires your application to be stateless — each server must be interchangeable. If a user's session data is stored on one specific server, scaling breaks that session when the server is replaced. YouTube's architecture stores all session and state data in Redis and DynamoDB — never on the EC2 instance itself. Stateless design is a prerequisite for Auto Scaling to work correctly."
-            },
-            {
-              "type": "image",
-              "src": "ec2-6.png"
-            }
-          ]
-
-        }
-      },
-      {
-        "id": 3,
-        "title": "AWS Storage Services",
-        "level": "freshers",
-        "topics": [
-          "What is Amazon S3?",
-          "S3 Storage Classes",
-          "S3 Versioning",
-          // "Static Website Hosting",
-          "EBS (Elastic Block Store)",
-          "EFS (Elastic File System)",
-          "Glacier Storage",
-          "Data Backup Strategies"
-        ],
-        "topicDetails": {
-          "What is Amazon S3?": [
-            {
-              "type": "paragraph",
-              "text": "Amazon S3 (Simple Storage Service) is AWS's object storage service. It is used to store files like videos, images, PDFs, backups, logs, thumbnails, and datasets at massive scale."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ Platforms like YouTube store billions of video files. Where do all these files actually live?"
-            },
-            {
-              "type": "heading",
-              "text": "Why S3 Exists"
-            },
-            {
-              "type": "paragraph",
-              "text": "EC2 servers are meant for running applications — not storing billions of files. If an EC2 instance crashes or terminates, files can be lost. S3 separates storage from compute and provides durable, scalable file storage."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 S3 is designed for high durability, virtually unlimited storage, and global accessibility. AWS claims 99.999999999% durability (11 nines)."
-            },
-            {
-              "type": "heading",
-              "text": "Core S3 Concepts"
-            },
-            {
-              "type": "step",
-              "title": "Bucket",
-              "desc": "A bucket is the top-level container in S3 where you store all your files.\nYouTube creates separate buckets for separate purposes. One bucket for raw uploads coming in from creators. One bucket for processed videos ready for viewers. One bucket for thumbnails. Each bucket lives in one AWS region — YouTube picks Mumbai so files don't travel across the world just to get stored. One hard rule: bucket names must be unique across every AWS account in the entire world — not just yours. If someone already created a bucket called 'my-videos' before you, that name is gone. Same idea as domain names — once taken, it's taken."
-            },
-            {
-              "type": "code",
-              "code": "// YouTube's S3 buckets — one per purpose:\n\nyoutube-raw-uploads        → raw video files from creators land here first\nyoutube-processed-videos   → finished 1080p, 720p, 480p versions live here\nyoutube-thumbnails         → every video's thumbnail image stored here\nyoutube-subtitles          → subtitle and caption files stored here\n\n// Each bucket is completely separate.\n// A file in youtube-raw-uploads has nothing to do with youtube-thumbnails.\n// YouTube keeps them separate — one bucket, one job."
-            },
-            {
-              "type": "step",
-              "title": "Object",
-              "desc": "An object is the actual file stored inside a bucket. When a creator uploads a 4GB video — that video file becomes one object inside YouTube's raw uploads bucket. A thumbnail image — another object. A subtitle file — another object. Every file YouTube stores in S3 is an object. Along with the file data itself, each object automatically carries basic information — when it was uploaded, how large it is, what type of file it is. You don't set any of this manually — S3 captures it automatically the moment the file is uploaded."
-            },
-            {
-              "type": "code",
-              "code": "// One video upload = one object stored in S3:\n\nObject 1 — raw video file:\n  File data:    4GB of video\n  Type:         video/mp4\n  Size:         4,000,000,000 bytes\n  Uploaded at:  2025-01-15, 2:32pm\n\nObject 2 — thumbnail image:\n  File data:    85KB image\n  Type:         image/jpeg\n  Size:         85,000 bytes\n  Uploaded at:  2025-01-15, 2:45pm\n\n// Each file = its own separate object.\n// YouTube's S3 buckets hold billions of these objects — all managed by AWS."
-            },
-            {
-              "type": "step",
-              "title": "Key",
-              "desc": "A key is the unique name of an object inside a bucket. It's how S3 knows which exact file to return when your application asks for it. YouTube has billions of objects across all their buckets — the key is what separates one from another. Keys look like file paths — 'videos/user-delhi-123/720p.mp4' — but S3 has no real folders. The entire string is just one flat unique name. YouTube uses slashes in keys just to keep things readable for engineers — S3 itself sees it as one single name. Same key, same bucket — always returns the exact same file."
-            },
-            {
-              "type": "code",
-              "code": "// YouTube's object keys — how each file is uniquely named:\n\n// Inside bucket: youtube-raw-uploads\nvideos/user-delhi-123/raw.mp4          ← creator 1's raw upload\nvideos/user-mumbai-456/raw.mp4         ← creator 2's raw upload\nvideos/user-chennai-789/raw.mp4        ← creator 3's raw upload\n\n// Inside bucket: youtube-processed-videos\nvideos/user-delhi-123/1080p.mp4        ← creator 1's finished 1080p\nvideos/user-delhi-123/720p.mp4         ← creator 1's finished 720p\nvideos/user-delhi-123/480p.mp4         ← creator 1's finished 480p\n\n// Inside bucket: youtube-thumbnails\nthumbnails/user-delhi-123/thumb.jpg    ← creator 1's thumbnail\n\n// How YouTube fetches a specific file:\n// Bucket: youtube-processed-videos\n// Key:    videos/user-delhi-123/720p.mp4\n// → S3 returns exactly that file. Nothing else."
-            },
-            {
-              "type": "code",
-              "code": "Bucket: youtube-videos\n\nObject Key:\nvideos/user-101/intro-to-nodejs.mp4"
-            },
-            {
-              "type": "heading",
-              "text": "How Uploading to S3 Works"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Client uploads file",
-              "desc": "A browser, mobile app, or backend service uploads a file to S3.\n\n Example — A YouTuber in Delhi just finished editing a 20-minute video on their phone. They hit the Upload button on the YouTube app. That 4GB video file travels from their phone, through the internet, straight into YouTube's S3 bucket in Mumbai. YouTube's backend receives the file and sends it directly into S3. The creator just sees a progress bar. Behind that progress bar — their 4GB file is landing inside an S3 bucket."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — S3 stores the object across multiple locations",
-              "desc": "S3 stores the file across multiple Availability Zones automatically for durability.\n\n Example — The moment that 4GB video lands in S3, AWS silently makes 3 copies of it — each copy sitting in a physically separate data center building in Mumbai. YouTube never asked for this. There is no setting to turn on. S3 just does it automatically. So if one entire data center in Mumbai loses power during a monsoon — the video is untouched in the other two buildings. The creator never experiences a single second of disruption. Their video is safe."
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — S3 returns the object URL",
-              "desc": "AWS returns the object's location so applications can access it later.\n\n Example — Once the video is stored, S3 gives back a URL — a web address pointing exactly to that file. YouTube saves this URL in their database against that video's record. Now whenever a viewer clicks Play on that video — YouTube looks up the URL from the database and fetches the video file from S3 using that address. Without this URL, YouTube would have no way to find that specific video among the billions of other files sitting in S3."
-            },
-            {
-              "type": "code",
-              "code": "https://youtube-videos.s3.ap-south-1.amazonaws.com/videos/user-101/intro-to-nodejs.mp4"
-            },
-            {
-              "type": "heading",
-              "text": "S3 Storage Classes"
-            },
-            {
-              "type": "paragraph",
-              "text": "Different files have different access patterns. S3 provides multiple storage classes optimized for performance and cost."
-            },
-            {
-              "type": "table",
-              "headers": ["Storage Class", "Use Case", "Cost"],
-              "rows": [
-                ["S3 Standard", "Frequently accessed files", "Highest"],
-                ["S3 Standard-IA", "Rarely accessed files", "Lower"],
-                ["S3 Intelligent-Tiering", "Unknown access patterns", "Automatic optimization"],
-                ["S3 Glacier", "Archive storage", "Very low"],
-                ["S3 Deep Archive", "Long-term backup", "Cheapest"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Lifecycle Policies"
-            },
-            {
-              "type": "paragraph",
-              "text": "Lifecycle Policies automatically move objects between storage classes based on age."
-            },
-            {
-              "type": "code",
-              "code": "// Example Lifecycle Rule\n30 days  → STANDARD_IA\n365 days → GLACIER\n1825 days → DEEP_ARCHIVE"
-            },
-            {
-              "type": "heading",
-              "text": "S3 Access Control"
-            },
-            {
-              "type": "paragraph",
-              "text": "By default, all S3 buckets and objects are private. Access is controlled using Bucket Policies, IAM Policies, and ACLs."
-            },
-            {
-              "type": "code",
-              "code": "// Public read policy\n{\n  \"Effect\": \"Allow\",\n  \"Principal\": \"*\",\n  \"Action\": \"s3:GetObject\",\n  \"Resource\": \"arn:aws:s3:::youtube-videos/*\"\n}"
-            },
-            {
-              "type": "heading",
-              "text": "S3 vs EBS"
-            },
-            {
-              "type": "table",
-              "headers": ["Feature", "S3", "EBS"],
-              "rows": [
-                ["Type", "Object Storage", "Block Storage"],
-                ["Scalability", "Virtually Unlimited", "Limited per volume"],
-                ["Access", "Accessible globally", "Attached to EC2"],
-                ["Best For", "Videos, images, backups", "OS & database disks"],
-                ["Cost", "Cheaper", "More expensive"]
-              ]
-            },
-            {
-              "type": "error-callout",
-              "title": "Without S3",
-              "list": [
-                "Files would be tied to EC2 instances",
-                "Scaling storage would become difficult",
-                "Servers terminating could cause data loss",
-                "Sharing files across services becomes complex",
-                "Global access becomes harder"
-              ],
-              "footer": "S3 decouples storage from compute, making cloud systems scalable and resilient."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ S3 is object storage — not a traditional filesystem. You cannot mount it like a normal Linux disk without additional tools."
-            }
-          ],
-          "S3 Storage Classes": [
-            {
-              "type": "paragraph",
-              "text": "Not every video on YouTube gets watched at the same rate. A video MrBeast uploaded yesterday has millions of views today. A video some creator uploaded in 2009 with 200 views total might get watched once a month. Storing both of these in the exact same way — paying the same price for both — makes no sense. S3 Storage Classes solve this. They let YouTube pay less for files that are rarely accessed, and pay more only for files that need to be instantly available at all times."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube has videos from 2005 that nobody watches anymore. YouTube also has videos uploaded 10 minutes ago that are trending right now. Should both cost the same to store? AWS says no — and gives you different storage tiers for different situations."
-            },
-            {
-              "type": "heading",
-              "text": "The Storage Classes"
-            },
-            {
-              "type": "step",
-              "title": "S3 Standard — For videos being watched right now",
-              "desc": "S3 Standard is the default storage class. Files stored here are instantly accessible at any time with no delay. This is the most expensive tier — but it's built for files that get accessed constantly.\n\n Example — When a creator uploads a new video, it lands in S3 Standard. When that video is trending and 10 million people are watching it simultaneously — every single one of those viewers is fetching the video file from S3 Standard. It needs to respond instantly, every time, without any delay. This is the right tier for that job."
-            },
-            {
-              "type": "step",
-              "title": "S3 Standard-IA (Infrequent Access) — For older videos with fewer views",
-              "desc": "Standard-IA stores files at a lower monthly cost — but charges a small fee each time the file is actually accessed. Built for files you still need available instantly when someone asks for them, but that aren't being accessed constantly every day.\n\n Example — A YouTube video uploaded 2 years ago gets maybe 50 views a month now. It's not trending. Nobody is actively searching for it. But if someone does click on it — it needs to play immediately with no buffering delay. YouTube moves this video from S3 Standard to Standard-IA. Monthly storage cost drops significantly. The 50 viewers per month still get instant playback — they just don't know their video came from a cheaper storage tier."
-            },
-            {
-              "type": "step",
-              "title": "S3 Intelligent-Tiering — For videos with unpredictable view patterns",
-              "desc": "Intelligent-Tiering monitors how often each file is accessed and automatically moves it between Standard and Standard-IA depending on the pattern. If a file hasn't been accessed in 30 days — it moves to the cheaper tier automatically. If it suddenly gets accessed again — it moves back to Standard automatically. YouTube pays a small monthly monitoring fee per file, but saves money overall without having to manually decide which tier each video belongs in.\n\n Example — A creator uploads a video that gets 1000 views in the first week, then goes quiet for months. Then a popular podcast mentions it — suddenly it gets 500,000 views in a day. With Intelligent-Tiering, S3 automatically moved it to the cheaper tier during the quiet months, then automatically moved it back to Standard the moment traffic spiked. YouTube's engineers didn't touch anything. The cost savings happened automatically. The viral moment was handled automatically."
-            },
-            {
-              "type": "step",
-              "title": "S3 Glacier Instant Retrieval — For very old videos rarely watched",
-              "desc": "Glacier Instant Retrieval is for files that are almost never accessed — but when someone does access them, they still need the file immediately with no waiting. Storage cost is very low. Access cost is higher than Standard-IA. But because these files are accessed so rarely, the total cost is still far cheaper.\n\n Example — A YouTube video from 2007 with 800 total views. It gets watched maybe once every few weeks by someone doing research on old internet history. YouTube still needs to serve it when that person clicks play — it can't just say 'this video is unavailable'. But paying full S3 Standard prices for a file accessed once a month makes no sense. Glacier Instant Retrieval stores it at a fraction of the cost. When that researcher clicks play — the video loads instantly, just like any other YouTube video. They have no idea it came from a cheaper archive tier."
-            },
-            {
-              "type": "step",
-              "title": "S3 Glacier Flexible Retrieval — For backups YouTube never needs urgently",
-              "desc": "Glacier Flexible Retrieval is for files that are purely for backup or compliance — files YouTube hopes to never actually need, but must keep just in case. When you do need to access a file, it takes minutes to hours to retrieve. Not instant. This tier is for situations where waiting is acceptable.\n\n Example — YouTube is legally required to keep records of videos that were removed for policy violations — even after deletion — for potential legal cases. These files will almost certainly never be accessed. But if a court case comes up years later, YouTube needs to produce them. YouTube stores these in Glacier Flexible Retrieval. If a legal team ever needs one, they request it and wait a few hours for retrieval. The waiting is fine — this isn't a viewer clicking play. It's a legal request that can wait."
-            },
-            {
-              "type": "step",
-              "title": "S3 Glacier Deep Archive — For files YouTube almost certainly will never open again",
-              "desc": "Deep Archive is the cheapest storage class S3 offers. Files can take up to 12 hours to retrieve when accessed. This is purely for long-term archival — files kept for compliance, regulation, or disaster recovery that have an extremely low chance of ever being needed.\n\n Example — YouTube keeps a complete raw backup of every video ever uploaded — even videos creators have deleted from their own channels — for a mandatory 7-year regulatory retention period. The chance of any specific deleted video needing to be retrieved is extremely low. But regulations require keeping them. YouTube stores all of this in Deep Archive. Cost is the lowest possible. If a specific file is ever needed — YouTube requests it and waits up to 12 hours. That wait time is completely acceptable for a compliance retrieval that happens maybe once a year."
-            },
-            {
-              "type": "table",
-              "headers": ["Storage Class", "Retrieval Speed", "Best For", "YouTube Example"],
-              "rows": [
-                ["S3 Standard", "Instant", "Files accessed constantly", "Trending videos being watched by millions right now"],
-                ["S3 Standard-IA", "Instant", "Files accessed occasionally", "2-year-old video with 50 views per month"],
-                ["S3 Intelligent-Tiering", "Instant", "Files with unpredictable access patterns", "Video that goes quiet then suddenly goes viral again"],
-                ["S3 Glacier Instant", "Instant", "Files rarely accessed but need instant playback", "2007 video watched once every few weeks"],
-                ["S3 Glacier Flexible", "Minutes to hours", "Backup files, no urgency needed", "Removed videos kept for potential legal cases"],
-                ["S3 Glacier Deep Archive", "Up to 12 hours", "Long-term compliance archives", "Deleted videos kept for 7-year regulatory requirement"]
-              ]
-            },
-            {
-              "type": "heading",
-              "text": "Lifecycle Policies — YouTube Never Moves Files Manually"
-            },
-            {
-              "type": "paragraph",
-              "text": "YouTube has billions of videos. Nobody manually decides which storage class each video belongs in. Instead, YouTube sets up Lifecycle Policies — rules that tell S3 to automatically move files between storage classes based on age and access patterns. YouTube defines the rules once. S3 follows them forever."
-            },
-            {
-              "type": "step",
-              "title": "How YouTube's Lifecycle Policy works",
-              "desc": "YouTube sets one rule: when a video is first uploaded, store it in S3 Standard. After 30 days — automatically move it to Standard-IA. After 1 year — automatically move it to Glacier Instant. After 5 years — automatically move it to Deep Archive. S3 follows this rule for every single video ever uploaded — billions of files — without YouTube's engineers touching a single one.\n\n Example — A creator uploads a video today. It starts in S3 Standard — fast, available, ready for the initial traffic. 30 days later, S3 automatically moves it to Standard-IA — still instant when accessed, but cheaper to store. A year later, S3 moves it to Glacier Instant — even cheaper. 5 years later, Deep Archive. The creator's video is still watchable at every stage. YouTube just stopped paying full price for a file that nobody watches anymore."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Moving a file to a cheaper storage class saves money on storage — but accessing it costs more per request than S3 Standard. If a video in Glacier Instant suddenly goes viral and gets 10 million views, YouTube pays higher retrieval fees for every one of those views. Intelligent-Tiering exists exactly for this reason — it automatically moves the video back to Standard the moment it detects the traffic spike, so YouTube never overpays on retrieval fees for a file that's suddenly popular again."
-            }
-          ],
-          "S3 Versioning": [
-            {
-              "type": "paragraph",
-              "text": "A creator uploads a new thumbnail for their video. 10 minutes later they realize the old thumbnail was getting more clicks — they want it back. Without versioning, the old thumbnail is gone forever — S3 overwrote it the moment the new one was uploaded. With versioning turned on, S3 keeps every version of every file ever uploaded. Nothing is ever truly overwritten. Nothing is ever truly deleted. Every change is preserved."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ A YouTube engineer accidentally runs a script that overwrites 10,000 video thumbnail files with corrupted images. Every affected video now shows a broken thumbnail to viewers. How does YouTube get all 10,000 original thumbnails back — instantly — without manually re-uploading each one?"
-            },
-            {
-              "type": "heading",
-              "text": "What is S3 Versioning?"
-            },
-            {
-              "type": "paragraph",
-              "text": "Versioning is a setting you enable on an S3 bucket. Once turned on — every time a file is uploaded, S3 does not overwrite the existing file. Instead it keeps the old file as a previous version and stores the new file as the latest version. Both exist. Both are accessible. S3 assigns each version a unique version ID so you can always tell them apart and retrieve any specific one."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of versioning like Google Docs version history. Every time you save a document, Google Docs keeps the previous version. You can go back and see exactly what the document looked like 3 days ago. S3 Versioning does the same thing — but for every file in your bucket."
-            },
-            {
-              "type": "heading",
-              "text": "How Versioning Works — Step by Step"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Versioning is enabled on the bucket",
-              "desc": "YouTube enables versioning on their youtube-thumbnails bucket. Every upload, overwrite, and delete on any file in this bucket is now tracked and preserved automatically."
-            },
-            {
-              "type": "code",
-              "code": "aws s3api put-bucket-versioning \\\n  --bucket youtube-thumbnails \\\n  --versioning-configuration Status=Enabled\n\n// ✅ Every file upload, overwrite, and delete is now tracked."
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Creator uploads a thumbnail",
-              "desc": "A creator in Delhi uploads a bright red thumbnail for their new video. S3 stores it and auto-assigns it a version ID — 'v1-abc123'. This is Version 1. It starts getting 100,000 clicks per week."
-            },
-            {
-              "type": "code",
-              "code": "// S3 stores the first upload:\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v1-abc123',   // ← S3 auto-assigns this\n  Status:    'Current'      // ← what viewers see right now\n}"
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Creator uploads a new thumbnail to the same key",
-              "desc": "A week later the creator uploads a new blue thumbnail — same filename, different image. S3 keeps the red thumbnail as Version 1 and stores the blue one as Version 2. Viewers now see the blue thumbnail. The red one is still preserved in S3 under 'v1-abc123' — untouched, retrievable anytime."
-            },
-            {
-              "type": "code",
-              "code": "// S3 now holds TWO versions of the same file:\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v2-xyz456',   // ← new blue thumbnail — viewers see this\n  Status:    'Current'\n},\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v1-abc123',   // ← original red thumbnail — safely preserved\n  Status:    'Previous'\n}"
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Engineer accidentally overwrites 10,000 thumbnails",
-              "desc": "A bug in a YouTube script replaces 10,000 thumbnail files with a blank corrupted image. Every affected video now shows a broken thumbnail to viewers. Because versioning is on — S3 quietly stored all 10,000 previous versions automatically. The engineer runs a restore script pointing to the previous version IDs. All 10,000 original thumbnails are back in minutes. Zero manual re-uploading."
-            },
-            {
-              "type": "code",
-              "code": "// What S3 holds after the bug runs:\n{\n  VersionId: 'v3-corrupt',  // ← corrupted file — current version ❌\n  Status:    'Current'\n},\n{\n  VersionId: 'v2-xyz456',  // ← last good version — still safe in S3 ✅\n  Status:    'Previous'\n}\n\n// Engineer restores the previous version:\naws s3api copy-object \\\n  --bucket youtube-thumbnails \\\n  --copy-source youtube-thumbnails/thumbnails/user-delhi-123/thumb.jpg?versionId=v2-xyz456 \\\n  --key thumbnails/user-delhi-123/thumb.jpg\n\n// ✅ Original thumbnail is back as current version."
-            },
-            {
-              "type": "heading",
-              "text": "Deleting Files With Versioning On"
-            },
-            {
-              "type": "paragraph",
-              "text": "When versioning is enabled and you delete a file — S3 does not actually delete it. Instead S3 places a Delete Marker on top of the file. The file looks deleted to your application — requests for it return a 404 not found. But all the previous versions are still sitting in S3 underneath that marker. To truly recover the file — you just remove the Delete Marker."
-            },
-            {
-              "type": "step",
-              "title": "Delete Marker — The Safety Net",
-              "desc": "A creator deletes their video from YouTube. S3 places a Delete Marker on the thumbnail — the file appears gone to the system. 6 months later the creator contacts support wanting the video reinstated. YouTube removes the Delete Marker. The original thumbnail reappears instantly — exactly as it was on the day it was deleted."
-            },
-            {
-              "type": "code",
-              "code": "// Creator deletes video — S3 places a Delete Marker:\n{\n  VersionId: 'dm-delete001',  // ← Delete Marker\n  Status:    'Current'        // ← file appears deleted, returns 404\n}\n// All previous versions still preserved underneath\n\n// 6 months later — creator wants reinstatement:\naws s3api delete-object \\\n  --bucket youtube-thumbnails \\\n  --key thumbnails/user-delhi-123/thumb.jpg \\\n  --version-id dm-delete001\n\n// ✅ Delete Marker removed. Original thumbnail is back."
-            },
-            {
-              "type": "error-callout",
-              "title": "What happens without versioning:",
-              "list": [
-                "Engineer accidentally overwrites 10,000 thumbnails — all originals gone forever, no recovery possible",
-                "Creator deletes a video by mistake — thumbnail permanently deleted, cannot be restored",
-                "A bad deployment pushes corrupted files to S3 — previous working files are gone, rollback is impossible",
-                "A script runs with a bug and overwrites the wrong files — no way to know what the files looked like before"
-              ],
-              "footer": "Every one of these scenarios becomes a full recovery with versioning enabled. Without it — each one is permanent data loss."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Versioning keeps every version of every file forever — which means storage costs grow over time. YouTube manages this with S3 Lifecycle Policies on old versions — keeping the last 3 versions in S3 Standard, automatically moving older versions to Glacier after 90 days, and permanently deleting versions older than 1 year."
-            }
-          ],
-          "EBS (Elastic Block Store)": [
-            {
-              "type": "paragraph",
-              "text": "Every EC2 server needs a hard drive — somewhere to store the operating system, application code, logs, and temporary files. On your laptop, that's your SSD. On AWS, that's EBS. Elastic Block Store is the hard drive attached to an EC2 instance. Unlike the EC2 server itself, the EBS volume can survive even if the server crashes or gets terminated. You can detach it from one instance and attach it to another, similar to unplugging an external SSD from one laptop and plugging it into another."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ When YouTube's transcoding server is converting a 4K video, where are all the temporary files stored during processing? If the server crashes halfway through the job, does all the work disappear?"
-            },
-            {
-              "type": "heading",
-              "text": "What is EBS?"
-            },
-            {
-              "type": "paragraph",
-              "text": "EBS (Elastic Block Store) is a network-attached storage volume for EC2 instances. It behaves like a physical hard drive where the instance reads and writes data normally. The important difference is that EBS exists independently from the EC2 instance, so the volume and its data can survive even after the server is terminated."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of EBS like an external SSD. Your laptop (EC2) performs the work, while the SSD (EBS) stores the data. If the laptop breaks, the SSD still contains all the files and can be connected to another laptop."
-            },
-            {
-              "type": "heading",
-              "text": "How EBS Works — The YouTube Story"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — EC2 instance launches with an EBS volume attached",
-              "desc": "When YouTube launches a transcoding EC2 instance, AWS automatically attaches an EBS volume to it. This volume stores the operating system, ffmpeg software, logs, and all temporary transcoding files.\n\nExample — YouTube launches a c6i.8xlarge transcoding server with a 100GB gp3 EBS volume attached as the root drive. The OS boots from this volume, ffmpeg is installed here, and all temporary video processing files are written here during transcoding."
-            },
-            {
-              "type": "code",
-              "code": "// YouTube's transcoding EC2 instance with EBS attached:\n{\n  InstanceType: 'c6i.8xlarge',\n  EBSVolume: {\n    VolumeId:   'vol-0abc123def456',\n    Size:        100,\n    Type:       'gp3',\n    IOPS:        3000,\n    AttachedTo: 'i-0xyz789',\n    MountPoint: '/dev/xvda'\n  }\n}\n\n// Everything reads/writes to this EBS volume:\n// - OS files         → /dev/xvda\n// - ffmpeg binary    → /usr/bin/ffmpeg\n// - temp video files → /tmp/transcoding/"
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Server processes video using EBS as working storage",
-              "desc": "The EC2 server downloads the raw 4K video from S3 onto the EBS volume, processes it using ffmpeg, writes intermediate and output files back to EBS, then uploads the finished videos to S3.\n\nExample — A creator uploads a 50GB 4K video. The transcoding server stores the raw file temporarily on EBS, generates 1080p and 720p versions on the same volume, uploads the final outputs back to S3, and then clears the temporary files from EBS. EBS acts like the working desk while S3 acts like permanent storage."
-            },
-            {
-              "type": "code",
-              "code": "// Step 1 — Download raw video from S3 to EBS\naws s3 cp s3://youtube-raw-uploads/videos/user123/raw-4k.mp4 /tmp/transcoding/\n\n// Step 2 — ffmpeg reads/writes on EBS\nffmpeg -i /tmp/transcoding/raw-4k.mp4 /tmp/transcoding/output-1080p.mp4\nffmpeg -i /tmp/transcoding/raw-4k.mp4 /tmp/transcoding/output-720p.mp4\n\n// Step 3 — Upload processed videos back to S3\naws s3 cp /tmp/transcoding/output-1080p.mp4 s3://youtube-processed/videos/user123/\naws s3 cp /tmp/transcoding/output-720p.mp4 s3://youtube-processed/videos/user123/\n\n// Step 4 — Cleanup temp files from EBS\nrm -rf /tmp/transcoding/*"
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Server crashes but EBS volume survives",
-              "desc": "If the EC2 instance crashes during transcoding, the EBS volume still survives because it exists independently from the server.\n\nExample — A transcoding server crashes at 60% progress. AWS terminates the EC2 instance, but the EBS volume remains intact with all partially processed files still stored on it. YouTube launches a new EC2 instance, attaches the same EBS volume, and resumes the job from where it stopped."
-            },
-            {
-              "type": "code",
-              "code": "// EC2 instance crashes\nInstance i-0xyz789  → TERMINATED ❌\nEBS vol-0abc123def → AVAILABLE ✅\n\n// Attach same EBS volume to new EC2 instance\naws ec2 attach-volume \\\n  --volume-id vol-0abc123def456 \\\n  --instance-id i-0new456instance \\\n  --device /dev/xvda\n\n// New server mounts the EBS volume\nls /tmp/transcoding/\n// raw-4k.mp4\n// output-1080p.mp4\n// output-720p.mp4\n\n// New server resumes processing"
-            },
-            {
-              "type": "heading",
-              "text": "EBS Volume Types"
-            },
-            {
-              "type": "table",
-              "headers": ["Volume Type", "Best For", "YouTube Use Case"],
-              "rows": [
-                [
-                  "gp3 (General Purpose SSD)",
-                  "Balanced performance and cost",
-                  "OS volumes, backend servers, transcoding workers"
-                ],
-                [
-                  "io2 (Provisioned IOPS SSD)",
-                  "High-performance databases with consistent low latency",
-                  "YouTube's critical RDS database storage"
-                ],
-                [
-                  "st1 (Throughput HDD)",
-                  "Large sequential file processing",
-                  "Large batch video processing and log analysis"
-                ],
-                [
-                  "sc1 (Cold HDD)",
-                  "Rarely accessed low-cost storage",
-                  "Old archived logs and compliance storage"
-                ]
-              ]
-            },
-            {
-              "type": "error-callout",
-              "title": "Important EBS limitations",
-              "list": [
-                "One EBS volume can usually be attached to only one EC2 instance at a time",
-                "EBS volumes are locked to a single Availability Zone",
-                "EBS is designed for active compute workloads, not massive permanent object storage"
-              ],
-              "footer": "EBS is temporary working storage for servers. Permanent user files are usually stored in S3."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ EBS volumes continue charging even after the EC2 instance is stopped or terminated. Many companies accidentally leave unused EBS volumes running and pay for forgotten storage. Large companies use automated cleanup systems to detect and remove unattached EBS volumes."
-            }
-          ],
-
-          "EFS (Elastic File System)": [
-            {
-              "type": "paragraph",
-              "text": "EBS gives one EC2 server its own persistent hard drive. But large systems like YouTube run hundreds or thousands of servers simultaneously, and many of those servers need access to the same files at the same time. EFS solves this problem by providing a shared file system that multiple EC2 instances can read from and write to simultaneously."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube's subtitle generation system runs on 500 EC2 servers in parallel. Every server needs access to the same language model files and must write generated subtitle files to one central shared location. How can all 500 servers access the same files simultaneously?"
-            },
-            {
-              "type": "heading",
-              "text": "What is EFS?"
-            },
-            {
-              "type": "paragraph",
-              "text": "EFS (Elastic File System) is a fully managed shared network file system for AWS. Multiple EC2 instances can mount the same EFS simultaneously and access identical files in real time. Unlike EBS, which acts like a private hard drive for one server, EFS behaves like a shared drive accessible by an entire fleet of servers."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of EFS like a shared Google Drive folder mounted on 500 servers simultaneously. One server can read a language model while another writes a subtitle file, all using the same shared storage in real time."
-            },
-            {
-              "type": "heading",
-              "text": "How EFS Works — The YouTube Story"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — YouTube creates a shared EFS file system",
-              "desc": "YouTube creates a single EFS file system for its subtitle generation pipeline. Large language model files like Hindi, Tamil, Telugu, and English models are stored centrally inside EFS so every subtitle server can access them.\n\nExample — YouTube uploads 52 language models, each several GB in size, into one EFS file system. Any EC2 instance in the VPC can connect to this shared storage using the EFS mount address."
-            },
-            {
-              "type": "code",
-              "code": "// Create EFS file system\naws efs create-file-system \\\n  --region ap-south-1 \\\n  --tags Key=Name,Value=youtube-subtitle-models\n\n// EFS created\n{\n  FileSystemId: 'fs-0abc123def',\n  Region:       'ap-south-1',\n  SizeInBytes:  450_000_000_000,\n  MountTarget:  'fs-0abc123def.efs.ap-south-1.amazonaws.com'\n}"
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — 500 EC2 servers mount the same EFS",
-              "desc": "YouTube launches 500 subtitle processing servers. Each server mounts the same EFS file system during startup, giving every server access to identical files instantly.\n\nExample — All 500 subtitle servers mount EFS at /models. Every server can read the same Hindi or Tamil language model simultaneously without copying files separately to each machine."
-            },
-            {
-              "type": "code",
-              "code": "// Mount EFS on each EC2 server\nmkdir -p /models\nmount -t efs fs-0abc123def:/ /models\n\n// Shared files visible on every server\nls /models\n// hindi-model-v3.bin\n// tamil-model-v2.bin\n// telugu-model-v2.bin\n// english-model-v5.bin\n\n// All 500 servers can access the same files simultaneously"
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Servers write subtitle outputs back to EFS",
-              "desc": "Each subtitle server writes completed subtitle files into a shared output directory inside EFS. Other services can instantly see and process those files.\n\nExample — Server 147 generates Hindi subtitles and writes them to /output/user-delhi-123/hindi.vtt. YouTube's collection service immediately sees the new file appear and picks it up for final processing."
-            },
-            {
-              "type": "code",
-              "code": "// Server 147 writes subtitle output\necho 'subtitle content...' > /output/user-delhi-123/hindi.vtt\n\n// Another server writes simultaneously\necho 'subtitle content...' > /output/user-mumbai-456/hindi.vtt\n\n// Collection service reads outputs\nls /output/\n// user-delhi-123/hindi.vtt\n// user-mumbai-456/hindi.vtt\n// user-pune-789/tamil.vtt"
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — EFS storage scales automatically",
-              "desc": "When YouTube adds or removes files, EFS automatically grows or shrinks without manual resizing.\n\nExample — YouTube uploads a new Marathi language model to EFS. Seconds later, all 500 subtitle servers instantly see the new model file without restarts, deployments, or copying data individually to every server."
-            },
-            {
-              "type": "heading",
-              "text": "EBS vs EFS — When to Use Which"
-            },
-            {
-              "type": "table",
-              "headers": ["Feature", "EBS", "EFS"],
-              "rows": [
-                [
-                  "Attached to",
-                  "One EC2 instance",
-                  "Multiple EC2 instances simultaneously"
-                ],
-                [
-                  "Access",
-                  "Private storage",
-                  "Shared storage"
-                ],
-                [
-                  "Scaling",
-                  "Manual resizing",
-                  "Automatic scaling"
-                ],
-                [
-                  "Performance",
-                  "Faster local disk-like performance",
-                  "Slightly slower network storage"
-                ],
-                [
-                  "Cost",
-                  "Cheaper",
-                  "More expensive"
-                ],
-                [
-                  "Best for",
-                  "OS, app files, temporary processing",
-                  "Shared models, configs, shared outputs"
-                ],
-                [
-                  "YouTube example",
-                  "Per-server transcoding workspace",
-                  "Language models shared across 500 servers"
-                ]
-              ]
-            },
-            {
-              "type": "error-callout",
-              "title": "Common mistakes when choosing EBS vs EFS",
-              "list": [
-                "Using EBS when multiple servers need the same files",
-                "Using EFS for workloads that only require single-server storage",
-                "Using EBS or EFS for permanent large-scale file storage instead of S3"
-              ],
-              "footer": "Rule of thumb: single server storage → EBS. Shared storage across many servers → EFS. Permanent scalable object storage → S3."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ EFS is significantly more expensive than EBS and S3. Companies only use EFS for workloads where many servers truly need shared real-time access to the same files."
-            }
-          ],
-
-          "Glacier Storage": [
-            {
-              "type": "paragraph",
-              "text": "Not all data needs to be accessed instantly. Companies like YouTube store billions of old videos, logs, audit records, and deleted creator backups that are rarely opened but still must be preserved for years. Keeping all this data in fast S3 storage would be extremely expensive. Glacier is AWS's ultra-cheap archival storage designed for files that are rarely accessed but must remain safely stored for long periods."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ A creator uploaded a video 7 years ago that nobody has watched since. YouTube still needs to preserve it safely for legal, compliance, and recovery reasons. Should they keep it in expensive high-speed storage forever?"
-            },
-            {
-              "type": "heading",
-              "text": "What is Glacier Storage?"
-            },
-            {
-              "type": "paragraph",
-              "text": "Amazon S3 Glacier is AWS's long-term archival storage service. It stores files at extremely low cost compared to normal S3 storage, but retrieval is much slower. Instead of milliseconds, recovering files can take minutes or even hours depending on the retrieval option chosen."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of Glacier like a huge underground archive warehouse. S3 Standard is your active office desk with instant access. Glacier is the storage basement where old files are safely packed away until someone specifically requests them."
-            },
-            {
-              "type": "heading",
-              "text": "How Glacier Works — The YouTube Story"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Old videos are moved from S3 to Glacier",
-              "desc": "YouTube automatically detects videos that haven't been watched for years and moves them from expensive hot storage into Glacier archival storage.\n\nExample — A 2018 uploaded video hasn't been viewed in 4 years. AWS lifecycle policies automatically transfer the video from S3 Standard to Glacier Flexible Retrieval to reduce storage cost dramatically."
-            },
-            {
-              "type": "code",
-              "code": "// S3 Lifecycle Rule\n{\n  \"Rules\": [\n    {\n      \"ID\": \"archive-old-videos\",\n      \"Status\": \"Enabled\",\n      \"Filter\": {\n        \"Prefix\": \"videos/\"\n      },\n      \"Transitions\": [\n        {\n          \"Days\": 365,\n          \"StorageClass\": \"GLACIER\"\n        }\n      ]\n    }\n  ]\n}"
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Glacier stores files cheaply for years",
-              "desc": "The archived video now lives in Glacier storage where AWS optimizes for low cost instead of instant access.\n\nExample — Millions of rarely watched YouTube videos, old moderation logs, and deleted creator backups remain safely stored in Glacier for compliance and recovery purposes at a fraction of normal S3 storage cost."
-            },
-            {
-              "type": "code",
-              "code": "// Example archived object\n{\n  Key: 'videos/2018/old-video.mp4',\n  StorageClass: 'GLACIER',\n  Size: '12GB',\n  AccessFrequency: 'Rare'\n}"
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — User requests an old archived video",
-              "desc": "If someone requests an archived file, YouTube must first restore it from Glacier before it becomes accessible again.\n\nExample — A creator requests recovery of a deleted video from 2019. YouTube sends a Glacier restore request. AWS begins retrieving the archived file, which may take several minutes or hours depending on retrieval speed."
-            },
-            {
-              "type": "code",
-              "code": "// Restore archived object\naws s3api restore-object \\\n  --bucket youtube-archive \\\n  --key videos/2018/old-video.mp4 \\\n  --restore-request '{\"Days\":7,\"GlacierJobParameters\":{\"Tier\":\"Standard\"}}'"
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — File becomes temporarily accessible again",
-              "desc": "After restoration completes, the archived file becomes temporarily available in S3 for normal access.\n\nExample — The creator downloads the restored 2019 video. After the temporary restore window expires, AWS automatically returns the file to Glacier archival storage."
-            },
-            {
-              "type": "heading",
-              "text": "Glacier Retrieval Options"
-            },
-            {
-              "type": "table",
-              "headers": ["Retrieval Type", "Speed", "Best For"],
-              "rows": [
-                [
-                  "Expedited",
-                  "1–5 minutes",
-                  "Urgent recovery requests"
-                ],
-                [
-                  "Standard",
-                  "3–5 hours",
-                  "Normal archive retrieval"
-                ],
-                [
-                  "Bulk",
-                  "5–12 hours",
-                  "Large-scale cheap retrieval"
-                ]
-              ]
-            },
-            {
-              "type": "error-callout",
-              "title": "Important things to know about Glacier",
-              "list": [
-                "Glacier is extremely cheap but not designed for instant access",
-                "Retrieving archived files costs extra money",
-                "Frequent retrieval from Glacier defeats the cost-saving purpose",
-                "Glacier is best for long-term archival and compliance storage"
-              ],
-              "footer": "Hot frequently-used files belong in S3 Standard. Rarely accessed archival data belongs in Glacier."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ A common mistake is moving frequently accessed data into Glacier to save money. Retrieval delays and retrieval costs can quickly become a problem if files are constantly being restored."
-            }
-          ],
-
-          "Data Backup Strategies": [
-            {
-              "type": "paragraph",
-              "text": "Hardware fails. Databases get corrupted. Developers accidentally delete production data. Entire AWS regions can experience outages. Large companies survive disasters because they always maintain multiple backups of critical data. A backup strategy is not optional — it is a core survival system for modern infrastructure."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ What happens if YouTube's main database storing video metadata suddenly gets corrupted? Without backups, billions of videos could permanently lose titles, descriptions, comments, and creator information."
-            },
-            {
-              "type": "heading",
-              "text": "What is a Backup Strategy?"
-            },
-            {
-              "type": "paragraph",
-              "text": "A backup strategy is a planned system for copying and protecting important data so it can be restored after failures, accidental deletion, cyberattacks, or disasters. Good backup systems create multiple copies of data across different locations and storage systems."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Backups are like insurance policies for data. You hope you never need them, but when disaster happens, backups are the reason a company survives."
-            },
-            {
-              "type": "heading",
-              "text": "How Backup Strategies Work — The YouTube Story"
-            },
-            {
-              "type": "step",
-              "title": "Step 1 — Primary production database handles live traffic",
-              "desc": "YouTube's production database stores live metadata like video titles, creator info, comments, and recommendations.\n\nExample — Millions of users upload videos, edit titles, and post comments every minute. All this live data continuously updates the production database."
-            },
-            {
-              "type": "code",
-              "code": "// Production database\nProductionDB {\n  Videos,\n  Comments,\n  CreatorProfiles,\n  Recommendations\n}"
-            },
-            {
-              "type": "step",
-              "title": "Step 2 — Automated backups run continuously",
-              "desc": "AWS automatically creates snapshots and backups of critical systems at scheduled intervals.\n\nExample — YouTube creates hourly database snapshots, daily backups, and cross-region backup copies to ensure recovery is always possible."
-            },
-            {
-              "type": "code",
-              "code": "// Example backup schedule\nEvery 1 hour  → Database snapshot\nEvery 24 hour → Full backup to S3\nEvery 7 days  → Cross-region disaster recovery backup"
-            },
-            {
-              "type": "step",
-              "title": "Step 3 — Production failure occurs",
-              "desc": "A major outage, accidental deletion, or corruption damages the production system.\n\nExample — A faulty deployment accidentally deletes millions of comment records from the production database."
-            },
-            {
-              "type": "code",
-              "code": "// Accidentally deleted data\nDELETE FROM comments\nWHERE created_at < '2025-01-01';\n\n// Millions of comments removed ❌"
-            },
-            {
-              "type": "step",
-              "title": "Step 4 — Restore data from backups",
-              "desc": "Engineers restore the affected systems using recent backups and snapshots.\n\nExample — YouTube restores the deleted comments using the latest database snapshot and transaction logs, recovering almost all lost data."
-            },
-            {
-              "type": "code",
-              "code": "// Restore latest snapshot\naws rds restore-db-instance-from-db-snapshot \\\n  --db-instance-identifier youtube-restored-db \\\n  --db-snapshot-identifier snapshot-2026-05-25"
-            },
-            {
-              "type": "heading",
-              "text": "Common Backup Strategies"
-            },
-            {
-              "type": "table",
-              "headers": ["Strategy", "Description", "Example"],
-              "rows": [
-                [
-                  "Snapshots",
-                  "Point-in-time storage copy",
-                  "EBS and RDS snapshots"
-                ],
-                [
-                  "Cross-region backup",
-                  "Store copies in another AWS region",
-                  "Mumbai backup copied to Singapore"
-                ],
-                [
-                  "Incremental backup",
-                  "Only changed data is backed up",
-                  "Daily changed records only"
-                ],
-                [
-                  "Versioning",
-                  "Keep older file versions",
-                  "Recover accidentally deleted S3 objects"
-                ]
-              ]
-            },
-            {
-              "type": "error-callout",
-              "title": "Common backup mistakes",
-              "list": [
-                "Keeping backups in the same region as production",
-                "Never testing whether backups actually restore correctly",
-                "Running backups too infrequently",
-                "Not protecting backups from accidental deletion or ransomware"
-              ],
-              "footer": "A backup is useless if it cannot be restored during a real disaster."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ Many companies discover their backups are broken only during real emergencies. Large companies regularly perform disaster recovery drills to verify backup systems actually work."
-            }
-          ],
+  //         "AWS Global Infrastructure (Regions, AZs & Edge Locations)": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "You're in Mumbai. You open YouTube and a video loads in under a second. Your friend in New York opens the same video — also under a second. Someone in Tokyo — same thing. YouTube serves billions of users globally with near-zero latency. This isn't magic — it's infrastructure. AWS powers this kind of global reach through a carefully designed three-layer infrastructure: Regions, Availability Zones, and Edge Locations."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube has one set of videos. But users are spread across 190 countries. How does the same video load fast whether you're in Mumbai, New York, or Tokyo?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Layer 1 — AWS Regions"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "A Region is a physical geographic location in the world where AWS has built a cluster of data centers. Each Region is completely independent — if one Region has a major outage, the others are completely unaffected."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Regions — YouTube Example",
+  //             "desc": "YouTube stores video data in multiple AWS Regions — ap-south-1 (Mumbai) for Indian users, us-east-1 (Virginia) for US users, eu-west-1 (Ireland) for European users. Each region serves its local audience with the lowest possible latency."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 AWS has 33 Regions globally as of 2024 — with more launching every year. When you launch an AWS service, the first thing you choose is the Region. This decision affects latency, cost, compliance, and disaster recovery."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Layer 2 — Availability Zones (AZs)"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Inside every Region, there are multiple Availability Zones — usually 3 to 6. Each AZ is one or more physically separate data centers with independent power, cooling, and networking."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "AZs — YouTube Example",
+  //             "desc": "YouTube's Mumbai infrastructure runs across 3 AZs inside ap-south-1. If one data center catches fire or loses power — the other two AZs keep serving Indian users without a single second of downtime. This is High Availability."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "What happens without multiple AZs:",
+  //             "list": [
+  //               "Your app runs on one data center — one AZ",
+  //               "That data center loses power during a storm",
+  //               "Your entire app goes down for millions of users",
+  //               "YouTube goes dark in India — every second of downtime = millions in lost revenue"
+  //             ],
+  //             "footer": "This is why production systems always deploy across multiple AZs — never a single point of failure."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Layer 3 — Edge Locations"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Edge Locations are AWS's global content delivery points — spread across 400+ cities worldwide. They are not full Regions or AZs. They are smaller caching servers placed as close to end users as possible. AWS CloudFront (CDN) uses Edge Locations to serve cached content at lightning speed."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Edge Locations — YouTube Example",
+  //             "desc": "When you watch a YouTube video in Pune — the video isn't streamed from a server in Virginia. It's cached at an Edge Location in Mumbai or Pune itself. The video travels milliseconds instead of thousands of miles. This is exactly how YouTube achieves sub-second load times globally."
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["", "Region", "Availability Zone", "Edge Location"],
+  //             "rows": [
+  //               ["What it is", "Geographic cluster of data centers", "Independent data center within a Region", "Content caching point close to users"],
+  //               ["Count", "33+ globally", "3-6 per Region", "400+ worldwide"],
+  //               ["Purpose", "Choose where your app lives", "High availability and fault tolerance", "Low latency content delivery"],
+  //               ["AWS Service", "All AWS services", "EC2, RDS Multi-AZ, ECS", "CloudFront CDN"],
+  //               ["YouTube Parallel", "Store videos near your users", "Keep app running if one DC fails", "Cache videos close to viewers"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Choosing the right Region is one of the most important decisions in AWS architecture. It affects latency for your users, pricing (costs vary by Region), data residency laws (GDPR in Europe, data localization in India), and disaster recovery strategy. Always deploy in the Region closest to your primary users."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "cloud4.png"
+  //           }
+  //         ],
 
 
-        }
+
+  //         "High Availability & Fault Tolerance Basics": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "YouTube goes down for 1 hour. That's $1.7 million in lost ad revenue — gone. 2 billion users hit a blank screen. In 2018, YouTube actually went down for 1.5 hours due to a single internal issue. It was a global news story. For a platform that runs 24/7/365 — downtime is not just a technical failure, it's a business catastrophe. High Availability and Fault Tolerance are the two AWS architectural principles that exist specifically to prevent this."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube serves 2 billion users non-stop. A single server will fail eventually — it's guaranteed. So how does YouTube keep running even when servers, data centers, or entire regions go down?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is High Availability?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "High Availability (HA) means your system is designed to stay operational with minimal downtime — even when components fail. It is measured as a percentage of uptime over a year. 99.9% uptime sounds great — but that's still 8.7 hours of downtime per year. YouTube targets 99.99% or higher — just 52 minutes of downtime per year."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 High Availability is not about preventing failures — failures are inevitable. It's about designing your system so that when something fails, users don't notice. The system keeps running through the failure automatically."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "HA on AWS — Multi-AZ Deployment",
+  //             "desc": "YouTube's video serving infrastructure runs across 3 Availability Zones in each Region. If one AZ loses power — the other two AZs instantly take all the traffic. Users in Mumbai never notice a single second of interruption."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "HA on AWS — Load Balancing",
+  //             "desc": "AWS Elastic Load Balancer distributes traffic across multiple EC2 instances. If one instance crashes — the load balancer instantly routes all requests to the healthy instances. No manual intervention. No downtime."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "HA on AWS — Auto Scaling",
+  //             "desc": "When a YouTube video goes viral and traffic spikes 10x — Auto Scaling Groups automatically launch new EC2 instances within minutes. When traffic drops — instances are terminated automatically. System stays healthy under any load."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is Fault Tolerance?"
+  //           },
+  //           [
+  //             {
+  //               "type": "paragraph",
+  //               "text": "Fault Tolerance is a stronger guarantee than High Availability. A fault-tolerant system continues operating at full capacity with zero degradation — even when components fail. It requires full redundancy at every layer. Think of it this way — you're watching a YouTube video. Somewhere in Google's data center, a server handling your stream just crashed and died. But your video never paused. Never buffered. Never showed an error. You had absolutely zero idea anything broke. That is Fault Tolerance — the system silently switched to a duplicate server in milliseconds, and your experience stayed completely perfect."
+  //             }
+  //           ],
+  //           {
+  //             "type": "table",
+  //             "headers": ["", "High Availability", "Fault Tolerance"],
+  //             "rows": [
+  //               ["Goal", "Minimize downtime", "Zero downtime and zero degradation"],
+  //               ["On failure", "Brief disruption possible, then recovers", "Continues fully with no impact"],
+  //               ["Cost", "Moderate redundancy", "Full redundancy — expensive"],
+  //               ["AWS approach", "Multi-AZ, Load Balancer, Auto Scaling", "Multi-Region active-active, full data replication"],
+  //               ["YouTube parallel", "Video serving stays up if one AZ fails", "Live stream continues perfectly even if entire region fails"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "What a non-HA YouTube architecture looks like:",
+  //             "list": [
+  //               "Single EC2 instance serving all traffic — one crash = total outage",
+  //               "Single database with no replica — disk fails = all data inaccessible",
+  //               "Deployed in one AZ only — power outage = platform completely down",
+  //               "No auto scaling — traffic spike = servers overwhelmed, site crashes"
+  //             ],
+  //             "footer": "This is exactly how startups launch — and exactly why they go down the moment they hit the front page of Reddit."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Every AWS service you'll learn going forward — EC2, RDS, S3, ECS, Lambda — has specific HA and fault tolerance features built in. Multi-AZ RDS, S3's 11-nines durability, Lambda's automatic scaling — these are all implementations of the same two principles. Understanding HA and Fault Tolerance now means every subsequent AWS service will immediately make sense architecturally."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "cloud7.png"
+  //           }
+  //         ]
+
+  //       }
+  //     },
+  //     {
+  //       "id": 2,
+  //       "title": "AWS Compute Services",
+  //       "level": "freshers",
+  //       "topics": [
+  //         "What is EC2 & How AWS Servers Work",
+  //         "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)",
+  //         "EC2 Instance Types & AMIs",
+  //         "Security Groups & Basic Server Security",
+  //         // "User Data Scripts & EC2 Automation",
+  //         "Introduction to Auto Scaling"
+  //       ],
+  //       "topicDetails": {
+
+  //         "What is EC2 & How AWS Servers Work": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Every time you upload a video to YouTube — something has to receive that upload, process it, transcode it into multiple resolutions, and store it. That 'something' is a server. In the AWS world, that server is EC2. Amazon Elastic Compute Cloud (EC2) is the backbone of AWS compute — it gives you virtual servers in the cloud that you can spin up in minutes, configure exactly how you need, and shut down the moment you're done."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ When you upload a 4K video to YouTube — what actually receives it, processes it, and converts it into 360p, 720p, and 1080p versions simultaneously? Where does that computation happen?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is EC2?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "EC2 is AWS's virtual server service. Instead of buying a physical machine, you rent a virtual one — choosing exactly how many CPUs, how much RAM, and what OS you want. It launches in under a minute, you pay per second of usage, and you can have 1 server or 10,000 servers running simultaneously."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of EC2 like renting a computer from AWS. You pick the size — small laptop, powerful workstation, or massive supercomputer. You install what you need. You use it. You return it when done. You only pay for the hours you kept it."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How Does EC2 Actually Work Under the Hood?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "AWS owns massive physical servers in its data centers globally. Using virtualization technology — specifically a hypervisor — AWS splits one powerful physical machine into dozens of isolated virtual machines. Each virtual machine is an EC2 instance. Your EC2 instance runs completely isolated from other customers' instances on the same physical hardware."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Imagine one massive apartment building (physical server). The building owner (AWS) splits it into 50 separate apartments (EC2 instances). Each tenant (you, Netflix, Swiggy) gets their own apartment — completely private walls, separate lock, independent space. You cannot see or enter your neighbor's apartment. That isolation is what the hypervisor provides."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — You request an EC2 instance",
+  //             "desc": "You go to AWS Console and fill out what kind of server you need. Think of this like ordering a custom laptop online — you pick the OS, CPU power, RAM size, and storage. Example: 'I want an Ubuntu server with 4 CPUs and 16GB RAM in Mumbai.' You click Launch. That's it from your side — AWS takes over."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// What you're choosing at this step:\nRegion:        ap-south-1 (Mumbai)       → where in the world your server lives\nOS (AMI):      Ubuntu 22.04              → operating system on the server\nInstance Type: t3.medium                 → 2 vCPU, 4GB RAM\nStorage:       20GB EBS                  → hard disk size\nSecurity Group: Allow port 22, 443       → who can connect to this server"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — AWS allocates a virtual machine",
+  //             "desc": "The moment you click Launch — AWS finds a physical server sitting in its Mumbai data center, carves out your requested CPU and RAM from it using a hypervisor, and boots up a fresh virtual machine with Ubuntu installed. This entire process takes under 60 seconds. You didn't touch any hardware. You didn't visit any data center. AWS did it all."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Real example — AWS Mumbai data center has a physical machine with 192 CPUs and 768GB RAM. AWS splits it: EC2 for you (2 CPU, 4GB), EC2 for a startup (4 CPU, 8GB), EC2 for a bank (8 CPU, 32GB), and so on — all running completely isolated on the same physical hardware. You never know who your neighbors are, and they can never see you."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — You get a public IP address",
+  //             "desc": "Once the instance is running, AWS assigns it a public IP address — like 13.235.67.120. This is your server's address on the internet. Anyone who knows this IP (and your Security Group allows it) can reach your server. You use this IP to SSH into the server from your laptop and start setting it up."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Your EC2 instance is now live:\nPublic IP:   13.235.67.120        → how the internet reaches your server\nPrivate IP:  172.31.24.5          → how other AWS services reach it internally\nRegion:      ap-south-1 (Mumbai)\nStatus:      ✅ Running\n\n// You can now SSH in from your laptop:\nssh -i my-key.pem ubuntu@13.235.67.120\n\n// You're now INSIDE the server — just like sitting in front of it\nubuntu@ip-172-31-24-5:~$"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 4 — You install your app and serve traffic",
+  //             "desc": "Now you're inside the server. From here — you install Node.js, deploy your YouTube API code, start the server on port 443. The moment it's running — real users can hit your server. YouTube creators uploading videos, viewers fetching recommendations — all hitting this EC2 instance."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Inside your EC2 instance — setting it up:\nsudo apt update\nsudo apt install nodejs npm -y\n\n// Clone your YouTube API code\ngit clone https://github.com/your-org/youtube-api.git\ncd youtube-api\nnpm install\n\n// Start the server\nnode app.js\n\n// ✅ Your server is now live at:\n// https://13.235.67.120 — real traffic can hit it"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 5 — You pay per second, stop when done",
+  //             "desc": "Billing started the exact second your instance launched. If you run it for 3 hours and 22 minutes — you pay for exactly 3 hours and 22 minutes. Not a full day. Not a full month. The moment you terminate the instance — billing stops completely. This is the fundamental difference from buying a physical server — you pay only for what you use."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// EC2 Billing example:\nInstance Type: t3.medium\nPrice:         $0.0416 per hour (Mumbai region)\n\nRan for: 3 hours 22 minutes = 3.37 hours\nTotal cost: 3.37 × $0.0416 = $0.14\n\n// You paid 14 cents for a full server for 3 hours ✅\n// Compare: buying a physical server = $3,000+ upfront\n\n// Stop vs Terminate:\n// Stop     → Server paused. Storage still billed. Can restart.\n// Terminate → Server deleted forever. Billing stops completely."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "YouTube's EC2 Use Cases"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "API Servers",
+  //             "desc": "EC2 instances run YouTube's backend APIs — handling billions of requests daily for video metadata, comments, likes, and recommendations. When you hit the Like button on a video — an EC2 instance somewhere in AWS receives that request, updates the database, and sends back the new like count. All in milliseconds."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Without EC2 — what YouTube would need:",
+  //             "list": [
+  //               "Buy thousands of physical servers — millions in upfront capital before launch",
+  //               "Build and manage data centers in every country — real estate, cooling, power",
+  //               "Hire hardware engineers to replace failing machines 24/7 — people, not code",
+  //               "Over-provision for peak traffic — paying for 1000 servers at 3am when only 50 are needed",
+  //               "6-month lead time to scale up for a viral video event — by then the moment is gone"
+  //             ],
+  //             "footer": "With EC2 — YouTube scales from 100 servers to 10,000 in minutes. Automatically. Without touching a single physical machine."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ EC2 is powerful — but a raw server does nothing by default. The moment it launches — it's just a blank Linux machine sitting in AWS. You need to connect to it, secure it, configure it, and deploy your application. The next topics walk through exactly how to do all of this step by step."
+  //           },
+  //         ],
+
+  //         "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Knowing what EC2 is means nothing if you can't actually use it. Launching your first EC2 instance and connecting to it is the single most fundamental hands-on skill in all of AWS. Every backend engineer at a company like YouTube has done this hundreds of times. Let's walk through exactly what happens — from clicking launch to being connected inside a live server."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube's engineers deploy code to remote servers every day. How do they actually connect to a server sitting in an AWS data center in Mumbai from their laptop in Bangalore?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Step 1 — Launching an EC2 Instance"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Launching an EC2 instance is a series of decisions — each one defining exactly what kind of server you're renting and how it behaves. Think of it like filling out a form to rent a server — you describe exactly what you need and AWS builds it for you in under 60 seconds."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Choose an AMI (Amazon Machine Image)",
+  //             "desc": "AMI is the OS template — the pre-installed operating system your server boots with. You pick this first because everything else depends on it. Amazon Linux 2023 is AWS's own optimized Linux — fastest boot, best AWS integration, what most production teams use. Ubuntu 22.04 if your team is more comfortable with it. Windows Server only if you're running .NET applications."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's video API servers run on Linux (not Windows) because Linux is faster, cheaper, and handles high-concurrency workloads better. When a YouTube engineer launches a new API server on AWS, they pick Amazon Linux 2023 AMI — it boots in seconds and comes pre-configured for production workloads. Choosing Ubuntu instead would work too — just a personal/team preference."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Choose Instance Type",
+  //             "desc": "Instance Type defines your server's hardware — how many CPUs and how much RAM it gets. This is the most important decision because it directly affects performance and cost. t3.micro = 1 vCPU, 1GB RAM — fine for learning and dev. m6i.xlarge = 4 vCPU, 16GB RAM — for a real API server. c6i.4xlarge = 16 vCPU, 32GB RAM — for CPU-heavy jobs like video processing."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — When YouTube launches a server just to handle the comments API (reading and writing comments), they use a General Purpose instance like m6i.2xlarge — balanced CPU and RAM, handles thousands of concurrent requests. But when they launch a server specifically to transcode a raw 4K upload into multiple resolutions — they use a Compute Optimized instance like c6i.8xlarge — maximum CPU, because transcoding is pure number-crunching. Same AWS, same EC2 — completely different instance types for different jobs."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Configure Storage (EBS Volume)",
+  //             "desc": "Every EC2 instance needs a hard disk — called an EBS volume. The default is 8GB, which is just enough for the OS. For any real application you add more. This is where your app code, logs, and temporary data live on the server."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's video upload receiver servers need large temporary storage. \nWhen a creator uploads a raw 4K video file — it can be 50GB or more. That file lands on the EC2 server's EBS volume temporarily while it's being processed and moved to S3. So YouTube configures those instances with 500GB+ EBS volumes. Their API servers (comments, likes, metadata) need far less — 50GB is enough since they don't store video files."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Configure Security Group",
+  //             "desc": "Security Group is the firewall — it controls which ports and which IP addresses can reach your server. Before your instance even launches, you define the rules. Open port 22 for SSH (so engineers can connect). Open port 443 for HTTPS (so users can reach your API). Everything else — blocked by default."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's public API servers have port 443 open to the entire internet (0.0.0.0/0) — because any user's phone or browser needs to reach it. But port 22 (SSH) is only open to YouTube's internal VPN IP range — only engineers connected to YouTube's VPN can SSH in. A random person on the internet trying to SSH into YouTube's server gets silently dropped — connection refused before it even reaches the server."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Step 2 — Key Pairs (How SSH Authentication Works)"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Before you launch, AWS asks you to choose or create a Key Pair. This is your authentication method — how you prove to the server that it's really you connecting, not someone else. A Key Pair has two parts: a public key (AWS puts this inside your server automatically) and a private key (a .pem file you download once to your laptop)."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of it like a padlock and key. AWS puts the padlock (public key) on your server's door. You keep the physical key (private key .pem file) on your laptop. When you try to SSH in — your laptop shows the key, the server checks if it matches the padlock. Match = door opens. No key or wrong key = door stays locked. No password needed. No guessing. Pure cryptographic proof."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — When a YouTube engineer provisions a new API server, AWS generates a Key Pair. The engineer downloads the .pem file to their laptop. That .pem file is then stored in YouTube's internal secure credential vault (like HashiCorp Vault or AWS Secrets Manager) — never on personal laptops or Slack messages. When the engineer needs to SSH into that server, they pull the key from the vault. This is how teams with 1000+ engineers manage server access safely."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Key Pair rules you must never break:",
+  //             "list": [
+  //               "Download the .pem file once — AWS never shows it again. Ever. If you lose it, you cannot SSH into that instance — period.",
+  //               "Never share your .pem file over Slack, email, or WhatsApp — whoever has it has full access to your server",
+  //               "Never commit .pem files to GitHub — bots scan GitHub 24/7 for exposed keys. Your server gets compromised within minutes.",
+  //               "Store it safely — losing it means creating a new Key Pair and replacing the instance entirely"
+  //             ],
+  //             "footer": "YouTube's engineers store Key Pairs in secure vaults — never on personal laptops or in code repositories. One leaked .pem file = one compromised production server."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Step 3 — Connecting via SSH"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "SSH (Secure Shell) is the protocol that lets you connect to a remote Linux server securely over the internet. Think of it like opening a terminal window — but instead of your laptop's terminal, you're inside a server sitting in AWS's Mumbai data center. Once connected, you can run any command on that server as if you were physically there."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — A YouTube backend engineer in Bangalore needs to debug a production API server running in AWS Mumbai. They don't fly to Mumbai. They don't call anyone. They open their terminal, run one SSH command, and in 2 seconds they're inside that server — reading logs, checking processes, restarting services. The server is 1500km away but feels like it's right in front of them."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "# Step 1 — Set correct permissions on your .pem file\n# (Linux/Mac require this — otherwise SSH refuses to use the key)\nchmod 400 youtube-server.pem\n\n# Why chmod 400?\n# 400 = only YOU can read this file. No one else.\n# SSH refuses to work if the key file is readable by others — security rule.\n\n# Step 2 — Connect to your EC2 instance\nssh -i youtube-server.pem ec2-user@13.235.67.120\n#         │                │         │\n#         │                │         └── Your EC2 Public IP (from AWS Console)\n#         │                └──────────── Username (ec2-user for Amazon Linux)\n#         └───────────────────────────── Your private key file\n\n# For Ubuntu AMIs — username is 'ubuntu' not 'ec2-user'\nssh -i youtube-server.pem ubuntu@13.235.67.120\n\n# ✅ Success — you're now INSIDE the server\n[ec2-user@ip-172-31-24-5 ~]$\n# This prompt means you're running commands ON the AWS server in Mumbai\n# Not on your laptop anymore\n\n# Now you can do anything on the server:\nnpm install          # install packages on the server\nnode app.js          # start your YouTube API\ntail -f app.log      # watch live logs"
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — The moment a YouTube engineer is inside the server via SSH, they can check what's happening in real time. Is the Node.js process running? How much CPU is it using? Are there error logs? They run 'top' to see CPU usage, 'tail -f /var/log/youtube-api.log' to watch live logs, 'pm2 status' to check if the app is running. All of this from their Bangalore laptop, on a Mumbai server, in real time."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Step 4 — Elastic IP (The Permanent IP Problem)"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Here's a problem nobody tells you about until it hits you in production. Every time you stop and start an EC2 instance — AWS throws away the old public IP and assigns a completely new one. Your server's address on the internet just changed. Everything pointing to the old IP — DNS records, mobile app configs, other servers — is now broken."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — Imagine YouTube's comments API server has the IP 54.123.45.67. Their DNS record points api.youtube.com to this IP. Their mobile apps are configured to call this IP. Now an engineer stops the instance for maintenance and starts it again. New IP: 18.234.56.78. Suddenly — api.youtube.com points to a dead address. Every YouTube app in the world gets connection errors. Comments stop loading. This is the IP change problem in production."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 An Elastic IP is a static public IP address that stays yours until you explicitly release it. You allocate one from AWS, attach it to your EC2 instance — and no matter how many times you stop, start, or restart that instance, the IP never changes. It's locked to you."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// ❌ Without Elastic IP — IP changes on every restart:\nDay 1:  Start instance  → Public IP: 54.123.45.67\n        DNS record:       api.youtube.com → 54.123.45.67 ✅\n        Mobile apps:      calling 54.123.45.67 ✅\n\nDay 2:  Stop for maintenance\nDay 3:  Start again      → Public IP: 18.234.56.78  ← NEW IP!\n        DNS record:       api.youtube.com → 54.123.45.67 ❌ BROKEN\n        Mobile apps:      calling 54.123.45.67 ❌ CONNECTION REFUSED\n        Result:           Comments not loading for 500M users 🔥\n\n// ✅ With Elastic IP — IP is permanent:\nAllocate Elastic IP:  3.14.159.26   ← yours forever until released\nAttach to instance:   EC2 → 3.14.159.26\nDNS record:           api.youtube.com → 3.14.159.26\n\nDay 2:  Stop for maintenance      → 3.14.159.26 (still yours, just not active)\nDay 3:  Start again               → 3.14.159.26 ✅ same IP\n        DNS record:               api.youtube.com → 3.14.159.26 ✅ still works\n        Mobile apps:              calling 3.14.159.26 ✅ connected\n        Result:                   Zero disruption. Engineers sleep peacefully. ✅"
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Elastic IPs are free only when attached to a running instance. If you allocate one and leave it unattached — AWS charges you per hour (to prevent hoarding of IPs). Always release Elastic IPs you're not using. Also — in real production at YouTube's scale, they don't use Elastic IPs directly. They put a Load Balancer in front and point DNS to the Load Balancer's DNS name — which never changes regardless of what happens to individual EC2 instances behind it. But understanding Elastic IP is fundamental — it's step one before you understand Load Balancers."
+  //           },
+  //         ],
+
+  //         "EC2 Instance Types & AMIs": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "YouTube does not use the same server for uploading videos, serving recommendations, and storing thumbnails. A server that receives uploads needs massive network bandwidth. A server that transcodes video needs extreme CPU power. A server running a recommendation ML model needs enormous RAM. AWS gives you exactly the right hardware for each job — through EC2 Instance Types and AMIs."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube transcodes 500 hours of video every minute. That's an insane amount of compute. How does AWS provide the right type of processing power for such different workloads — transcoding vs API serving vs ML inference?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is an Instance Type?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "An Instance Type defines the hardware profile of your EC2 server — how many virtual CPUs, how much RAM, what network speed, and what storage type. AWS organizes instance types into families — each optimized for a specific workload category. Picking the wrong one is like hiring a weightlifter to do a math exam — wrong tool, wrong job, wasted money."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "EC2 Instance Families"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "General Purpose — T and M Series",
+  //             "desc": "Balanced CPU and RAM — not specialized for anything, good at everything. Best for web servers, REST APIs, small databases, and dev/test environments. This is where most applications start."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's Comments API server handles requests like 'fetch top 20 comments for this video' or 'post a new comment'. This is not CPU-heavy. It's not RAM-heavy. It just needs a solid balanced server that handles thousands of concurrent HTTP requests steadily. YouTube runs this on M-series instances like m6i.2xlarge — 8 vCPU, 32GB RAM. Balanced. Reliable. Cost-effective. For your learning — t3.micro (1 vCPU, 1GB RAM) is the free-tier instance. Same family, just much smaller."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Compute Optimized — C Series",
+  //             "desc": "Maximum CPU power with less RAM. Built for tasks where raw processing speed is everything — encoding, compression, scientific simulations, game servers. The C stands for Compute. When your bottleneck is pure CPU cycles — this is your instance."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — When you upload a raw 4K video (let's say 50GB, shot on a cinema camera), YouTube has to transcode it into 8 different formats simultaneously — 4K, 1080p, 720p, 480p, 360p, 240p, 144p, and an audio-only version. Every single one requires intense frame-by-frame video processing using ffmpeg. This is pure CPU work — no amount of RAM helps here. YouTube runs these transcoding jobs on C-series instances like c6i.8xlarge — 32 vCPUs screaming through every frame. A General Purpose m6i instance at the same price would take 3x longer to transcode the same video."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// What happens when you upload a video to YouTube:\n// One raw 4K upload → 8 parallel transcoding jobs\n\nJob 1: raw_4k.mp4  →  4K_2160p.mp4    (c6i.8xlarge — 32 vCPU)\nJob 2: raw_4k.mp4  →  FHD_1080p.mp4   (c6i.4xlarge — 16 vCPU)\nJob 3: raw_4k.mp4  →  HD_720p.mp4     (c6i.2xlarge — 8 vCPU)\nJob 4: raw_4k.mp4  →  SD_480p.mp4     (c6i.xlarge  — 4 vCPU)\nJob 5: raw_4k.mp4  →  360p.mp4        (c6i.xlarge  — 4 vCPU)\nJob 6: raw_4k.mp4  →  240p.mp4        (c6i.large   — 2 vCPU)\nJob 7: raw_4k.mp4  →  144p.mp4        (c6i.large   — 2 vCPU)\nJob 8: raw_4k.mp4  →  audio_only.mp4  (c6i.large   — 2 vCPU)\n\n// All 8 run simultaneously on C-series Compute Optimized instances\n// Total time: ~3-5 minutes\n// Same jobs on General Purpose t3 instances: ~15-20 minutes ❌ too slow"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Memory Optimized — R and X Series",
+  //             "desc": "Massive amounts of RAM — sometimes terabytes. Best when your application needs to hold enormous datasets entirely in memory for instant access. Reading from RAM is 100x faster than reading from disk. When your bottleneck is RAM — R and X series."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's recommendation engine decides what video to show you next. To do this in real time — it needs to instantly compare your watch history against billions of other users' patterns. This data cannot be fetched from a database on every request — it would take seconds. Instead YouTube loads the entire user preference model into RAM — billions of vectors, hundreds of GBs of data — and queries it in milliseconds. This is why they use R-series instances like r6i.32xlarge — 128 vCPU and 1TB of RAM. The entire recommendation model lives in memory. Query time: under 10ms. Without Memory Optimized instances — your YouTube homepage recommendations would take 3-5 seconds to load instead of being instant."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Storage Optimized — I and D Series",
+  //             "desc": "Ultra-fast local NVMe SSD storage with extremely high read/write throughput. Best when your application constantly reads and writes huge amounts of data to disk at very high speed. The bottleneck is disk I/O — not CPU, not RAM."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — When a creator uploads a raw 50GB video file, it first lands on a YouTube intake server temporarily. This server is receiving hundreds of such uploads simultaneously — writing 50GB, 30GB, 80GB files to disk continuously at the same time. It needs incredibly fast disk write speeds or uploads queue up and creators see slow upload progress bars. YouTube uses I-series Storage Optimized instances for this intake pipeline — local NVMe SSDs that write at 3.5GB per second. Compare that to a regular EBS volume on a General Purpose instance at 250MB/second — 14x slower. At YouTube's upload volume, that difference means everything."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Accelerated Computing — P and G Series",
+  //             "desc": "GPU-powered instances. GPUs have thousands of cores designed for parallel mathematical operations — perfect for machine learning training, deep learning inference, and video processing at scale. P-series for ML training. G-series for graphics and video encoding with GPU acceleration."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's AI does two incredibly hard jobs: content moderation (detecting policy-violating videos before humans see them) and automatic caption generation (transcribing spoken words in every language). Both require deep learning models running on GPUs. Training the content moderation model — teaching it to recognize violence, nudity, and hate speech from millions of video samples — runs on P-series instances like p4d.24xlarge — 8 NVIDIA A100 GPUs, 96 vCPUs, 1.1TB RAM. A single training run that would take 3 months on a CPU instance takes 18 hours on this GPU instance. For caption generation inference (running the model on new videos in real time) — YouTube uses G-series instances — cheaper GPU power optimized for inference rather than training."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Reading Instance Type Names"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Every EC2 instance name follows a consistent pattern. Once you learn to read it — you instantly know what any instance does just from its name. No memorization needed."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Breaking down an instance name:\nc  6  i  .  4xlarge\n│  │  │     │\n│  │  │     └── Size (determines how many CPUs and RAM)\n│  │  │         nano → micro → small → medium → large → xlarge\n│  │  │         → 2xlarge → 4xlarge → 8xlarge → 16xlarge → 32xlarge\n│  │  │         Each step UP roughly doubles CPU and RAM\n│  │  │\n│  │  └── Processor type:\n│  │      i = Intel\n│  │      a = AMD (usually 10% cheaper than Intel equivalent)\n│  │      g = AWS Graviton (ARM-based — up to 40% cheaper, great performance)\n│  │\n│  └── Generation number (higher = newer, faster, cheaper per unit)\n│      6 = 6th generation (newer than 5, older than 7)\n│\n└── Instance Family:\n    t = General Purpose (burstable — good for low-traffic dev)\n    m = General Purpose (steady — good for production APIs)\n    c = Compute Optimized (CPU-heavy jobs)\n    r = Memory Optimized (RAM-heavy jobs)\n    i = Storage Optimized (disk I/O heavy jobs)\n    p = GPU Accelerated (ML training)\n    g = GPU Accelerated (ML inference, video)\n\n// Real examples decoded:\nt3.micro\n  → General Purpose (t), 3rd gen, micro size\n  → 1 vCPU, 1GB RAM\n  → FREE TIER — use this for learning ✅\n\nm6i.2xlarge\n  → General Purpose (m), 6th gen, Intel, 2xlarge\n  → 8 vCPU, 32GB RAM\n  → YouTube Comments API server\n\nc6i.8xlarge\n  → Compute Optimized (c), 6th gen, Intel, 8xlarge\n  → 32 vCPU, 64GB RAM\n  → YouTube 4K video transcoding worker\n\nr6i.32xlarge\n  → Memory Optimized (r), 6th gen, Intel, 32xlarge\n  → 128 vCPU, 1024GB (1TB) RAM\n  → YouTube recommendation engine model server\n\np4d.24xlarge\n  → GPU Accelerated (p), 4th gen, 24xlarge\n  → 96 vCPU, 1152GB RAM, 8x NVIDIA A100 GPUs\n  → YouTube AI content moderation model training"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is an AMI?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it like this — imagine YouTube needs to launch 500 new servers right now to handle a traffic spike. They are not going to sit and manually install Linux, configure settings, and install software on each one. Instead they take one perfectly configured server — OS installed, software ready, settings done — and take a snapshot of it. That snapshot is the AMI. Now they can launch 500 identical servers in seconds, all booting up exactly like that original. Same OS. Same software. Same settings. Ready to go instantly."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of AMI like a game save file — but for an entire server. You configure a server perfectly — install everything, tune every setting, deploy your code. Then you hit save. That save file is the AMI. Next time you need an identical server — you don't redo all that work. You just load the save file. A new perfectly configured server is running in 60 seconds."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "AWS Provided AMIs — The Starting Point",
+  //             "desc": "These are official base OS images provided by AWS and OS vendors. A completely clean operating system — nothing installed, nothing configured. You start here and build on top. Amazon Linux 2023 is the most common for backend workloads — optimized for AWS, fastest boot time, best integration with AWS services."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — A new YouTube engineer joins the team and needs to set up a development server on EC2. They pick the Ubuntu 22.04 AMI from AWS. It launches in 45 seconds — clean Ubuntu, nothing installed. Then they manually install Node.js, configure the environment, clone the YouTube API repo. This takes 20 minutes. Fine for a one-time dev setup. But doing this manually for 500 production servers during a traffic spike? Impossible. That's where Custom AMIs come in."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Custom AMIs — YouTube's Golden Image",
+  //             "desc": "You take an AWS base AMI, configure it exactly how you need — install all software, apply security hardening, add monitoring agents, deploy app code — then capture it as your own custom AMI. Now every new EC2 instance launched from this AMI is born already configured. No setup time. No manual steps. Production-ready in 60 seconds."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — YouTube's DevOps team maintains a 'Golden AMI' for their video transcoding workers. It has: Amazon Linux 2023 base, ffmpeg pre-installed and tuned for H.264/H.265 encoding, AWS CloudWatch agent for monitoring, custom YouTube transcoding scripts pre-loaded, security hardening applied (unnecessary ports closed, logging enabled). When a viral video spikes traffic and Auto Scaling needs to launch 200 new transcoding workers in 5 minutes — each one launches from this Golden AMI. They boot, read their User Data script to pull the latest job config, and start transcoding within 90 seconds. No engineer touched a single one."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// How YouTube creates and uses a Golden AMI:\n\n// Step 1 — Start with a base AWS AMI\nBase AMI: ami-0abcdef1234567890  (Amazon Linux 2023 — clean)\n\n// Step 2 — Configure the server manually (one time only)\nssh -i key.pem ec2-user@server-ip\nsudo yum install -y ffmpeg           # video transcoding tool\nsudo yum install -y amazon-cloudwatch-agent  # monitoring\ngit clone https://github.com/youtube/transcoder /opt/transcoder\nnpm install --prefix /opt/transcoder\n# Apply security hardening, configure logging...\n\n// Step 3 — Create AMI from this configured server\n// AWS Console → EC2 → Instance → Actions → Create Image\nNew AMI created: ami-youtube-transcoder-v1.4  ← Golden Image ✅\n\n// Step 4 — Use this AMI in Auto Scaling Launch Template\nLaunchTemplate: {\n  ImageId: 'ami-youtube-transcoder-v1.4',  // ← Golden AMI\n  InstanceType: 'c6i.8xlarge',\n  // Every auto-scaled instance is born from this image\n  // Pre-installed, pre-configured, production-ready in 60s\n}\n\n// Result:\n// Traffic spike → Auto Scaling launches 200 instances\n// Each instance: boots in 45s, starts transcoding in 90s\n// Zero manual configuration. Zero SSH. Zero human intervention. ✅"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "AWS Marketplace AMIs — Pre-built Third Party Software",
+  //             "desc": "The AWS Marketplace has thousands of AMIs built by third-party vendors — NGINX pre-configured as a reverse proxy, WordPress fully set up and ready, security-hardened CIS Benchmark images, VPN servers, monitoring tools. You launch these and the software is already running. You pay an additional per-hour software license fee on top of the EC2 cost."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 YouTube Example — Suppose YouTube's security team needs a pre-hardened, CIS Benchmark compliant Linux server for a compliance audit. Instead of spending a week manually hardening an Amazon Linux instance, they grab a CIS Hardened Amazon Linux AMI from the AWS Marketplace — $0.02/hour extra on top of EC2 cost. It launches pre-configured with all 200+ CIS security controls already applied. What would take a security engineer a week to configure manually is done in 60 seconds. The trade-off: you pay the vendor's license fee, and you have less control over what's pre-installed."
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Instance Family", "Optimized For", "YouTube Use Case", "Example Type", "Why This Family?"],
+  //             "rows": [
+  //               ["T / M (General)", "Balanced CPU + RAM", "Comments API, metadata servers", "t3.micro, m6i.2xlarge", "Steady HTTP traffic — no extreme CPU or RAM needs"],
+  //               ["C (Compute)", "Maximum CPU", "4K video transcoding workers", "c6i.8xlarge", "Frame-by-frame encoding = pure CPU work"],
+  //               ["R / X (Memory)", "Maximum RAM", "Recommendation engine model server", "r6i.32xlarge", "Billion-user preference model must live in RAM"],
+  //               ["I / D (Storage)", "Ultra-fast disk I/O", "Raw video upload intake pipeline", "i3.2xlarge", "Receiving 50GB files simultaneously = needs fast writes"],
+  //               ["P / G (GPU)", "GPU parallel processing", "AI moderation model training, captions", "p4d.24xlarge", "Deep learning = thousands of GPU cores, not CPU cores"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Choosing the wrong instance type is one of the most common and expensive AWS mistakes. Real example: a team runs their video transcoding jobs on m6i General Purpose instances because 'they have enough CPU'. Transcoding takes 18 minutes per video. They switch to c6i Compute Optimized instances at the same price — transcoding drops to 6 minutes. Same cost. 3x the throughput. Always match the instance family to your workload's actual bottleneck — CPU, RAM, disk, or GPU. Start with CloudWatch metrics to identify what's actually maxing out, then right-size accordingly."
+  //           },
+  //         ],
+
+  //         "Security Groups & Basic Server Security": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "YouTube's EC2 servers are live on the internet — accessible from anywhere in the world. Without any protection, anyone could connect to any port, attempt to log in, run commands, or flood the server with traffic. Security Groups are AWS's first line of defense — a virtual firewall that sits in front of every EC2 instance and controls exactly what traffic is allowed in and out."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube's upload servers are publicly reachable on the internet. How does AWS ensure only legitimate video uploads get through — and attackers trying to SSH in, run malicious commands, or probe open ports get blocked?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is a Security Group?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "A Security Group is a stateful virtual firewall attached to EC2 instances. It controls inbound traffic (what can reach your server) and outbound traffic (what your server can send out). By default — all inbound traffic is blocked, all outbound traffic is allowed. You explicitly define rules to open specific ports for specific sources."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of a Security Group like a bouncer list for your server. Only traffic matching the list gets in. Everything else is silently dropped — no error, no response. The server doesn't even acknowledge the connection attempt."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Security Group Rules — How They Work"
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// YouTube Upload Server — Inbound Rules:\nPort 443 (HTTPS)  → Source: 0.0.0.0/0   ✅ Anyone can upload videos\nPort 22 (SSH)     → Source: 10.0.0.0/8  ✅ Only internal engineers can SSH\nPort 80 (HTTP)    → BLOCKED             ❌ Force HTTPS only\nPort 3306 (MySQL) → BLOCKED             ❌ Database never exposed publicly\n\n// Outbound Rules:\nAll traffic       → Destination: 0.0.0.0/0 ✅ Server can call any external service"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Stateful — What Does That Mean?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Security Groups are stateful — meaning if you allow inbound traffic on port 443, the response traffic is automatically allowed out without needing a separate outbound rule. AWS tracks the connection state and handles return traffic automatically."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Inbound Rule: Allow HTTPS (443)",
+  //             "desc": "You open YouTube on your phone in Mumbai and tap upload on your new video. Your phone sends that video file to YouTube's EC2 server over port 443 (HTTPS). The moment that request hits the EC2 instance — the Security Group checks its inbound rules. It sees: 'Port 443 from 0.0.0.0/0 — ALLOW'. Rule matches. Request is let through. The EC2 server starts receiving your video file."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 What if port 443 was NOT in the inbound rules? Your phone sends the upload request — it hits the Security Group — no matching rule found — request is silently dropped. Your YouTube app just spins forever showing 'Uploading...' with 0% progress. No error message. No response. Just silence. The server never even saw your request. That's how powerful Security Group rules are — they decide what the server is even allowed to know about."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Response Automatically Allowed Out — Stateful Magic",
+  //             "desc": "Your video upload is received. Now YouTube's EC2 server needs to send back a response — 'Upload successful. Video ID: xK9mP2qL4n'. This response needs to travel from the EC2 server back to your phone in Mumbai over the same connection. Here's the key — there is NO explicit outbound rule for port 443 in YouTube's Security Group. But the response still gets through. Why? Because Security Groups are stateful."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Stateful means the Security Group remembers the conversation. When your phone opened a connection to YouTube's server on port 443 — the Security Group noted it: 'A connection was established from 103.56.78.90 on port 443.' When the server tries to respond back to your phone — the Security Group recognizes this as part of that same conversation. It automatically allows the response out — no outbound rule needed. It knows this isn't a new random outbound request — it's a reply to something it already approved."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 This is exactly why Security Groups being stateful is such a big deal. YouTube's Security Group only needs ONE inbound rule for port 443 — and the entire two-way conversation (upload in, response out) works automatically. If Security Groups were stateless like Network ACLs, YouTube would need to explicitly open outbound rules for every possible response port — a maintenance nightmare for a platform handling billions of connections a day."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Common Security Group Configurations"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Server Type", "Allow Inbound", "Block Inbound", "YouTube Example"],
+  //             "rows": [
+  //               ["Web Server", "80, 443 from anywhere", "Everything else", "Video streaming servers"],
+  //               ["SSH Bastion", "22 from office IP only", "Everything else", "Engineer access gateway"],
+  //               ["Database", "3306 from app servers only", "Everything from internet", "YouTube's MySQL cluster"],
+  //               ["Internal API", "8080 from load balancer only", "Everything from internet", "Recommendation API"],
+  //               ["Video Processor", "No inbound needed", "Everything", "Pulls jobs from queue — no direct traffic"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Security Groups vs Network ACLs"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Security Groups operate at the instance level — they protect individual EC2 instances. Network ACLs (NACLs) operate at the subnet level — they protect entire subnets. Security Groups are stateful. NACLs are stateless — you must explicitly allow both inbound and outbound for each connection."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Most common Security Group mistakes that get servers compromised:",
+  //             "list": [
+  //               "Port 22 (SSH) open to 0.0.0.0/0 — the entire internet can attempt to login",
+  //               "Port 3306 (Database) open publicly — database directly exposed to attackers",
+  //               "All ports open (0-65535) — entire server surface area exposed",
+  //               "Default security group unchanged — beginners often forget to configure it"
+  //             ],
+  //             "footer": "Thousands of EC2 instances get compromised every month because of open port 22. Never open SSH to the entire internet in production."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Security Groups are your first defense — but not your only defense. YouTube also uses AWS WAF to block malicious web requests, AWS Shield for DDoS protection, and VPC private subnets to ensure database servers are never reachable from the internet at all. Defense in depth — multiple layers of security, not just one."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "ec2-4.png"
+  //           }
+  //         ],
+
+  //         "User Data Scripts & EC2 Automation": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "YouTube's Auto Scaling group just launched 500 new EC2 instances to handle a viral video spike. Each instance needs Node.js installed, the YouTube API server code deployed, environment variables configured, and the application started — all within minutes, automatically, without a single engineer touching any server. This is what User Data Scripts make possible."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ When YouTube auto-scales from 100 to 500 servers in 5 minutes during a viral event — who installs the software and deploys the code on those 400 new servers? No human can do that manually. So how does it happen?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is User Data?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "User Data is a shell script you provide when launching an EC2 instance. AWS runs this script automatically as root the very first time the instance boots — before it starts serving any traffic. You can install packages, download code, configure the OS, start services — anything you'd do manually on a server, automated completely."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 User Data is like leaving a to-do list for your server the moment it wakes up. The server boots, reads the list, executes every step automatically, and by the time it's fully up — it's already configured, deployed, and ready to serve traffic."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "YouTube API Server — User Data Script"
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "#!/bin/bash\n# This runs automatically on first boot — as root\n\n# Step 1 — Update the OS\nyum update -y\n\n# Step 2 — Install Node.js\ncurl -fsSL https://rpm.nodesource.com/setup_20.x | bash -\nyum install -y nodejs\n\n# Step 3 — Install PM2 (process manager — keeps Node.js running)\nnpm install -g pm2\n\n# Step 4 — Pull YouTube API server code from S3\naws s3 cp s3://youtube-deployments/api-server.tar.gz /home/ec2-user/\ntar -xzf /home/ec2-user/api-server.tar.gz -C /home/ec2-user/\n\n# Step 5 — Set environment variables\nexport NODE_ENV=production\nexport DB_HOST=youtube-db.cluster.us-east-1.rds.amazonaws.com\nexport REDIS_HOST=youtube-cache.abc123.ng.0001.use1.cache.amazonaws.com\n\n# Step 6 — Install dependencies and start the server\ncd /home/ec2-user/api-server\nnpm install\npm2 start app.js --name youtube-api\npm2 startup\npm2 save\n\n# ✅ Server is fully configured and running — automatically"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How YouTube Uses User Data at Scale"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Auto Scaling Event Triggered",
+  //             "desc": "Traffic spikes — Auto Scaling Group decides to launch 50 new EC2 instances. Each instance gets the same User Data script."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "All 50 Instances Boot Simultaneously",
+  //             "desc": "AWS launches all 50 at once. Every single one executes the User Data script automatically on first boot."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Within 3-5 Minutes",
+  //             "desc": "All 50 servers have Node.js installed, latest API code deployed, and the application running. Load balancer health checks pass — servers start receiving traffic."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Zero Human Intervention",
+  //             "desc": "Not a single engineer SSHed into any server. 50 production-ready servers configured and deployed completely automatically."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Viewing User Data Logs"
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "# SSH into the instance and check User Data execution logs\nsudo cat /var/log/cloud-init-output.log\n\n# See exactly what ran, what succeeded, what failed\n# This is your debug log when User Data scripts don't work as expected"
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Common User Data mistakes:",
+  //             "list": [
+  //               "Forgetting #!/bin/bash at the top — script won't execute",
+  //               "Using relative paths — always use absolute paths in User Data",
+  //               "Script errors that fail silently — always check cloud-init-output.log",
+  //               "Hardcoding secrets in User Data — use AWS Secrets Manager instead",
+  //               "Forgetting User Data only runs on first boot — not on every restart"
+  //             ],
+  //             "footer": "User Data runs once. If your script fails halfway — the instance boots with a broken setup. Always test scripts manually on a dev instance first."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ User Data is the foundation of EC2 automation — but it's just the beginning. Production teams use it in combination with AMIs (pre-bake common dependencies), AWS Systems Manager (for ongoing configuration management), and CodeDeploy (for application deployments). User Data handles the bootstrap. Other tools handle ongoing management."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "ec2-5.png"
+  //           }
+  //         ],
+
+  //         "Introduction to Auto Scaling": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "MrBeast uploads a new video. Within minutes — 50 million people rush to YouTube simultaneously. Traffic spikes 20x in under 5 minutes. If YouTube runs a fixed number of servers — they all get overwhelmed instantly. The site crashes. 50 million users get a 503 error. Now flip it — at 4am, traffic drops to 2% of peak. If YouTube still runs 1000 servers for that tiny traffic — they're wasting millions of dollars on idle compute. Auto Scaling solves both problems simultaneously."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube traffic at 8pm on a Friday is 50x higher than at 4am on a Tuesday. How does YouTube run exactly the right number of servers for any traffic level — automatically, without anyone manually adding or removing servers?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is Auto Scaling?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Auto Scaling automatically adjusts the number of EC2 instances running based on actual traffic and load. When traffic increases — Auto Scaling launches new instances (scale out). When traffic drops — it terminates excess instances (scale in). The right capacity at all times, automatically, with zero manual intervention."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of Auto Scaling like a smart staffing agency for YouTube. When a viral video hits — the agency instantly sends 200 more workers. When midnight comes and traffic drops — the agency sends 180 of them home. YouTube only pays for the staff hours actually worked."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "The Three Core Components"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Launch Template",
+  //             "desc": "Defines what each new instance looks like — which AMI, instance type, security group, and User Data script to use. Think of it as the blueprint. Every auto-scaled instance is born from this template — identical configuration every time.\n\n Example — YouTube's DevOps team creates a Launch Template for their video API servers. It says: use our Golden AMI (pre-installed with Node.js, monitoring agent, YouTube API code), use m6i.2xlarge instance type (8 vCPU, 32GB RAM), attach the 'youtube-api-sg' Security Group (port 443 open), run this User Data script on boot (pull latest config from S3 and start the server). Now when traffic spikes at 8pm and Auto Scaling needs 50 new servers in 3 minutes — every single one launches from this exact template. Server 1 and Server 50 are byte-for-byte identical. No engineer configured any of them manually."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Auto Scaling Group (ASG)",
+  //             "desc": "The actual group of EC2 instances being managed. You define the minimum instances (floor), maximum instances (ceiling), and desired capacity (target). ASG ensures the number of running instances always stays within these bounds.\n\n Example — YouTube's API Auto Scaling Group is configured with: Minimum 50 instances (even at 4am with almost no traffic — these 50 always run, so YouTube is never completely empty and can handle sudden traffic without a cold start delay), Maximum 2000 instances (the hard ceiling — AWS won't launch beyond this no matter how much traffic spikes, protecting YouTube from a runaway scaling bug that could cost millions), Desired 100 instances (normal daytime traffic target — ASG tries to maintain 100 healthy instances during regular hours). At 3am — ASG scales down to 50 (the floor). At 8pm Friday — ASG scales up toward 2000 if needed. It never goes below 50. It never goes above 2000. Everything in between is automatic."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Scaling Policies",
+  //             "desc": "The rules that trigger scaling. CPU above 70% for 2 minutes — add 10 instances. CPU below 30% for 10 minutes — remove 5 instances. Policies define when and how much to scale.\n\n Example — YouTube uses different scaling policies for different situations. For normal traffic fluctuations — Target Tracking keeps CPU at 60% by automatically adding or removing instances. For sudden viral spikes — Step Scaling kicks in hard: CPU hits 80% — immediately add 100 instances. CPU hits 90% — add 500 more. For predictable patterns — Scheduled Scaling pre-scales every Friday at 6pm before the weekend rush hits, because YouTube knows from historical data that Friday evenings see a 3x traffic spike. For truly unpredictable events like a breaking news video going viral — Predictive Scaling uses ML to detect the traffic acceleration early and scales proactively before servers get overwhelmed."
+  //           },
+
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Why does YouTube need all four policies? Target Tracking handles the normal ebb and flow of daily traffic smoothly. Step Scaling handles sudden unpredictable viral explosions aggressively. Scheduled Scaling handles known patterns (weekends, evenings, major events) proactively. Predictive Scaling learns from history and acts before users feel any impact. Each policy fills a gap the others can't. Using just one would leave YouTube exposed to the scenarios the others cover."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Types of Scaling Policies"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Policy Type", "How it works", "YouTube Use Case"],
+  //             "rows": [
+  //               ["Target Tracking", "Keep a metric at a target value — like keeping CPU at 60%", "Keep API server CPU at 60% always"],
+  //               ["Step Scaling", "Scale by different amounts at different thresholds", "Add 10 servers at 70% CPU, add 50 at 90% CPU"],
+  //               ["Scheduled Scaling", "Scale based on time — predictable patterns", "Pre-scale up every Friday evening before weekend traffic"],
+  //               ["Predictive Scaling", "ML-based — predicts future traffic and scales proactively", "Auto-scale before MrBeast's video goes live"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "YouTube Auto Scaling — Real Scenario"
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// YouTube API Server Auto Scaling Group Config:\n{\n  MinSize: 50,          // Never go below 50 instances — baseline always ready\n  MaxSize: 2000,        // Can scale up to 2000 instances during viral events\n  DesiredCapacity: 100, // Normal traffic baseline\n\n  ScalingPolicy: {\n    Type: \"TargetTracking\",\n    Metric: \"CPUUtilization\",\n    Target: 60,  // Keep CPU at 60%\n    ScaleOutCooldown: 60,   // Wait 60s before adding more (avoid over-scaling)\n    ScaleInCooldown: 300    // Wait 5min before removing (avoid premature scale-in)\n  }\n}\n\n// MrBeast video drops:\n// 8:00pm → 100 instances running, CPU at 60%\n// 8:01pm → Traffic spikes, CPU hits 85%\n// 8:02pm → Auto Scaling launches 200 new instances\n// 8:05pm → 300 instances running, CPU back to 60% ✅\n// 3:00am → Traffic drops, CPU at 20%\n// 3:05am → Auto Scaling terminates 220 instances\n// 3:10am → Back to 80 instances, CPU at 60% ✅"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Auto Scaling + Load Balancer — The Complete Picture"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Auto Scaling works hand-in-hand with Elastic Load Balancer. When Auto Scaling launches new instances — they're automatically registered with the Load Balancer and start receiving traffic. When instances are terminated — they're deregistered first, existing requests are drained, then the instance shuts down gracefully. Zero dropped requests."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Without Auto Scaling — YouTube's problems:",
+  //             "list": [
+  //               "Fixed 1000 servers — MrBeast video hits → all overwhelmed → site crashes",
+  //               "Fixed 1000 servers at 4am → 980 servers idle → millions wasted daily",
+  //               "Manual scaling → engineer wakes up at 3am to add servers during viral event",
+  //               "Over-provisioning for peak → 10x the necessary cost for normal traffic"
+  //             ],
+  //             "footer": "Auto Scaling is not optional at scale. It is the difference between a platform that survives viral moments and one that crashes under them."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Auto Scaling is powerful but requires your application to be stateless — each server must be interchangeable. If a user's session data is stored on one specific server, scaling breaks that session when the server is replaced. YouTube's architecture stores all session and state data in Redis and DynamoDB — never on the EC2 instance itself. Stateless design is a prerequisite for Auto Scaling to work correctly."
+  //           },
+  //           {
+  //             "type": "image",
+  //             "src": "ec2-6.png"
+  //           }
+  //         ]
+
+  //       }
+  //     },
+  //     {
+  //       "id": 3,
+  //       "title": "AWS Storage Services",
+  //       "level": "freshers",
+  //       "topics": [
+  //         "What is Amazon S3?",
+  //         "S3 Storage Classes",
+  //         "S3 Versioning",
+  //         // "Static Website Hosting",
+  //         "EBS (Elastic Block Store)",
+  //         "EFS (Elastic File System)",
+  //         "Glacier Storage",
+  //         "Data Backup Strategies"
+  //       ],
+  //       "topicDetails": {
+  //         "What is Amazon S3?": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Amazon S3 (Simple Storage Service) is AWS's object storage service. It is used to store files like videos, images, PDFs, backups, logs, thumbnails, and datasets at massive scale."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ Platforms like YouTube store billions of video files. Where do all these files actually live?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Why S3 Exists"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "EC2 servers are meant for running applications — not storing billions of files. If an EC2 instance crashes or terminates, files can be lost. S3 separates storage from compute and provides durable, scalable file storage."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 S3 is designed for high durability, virtually unlimited storage, and global accessibility. AWS claims 99.999999999% durability (11 nines)."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Core S3 Concepts"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Bucket",
+  //             "desc": "A bucket is the top-level container in S3 where you store all your files.\nYouTube creates separate buckets for separate purposes. One bucket for raw uploads coming in from creators. One bucket for processed videos ready for viewers. One bucket for thumbnails. Each bucket lives in one AWS region — YouTube picks Mumbai so files don't travel across the world just to get stored. One hard rule: bucket names must be unique across every AWS account in the entire world — not just yours. If someone already created a bucket called 'my-videos' before you, that name is gone. Same idea as domain names — once taken, it's taken."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// YouTube's S3 buckets — one per purpose:\n\nyoutube-raw-uploads        → raw video files from creators land here first\nyoutube-processed-videos   → finished 1080p, 720p, 480p versions live here\nyoutube-thumbnails         → every video's thumbnail image stored here\nyoutube-subtitles          → subtitle and caption files stored here\n\n// Each bucket is completely separate.\n// A file in youtube-raw-uploads has nothing to do with youtube-thumbnails.\n// YouTube keeps them separate — one bucket, one job."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Object",
+  //             "desc": "An object is the actual file stored inside a bucket. When a creator uploads a 4GB video — that video file becomes one object inside YouTube's raw uploads bucket. A thumbnail image — another object. A subtitle file — another object. Every file YouTube stores in S3 is an object. Along with the file data itself, each object automatically carries basic information — when it was uploaded, how large it is, what type of file it is. You don't set any of this manually — S3 captures it automatically the moment the file is uploaded."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// One video upload = one object stored in S3:\n\nObject 1 — raw video file:\n  File data:    4GB of video\n  Type:         video/mp4\n  Size:         4,000,000,000 bytes\n  Uploaded at:  2025-01-15, 2:32pm\n\nObject 2 — thumbnail image:\n  File data:    85KB image\n  Type:         image/jpeg\n  Size:         85,000 bytes\n  Uploaded at:  2025-01-15, 2:45pm\n\n// Each file = its own separate object.\n// YouTube's S3 buckets hold billions of these objects — all managed by AWS."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Key",
+  //             "desc": "A key is the unique name of an object inside a bucket. It's how S3 knows which exact file to return when your application asks for it. YouTube has billions of objects across all their buckets — the key is what separates one from another. Keys look like file paths — 'videos/user-delhi-123/720p.mp4' — but S3 has no real folders. The entire string is just one flat unique name. YouTube uses slashes in keys just to keep things readable for engineers — S3 itself sees it as one single name. Same key, same bucket — always returns the exact same file."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// YouTube's object keys — how each file is uniquely named:\n\n// Inside bucket: youtube-raw-uploads\nvideos/user-delhi-123/raw.mp4          ← creator 1's raw upload\nvideos/user-mumbai-456/raw.mp4         ← creator 2's raw upload\nvideos/user-chennai-789/raw.mp4        ← creator 3's raw upload\n\n// Inside bucket: youtube-processed-videos\nvideos/user-delhi-123/1080p.mp4        ← creator 1's finished 1080p\nvideos/user-delhi-123/720p.mp4         ← creator 1's finished 720p\nvideos/user-delhi-123/480p.mp4         ← creator 1's finished 480p\n\n// Inside bucket: youtube-thumbnails\nthumbnails/user-delhi-123/thumb.jpg    ← creator 1's thumbnail\n\n// How YouTube fetches a specific file:\n// Bucket: youtube-processed-videos\n// Key:    videos/user-delhi-123/720p.mp4\n// → S3 returns exactly that file. Nothing else."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "Bucket: youtube-videos\n\nObject Key:\nvideos/user-101/intro-to-nodejs.mp4"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How Uploading to S3 Works"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — Client uploads file",
+  //             "desc": "A browser, mobile app, or backend service uploads a file to S3.\n\n Example — A YouTuber in Delhi just finished editing a 20-minute video on their phone. They hit the Upload button on the YouTube app. That 4GB video file travels from their phone, through the internet, straight into YouTube's S3 bucket in Mumbai. YouTube's backend receives the file and sends it directly into S3. The creator just sees a progress bar. Behind that progress bar — their 4GB file is landing inside an S3 bucket."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — S3 stores the object across multiple locations",
+  //             "desc": "S3 stores the file across multiple Availability Zones automatically for durability.\n\n Example — The moment that 4GB video lands in S3, AWS silently makes 3 copies of it — each copy sitting in a physically separate data center building in Mumbai. YouTube never asked for this. There is no setting to turn on. S3 just does it automatically. So if one entire data center in Mumbai loses power during a monsoon — the video is untouched in the other two buildings. The creator never experiences a single second of disruption. Their video is safe."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — S3 returns the object URL",
+  //             "desc": "AWS returns the object's location so applications can access it later.\n\n Example — Once the video is stored, S3 gives back a URL — a web address pointing exactly to that file. YouTube saves this URL in their database against that video's record. Now whenever a viewer clicks Play on that video — YouTube looks up the URL from the database and fetches the video file from S3 using that address. Without this URL, YouTube would have no way to find that specific video among the billions of other files sitting in S3."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "https://youtube-videos.s3.ap-south-1.amazonaws.com/videos/user-101/intro-to-nodejs.mp4"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "S3 Storage Classes"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Different files have different access patterns. S3 provides multiple storage classes optimized for performance and cost."
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Storage Class", "Use Case", "Cost"],
+  //             "rows": [
+  //               ["S3 Standard", "Frequently accessed files", "Highest"],
+  //               ["S3 Standard-IA", "Rarely accessed files", "Lower"],
+  //               ["S3 Intelligent-Tiering", "Unknown access patterns", "Automatic optimization"],
+  //               ["S3 Glacier", "Archive storage", "Very low"],
+  //               ["S3 Deep Archive", "Long-term backup", "Cheapest"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Lifecycle Policies"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Lifecycle Policies automatically move objects between storage classes based on age."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Example Lifecycle Rule\n30 days  → STANDARD_IA\n365 days → GLACIER\n1825 days → DEEP_ARCHIVE"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "S3 Access Control"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "By default, all S3 buckets and objects are private. Access is controlled using Bucket Policies, IAM Policies, and ACLs."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Public read policy\n{\n  \"Effect\": \"Allow\",\n  \"Principal\": \"*\",\n  \"Action\": \"s3:GetObject\",\n  \"Resource\": \"arn:aws:s3:::youtube-videos/*\"\n}"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "S3 vs EBS"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Feature", "S3", "EBS"],
+  //             "rows": [
+  //               ["Type", "Object Storage", "Block Storage"],
+  //               ["Scalability", "Virtually Unlimited", "Limited per volume"],
+  //               ["Access", "Accessible globally", "Attached to EC2"],
+  //               ["Best For", "Videos, images, backups", "OS & database disks"],
+  //               ["Cost", "Cheaper", "More expensive"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Without S3",
+  //             "list": [
+  //               "Files would be tied to EC2 instances",
+  //               "Scaling storage would become difficult",
+  //               "Servers terminating could cause data loss",
+  //               "Sharing files across services becomes complex",
+  //               "Global access becomes harder"
+  //             ],
+  //             "footer": "S3 decouples storage from compute, making cloud systems scalable and resilient."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ S3 is object storage — not a traditional filesystem. You cannot mount it like a normal Linux disk without additional tools."
+  //           }
+  //         ],
+  //         "S3 Storage Classes": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Not every video on YouTube gets watched at the same rate. A video MrBeast uploaded yesterday has millions of views today. A video some creator uploaded in 2009 with 200 views total might get watched once a month. Storing both of these in the exact same way — paying the same price for both — makes no sense. S3 Storage Classes solve this. They let YouTube pay less for files that are rarely accessed, and pay more only for files that need to be instantly available at all times."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube has videos from 2005 that nobody watches anymore. YouTube also has videos uploaded 10 minutes ago that are trending right now. Should both cost the same to store? AWS says no — and gives you different storage tiers for different situations."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "The Storage Classes"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "S3 Standard — For videos being watched right now",
+  //             "desc": "S3 Standard is the default storage class. Files stored here are instantly accessible at any time with no delay. This is the most expensive tier — but it's built for files that get accessed constantly.\n\n Example — When a creator uploads a new video, it lands in S3 Standard. When that video is trending and 10 million people are watching it simultaneously — every single one of those viewers is fetching the video file from S3 Standard. It needs to respond instantly, every time, without any delay. This is the right tier for that job."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "S3 Standard-IA (Infrequent Access) — For older videos with fewer views",
+  //             "desc": "Standard-IA stores files at a lower monthly cost — but charges a small fee each time the file is actually accessed. Built for files you still need available instantly when someone asks for them, but that aren't being accessed constantly every day.\n\n Example — A YouTube video uploaded 2 years ago gets maybe 50 views a month now. It's not trending. Nobody is actively searching for it. But if someone does click on it — it needs to play immediately with no buffering delay. YouTube moves this video from S3 Standard to Standard-IA. Monthly storage cost drops significantly. The 50 viewers per month still get instant playback — they just don't know their video came from a cheaper storage tier."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "S3 Intelligent-Tiering — For videos with unpredictable view patterns",
+  //             "desc": "Intelligent-Tiering monitors how often each file is accessed and automatically moves it between Standard and Standard-IA depending on the pattern. If a file hasn't been accessed in 30 days — it moves to the cheaper tier automatically. If it suddenly gets accessed again — it moves back to Standard automatically. YouTube pays a small monthly monitoring fee per file, but saves money overall without having to manually decide which tier each video belongs in.\n\n Example — A creator uploads a video that gets 1000 views in the first week, then goes quiet for months. Then a popular podcast mentions it — suddenly it gets 500,000 views in a day. With Intelligent-Tiering, S3 automatically moved it to the cheaper tier during the quiet months, then automatically moved it back to Standard the moment traffic spiked. YouTube's engineers didn't touch anything. The cost savings happened automatically. The viral moment was handled automatically."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "S3 Glacier Instant Retrieval — For very old videos rarely watched",
+  //             "desc": "Glacier Instant Retrieval is for files that are almost never accessed — but when someone does access them, they still need the file immediately with no waiting. Storage cost is very low. Access cost is higher than Standard-IA. But because these files are accessed so rarely, the total cost is still far cheaper.\n\n Example — A YouTube video from 2007 with 800 total views. It gets watched maybe once every few weeks by someone doing research on old internet history. YouTube still needs to serve it when that person clicks play — it can't just say 'this video is unavailable'. But paying full S3 Standard prices for a file accessed once a month makes no sense. Glacier Instant Retrieval stores it at a fraction of the cost. When that researcher clicks play — the video loads instantly, just like any other YouTube video. They have no idea it came from a cheaper archive tier."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "S3 Glacier Flexible Retrieval — For backups YouTube never needs urgently",
+  //             "desc": "Glacier Flexible Retrieval is for files that are purely for backup or compliance — files YouTube hopes to never actually need, but must keep just in case. When you do need to access a file, it takes minutes to hours to retrieve. Not instant. This tier is for situations where waiting is acceptable.\n\n Example — YouTube is legally required to keep records of videos that were removed for policy violations — even after deletion — for potential legal cases. These files will almost certainly never be accessed. But if a court case comes up years later, YouTube needs to produce them. YouTube stores these in Glacier Flexible Retrieval. If a legal team ever needs one, they request it and wait a few hours for retrieval. The waiting is fine — this isn't a viewer clicking play. It's a legal request that can wait."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "S3 Glacier Deep Archive — For files YouTube almost certainly will never open again",
+  //             "desc": "Deep Archive is the cheapest storage class S3 offers. Files can take up to 12 hours to retrieve when accessed. This is purely for long-term archival — files kept for compliance, regulation, or disaster recovery that have an extremely low chance of ever being needed.\n\n Example — YouTube keeps a complete raw backup of every video ever uploaded — even videos creators have deleted from their own channels — for a mandatory 7-year regulatory retention period. The chance of any specific deleted video needing to be retrieved is extremely low. But regulations require keeping them. YouTube stores all of this in Deep Archive. Cost is the lowest possible. If a specific file is ever needed — YouTube requests it and waits up to 12 hours. That wait time is completely acceptable for a compliance retrieval that happens maybe once a year."
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Storage Class", "Retrieval Speed", "Best For", "YouTube Example"],
+  //             "rows": [
+  //               ["S3 Standard", "Instant", "Files accessed constantly", "Trending videos being watched by millions right now"],
+  //               ["S3 Standard-IA", "Instant", "Files accessed occasionally", "2-year-old video with 50 views per month"],
+  //               ["S3 Intelligent-Tiering", "Instant", "Files with unpredictable access patterns", "Video that goes quiet then suddenly goes viral again"],
+  //               ["S3 Glacier Instant", "Instant", "Files rarely accessed but need instant playback", "2007 video watched once every few weeks"],
+  //               ["S3 Glacier Flexible", "Minutes to hours", "Backup files, no urgency needed", "Removed videos kept for potential legal cases"],
+  //               ["S3 Glacier Deep Archive", "Up to 12 hours", "Long-term compliance archives", "Deleted videos kept for 7-year regulatory requirement"]
+  //             ]
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Lifecycle Policies — YouTube Never Moves Files Manually"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "YouTube has billions of videos. Nobody manually decides which storage class each video belongs in. Instead, YouTube sets up Lifecycle Policies — rules that tell S3 to automatically move files between storage classes based on age and access patterns. YouTube defines the rules once. S3 follows them forever."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "How YouTube's Lifecycle Policy works",
+  //             "desc": "YouTube sets one rule: when a video is first uploaded, store it in S3 Standard. After 30 days — automatically move it to Standard-IA. After 1 year — automatically move it to Glacier Instant. After 5 years — automatically move it to Deep Archive. S3 follows this rule for every single video ever uploaded — billions of files — without YouTube's engineers touching a single one.\n\n Example — A creator uploads a video today. It starts in S3 Standard — fast, available, ready for the initial traffic. 30 days later, S3 automatically moves it to Standard-IA — still instant when accessed, but cheaper to store. A year later, S3 moves it to Glacier Instant — even cheaper. 5 years later, Deep Archive. The creator's video is still watchable at every stage. YouTube just stopped paying full price for a file that nobody watches anymore."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Moving a file to a cheaper storage class saves money on storage — but accessing it costs more per request than S3 Standard. If a video in Glacier Instant suddenly goes viral and gets 10 million views, YouTube pays higher retrieval fees for every one of those views. Intelligent-Tiering exists exactly for this reason — it automatically moves the video back to Standard the moment it detects the traffic spike, so YouTube never overpays on retrieval fees for a file that's suddenly popular again."
+  //           }
+  //         ],
+  //         "S3 Versioning": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "A creator uploads a new thumbnail for their video. 10 minutes later they realize the old thumbnail was getting more clicks — they want it back. Without versioning, the old thumbnail is gone forever — S3 overwrote it the moment the new one was uploaded. With versioning turned on, S3 keeps every version of every file ever uploaded. Nothing is ever truly overwritten. Nothing is ever truly deleted. Every change is preserved."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ A YouTube engineer accidentally runs a script that overwrites 10,000 video thumbnail files with corrupted images. Every affected video now shows a broken thumbnail to viewers. How does YouTube get all 10,000 original thumbnails back — instantly — without manually re-uploading each one?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is S3 Versioning?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Versioning is a setting you enable on an S3 bucket. Once turned on — every time a file is uploaded, S3 does not overwrite the existing file. Instead it keeps the old file as a previous version and stores the new file as the latest version. Both exist. Both are accessible. S3 assigns each version a unique version ID so you can always tell them apart and retrieve any specific one."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of versioning like Google Docs version history. Every time you save a document, Google Docs keeps the previous version. You can go back and see exactly what the document looked like 3 days ago. S3 Versioning does the same thing — but for every file in your bucket."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How Versioning Works — Step by Step"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — Versioning is enabled on the bucket",
+  //             "desc": "YouTube enables versioning on their youtube-thumbnails bucket. Every upload, overwrite, and delete on any file in this bucket is now tracked and preserved automatically."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "aws s3api put-bucket-versioning \\\n  --bucket youtube-thumbnails \\\n  --versioning-configuration Status=Enabled\n\n// ✅ Every file upload, overwrite, and delete is now tracked."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — Creator uploads a thumbnail",
+  //             "desc": "A creator in Delhi uploads a bright red thumbnail for their new video. S3 stores it and auto-assigns it a version ID — 'v1-abc123'. This is Version 1. It starts getting 100,000 clicks per week."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// S3 stores the first upload:\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v1-abc123',   // ← S3 auto-assigns this\n  Status:    'Current'      // ← what viewers see right now\n}"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — Creator uploads a new thumbnail to the same key",
+  //             "desc": "A week later the creator uploads a new blue thumbnail — same filename, different image. S3 keeps the red thumbnail as Version 1 and stores the blue one as Version 2. Viewers now see the blue thumbnail. The red one is still preserved in S3 under 'v1-abc123' — untouched, retrievable anytime."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// S3 now holds TWO versions of the same file:\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v2-xyz456',   // ← new blue thumbnail — viewers see this\n  Status:    'Current'\n},\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v1-abc123',   // ← original red thumbnail — safely preserved\n  Status:    'Previous'\n}"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 4 — Engineer accidentally overwrites 10,000 thumbnails",
+  //             "desc": "A bug in a YouTube script replaces 10,000 thumbnail files with a blank corrupted image. Every affected video now shows a broken thumbnail to viewers. Because versioning is on — S3 quietly stored all 10,000 previous versions automatically. The engineer runs a restore script pointing to the previous version IDs. All 10,000 original thumbnails are back in minutes. Zero manual re-uploading."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// What S3 holds after the bug runs:\n{\n  VersionId: 'v3-corrupt',  // ← corrupted file — current version ❌\n  Status:    'Current'\n},\n{\n  VersionId: 'v2-xyz456',  // ← last good version — still safe in S3 ✅\n  Status:    'Previous'\n}\n\n// Engineer restores the previous version:\naws s3api copy-object \\\n  --bucket youtube-thumbnails \\\n  --copy-source youtube-thumbnails/thumbnails/user-delhi-123/thumb.jpg?versionId=v2-xyz456 \\\n  --key thumbnails/user-delhi-123/thumb.jpg\n\n// ✅ Original thumbnail is back as current version."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Deleting Files With Versioning On"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "When versioning is enabled and you delete a file — S3 does not actually delete it. Instead S3 places a Delete Marker on top of the file. The file looks deleted to your application — requests for it return a 404 not found. But all the previous versions are still sitting in S3 underneath that marker. To truly recover the file — you just remove the Delete Marker."
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Delete Marker — The Safety Net",
+  //             "desc": "A creator deletes their video from YouTube. S3 places a Delete Marker on the thumbnail — the file appears gone to the system. 6 months later the creator contacts support wanting the video reinstated. YouTube removes the Delete Marker. The original thumbnail reappears instantly — exactly as it was on the day it was deleted."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Creator deletes video — S3 places a Delete Marker:\n{\n  VersionId: 'dm-delete001',  // ← Delete Marker\n  Status:    'Current'        // ← file appears deleted, returns 404\n}\n// All previous versions still preserved underneath\n\n// 6 months later — creator wants reinstatement:\naws s3api delete-object \\\n  --bucket youtube-thumbnails \\\n  --key thumbnails/user-delhi-123/thumb.jpg \\\n  --version-id dm-delete001\n\n// ✅ Delete Marker removed. Original thumbnail is back."
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "What happens without versioning:",
+  //             "list": [
+  //               "Engineer accidentally overwrites 10,000 thumbnails — all originals gone forever, no recovery possible",
+  //               "Creator deletes a video by mistake — thumbnail permanently deleted, cannot be restored",
+  //               "A bad deployment pushes corrupted files to S3 — previous working files are gone, rollback is impossible",
+  //               "A script runs with a bug and overwrites the wrong files — no way to know what the files looked like before"
+  //             ],
+  //             "footer": "Every one of these scenarios becomes a full recovery with versioning enabled. Without it — each one is permanent data loss."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Versioning keeps every version of every file forever — which means storage costs grow over time. YouTube manages this with S3 Lifecycle Policies on old versions — keeping the last 3 versions in S3 Standard, automatically moving older versions to Glacier after 90 days, and permanently deleting versions older than 1 year."
+  //           }
+  //         ],
+  //         "EBS (Elastic Block Store)": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Every EC2 server needs a hard drive — somewhere to store the operating system, application code, logs, and temporary files. On your laptop, that's your SSD. On AWS, that's EBS. Elastic Block Store is the hard drive attached to an EC2 instance. Unlike the EC2 server itself, the EBS volume can survive even if the server crashes or gets terminated. You can detach it from one instance and attach it to another, similar to unplugging an external SSD from one laptop and plugging it into another."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ When YouTube's transcoding server is converting a 4K video, where are all the temporary files stored during processing? If the server crashes halfway through the job, does all the work disappear?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is EBS?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "EBS (Elastic Block Store) is a network-attached storage volume for EC2 instances. It behaves like a physical hard drive where the instance reads and writes data normally. The important difference is that EBS exists independently from the EC2 instance, so the volume and its data can survive even after the server is terminated."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of EBS like an external SSD. Your laptop (EC2) performs the work, while the SSD (EBS) stores the data. If the laptop breaks, the SSD still contains all the files and can be connected to another laptop."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How EBS Works — The YouTube Story"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — EC2 instance launches with an EBS volume attached",
+  //             "desc": "When YouTube launches a transcoding EC2 instance, AWS automatically attaches an EBS volume to it. This volume stores the operating system, ffmpeg software, logs, and all temporary transcoding files.\n\nExample — YouTube launches a c6i.8xlarge transcoding server with a 100GB gp3 EBS volume attached as the root drive. The OS boots from this volume, ffmpeg is installed here, and all temporary video processing files are written here during transcoding."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// YouTube's transcoding EC2 instance with EBS attached:\n{\n  InstanceType: 'c6i.8xlarge',\n  EBSVolume: {\n    VolumeId:   'vol-0abc123def456',\n    Size:        100,\n    Type:       'gp3',\n    IOPS:        3000,\n    AttachedTo: 'i-0xyz789',\n    MountPoint: '/dev/xvda'\n  }\n}\n\n// Everything reads/writes to this EBS volume:\n// - OS files         → /dev/xvda\n// - ffmpeg binary    → /usr/bin/ffmpeg\n// - temp video files → /tmp/transcoding/"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — Server processes video using EBS as working storage",
+  //             "desc": "The EC2 server downloads the raw 4K video from S3 onto the EBS volume, processes it using ffmpeg, writes intermediate and output files back to EBS, then uploads the finished videos to S3.\n\nExample — A creator uploads a 50GB 4K video. The transcoding server stores the raw file temporarily on EBS, generates 1080p and 720p versions on the same volume, uploads the final outputs back to S3, and then clears the temporary files from EBS. EBS acts like the working desk while S3 acts like permanent storage."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Step 1 — Download raw video from S3 to EBS\naws s3 cp s3://youtube-raw-uploads/videos/user123/raw-4k.mp4 /tmp/transcoding/\n\n// Step 2 — ffmpeg reads/writes on EBS\nffmpeg -i /tmp/transcoding/raw-4k.mp4 /tmp/transcoding/output-1080p.mp4\nffmpeg -i /tmp/transcoding/raw-4k.mp4 /tmp/transcoding/output-720p.mp4\n\n// Step 3 — Upload processed videos back to S3\naws s3 cp /tmp/transcoding/output-1080p.mp4 s3://youtube-processed/videos/user123/\naws s3 cp /tmp/transcoding/output-720p.mp4 s3://youtube-processed/videos/user123/\n\n// Step 4 — Cleanup temp files from EBS\nrm -rf /tmp/transcoding/*"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — Server crashes but EBS volume survives",
+  //             "desc": "If the EC2 instance crashes during transcoding, the EBS volume still survives because it exists independently from the server.\n\nExample — A transcoding server crashes at 60% progress. AWS terminates the EC2 instance, but the EBS volume remains intact with all partially processed files still stored on it. YouTube launches a new EC2 instance, attaches the same EBS volume, and resumes the job from where it stopped."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// EC2 instance crashes\nInstance i-0xyz789  → TERMINATED ❌\nEBS vol-0abc123def → AVAILABLE ✅\n\n// Attach same EBS volume to new EC2 instance\naws ec2 attach-volume \\\n  --volume-id vol-0abc123def456 \\\n  --instance-id i-0new456instance \\\n  --device /dev/xvda\n\n// New server mounts the EBS volume\nls /tmp/transcoding/\n// raw-4k.mp4\n// output-1080p.mp4\n// output-720p.mp4\n\n// New server resumes processing"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "EBS Volume Types"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Volume Type", "Best For", "YouTube Use Case"],
+  //             "rows": [
+  //               [
+  //                 "gp3 (General Purpose SSD)",
+  //                 "Balanced performance and cost",
+  //                 "OS volumes, backend servers, transcoding workers"
+  //               ],
+  //               [
+  //                 "io2 (Provisioned IOPS SSD)",
+  //                 "High-performance databases with consistent low latency",
+  //                 "YouTube's critical RDS database storage"
+  //               ],
+  //               [
+  //                 "st1 (Throughput HDD)",
+  //                 "Large sequential file processing",
+  //                 "Large batch video processing and log analysis"
+  //               ],
+  //               [
+  //                 "sc1 (Cold HDD)",
+  //                 "Rarely accessed low-cost storage",
+  //                 "Old archived logs and compliance storage"
+  //               ]
+  //             ]
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Important EBS limitations",
+  //             "list": [
+  //               "One EBS volume can usually be attached to only one EC2 instance at a time",
+  //               "EBS volumes are locked to a single Availability Zone",
+  //               "EBS is designed for active compute workloads, not massive permanent object storage"
+  //             ],
+  //             "footer": "EBS is temporary working storage for servers. Permanent user files are usually stored in S3."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ EBS volumes continue charging even after the EC2 instance is stopped or terminated. Many companies accidentally leave unused EBS volumes running and pay for forgotten storage. Large companies use automated cleanup systems to detect and remove unattached EBS volumes."
+  //           }
+  //         ],
+
+  //         "EFS (Elastic File System)": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "EBS gives one EC2 server its own persistent hard drive. But large systems like YouTube run hundreds or thousands of servers simultaneously, and many of those servers need access to the same files at the same time. EFS solves this problem by providing a shared file system that multiple EC2 instances can read from and write to simultaneously."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ YouTube's subtitle generation system runs on 500 EC2 servers in parallel. Every server needs access to the same language model files and must write generated subtitle files to one central shared location. How can all 500 servers access the same files simultaneously?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is EFS?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "EFS (Elastic File System) is a fully managed shared network file system for AWS. Multiple EC2 instances can mount the same EFS simultaneously and access identical files in real time. Unlike EBS, which acts like a private hard drive for one server, EFS behaves like a shared drive accessible by an entire fleet of servers."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of EFS like a shared Google Drive folder mounted on 500 servers simultaneously. One server can read a language model while another writes a subtitle file, all using the same shared storage in real time."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How EFS Works — The YouTube Story"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — YouTube creates a shared EFS file system",
+  //             "desc": "YouTube creates a single EFS file system for its subtitle generation pipeline. Large language model files like Hindi, Tamil, Telugu, and English models are stored centrally inside EFS so every subtitle server can access them.\n\nExample — YouTube uploads 52 language models, each several GB in size, into one EFS file system. Any EC2 instance in the VPC can connect to this shared storage using the EFS mount address."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Create EFS file system\naws efs create-file-system \\\n  --region ap-south-1 \\\n  --tags Key=Name,Value=youtube-subtitle-models\n\n// EFS created\n{\n  FileSystemId: 'fs-0abc123def',\n  Region:       'ap-south-1',\n  SizeInBytes:  450_000_000_000,\n  MountTarget:  'fs-0abc123def.efs.ap-south-1.amazonaws.com'\n}"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — 500 EC2 servers mount the same EFS",
+  //             "desc": "YouTube launches 500 subtitle processing servers. Each server mounts the same EFS file system during startup, giving every server access to identical files instantly.\n\nExample — All 500 subtitle servers mount EFS at /models. Every server can read the same Hindi or Tamil language model simultaneously without copying files separately to each machine."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Mount EFS on each EC2 server\nmkdir -p /models\nmount -t efs fs-0abc123def:/ /models\n\n// Shared files visible on every server\nls /models\n// hindi-model-v3.bin\n// tamil-model-v2.bin\n// telugu-model-v2.bin\n// english-model-v5.bin\n\n// All 500 servers can access the same files simultaneously"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — Servers write subtitle outputs back to EFS",
+  //             "desc": "Each subtitle server writes completed subtitle files into a shared output directory inside EFS. Other services can instantly see and process those files.\n\nExample — Server 147 generates Hindi subtitles and writes them to /output/user-delhi-123/hindi.vtt. YouTube's collection service immediately sees the new file appear and picks it up for final processing."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Server 147 writes subtitle output\necho 'subtitle content...' > /output/user-delhi-123/hindi.vtt\n\n// Another server writes simultaneously\necho 'subtitle content...' > /output/user-mumbai-456/hindi.vtt\n\n// Collection service reads outputs\nls /output/\n// user-delhi-123/hindi.vtt\n// user-mumbai-456/hindi.vtt\n// user-pune-789/tamil.vtt"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 4 — EFS storage scales automatically",
+  //             "desc": "When YouTube adds or removes files, EFS automatically grows or shrinks without manual resizing.\n\nExample — YouTube uploads a new Marathi language model to EFS. Seconds later, all 500 subtitle servers instantly see the new model file without restarts, deployments, or copying data individually to every server."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "EBS vs EFS — When to Use Which"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Feature", "EBS", "EFS"],
+  //             "rows": [
+  //               [
+  //                 "Attached to",
+  //                 "One EC2 instance",
+  //                 "Multiple EC2 instances simultaneously"
+  //               ],
+  //               [
+  //                 "Access",
+  //                 "Private storage",
+  //                 "Shared storage"
+  //               ],
+  //               [
+  //                 "Scaling",
+  //                 "Manual resizing",
+  //                 "Automatic scaling"
+  //               ],
+  //               [
+  //                 "Performance",
+  //                 "Faster local disk-like performance",
+  //                 "Slightly slower network storage"
+  //               ],
+  //               [
+  //                 "Cost",
+  //                 "Cheaper",
+  //                 "More expensive"
+  //               ],
+  //               [
+  //                 "Best for",
+  //                 "OS, app files, temporary processing",
+  //                 "Shared models, configs, shared outputs"
+  //               ],
+  //               [
+  //                 "YouTube example",
+  //                 "Per-server transcoding workspace",
+  //                 "Language models shared across 500 servers"
+  //               ]
+  //             ]
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Common mistakes when choosing EBS vs EFS",
+  //             "list": [
+  //               "Using EBS when multiple servers need the same files",
+  //               "Using EFS for workloads that only require single-server storage",
+  //               "Using EBS or EFS for permanent large-scale file storage instead of S3"
+  //             ],
+  //             "footer": "Rule of thumb: single server storage → EBS. Shared storage across many servers → EFS. Permanent scalable object storage → S3."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ EFS is significantly more expensive than EBS and S3. Companies only use EFS for workloads where many servers truly need shared real-time access to the same files."
+  //           }
+  //         ],
+
+  //         "Glacier Storage": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Not all data needs to be accessed instantly. Companies like YouTube store billions of old videos, logs, audit records, and deleted creator backups that are rarely opened but still must be preserved for years. Keeping all this data in fast S3 storage would be extremely expensive. Glacier is AWS's ultra-cheap archival storage designed for files that are rarely accessed but must remain safely stored for long periods."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ A creator uploaded a video 7 years ago that nobody has watched since. YouTube still needs to preserve it safely for legal, compliance, and recovery reasons. Should they keep it in expensive high-speed storage forever?"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is Glacier Storage?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Amazon S3 Glacier is AWS's long-term archival storage service. It stores files at extremely low cost compared to normal S3 storage, but retrieval is much slower. Instead of milliseconds, recovering files can take minutes or even hours depending on the retrieval option chosen."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Think of Glacier like a huge underground archive warehouse. S3 Standard is your active office desk with instant access. Glacier is the storage basement where old files are safely packed away until someone specifically requests them."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How Glacier Works — The YouTube Story"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — Old videos are moved from S3 to Glacier",
+  //             "desc": "YouTube automatically detects videos that haven't been watched for years and moves them from expensive hot storage into Glacier archival storage.\n\nExample — A 2018 uploaded video hasn't been viewed in 4 years. AWS lifecycle policies automatically transfer the video from S3 Standard to Glacier Flexible Retrieval to reduce storage cost dramatically."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// S3 Lifecycle Rule\n{\n  \"Rules\": [\n    {\n      \"ID\": \"archive-old-videos\",\n      \"Status\": \"Enabled\",\n      \"Filter\": {\n        \"Prefix\": \"videos/\"\n      },\n      \"Transitions\": [\n        {\n          \"Days\": 365,\n          \"StorageClass\": \"GLACIER\"\n        }\n      ]\n    }\n  ]\n}"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — Glacier stores files cheaply for years",
+  //             "desc": "The archived video now lives in Glacier storage where AWS optimizes for low cost instead of instant access.\n\nExample — Millions of rarely watched YouTube videos, old moderation logs, and deleted creator backups remain safely stored in Glacier for compliance and recovery purposes at a fraction of normal S3 storage cost."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Example archived object\n{\n  Key: 'videos/2018/old-video.mp4',\n  StorageClass: 'GLACIER',\n  Size: '12GB',\n  AccessFrequency: 'Rare'\n}"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — User requests an old archived video",
+  //             "desc": "If someone requests an archived file, YouTube must first restore it from Glacier before it becomes accessible again.\n\nExample — A creator requests recovery of a deleted video from 2019. YouTube sends a Glacier restore request. AWS begins retrieving the archived file, which may take several minutes or hours depending on retrieval speed."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Restore archived object\naws s3api restore-object \\\n  --bucket youtube-archive \\\n  --key videos/2018/old-video.mp4 \\\n  --restore-request '{\"Days\":7,\"GlacierJobParameters\":{\"Tier\":\"Standard\"}}'"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 4 — File becomes temporarily accessible again",
+  //             "desc": "After restoration completes, the archived file becomes temporarily available in S3 for normal access.\n\nExample — The creator downloads the restored 2019 video. After the temporary restore window expires, AWS automatically returns the file to Glacier archival storage."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Glacier Retrieval Options"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Retrieval Type", "Speed", "Best For"],
+  //             "rows": [
+  //               [
+  //                 "Expedited",
+  //                 "1–5 minutes",
+  //                 "Urgent recovery requests"
+  //               ],
+  //               [
+  //                 "Standard",
+  //                 "3–5 hours",
+  //                 "Normal archive retrieval"
+  //               ],
+  //               [
+  //                 "Bulk",
+  //                 "5–12 hours",
+  //                 "Large-scale cheap retrieval"
+  //               ]
+  //             ]
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Important things to know about Glacier",
+  //             "list": [
+  //               "Glacier is extremely cheap but not designed for instant access",
+  //               "Retrieving archived files costs extra money",
+  //               "Frequent retrieval from Glacier defeats the cost-saving purpose",
+  //               "Glacier is best for long-term archival and compliance storage"
+  //             ],
+  //             "footer": "Hot frequently-used files belong in S3 Standard. Rarely accessed archival data belongs in Glacier."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ A common mistake is moving frequently accessed data into Glacier to save money. Retrieval delays and retrieval costs can quickly become a problem if files are constantly being restored."
+  //           }
+  //         ],
+
+  //         "Data Backup Strategies": [
+  //           {
+  //             "type": "paragraph",
+  //             "text": "Hardware fails. Databases get corrupted. Developers accidentally delete production data. Entire AWS regions can experience outages. Large companies survive disasters because they always maintain multiple backups of critical data. A backup strategy is not optional — it is a core survival system for modern infrastructure."
+  //           },
+  //           {
+  //             "type": "curious-callout",
+  //             "text": "❓ What happens if YouTube's main database storing video metadata suddenly gets corrupted? Without backups, billions of videos could permanently lose titles, descriptions, comments, and creator information."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "What is a Backup Strategy?"
+  //           },
+  //           {
+  //             "type": "paragraph",
+  //             "text": "A backup strategy is a planned system for copying and protecting important data so it can be restored after failures, accidental deletion, cyberattacks, or disasters. Good backup systems create multiple copies of data across different locations and storage systems."
+  //           },
+  //           {
+  //             "type": "info-callout",
+  //             "text": "💡 Backups are like insurance policies for data. You hope you never need them, but when disaster happens, backups are the reason a company survives."
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "How Backup Strategies Work — The YouTube Story"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 1 — Primary production database handles live traffic",
+  //             "desc": "YouTube's production database stores live metadata like video titles, creator info, comments, and recommendations.\n\nExample — Millions of users upload videos, edit titles, and post comments every minute. All this live data continuously updates the production database."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Production database\nProductionDB {\n  Videos,\n  Comments,\n  CreatorProfiles,\n  Recommendations\n}"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 2 — Automated backups run continuously",
+  //             "desc": "AWS automatically creates snapshots and backups of critical systems at scheduled intervals.\n\nExample — YouTube creates hourly database snapshots, daily backups, and cross-region backup copies to ensure recovery is always possible."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Example backup schedule\nEvery 1 hour  → Database snapshot\nEvery 24 hour → Full backup to S3\nEvery 7 days  → Cross-region disaster recovery backup"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 3 — Production failure occurs",
+  //             "desc": "A major outage, accidental deletion, or corruption damages the production system.\n\nExample — A faulty deployment accidentally deletes millions of comment records from the production database."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Accidentally deleted data\nDELETE FROM comments\nWHERE created_at < '2025-01-01';\n\n// Millions of comments removed ❌"
+  //           },
+  //           {
+  //             "type": "step",
+  //             "title": "Step 4 — Restore data from backups",
+  //             "desc": "Engineers restore the affected systems using recent backups and snapshots.\n\nExample — YouTube restores the deleted comments using the latest database snapshot and transaction logs, recovering almost all lost data."
+  //           },
+  //           {
+  //             "type": "code",
+  //             "code": "// Restore latest snapshot\naws rds restore-db-instance-from-db-snapshot \\\n  --db-instance-identifier youtube-restored-db \\\n  --db-snapshot-identifier snapshot-2026-05-25"
+  //           },
+  //           {
+  //             "type": "heading",
+  //             "text": "Common Backup Strategies"
+  //           },
+  //           {
+  //             "type": "table",
+  //             "headers": ["Strategy", "Description", "Example"],
+  //             "rows": [
+  //               [
+  //                 "Snapshots",
+  //                 "Point-in-time storage copy",
+  //                 "EBS and RDS snapshots"
+  //               ],
+  //               [
+  //                 "Cross-region backup",
+  //                 "Store copies in another AWS region",
+  //                 "Mumbai backup copied to Singapore"
+  //               ],
+  //               [
+  //                 "Incremental backup",
+  //                 "Only changed data is backed up",
+  //                 "Daily changed records only"
+  //               ],
+  //               [
+  //                 "Versioning",
+  //                 "Keep older file versions",
+  //                 "Recover accidentally deleted S3 objects"
+  //               ]
+  //             ]
+  //           },
+  //           {
+  //             "type": "error-callout",
+  //             "title": "Common backup mistakes",
+  //             "list": [
+  //               "Keeping backups in the same region as production",
+  //               "Never testing whether backups actually restore correctly",
+  //               "Running backups too infrequently",
+  //               "Not protecting backups from accidental deletion or ransomware"
+  //             ],
+  //             "footer": "A backup is useless if it cannot be restored during a real disaster."
+  //           },
+  //           {
+  //             "type": "warning-callout",
+  //             "text": "⚠️ Many companies discover their backups are broken only during real emergencies. Large companies regularly perform disaster recovery drills to verify backup systems actually work."
+  //           }
+  //         ],
 
 
-      },
-      // {
-      //   "id": 4,
-      //   "title": "AWS Networking",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "What is VPC?",
-      //     "CIDR Blocks",
-      //     "Public vs Private Subnets",
-      //     "Internet Gateway",
-      //     "NAT Gateway",
-      //     "Route Tables",
-      //     "Security Groups vs NACL",
-      //     "Elastic Load Balancer",
-      //     "Route 53 Basics",
-      //     "DNS Fundamentals"
-      //   ]
-      // },
-      // {
-      //   "id": 5,
-      //   "title": "AWS Databases",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "RDS Basics",
-      //     "MySQL/PostgreSQL on AWS",
-      //     "Read Replicas",
-      //     "Multi-AZ Deployments",
-      //     "Amazon DynamoDB",
-      //     "SQL vs NoSQL",
-      //     "ElastiCache Redis",
-      //     "Database Backups",
-      //     "Scaling Databases",
-      //     "Aurora Basics"
-      //   ]
-      // },
-      // {
-      //   "id": 6,
-      //   "title": "IAM & AWS Security",
-      //   "level": "freshers",
-      //   "topics": [
-      //     "What is IAM?",
-      //     "IAM Users & Groups",
-      //     "IAM Roles",
-      //     "Policies & Permissions",
-      //     "Least Privilege Principle",
-      //     "MFA in AWS",
-      //     "AWS KMS",
-      //     "Secrets Manager",
-      //     // "AWS Shield",
-      //     "AWS WAF"
-      //   ],
-      //   "topicDetails": {
+  //       }
 
-      //     "What is IAM?": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "YouTube has thousands of engineers, hundreds of automated systems, and dozens of AWS services — all needing access to AWS resources. Some engineers should be able to deploy code. Some should only be able to read logs. A transcoding server should be able to read from S3 but never touch the database. A billing system should see cost reports but never touch any servers. Without a way to control exactly who can do what — anyone inside YouTube could accidentally delete a production database or a rogue automated script could wipe out years of video files. IAM is how AWS controls all of this."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube has 10,000 engineers. Some are backend engineers who deploy APIs. Some are data analysts who only read logs. Some are interns who should only access dev environments. How does AWS ensure each person can only touch exactly what their job requires — and nothing else?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is IAM?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "IAM stands for Identity and Access Management. It is AWS's system for controlling who can access your AWS account and what they are allowed to do inside it. Every action in AWS — launching an EC2 instance, uploading a file to S3, reading a secret from Secrets Manager — goes through IAM first. IAM checks: who is making this request? Are they allowed to do this? If yes — the action proceeds. If no — it is blocked immediately."
-      //       },
-      //       {
-      //         "type": "info-callout",
-      //         "text": "💡 Think of IAM like YouTube's internal access badge system. Every employee gets a badge. The badge defines exactly which doors they can open — server room, finance office, data center. A junior engineer's badge opens the dev server room but not the production database room. IAM is that badge system — but for every AWS service and every action inside AWS."
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "The Three Core Questions IAM Answers"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Who are you? — Authentication",
-      //         "desc": "Before IAM checks what you can do — it first confirms who you are. You prove your identity using credentials — a username and password for human engineers, or an access key for automated systems. Until IAM confirms your identity, no AWS action is possible."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "What are you allowed to do? — Authorization",
-      //         "desc": "Once IAM knows who you are — it checks your permissions. What specific AWS actions are you allowed to perform? Can you launch EC2 instances? Can you read from S3? Can you delete a database? Every action is checked against the permissions attached to your identity."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "What resources can you touch? — Resource Scope",
-      //         "desc": "Permissions in IAM are not just about actions — they also define which specific resources those actions apply to. An engineer might be allowed to read from S3 — but only from the dev bucket, not the production bucket. Same action, different resource, different permission."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Every AWS action goes through IAM — here's what happens behind the scenes:\n\n// Engineer tries to launch an EC2 instance:\nRequest: Launch EC2 instance in ap-south-1\n\n// IAM checks:\n1. Who is making this request?     → engineer-rahul@youtube.com ✅\n2. Are they allowed to do this?    → has ec2:RunInstances permission? ✅\n3. In which resources/regions?     → ap-south-1 allowed? ✅\n\nResult: ✅ EC2 instance launches\n\n// Same engineer tries to delete an S3 bucket:\nRequest: Delete S3 bucket youtube-processed-videos\n\n// IAM checks:\n1. Who is making this request?     → engineer-rahul@youtube.com ✅\n2. Are they allowed to do this?    → has s3:DeleteBucket permission? ❌\n\nResult: ❌ Access Denied — request blocked before it reaches S3"
-      //       },
-      //       {
-      //         "type": "warning-callout",
-      //         "text": "⚠️ IAM is global — it applies across every AWS region. A permission you grant or deny in IAM applies everywhere in your AWS account, not just in one region. This is why getting IAM right is the most important security decision in AWS. Every other service — EC2, S3, RDS, Lambda — relies on IAM to decide who can touch it."
-      //       }
-      //     ],
 
-      //     "IAM Users & Groups": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "YouTube has thousands of engineers across different teams — backend, frontend, data, DevOps, security, finance. Each person needs AWS access. Each team needs different levels of access. Creating and managing permissions for every individual engineer one by one would be impossible. IAM Users and Groups are how YouTube manages this at scale — create a user for each person, put them in a group, and the group's permissions automatically apply to everyone in it."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube hires 50 new backend engineers this month. Each one needs identical AWS permissions — deploy to EC2, read from S3, push to CodeDeploy. Does someone manually set up permissions for all 50 one by one? What happens when their permissions need to change next month?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "IAM Users"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "An IAM User is an identity created inside your AWS account for a specific person or application. Each user gets their own credentials — a username and password for AWS Console access, or access keys for programmatic access via CLI or SDK. Every action that user takes in AWS is tracked and logged against their identity."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Creating an IAM User for a new YouTube engineer",
-      //         "desc": "A new backend engineer joins YouTube. The DevOps team creates an IAM User for them — priya@youtube.com. She gets a temporary password for her first login and is immediately placed into the backend-engineers group. Her permissions come from the group — not set individually."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Creating a new IAM User for a YouTube engineer:\naws iam create-user --user-name priya-backend\n\n// Give her console access with a temporary password:\naws iam create-login-profile \\\n  --user-name priya-backend \\\n  --password TempPass@123 \\\n  --password-reset-required   // ← forces her to change on first login\n\n// ✅ Priya can now log into the AWS Console.\n// She has zero permissions yet — just an identity."
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "IAM Groups"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "An IAM Group is a collection of IAM Users. You attach permissions to the group — and every user in that group automatically inherits those permissions. YouTube has groups like backend-engineers, data-analysts, devops-team, security-team, finance-team. When a new engineer joins — add them to the right group. Their permissions are set instantly. When their role changes — move them to a different group. One action, all permissions updated."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Adding Priya to the backend-engineers group",
-      //         "desc": "Priya is a backend engineer. YouTube adds her to the backend-engineers IAM Group. This group has permissions to deploy EC2, read from S3, push to CodeDeploy, and read CloudWatch logs. The moment she's added to the group — she has all of these permissions. No individual permission setup needed."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Add Priya to the backend-engineers group:\naws iam add-user-to-group \\\n  --user-name priya-backend \\\n  --group-name backend-engineers\n\n// backend-engineers group permissions:\n{\n  \"Group\": \"backend-engineers\",\n  \"Permissions\": [\n    \"ec2:RunInstances\",       // ← can launch EC2 instances\n    \"ec2:DescribeInstances\",  // ← can view EC2 instances\n    \"s3:GetObject\",           // ← can read from S3\n    \"codedeploy:*\",           // ← full CodeDeploy access\n    \"cloudwatch:GetMetricData\" // ← can read monitoring metrics\n  ]\n}\n\n// ✅ Priya now has all backend-engineers permissions.\n// 50 new engineers join next month → add them to the same group.\n// All 50 get identical permissions instantly. Zero individual setup."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Priya gets promoted to DevOps — permissions update in one step",
-      //         "desc": "6 months later Priya moves to the DevOps team. She needs different permissions now — more access than backend engineers. YouTube removes her from backend-engineers and adds her to devops-team. Her old permissions are gone. Her new permissions are active. One group change — complete permission update."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Priya moves to DevOps — one command updates all her permissions:\naws iam remove-user-from-group \\\n  --user-name priya-backend \\\n  --group-name backend-engineers\n\naws iam add-user-to-group \\\n  --user-name priya-backend \\\n  --group-name devops-team\n\n// Before: ec2 deploy, s3 read, codedeploy access\n// After:  ec2 full access, s3 full access, rds access, vpc management\n// One change. All permissions updated instantly. ✅"
-      //       },
-      //       {
-      //         "type": "table",
-      //         "headers": ["YouTube IAM Group", "Who is in it", "What they can do"],
-      //         "rows": [
-      //           ["backend-engineers", "API and server developers", "Deploy EC2, read S3, push CodeDeploy, read CloudWatch"],
-      //           ["data-analysts", "Data and ML engineers", "Read S3, query Athena, read RDS — no write access anywhere"],
-      //           ["devops-team", "Infrastructure engineers", "Full EC2, S3, RDS, VPC, IAM management"],
-      //           ["security-team", "Security engineers", "Read all logs, CloudTrail, GuardDuty — no resource modification"],
-      //           ["finance-team", "Cost and billing team", "AWS Cost Explorer, billing console — no infrastructure access"],
-      //           ["interns", "New joiners", "Read-only access to dev environment S3 and CloudWatch only"]
-      //         ]
-      //       },
-      //       {
-      //         "type": "error-callout",
-      //         "title": "Never use the AWS root account for daily work:",
-      //         "list": [
-      //           "The root account is created when you first sign up for AWS — it has unlimited access to everything with no restrictions",
-      //           "YouTube's root account credentials are locked in a vault — used only for extreme emergencies like account recovery",
-      //           "Every engineer gets their own IAM User — tracked, scoped, and revokable",
-      //           "If a root account gets compromised — the attacker has unlimited access to every AWS resource with no way to restrict them"
-      //         ],
-      //         "footer": "AWS itself recommends never using the root account for daily operations. Create IAM Users for every person. Lock the root account credentials away."
-      //       }
-      //     ],
+  //     },
+  //     // {
+  //     //   "id": 4,
+  //     //   "title": "AWS Networking",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "What is VPC?",
+  //     //     "CIDR Blocks",
+  //     //     "Public vs Private Subnets",
+  //     //     "Internet Gateway",
+  //     //     "NAT Gateway",
+  //     //     "Route Tables",
+  //     //     "Security Groups vs NACL",
+  //     //     "Elastic Load Balancer",
+  //     //     "Route 53 Basics",
+  //     //     "DNS Fundamentals"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 5,
+  //     //   "title": "AWS Databases",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "RDS Basics",
+  //     //     "MySQL/PostgreSQL on AWS",
+  //     //     "Read Replicas",
+  //     //     "Multi-AZ Deployments",
+  //     //     "Amazon DynamoDB",
+  //     //     "SQL vs NoSQL",
+  //     //     "ElastiCache Redis",
+  //     //     "Database Backups",
+  //     //     "Scaling Databases",
+  //     //     "Aurora Basics"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 6,
+  //     //   "title": "IAM & AWS Security",
+  //     //   "level": "freshers",
+  //     //   "topics": [
+  //     //     "What is IAM?",
+  //     //     "IAM Users & Groups",
+  //     //     "IAM Roles",
+  //     //     "Policies & Permissions",
+  //     //     "Least Privilege Principle",
+  //     //     "MFA in AWS",
+  //     //     "AWS KMS",
+  //     //     "Secrets Manager",
+  //     //     // "AWS Shield",
+  //     //     "AWS WAF"
+  //     //   ],
+  //     //   "topicDetails": {
 
-      //     "IAM Roles": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "IAM Users are for humans — engineers who log in with a username and password. But YouTube's EC2 transcoding servers also need AWS access — they need to read raw videos from S3, write processed videos back to S3, and send metrics to CloudWatch. Giving a server a username and password makes no sense. Hardcoding access keys inside server code is dangerous. IAM Roles solve this — they give AWS services a temporary, automatic identity with exactly the permissions they need."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube's EC2 transcoding server needs to fetch a video from S3 to process it. How does the server prove to S3 that it's an authorized YouTube system — and not some random server trying to access private video files?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is an IAM Role?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "An IAM Role is an identity with specific permissions — just like an IAM User. The key difference: a Role is not tied to one specific person or server. It is assumed temporarily by whoever needs it — an EC2 instance, a Lambda function, another AWS service. When a service assumes a Role, AWS automatically provides temporary credentials that expire after a short time and are auto-refreshed. No hardcoded passwords. No long-lived access keys sitting in code."
-      //       },
-      //       {
-      //         "type": "info-callout",
-      //         "text": "💡 Think of an IAM Role like a job title at YouTube. The title 'Transcoding Server' comes with specific access rights — read raw uploads from S3, write processed videos to S3. Any EC2 instance assigned this job title automatically gets those rights. When the instance is terminated, the job title goes with it — credentials gone automatically."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Step 1 — YouTube creates a Role for their transcoding servers",
-      //         "desc": "YouTube's DevOps team creates an IAM Role called youtube-transcoding-role. This role has exactly the permissions a transcoding server needs — read from the raw uploads bucket, write to the processed videos bucket, send metrics to CloudWatch. Nothing more."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// youtube-transcoding-role permissions:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\n    \"s3:GetObject on youtube-raw-uploads/*\",      // ← read raw videos\n    \"s3:PutObject on youtube-processed-videos/*\", // ← write processed videos\n    \"cloudwatch:PutMetricData\"                    // ← send processing metrics\n  ]\n  // ❌ No s3:DeleteObject — server cannot delete any files\n  // ❌ No ec2:* — server cannot touch other EC2 instances\n  // ❌ No rds:* — server cannot touch the database\n}"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Step 2 — EC2 instance is launched with this Role attached",
-      //         "desc": "When YouTube's Auto Scaling group launches a new transcoding server, the youtube-transcoding-role is attached to it at launch. The moment the instance boots — it automatically has the role's permissions. No engineer SSHed in. No credentials were configured. AWS handled it entirely."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Launch Template with IAM Role attached:\n{\n  ImageId:      'ami-youtube-transcoder-v1.4',\n  InstanceType: 'c6i.8xlarge',\n  IamInstanceProfile: {\n    Name: 'youtube-transcoding-role'  // ← role attached at launch\n  }\n}\n\n// The moment the instance boots — it can call S3 directly:\naws s3 cp s3://youtube-raw-uploads/videos/user123/raw.mp4 /tmp/\n// ✅ Works — role gives it read permission on this bucket\n\naws s3 cp s3://youtube-raw-uploads/ --recursive --delete\n// ❌ Access Denied — role has no delete permission"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Step 3 — AWS automatically rotates the credentials",
-      //         "desc": "Behind the scenes, AWS gives the EC2 instance temporary credentials that expire every few hours and are automatically replaced. The server never stores long-lived access keys. If the server is compromised — the credentials expire on their own within hours. An attacker cannot use stolen credentials indefinitely.\n\nA hacker breaks into YouTube's transcoding server and steals the AWS credentials they find. Those credentials expire in 4 hours. The hacker tries to use them the next day — they're already invalid. With hardcoded permanent access keys, the hacker would have had permanent access until someone manually rotated the keys."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Temporary credentials AWS provides to the EC2 instance via the Role:\n{\n  AccessKeyId:     'ASIA1234567890EXAMPLE',\n  SecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',\n  SessionToken:    'AQoDYXdzEJr...',\n  Expiration:      '2025-01-15T18:00:00Z'   // ← expires in 4 hours\n}\n// AWS automatically replaces these before they expire.\n// The server always has valid credentials — without storing anything permanently.\n\n// Compare to the WRONG way — hardcoded keys in application code:\nconst s3 = new AWS.S3({\n  accessKeyId: 'AKIAIOSFODNN7EXAMPLE',       // ❌ permanent key in code\n  secretAccessKey: 'wJalrXUtnFEMI/EXAMPLE'  // ❌ if repo is public — game over\n})\n// Anyone who sees this code has permanent AWS access. Forever."
-      //       },
-      //       {
-      //         "type": "error-callout",
-      //         "title": "Never hardcode AWS credentials in application code:",
-      //         "list": [
-      //           "Hardcoded access keys in code get committed to GitHub — bots scan public repos 24/7 and find them within minutes",
-      //           "A leaked access key gives permanent AWS access until someone manually rotates it — which might take days to notice",
-      //           "IAM Roles give automatic temporary credentials — nothing to hardcode, nothing to leak, nothing to rotate manually",
-      //           "YouTube's codebase has a CI check that blocks any commit containing strings that look like AWS access keys"
-      //         ],
-      //         "footer": "Every AWS service — EC2, Lambda, ECS, CodeBuild — supports IAM Roles. There is never a reason to hardcode credentials in code."
-      //       }
-      //     ],
+  //     //     "What is IAM?": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "YouTube has thousands of engineers, hundreds of automated systems, and dozens of AWS services — all needing access to AWS resources. Some engineers should be able to deploy code. Some should only be able to read logs. A transcoding server should be able to read from S3 but never touch the database. A billing system should see cost reports but never touch any servers. Without a way to control exactly who can do what — anyone inside YouTube could accidentally delete a production database or a rogue automated script could wipe out years of video files. IAM is how AWS controls all of this."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube has 10,000 engineers. Some are backend engineers who deploy APIs. Some are data analysts who only read logs. Some are interns who should only access dev environments. How does AWS ensure each person can only touch exactly what their job requires — and nothing else?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is IAM?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "IAM stands for Identity and Access Management. It is AWS's system for controlling who can access your AWS account and what they are allowed to do inside it. Every action in AWS — launching an EC2 instance, uploading a file to S3, reading a secret from Secrets Manager — goes through IAM first. IAM checks: who is making this request? Are they allowed to do this? If yes — the action proceeds. If no — it is blocked immediately."
+  //     //       },
+  //     //       {
+  //     //         "type": "info-callout",
+  //     //         "text": "💡 Think of IAM like YouTube's internal access badge system. Every employee gets a badge. The badge defines exactly which doors they can open — server room, finance office, data center. A junior engineer's badge opens the dev server room but not the production database room. IAM is that badge system — but for every AWS service and every action inside AWS."
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "The Three Core Questions IAM Answers"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Who are you? — Authentication",
+  //     //         "desc": "Before IAM checks what you can do — it first confirms who you are. You prove your identity using credentials — a username and password for human engineers, or an access key for automated systems. Until IAM confirms your identity, no AWS action is possible."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "What are you allowed to do? — Authorization",
+  //     //         "desc": "Once IAM knows who you are — it checks your permissions. What specific AWS actions are you allowed to perform? Can you launch EC2 instances? Can you read from S3? Can you delete a database? Every action is checked against the permissions attached to your identity."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "What resources can you touch? — Resource Scope",
+  //     //         "desc": "Permissions in IAM are not just about actions — they also define which specific resources those actions apply to. An engineer might be allowed to read from S3 — but only from the dev bucket, not the production bucket. Same action, different resource, different permission."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Every AWS action goes through IAM — here's what happens behind the scenes:\n\n// Engineer tries to launch an EC2 instance:\nRequest: Launch EC2 instance in ap-south-1\n\n// IAM checks:\n1. Who is making this request?     → engineer-rahul@youtube.com ✅\n2. Are they allowed to do this?    → has ec2:RunInstances permission? ✅\n3. In which resources/regions?     → ap-south-1 allowed? ✅\n\nResult: ✅ EC2 instance launches\n\n// Same engineer tries to delete an S3 bucket:\nRequest: Delete S3 bucket youtube-processed-videos\n\n// IAM checks:\n1. Who is making this request?     → engineer-rahul@youtube.com ✅\n2. Are they allowed to do this?    → has s3:DeleteBucket permission? ❌\n\nResult: ❌ Access Denied — request blocked before it reaches S3"
+  //     //       },
+  //     //       {
+  //     //         "type": "warning-callout",
+  //     //         "text": "⚠️ IAM is global — it applies across every AWS region. A permission you grant or deny in IAM applies everywhere in your AWS account, not just in one region. This is why getting IAM right is the most important security decision in AWS. Every other service — EC2, S3, RDS, Lambda — relies on IAM to decide who can touch it."
+  //     //       }
+  //     //     ],
 
-      //     "Policies & Permissions": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "IAM Users, Groups, and Roles define who can act in AWS. Policies define exactly what they are allowed to do. A Policy is a JSON document that lists specific AWS actions — and whether each action is allowed or denied. Every permission in IAM — whether attached to an engineer's account, a group, or a server's role — comes from a Policy."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube's data analyst needs to query video metadata from S3 — but must never be able to delete or modify any files. How does IAM express this precisely — allow reading, deny everything else — in a way that AWS enforces on every single request?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is a Policy?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "A Policy is a JSON document attached to an IAM User, Group, or Role. It defines a list of statements — each statement says: for these actions, on these resources, the answer is Allow or Deny. When any AWS request is made, IAM reads all policies attached to the requester's identity and makes a decision — allowed or blocked."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Allow Policy — YouTube data analyst reading S3",
-      //         "desc": "YouTube's data analyst needs to read video metadata files from S3 for reporting. They get a policy that explicitly allows S3 read actions — and nothing else. Every other S3 action is implicitly denied because it is not listed."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Policy attached to YouTube's data-analysts IAM Group:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\":   \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",       // ← can download files\n        \"s3:ListBucket\"       // ← can see what files exist\n      ],\n      \"Resource\": [\n        \"arn:aws:s3:::youtube-metadata/*\"   // ← only this specific bucket\n      ]\n    }\n  ]\n}\n\n// What this analyst CAN do:\naws s3 cp s3://youtube-metadata/reports/jan.csv .    // ✅ allowed\naws s3 ls s3://youtube-metadata/                     // ✅ allowed\n\n// What this analyst CANNOT do:\naws s3 rm s3://youtube-metadata/reports/jan.csv      // ❌ no DeleteObject\naws s3 cp ./fake.csv s3://youtube-metadata/          // ❌ no PutObject\naws s3 ls s3://youtube-processed-videos/             // ❌ wrong bucket"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Deny Policy — Explicitly blocking dangerous actions",
-      //         "desc": "YouTube adds an explicit Deny policy to all engineers — even DevOps — blocking them from deleting the production S3 buckets. Even if someone's other policies accidentally grant delete permissions — an explicit Deny always wins. Deny overrides Allow. Always."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Deny policy attached to ALL YouTube IAM Groups:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\":   \"Deny\",\n      \"Action\": [\n        \"s3:DeleteBucket\",           // ← nobody can delete S3 buckets\n        \"rds:DeleteDBInstance\",      // ← nobody can delete the database\n        \"ec2:TerminateInstances\"     // ← nobody can terminate prod servers\n      ],\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"aws:ResourceTag/Environment\": \"production\"  // ← only blocks prod\n        }\n      }\n    }\n  ]\n}\n\n// Even if a DevOps engineer has full S3 permissions:\naws s3 rb s3://youtube-processed-videos   // ❌ Deny overrides Allow — blocked\naws s3 rb s3://youtube-dev-test           // ✅ not tagged production — allowed"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "AWS Managed Policies — Pre-built common permission sets",
-      //         "desc": "AWS provides hundreds of pre-built policies for common use cases. Instead of writing JSON from scratch — YouTube attaches these standard policies as a starting point and customizes from there. AmazonS3ReadOnlyAccess, AmazonEC2FullAccess, CloudWatchLogsFullAccess — all pre-built and maintained by AWS."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Attaching an AWS Managed Policy to YouTube's data-analysts group:\naws iam attach-group-policy \\\n  --group-name data-analysts \\\n  --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess\n\n// AmazonS3ReadOnlyAccess — what AWS pre-built for you:\n{\n  \"Statement\": [{\n    \"Effect\": \"Allow\",\n    \"Action\": [\n      \"s3:Get*\",    // all read actions\n      \"s3:List*\"    // all list actions\n    ],\n    \"Resource\": \"*\"\n  }]\n}\n// ✅ Attach once — analyst can read from any S3 bucket.\n// Scope it further with a custom policy that restricts to specific buckets."
-      //       },
-      //       {
-      //         "type": "info-callout",
-      //         "text": "💡 Policy evaluation order in IAM: By default everything is Denied. An explicit Allow grants access. An explicit Deny always overrides any Allow — no exceptions. So if YouTube accidentally gives an engineer both an Allow and a Deny for the same action — the Deny wins. This makes accidental over-permission extremely difficult."
-      //       }
-      //     ],
+  //     //     "IAM Users & Groups": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "YouTube has thousands of engineers across different teams — backend, frontend, data, DevOps, security, finance. Each person needs AWS access. Each team needs different levels of access. Creating and managing permissions for every individual engineer one by one would be impossible. IAM Users and Groups are how YouTube manages this at scale — create a user for each person, put them in a group, and the group's permissions automatically apply to everyone in it."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube hires 50 new backend engineers this month. Each one needs identical AWS permissions — deploy to EC2, read from S3, push to CodeDeploy. Does someone manually set up permissions for all 50 one by one? What happens when their permissions need to change next month?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "IAM Users"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "An IAM User is an identity created inside your AWS account for a specific person or application. Each user gets their own credentials — a username and password for AWS Console access, or access keys for programmatic access via CLI or SDK. Every action that user takes in AWS is tracked and logged against their identity."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Creating an IAM User for a new YouTube engineer",
+  //     //         "desc": "A new backend engineer joins YouTube. The DevOps team creates an IAM User for them — priya@youtube.com. She gets a temporary password for her first login and is immediately placed into the backend-engineers group. Her permissions come from the group — not set individually."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Creating a new IAM User for a YouTube engineer:\naws iam create-user --user-name priya-backend\n\n// Give her console access with a temporary password:\naws iam create-login-profile \\\n  --user-name priya-backend \\\n  --password TempPass@123 \\\n  --password-reset-required   // ← forces her to change on first login\n\n// ✅ Priya can now log into the AWS Console.\n// She has zero permissions yet — just an identity."
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "IAM Groups"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "An IAM Group is a collection of IAM Users. You attach permissions to the group — and every user in that group automatically inherits those permissions. YouTube has groups like backend-engineers, data-analysts, devops-team, security-team, finance-team. When a new engineer joins — add them to the right group. Their permissions are set instantly. When their role changes — move them to a different group. One action, all permissions updated."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Adding Priya to the backend-engineers group",
+  //     //         "desc": "Priya is a backend engineer. YouTube adds her to the backend-engineers IAM Group. This group has permissions to deploy EC2, read from S3, push to CodeDeploy, and read CloudWatch logs. The moment she's added to the group — she has all of these permissions. No individual permission setup needed."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Add Priya to the backend-engineers group:\naws iam add-user-to-group \\\n  --user-name priya-backend \\\n  --group-name backend-engineers\n\n// backend-engineers group permissions:\n{\n  \"Group\": \"backend-engineers\",\n  \"Permissions\": [\n    \"ec2:RunInstances\",       // ← can launch EC2 instances\n    \"ec2:DescribeInstances\",  // ← can view EC2 instances\n    \"s3:GetObject\",           // ← can read from S3\n    \"codedeploy:*\",           // ← full CodeDeploy access\n    \"cloudwatch:GetMetricData\" // ← can read monitoring metrics\n  ]\n}\n\n// ✅ Priya now has all backend-engineers permissions.\n// 50 new engineers join next month → add them to the same group.\n// All 50 get identical permissions instantly. Zero individual setup."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Priya gets promoted to DevOps — permissions update in one step",
+  //     //         "desc": "6 months later Priya moves to the DevOps team. She needs different permissions now — more access than backend engineers. YouTube removes her from backend-engineers and adds her to devops-team. Her old permissions are gone. Her new permissions are active. One group change — complete permission update."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Priya moves to DevOps — one command updates all her permissions:\naws iam remove-user-from-group \\\n  --user-name priya-backend \\\n  --group-name backend-engineers\n\naws iam add-user-to-group \\\n  --user-name priya-backend \\\n  --group-name devops-team\n\n// Before: ec2 deploy, s3 read, codedeploy access\n// After:  ec2 full access, s3 full access, rds access, vpc management\n// One change. All permissions updated instantly. ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "table",
+  //     //         "headers": ["YouTube IAM Group", "Who is in it", "What they can do"],
+  //     //         "rows": [
+  //     //           ["backend-engineers", "API and server developers", "Deploy EC2, read S3, push CodeDeploy, read CloudWatch"],
+  //     //           ["data-analysts", "Data and ML engineers", "Read S3, query Athena, read RDS — no write access anywhere"],
+  //     //           ["devops-team", "Infrastructure engineers", "Full EC2, S3, RDS, VPC, IAM management"],
+  //     //           ["security-team", "Security engineers", "Read all logs, CloudTrail, GuardDuty — no resource modification"],
+  //     //           ["finance-team", "Cost and billing team", "AWS Cost Explorer, billing console — no infrastructure access"],
+  //     //           ["interns", "New joiners", "Read-only access to dev environment S3 and CloudWatch only"]
+  //     //         ]
+  //     //       },
+  //     //       {
+  //     //         "type": "error-callout",
+  //     //         "title": "Never use the AWS root account for daily work:",
+  //     //         "list": [
+  //     //           "The root account is created when you first sign up for AWS — it has unlimited access to everything with no restrictions",
+  //     //           "YouTube's root account credentials are locked in a vault — used only for extreme emergencies like account recovery",
+  //     //           "Every engineer gets their own IAM User — tracked, scoped, and revokable",
+  //     //           "If a root account gets compromised — the attacker has unlimited access to every AWS resource with no way to restrict them"
+  //     //         ],
+  //     //         "footer": "AWS itself recommends never using the root account for daily operations. Create IAM Users for every person. Lock the root account credentials away."
+  //     //       }
+  //     //     ],
 
-      //     "Least Privilege Principle": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "YouTube's transcoding server needs to read raw videos from S3 and write processed videos back. That is all it needs to do its job. But what if it was given full S3 access — read, write, delete, on every bucket? If that server is ever compromised by an attacker — they now have the ability to delete every video YouTube has ever stored. The Least Privilege Principle says: give every identity exactly the permissions it needs for its job — nothing more."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube's transcoding server only needs to read from one S3 bucket and write to another. Why does it matter if it also has permission to delete files or access the database — as long as it never actually does those things?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is Least Privilege?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "Least Privilege means every IAM identity — user, group, or role — gets the minimum permissions required to perform its specific job. Not the permissions that might be convenient. Not broad permissions to avoid permission errors. Exactly what is needed. Nothing extra. The smaller the permission surface, the smaller the damage if credentials are ever compromised."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Over-permissioned server — what goes wrong",
-      //         "desc": "A YouTube engineer is in a hurry setting up a new transcoding server. Instead of writing a precise policy, they attach AmazonS3FullAccess — it's quick, it works, no permission errors. 3 months later a vulnerability in the transcoding software is exploited. The attacker gets access to the server's AWS credentials. With S3 Full Access — they download every raw video ever uploaded to YouTube, then delete all of it. Complete data breach. Complete data loss."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// ❌ Over-permissioned transcoding server — what NOT to do:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\"s3:*\"]   // full S3 access — all buckets, all actions\n}\n\n// If this server is compromised — attacker can:\naws s3 cp s3://youtube-raw-uploads/ ./stolen/ --recursive    // steal all raw videos\naws s3 rm s3://youtube-processed-videos/ --recursive         // delete all content\naws s3 rm s3://youtube-thumbnails/ --recursive               // delete all thumbnails\n// Complete data breach. Complete data loss. ❌\n\n// ✅ Least privilege — what the transcoding role should actually have:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\n    \"s3:GetObject on youtube-raw-uploads/videos/*\",      // read raw only\n    \"s3:PutObject on youtube-processed-videos/videos/*\" // write processed only\n  ]\n}\n// Same server compromised — attacker can only read raw uploads and write processed.\n// Cannot delete anything. Cannot touch thumbnails. Cannot touch the database. ✅"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Least privilege for a YouTube intern",
-      //         "desc": "A new intern joins YouTube's data team. They need to run queries against the dev S3 bucket to learn the data pipeline. They get read-only access to the dev bucket only — no production, no write, no delete. Even if the intern makes a mistake — the blast radius is limited to the dev bucket. Production is untouched."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Intern IAM policy — minimum required for their job:\n{\n  \"Statement\": [{\n    \"Effect\":   \"Allow\",\n    \"Action\":   [\"s3:GetObject\", \"s3:ListBucket\"],\n    \"Resource\": \"arn:aws:s3:::youtube-dev-bucket/*\"   // dev only\n  }]\n}\n\n// Intern tries to access production:\naws s3 ls s3://youtube-processed-videos/   // ❌ Access Denied\n\n// Intern tries to delete a dev file:\naws s3 rm s3://youtube-dev-bucket/test.mp4  // ❌ Access Denied\n\n// Intern can only do:\naws s3 ls s3://youtube-dev-bucket/          // ✅\naws s3 cp s3://youtube-dev-bucket/test.mp4 . // ✅"
-      //       },
-      //       {
-      //         "type": "table",
-      //         "headers": ["Identity", "What they need", "What NOT to give", "Why"],
-      //         "rows": [
-      //           ["Transcoding EC2", "Read raw S3, write processed S3", "Delete, full S3, RDS access", "Compromise only affects transcoding pipeline"],
-      //           ["Data analyst", "Read metadata S3 bucket", "Write, delete, other buckets", "Cannot accidentally corrupt production data"],
-      //           ["Backend engineer", "Deploy EC2, read S3, push CodeDeploy", "Delete production, RDS write", "Deployment mistakes can't cause data loss"],
-      //           ["Intern", "Read dev S3 bucket only", "Everything else", "Learning mistakes stay in dev environment"],
-      //           ["Lambda function", "Write to one specific DynamoDB table", "Read all tables, S3 access", "Function bug can only affect its own table"]
-      //         ]
-      //       },
-      //       {
-      //         "type": "warning-callout",
-      //         "text": "⚠️ Least privilege feels like extra work upfront — writing precise policies takes longer than attaching a broad managed policy. But at YouTube's scale, a single over-permissioned role that gets compromised can cause billions of dollars in damage. YouTube's security team runs quarterly IAM access reviews — automatically flagging any role or user that has permissions they haven't used in the last 90 days and removing them."
-      //       }
-      //     ],
+  //     //     "IAM Roles": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "IAM Users are for humans — engineers who log in with a username and password. But YouTube's EC2 transcoding servers also need AWS access — they need to read raw videos from S3, write processed videos back to S3, and send metrics to CloudWatch. Giving a server a username and password makes no sense. Hardcoding access keys inside server code is dangerous. IAM Roles solve this — they give AWS services a temporary, automatic identity with exactly the permissions they need."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube's EC2 transcoding server needs to fetch a video from S3 to process it. How does the server prove to S3 that it's an authorized YouTube system — and not some random server trying to access private video files?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is an IAM Role?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "An IAM Role is an identity with specific permissions — just like an IAM User. The key difference: a Role is not tied to one specific person or server. It is assumed temporarily by whoever needs it — an EC2 instance, a Lambda function, another AWS service. When a service assumes a Role, AWS automatically provides temporary credentials that expire after a short time and are auto-refreshed. No hardcoded passwords. No long-lived access keys sitting in code."
+  //     //       },
+  //     //       {
+  //     //         "type": "info-callout",
+  //     //         "text": "💡 Think of an IAM Role like a job title at YouTube. The title 'Transcoding Server' comes with specific access rights — read raw uploads from S3, write processed videos to S3. Any EC2 instance assigned this job title automatically gets those rights. When the instance is terminated, the job title goes with it — credentials gone automatically."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Step 1 — YouTube creates a Role for their transcoding servers",
+  //     //         "desc": "YouTube's DevOps team creates an IAM Role called youtube-transcoding-role. This role has exactly the permissions a transcoding server needs — read from the raw uploads bucket, write to the processed videos bucket, send metrics to CloudWatch. Nothing more."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// youtube-transcoding-role permissions:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\n    \"s3:GetObject on youtube-raw-uploads/*\",      // ← read raw videos\n    \"s3:PutObject on youtube-processed-videos/*\", // ← write processed videos\n    \"cloudwatch:PutMetricData\"                    // ← send processing metrics\n  ]\n  // ❌ No s3:DeleteObject — server cannot delete any files\n  // ❌ No ec2:* — server cannot touch other EC2 instances\n  // ❌ No rds:* — server cannot touch the database\n}"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Step 2 — EC2 instance is launched with this Role attached",
+  //     //         "desc": "When YouTube's Auto Scaling group launches a new transcoding server, the youtube-transcoding-role is attached to it at launch. The moment the instance boots — it automatically has the role's permissions. No engineer SSHed in. No credentials were configured. AWS handled it entirely."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Launch Template with IAM Role attached:\n{\n  ImageId:      'ami-youtube-transcoder-v1.4',\n  InstanceType: 'c6i.8xlarge',\n  IamInstanceProfile: {\n    Name: 'youtube-transcoding-role'  // ← role attached at launch\n  }\n}\n\n// The moment the instance boots — it can call S3 directly:\naws s3 cp s3://youtube-raw-uploads/videos/user123/raw.mp4 /tmp/\n// ✅ Works — role gives it read permission on this bucket\n\naws s3 cp s3://youtube-raw-uploads/ --recursive --delete\n// ❌ Access Denied — role has no delete permission"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Step 3 — AWS automatically rotates the credentials",
+  //     //         "desc": "Behind the scenes, AWS gives the EC2 instance temporary credentials that expire every few hours and are automatically replaced. The server never stores long-lived access keys. If the server is compromised — the credentials expire on their own within hours. An attacker cannot use stolen credentials indefinitely.\n\nA hacker breaks into YouTube's transcoding server and steals the AWS credentials they find. Those credentials expire in 4 hours. The hacker tries to use them the next day — they're already invalid. With hardcoded permanent access keys, the hacker would have had permanent access until someone manually rotated the keys."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Temporary credentials AWS provides to the EC2 instance via the Role:\n{\n  AccessKeyId:     'ASIA1234567890EXAMPLE',\n  SecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',\n  SessionToken:    'AQoDYXdzEJr...',\n  Expiration:      '2025-01-15T18:00:00Z'   // ← expires in 4 hours\n}\n// AWS automatically replaces these before they expire.\n// The server always has valid credentials — without storing anything permanently.\n\n// Compare to the WRONG way — hardcoded keys in application code:\nconst s3 = new AWS.S3({\n  accessKeyId: 'AKIAIOSFODNN7EXAMPLE',       // ❌ permanent key in code\n  secretAccessKey: 'wJalrXUtnFEMI/EXAMPLE'  // ❌ if repo is public — game over\n})\n// Anyone who sees this code has permanent AWS access. Forever."
+  //     //       },
+  //     //       {
+  //     //         "type": "error-callout",
+  //     //         "title": "Never hardcode AWS credentials in application code:",
+  //     //         "list": [
+  //     //           "Hardcoded access keys in code get committed to GitHub — bots scan public repos 24/7 and find them within minutes",
+  //     //           "A leaked access key gives permanent AWS access until someone manually rotates it — which might take days to notice",
+  //     //           "IAM Roles give automatic temporary credentials — nothing to hardcode, nothing to leak, nothing to rotate manually",
+  //     //           "YouTube's codebase has a CI check that blocks any commit containing strings that look like AWS access keys"
+  //     //         ],
+  //     //         "footer": "Every AWS service — EC2, Lambda, ECS, CodeBuild — supports IAM Roles. There is never a reason to hardcode credentials in code."
+  //     //       }
+  //     //     ],
 
-      //     "MFA in AWS": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "A YouTube engineer's laptop gets stolen at a coffee shop. The thief finds the AWS Console password saved in the browser. Without MFA — they now have full access to YouTube's AWS account with whatever permissions that engineer had. With MFA enabled — the stolen password is useless. Without the second factor, the AWS Console login fails completely."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ Passwords get stolen — through phishing, data breaches, shoulder surfing, or saved in browsers. If a YouTube engineer's AWS password is compromised — what stops an attacker from logging straight into YouTube's AWS account and causing damage?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is MFA?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "MFA stands for Multi-Factor Authentication. It adds a second verification step on top of a password. Even if an attacker has the correct password — they cannot log in without also having the second factor. For AWS, the second factor is typically a 6-digit code generated by an authenticator app on your phone — Google Authenticator, Authy, or a physical hardware key. The code changes every 30 seconds and can only be used once."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "How MFA works for a YouTube engineer logging in",
-      //         "desc": "YouTube's DevOps engineer Rahul logs into the AWS Console. He enters his username and password — correct. AWS then asks for his MFA code. He opens Google Authenticator on his phone, gets the current 6-digit code, enters it. AWS verifies it — correct. Login succeeds. The thief who stole Rahul's password tries to log in — enters the password — correct. AWS asks for MFA code. The thief doesn't have Rahul's phone. Login fails."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Login flow without MFA:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nResult:   → AWS Console access granted  ❌ (no second check)\n\n// Login flow with MFA:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nMFA Code: 847291             ✅ (from Google Authenticator — valid for 30 seconds)\nResult:   → AWS Console access granted  ✅\n\n// Attacker with stolen password:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nMFA Code: ???                ❌ (attacker doesn't have Rahul's phone)\nResult:   → Access Denied. Login blocked. ✅"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Enforcing MFA with an IAM Policy",
-      //         "desc": "YouTube enforces MFA on all engineers through an IAM Policy — if an engineer logs in without MFA, they can see the AWS Console but every single action is denied until they set up MFA. They literally cannot do anything in AWS without completing MFA setup first."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// IAM Policy that blocks all actions if MFA is not active:\n{\n  \"Statement\": [{\n    \"Effect\": \"Deny\",\n    \"Action\": \"*\",\n    \"Resource\": \"*\",\n    \"Condition\": {\n      \"BoolIfExists\": {\n        \"aws:MultiFactorAuthPresent\": \"false\"  // ← if MFA not used at login\n      }\n    }\n  }]\n}\n// Engineer logs in without MFA:\n// They can see the AWS Console — but every action returns Access Denied.\n// They cannot launch EC2, read S3, or do anything until MFA is set up. ✅"
-      //       },
-      //       {
-      //         "type": "warning-callout",
-      //         "text": "⚠️ MFA is non-negotiable for the AWS root account — always. For IAM Users, YouTube enforces MFA for anyone with access to production resources. For automated systems using IAM Roles — MFA doesn't apply since there's no human logging in. The role's temporary credentials are the security mechanism for automated systems."
-      //       }
-      //     ],
+  //     //     "Policies & Permissions": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "IAM Users, Groups, and Roles define who can act in AWS. Policies define exactly what they are allowed to do. A Policy is a JSON document that lists specific AWS actions — and whether each action is allowed or denied. Every permission in IAM — whether attached to an engineer's account, a group, or a server's role — comes from a Policy."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube's data analyst needs to query video metadata from S3 — but must never be able to delete or modify any files. How does IAM express this precisely — allow reading, deny everything else — in a way that AWS enforces on every single request?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is a Policy?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "A Policy is a JSON document attached to an IAM User, Group, or Role. It defines a list of statements — each statement says: for these actions, on these resources, the answer is Allow or Deny. When any AWS request is made, IAM reads all policies attached to the requester's identity and makes a decision — allowed or blocked."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Allow Policy — YouTube data analyst reading S3",
+  //     //         "desc": "YouTube's data analyst needs to read video metadata files from S3 for reporting. They get a policy that explicitly allows S3 read actions — and nothing else. Every other S3 action is implicitly denied because it is not listed."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Policy attached to YouTube's data-analysts IAM Group:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\":   \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",       // ← can download files\n        \"s3:ListBucket\"       // ← can see what files exist\n      ],\n      \"Resource\": [\n        \"arn:aws:s3:::youtube-metadata/*\"   // ← only this specific bucket\n      ]\n    }\n  ]\n}\n\n// What this analyst CAN do:\naws s3 cp s3://youtube-metadata/reports/jan.csv .    // ✅ allowed\naws s3 ls s3://youtube-metadata/                     // ✅ allowed\n\n// What this analyst CANNOT do:\naws s3 rm s3://youtube-metadata/reports/jan.csv      // ❌ no DeleteObject\naws s3 cp ./fake.csv s3://youtube-metadata/          // ❌ no PutObject\naws s3 ls s3://youtube-processed-videos/             // ❌ wrong bucket"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Deny Policy — Explicitly blocking dangerous actions",
+  //     //         "desc": "YouTube adds an explicit Deny policy to all engineers — even DevOps — blocking them from deleting the production S3 buckets. Even if someone's other policies accidentally grant delete permissions — an explicit Deny always wins. Deny overrides Allow. Always."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Deny policy attached to ALL YouTube IAM Groups:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\":   \"Deny\",\n      \"Action\": [\n        \"s3:DeleteBucket\",           // ← nobody can delete S3 buckets\n        \"rds:DeleteDBInstance\",      // ← nobody can delete the database\n        \"ec2:TerminateInstances\"     // ← nobody can terminate prod servers\n      ],\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"aws:ResourceTag/Environment\": \"production\"  // ← only blocks prod\n        }\n      }\n    }\n  ]\n}\n\n// Even if a DevOps engineer has full S3 permissions:\naws s3 rb s3://youtube-processed-videos   // ❌ Deny overrides Allow — blocked\naws s3 rb s3://youtube-dev-test           // ✅ not tagged production — allowed"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "AWS Managed Policies — Pre-built common permission sets",
+  //     //         "desc": "AWS provides hundreds of pre-built policies for common use cases. Instead of writing JSON from scratch — YouTube attaches these standard policies as a starting point and customizes from there. AmazonS3ReadOnlyAccess, AmazonEC2FullAccess, CloudWatchLogsFullAccess — all pre-built and maintained by AWS."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Attaching an AWS Managed Policy to YouTube's data-analysts group:\naws iam attach-group-policy \\\n  --group-name data-analysts \\\n  --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess\n\n// AmazonS3ReadOnlyAccess — what AWS pre-built for you:\n{\n  \"Statement\": [{\n    \"Effect\": \"Allow\",\n    \"Action\": [\n      \"s3:Get*\",    // all read actions\n      \"s3:List*\"    // all list actions\n    ],\n    \"Resource\": \"*\"\n  }]\n}\n// ✅ Attach once — analyst can read from any S3 bucket.\n// Scope it further with a custom policy that restricts to specific buckets."
+  //     //       },
+  //     //       {
+  //     //         "type": "info-callout",
+  //     //         "text": "💡 Policy evaluation order in IAM: By default everything is Denied. An explicit Allow grants access. An explicit Deny always overrides any Allow — no exceptions. So if YouTube accidentally gives an engineer both an Allow and a Deny for the same action — the Deny wins. This makes accidental over-permission extremely difficult."
+  //     //       }
+  //     //     ],
 
-      //     "AWS KMS": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "YouTube stores hundreds of petabytes of video files in S3. If AWS's physical hard drives were ever stolen from a data center — those drives would contain raw video data readable by anyone. KMS prevents this. Every video file stored in S3, every database row in RDS, every secret in Secrets Manager — encrypted with a key managed by KMS. Without the key, the data is unreadable gibberish. KMS controls who has the key."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube stores private unlisted videos in S3 — videos creators haven't made public yet. If someone physically broke into an AWS data center and walked out with hard drives — could they read those private video files?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is KMS?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "AWS Key Management Service is AWS's encryption key management system. You create encryption keys in KMS. AWS services — S3, RDS, EBS, Secrets Manager — use these keys to encrypt data before writing it to disk. To read the data back, the same key is used to decrypt it. KMS controls who is allowed to use each key — so even if someone steals the physical storage media, they cannot decrypt the data without the key."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "YouTube enables KMS encryption on their S3 buckets",
-      //         "desc": "YouTube creates a KMS key called youtube-video-encryption-key and configures their S3 buckets to use it. Every file uploaded to S3 is automatically encrypted before being written to disk. When an authorized service reads the file — S3 automatically decrypts it. Unauthorized access — even from inside AWS — returns encrypted gibberish."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// YouTube creates a KMS key:\naws kms create-key \\\n  --description 'YouTube video files encryption key' \\\n  --key-usage ENCRYPT_DECRYPT\n\n// Key created:\n{\n  KeyId:  'arn:aws:kms:ap-south-1:123456789:key/abc-123-def-456',\n  Status:  'Enabled'\n}\n\n// Configure S3 bucket to encrypt all files using this key:\naws s3api put-bucket-encryption \\\n  --bucket youtube-processed-videos \\\n  --server-side-encryption-configuration '{\n    \"Rules\": [{\n      \"ApplyServerSideEncryptionByDefault\": {\n        \"SSEAlgorithm\": \"aws:kms\",\n        \"KMSMasterKeyID\": \"arn:aws:kms:ap-south-1:123456789:key/abc-123-def-456\"\n      }\n    }]\n  }'\n\n// ✅ Every file in this bucket is now encrypted at rest.\n// Physical drives stolen from AWS data center → unreadable without the KMS key."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Who can use the key — KMS Key Policy",
-      //         "desc": "YouTube's KMS key has a policy defining exactly which services and roles can use it to encrypt and decrypt. The transcoding EC2 role can decrypt — it needs to read videos. The data analyst role cannot decrypt video files — they have no business accessing raw video content. Even inside YouTube's own AWS account, KMS controls access at the key level."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// KMS Key Policy — who can use youtube-video-encryption-key:\n{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::youtube:role/youtube-transcoding-role\"\n      },\n      \"Action\": [\"kms:Decrypt\", \"kms:GenerateDataKey\"],  // ← can decrypt videos\n      \"Resource\": \"*\"\n    },\n    {\n      \"Effect\": \"Deny\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::youtube:group/data-analysts\"\n      },\n      \"Action\": \"kms:Decrypt\",   // ← analysts cannot decrypt video content\n      \"Resource\": \"*\"\n    }\n  ]\n}\n\n// Transcoding server reads a video from S3:\n// S3 → KMS: 'can youtube-transcoding-role decrypt this?' → Yes ✅\n// File decrypted → server processes video\n\n// Data analyst tries to access same video:\n// S3 → KMS: 'can data-analysts decrypt this?' → No ❌\n// Access Denied — even though S3 bucket permissions allow reading"
-      //       },
-      //       {
-      //         "type": "warning-callout",
-      //         "text": "⚠️ KMS keys can be disabled or deleted — which immediately makes all data encrypted with that key unreadable. YouTube never deletes KMS keys that are actively used. Deleting a key used to encrypt 500TB of videos would make all 500TB permanently unreadable — with no recovery possible. KMS enforces a mandatory 7-30 day waiting period before key deletion for exactly this reason."
-      //       }
-      //     ],
+  //     //     "Least Privilege Principle": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "YouTube's transcoding server needs to read raw videos from S3 and write processed videos back. That is all it needs to do its job. But what if it was given full S3 access — read, write, delete, on every bucket? If that server is ever compromised by an attacker — they now have the ability to delete every video YouTube has ever stored. The Least Privilege Principle says: give every identity exactly the permissions it needs for its job — nothing more."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube's transcoding server only needs to read from one S3 bucket and write to another. Why does it matter if it also has permission to delete files or access the database — as long as it never actually does those things?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is Least Privilege?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "Least Privilege means every IAM identity — user, group, or role — gets the minimum permissions required to perform its specific job. Not the permissions that might be convenient. Not broad permissions to avoid permission errors. Exactly what is needed. Nothing extra. The smaller the permission surface, the smaller the damage if credentials are ever compromised."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Over-permissioned server — what goes wrong",
+  //     //         "desc": "A YouTube engineer is in a hurry setting up a new transcoding server. Instead of writing a precise policy, they attach AmazonS3FullAccess — it's quick, it works, no permission errors. 3 months later a vulnerability in the transcoding software is exploited. The attacker gets access to the server's AWS credentials. With S3 Full Access — they download every raw video ever uploaded to YouTube, then delete all of it. Complete data breach. Complete data loss."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// ❌ Over-permissioned transcoding server — what NOT to do:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\"s3:*\"]   // full S3 access — all buckets, all actions\n}\n\n// If this server is compromised — attacker can:\naws s3 cp s3://youtube-raw-uploads/ ./stolen/ --recursive    // steal all raw videos\naws s3 rm s3://youtube-processed-videos/ --recursive         // delete all content\naws s3 rm s3://youtube-thumbnails/ --recursive               // delete all thumbnails\n// Complete data breach. Complete data loss. ❌\n\n// ✅ Least privilege — what the transcoding role should actually have:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\n    \"s3:GetObject on youtube-raw-uploads/videos/*\",      // read raw only\n    \"s3:PutObject on youtube-processed-videos/videos/*\" // write processed only\n  ]\n}\n// Same server compromised — attacker can only read raw uploads and write processed.\n// Cannot delete anything. Cannot touch thumbnails. Cannot touch the database. ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Least privilege for a YouTube intern",
+  //     //         "desc": "A new intern joins YouTube's data team. They need to run queries against the dev S3 bucket to learn the data pipeline. They get read-only access to the dev bucket only — no production, no write, no delete. Even if the intern makes a mistake — the blast radius is limited to the dev bucket. Production is untouched."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Intern IAM policy — minimum required for their job:\n{\n  \"Statement\": [{\n    \"Effect\":   \"Allow\",\n    \"Action\":   [\"s3:GetObject\", \"s3:ListBucket\"],\n    \"Resource\": \"arn:aws:s3:::youtube-dev-bucket/*\"   // dev only\n  }]\n}\n\n// Intern tries to access production:\naws s3 ls s3://youtube-processed-videos/   // ❌ Access Denied\n\n// Intern tries to delete a dev file:\naws s3 rm s3://youtube-dev-bucket/test.mp4  // ❌ Access Denied\n\n// Intern can only do:\naws s3 ls s3://youtube-dev-bucket/          // ✅\naws s3 cp s3://youtube-dev-bucket/test.mp4 . // ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "table",
+  //     //         "headers": ["Identity", "What they need", "What NOT to give", "Why"],
+  //     //         "rows": [
+  //     //           ["Transcoding EC2", "Read raw S3, write processed S3", "Delete, full S3, RDS access", "Compromise only affects transcoding pipeline"],
+  //     //           ["Data analyst", "Read metadata S3 bucket", "Write, delete, other buckets", "Cannot accidentally corrupt production data"],
+  //     //           ["Backend engineer", "Deploy EC2, read S3, push CodeDeploy", "Delete production, RDS write", "Deployment mistakes can't cause data loss"],
+  //     //           ["Intern", "Read dev S3 bucket only", "Everything else", "Learning mistakes stay in dev environment"],
+  //     //           ["Lambda function", "Write to one specific DynamoDB table", "Read all tables, S3 access", "Function bug can only affect its own table"]
+  //     //         ]
+  //     //       },
+  //     //       {
+  //     //         "type": "warning-callout",
+  //     //         "text": "⚠️ Least privilege feels like extra work upfront — writing precise policies takes longer than attaching a broad managed policy. But at YouTube's scale, a single over-permissioned role that gets compromised can cause billions of dollars in damage. YouTube's security team runs quarterly IAM access reviews — automatically flagging any role or user that has permissions they haven't used in the last 90 days and removing them."
+  //     //       }
+  //     //     ],
 
-      //     "Secrets Manager": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "YouTube's API servers need to connect to their RDS database. To connect, they need the database password. Where does that password live? Not in the application code — if the code repo is ever exposed, the password is exposed. Not in environment variables hardcoded into EC2 — those are visible to anyone who can SSH in. AWS Secrets Manager is where YouTube stores all sensitive credentials — database passwords, API keys, third-party service tokens — securely, with automatic rotation and fine-grained access control."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ YouTube's backend server needs the production database password to connect to RDS. The password cannot be in the code. Cannot be in a config file on the server. Where does it live — and how does the server get it securely at runtime?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is Secrets Manager?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "AWS Secrets Manager is a secure vault for storing sensitive values — database passwords, API keys, OAuth tokens, certificates.."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "YouTube stores their database password in Secrets Manager",
-      //         "desc": "YouTube's DevOps team stores the production RDS database password in Secrets Manager under the name youtube/prod/db-password. The actual password is encrypted inside Secrets Manager using KMS. Only the youtube-api-role IAM Role has permission to retrieve it."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Store database password in Secrets Manager:\naws secretsmanager create-secret \\\n  --name 'youtube/prod/db-password' \\\n  --secret-string '{\"username\":\"youtube_api\",\"password\":\"Xk9#mP2@qL4n\"}'\n\n// Secret stored and encrypted with KMS. ✅\n// The actual password value is now locked in Secrets Manager.\n// Not in any code file. Not in any config. Not in any environment variable."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "API server fetches the password at runtime",
-      //         "desc": "YouTube's API server boots up. It needs the database password to establish a connection. Instead of reading it from a config file, the server calls Secrets Manager using the AWS SDK. Secrets Manager checks the server's IAM Role — youtube-api-role has permission. The password is returned. The server connects to the database. The password was never written to disk on the server."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// YouTube's API server fetching the DB password at runtime:\nconst AWS = require('aws-sdk');\nconst sm  = new AWS.SecretsManager({ region: 'ap-south-1' });\n\nasync function getDatabasePassword() {\n  const secret = await sm.getSecretValue({\n    SecretId: 'youtube/prod/db-password'\n  }).promise();\n\n  const { username, password } = JSON.parse(secret.SecretString);\n  return { username, password };\n}\n\n// Server boots → calls Secrets Manager → gets password → connects to DB\n// Password never in code. Never in config files. Never on disk. ✅\n\n// What happens if a different server tries to fetch this secret:\n// IAM check: does this role have secretsmanager:GetSecretValue permission\n//            on youtube/prod/db-password?\n// Answer: No → Access Denied ❌"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "Automatic password rotation — no human involved",
-      //         "desc": "YouTube configures Secrets Manager to automatically rotate the database password every 30 days. Secrets Manager generates a new password, updates it in RDS, then updates the stored secret — all automatically. The API servers fetch the new password on their next boot or secret refresh. No engineer manually rotates passwords. No downtime. No risk of engineers knowing the production database password."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Enable automatic rotation every 30 days:\naws secretsmanager rotate-secret \\\n  --secret-id 'youtube/prod/db-password' \\\n  --rotation-rules AutomaticallyAfterDays=30\n\n// Every 30 days — automatically:\n// 1. Secrets Manager generates a new strong password\n// 2. Updates the password in RDS\n// 3. Updates the stored secret value\n// 4. API servers fetch the new password on next call\n\n// ✅ No engineer knows the production DB password.\n// ✅ Password changes every 30 days automatically.\n// ✅ Even if an old password leaks — it expires in 30 days maximum."
-      //       },
-      //       {
-      //         "type": "error-callout",
-      //         "title": "What happens without Secrets Manager:",
-      //         "list": [
-      //           "Database password hardcoded in application code — committed to GitHub — visible to every engineer who ever clones the repo",
-      //           "Password in a .env file on the EC2 server — anyone who can SSH in can read it with 'cat .env'",
-      //           "Password never rotated — a leaked password from 2 years ago still works today",
-      //           "Engineer leaves the company — they still know the production database password"
-      //         ],
-      //         "footer": "Secrets Manager ensures the production database password is known to zero humans. Only authorized AWS services can retrieve it — and only for as long as their IAM permissions allow."
-      //       }
-      //     ],
+  //     //     "MFA in AWS": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "A YouTube engineer's laptop gets stolen at a coffee shop. The thief finds the AWS Console password saved in the browser. Without MFA — they now have full access to YouTube's AWS account with whatever permissions that engineer had. With MFA enabled — the stolen password is useless. Without the second factor, the AWS Console login fails completely."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ Passwords get stolen — through phishing, data breaches, shoulder surfing, or saved in browsers. If a YouTube engineer's AWS password is compromised — what stops an attacker from logging straight into YouTube's AWS account and causing damage?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is MFA?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "MFA stands for Multi-Factor Authentication. It adds a second verification step on top of a password. Even if an attacker has the correct password — they cannot log in without also having the second factor. For AWS, the second factor is typically a 6-digit code generated by an authenticator app on your phone — Google Authenticator, Authy, or a physical hardware key. The code changes every 30 seconds and can only be used once."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "How MFA works for a YouTube engineer logging in",
+  //     //         "desc": "YouTube's DevOps engineer Rahul logs into the AWS Console. He enters his username and password — correct. AWS then asks for his MFA code. He opens Google Authenticator on his phone, gets the current 6-digit code, enters it. AWS verifies it — correct. Login succeeds. The thief who stole Rahul's password tries to log in — enters the password — correct. AWS asks for MFA code. The thief doesn't have Rahul's phone. Login fails."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Login flow without MFA:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nResult:   → AWS Console access granted  ❌ (no second check)\n\n// Login flow with MFA:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nMFA Code: 847291             ✅ (from Google Authenticator — valid for 30 seconds)\nResult:   → AWS Console access granted  ✅\n\n// Attacker with stolen password:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nMFA Code: ???                ❌ (attacker doesn't have Rahul's phone)\nResult:   → Access Denied. Login blocked. ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Enforcing MFA with an IAM Policy",
+  //     //         "desc": "YouTube enforces MFA on all engineers through an IAM Policy — if an engineer logs in without MFA, they can see the AWS Console but every single action is denied until they set up MFA. They literally cannot do anything in AWS without completing MFA setup first."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// IAM Policy that blocks all actions if MFA is not active:\n{\n  \"Statement\": [{\n    \"Effect\": \"Deny\",\n    \"Action\": \"*\",\n    \"Resource\": \"*\",\n    \"Condition\": {\n      \"BoolIfExists\": {\n        \"aws:MultiFactorAuthPresent\": \"false\"  // ← if MFA not used at login\n      }\n    }\n  }]\n}\n// Engineer logs in without MFA:\n// They can see the AWS Console — but every action returns Access Denied.\n// They cannot launch EC2, read S3, or do anything until MFA is set up. ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "warning-callout",
+  //     //         "text": "⚠️ MFA is non-negotiable for the AWS root account — always. For IAM Users, YouTube enforces MFA for anyone with access to production resources. For automated systems using IAM Roles — MFA doesn't apply since there's no human logging in. The role's temporary credentials are the security mechanism for automated systems."
+  //     //       }
+  //     //     ],
 
-      //     "AWS Shield": [
-      //       {
-      //         "type": "paragraph",
-      //         "text": "Imagine MrBeast uploads his biggest video ever and millions of users rush to YouTube simultaneously. At the same time, attackers launch a massive DDoS attack using thousands of hacked computers worldwide to flood YouTube with fake traffic. Without protection, YouTube's servers and internet bandwidth could get overwhelmed, causing real users to experience buffering, failed video loads, or complete downtime. AWS Shield is designed to stop these large-scale attacks before they impact YouTube."
-      //       },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ If attackers send tens of millions of fake requests every second toward YouTube, how do real users still manage to watch videos normally without YouTube going offline?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is AWS Shield?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "AWS Shield is AWS's managed DDoS protection service. A DDoS attack happens when thousands of compromised systems flood a target with enormous amounts of traffic to exhaust servers, bandwidth, or network resources. Shield continuously monitors traffic patterns across AWS's global network and automatically detects abnormal spikes, attack signatures, and malicious behavior. Suspicious traffic is filtered or absorbed at AWS's network edge before it can reach YouTube's infrastructure."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "How AWS Shield protects YouTube during a real DDoS attack",
-      //         "desc": "During normal operation, YouTube receives traffic from real users watching videos, uploading content, liking comments, and browsing recommendations. Suddenly, millions of fake requests begin arriving from thousands of compromised systems across the world attempting to overload YouTube's infrastructure. AWS Shield analyzes traffic patterns across AWS edge locations and notices behavior that differs from legitimate users — extremely abnormal request spikes, repeated connection floods, spoofed IP traffic, and coordinated botnet behavior. Instead of forwarding all traffic to YouTube's servers, Shield absorbs and drops the malicious traffic directly at AWS edge locations. Only verified legitimate traffic continues toward YouTube's Load Balancers and backend services. Real users continue watching videos normally while the attack traffic is blocked before it ever reaches YouTube's infrastructure."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Normal traffic reaching YouTube:\nReal users: 100,000 requests/second ✅\n\n// DDoS attack begins:\nFake traffic: 50,000,000 requests/second ❌\nReal users:   100,000 requests/second ✅\n\n// AWS Shield analyzes incoming traffic:\n// - Sudden abnormal traffic spike detected\n// - Traffic pattern matches known DDoS behavior\n// - Requests originate from large botnet network\n\n// Shield mitigation at AWS edge:\nBlocked fake traffic: 49,900,000 requests/second ❌\nAllowed real traffic:   100,000 requests/second ✅\n\n// Result:\n// Attack traffic stopped before reaching YouTube servers.\n// Real users continue watching videos normally. ✅"
-      //       },
-      //       {
-      //         "type": "warning-callout",
-      //         "text": "⚠️ AWS Shield mainly protects against large-scale traffic floods and network-level DDoS attacks. It does not inspect the actual content of HTTP requests for threats like SQL injection, XSS, or malicious API payloads. That type of protection is handled by AWS WAF, which works together with Shield as the application-layer security layer."
-      //       }
-      //     ],
+  //     //     "AWS KMS": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "YouTube stores hundreds of petabytes of video files in S3. If AWS's physical hard drives were ever stolen from a data center — those drives would contain raw video data readable by anyone. KMS prevents this. Every video file stored in S3, every database row in RDS, every secret in Secrets Manager — encrypted with a key managed by KMS. Without the key, the data is unreadable gibberish. KMS controls who has the key."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube stores private unlisted videos in S3 — videos creators haven't made public yet. If someone physically broke into an AWS data center and walked out with hard drives — could they read those private video files?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is KMS?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "AWS Key Management Service is AWS's encryption key management system. You create encryption keys in KMS. AWS services — S3, RDS, EBS, Secrets Manager — use these keys to encrypt data before writing it to disk. To read the data back, the same key is used to decrypt it. KMS controls who is allowed to use each key — so even if someone steals the physical storage media, they cannot decrypt the data without the key."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "YouTube enables KMS encryption on their S3 buckets",
+  //     //         "desc": "YouTube creates a KMS key called youtube-video-encryption-key and configures their S3 buckets to use it. Every file uploaded to S3 is automatically encrypted before being written to disk. When an authorized service reads the file — S3 automatically decrypts it. Unauthorized access — even from inside AWS — returns encrypted gibberish."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// YouTube creates a KMS key:\naws kms create-key \\\n  --description 'YouTube video files encryption key' \\\n  --key-usage ENCRYPT_DECRYPT\n\n// Key created:\n{\n  KeyId:  'arn:aws:kms:ap-south-1:123456789:key/abc-123-def-456',\n  Status:  'Enabled'\n}\n\n// Configure S3 bucket to encrypt all files using this key:\naws s3api put-bucket-encryption \\\n  --bucket youtube-processed-videos \\\n  --server-side-encryption-configuration '{\n    \"Rules\": [{\n      \"ApplyServerSideEncryptionByDefault\": {\n        \"SSEAlgorithm\": \"aws:kms\",\n        \"KMSMasterKeyID\": \"arn:aws:kms:ap-south-1:123456789:key/abc-123-def-456\"\n      }\n    }]\n  }'\n\n// ✅ Every file in this bucket is now encrypted at rest.\n// Physical drives stolen from AWS data center → unreadable without the KMS key."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Who can use the key — KMS Key Policy",
+  //     //         "desc": "YouTube's KMS key has a policy defining exactly which services and roles can use it to encrypt and decrypt. The transcoding EC2 role can decrypt — it needs to read videos. The data analyst role cannot decrypt video files — they have no business accessing raw video content. Even inside YouTube's own AWS account, KMS controls access at the key level."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// KMS Key Policy — who can use youtube-video-encryption-key:\n{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::youtube:role/youtube-transcoding-role\"\n      },\n      \"Action\": [\"kms:Decrypt\", \"kms:GenerateDataKey\"],  // ← can decrypt videos\n      \"Resource\": \"*\"\n    },\n    {\n      \"Effect\": \"Deny\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::youtube:group/data-analysts\"\n      },\n      \"Action\": \"kms:Decrypt\",   // ← analysts cannot decrypt video content\n      \"Resource\": \"*\"\n    }\n  ]\n}\n\n// Transcoding server reads a video from S3:\n// S3 → KMS: 'can youtube-transcoding-role decrypt this?' → Yes ✅\n// File decrypted → server processes video\n\n// Data analyst tries to access same video:\n// S3 → KMS: 'can data-analysts decrypt this?' → No ❌\n// Access Denied — even though S3 bucket permissions allow reading"
+  //     //       },
+  //     //       {
+  //     //         "type": "warning-callout",
+  //     //         "text": "⚠️ KMS keys can be disabled or deleted — which immediately makes all data encrypted with that key unreadable. YouTube never deletes KMS keys that are actively used. Deleting a key used to encrypt 500TB of videos would make all 500TB permanently unreadable — with no recovery possible. KMS enforces a mandatory 7-30 day waiting period before key deletion for exactly this reason."
+  //     //       }
+  //     //     ],
 
-      //     "AWS WAF": [
-      //       // {
-      //       //   "type": "paragraph",
-      //       //   "text": "Shield stops traffic floods. But what about an attacker sending carefully crafted requests that look like real user traffic — but are designed to steal data, crash the application, or exploit vulnerabilities? A request to YouTube's API that contains a SQL injection attempt looks like a normal API call to a firewall. AWS WAF inspects the actual content of each request and blocks malicious ones before they reach YouTube's application code."
-      //       // },
-      //       {
-      //         "type": "curious-callout",
-      //         "text": "❓ An attacker sends a request to YouTube's comment API: POST /comments with body: 'Great video!'; DROP TABLE comments;--. This looks like a normal comment submission. Shield doesn't block it — it's just one request, not a flood. How does YouTube stop this SQL injection attack from wiping out their entire comments database?"
-      //       },
-      //       {
-      //         "type": "heading",
-      //         "text": "What is AWS WAF?"
-      //       },
-      //       {
-      //         "type": "paragraph",
-      //         "text": "AWS WAF stands for Web Application Firewall. It sits in front of YouTube's Load Balancer and CloudFront distribution, inspecting every incoming HTTP request. WAF checks each request against a set of rules — and blocks any request that matches a malicious pattern. SQL injection attempts, cross-site scripting, requests from known malicious IP addresses, bots scraping data, requests with suspicious headers — all caught and blocked by WAF before they reach YouTube's application."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "WAF blocks a SQL injection attack on YouTube's comment API",
-      //         "desc": "A hacker sends a malicious request to YouTube's comment API trying to manipulate the backend database using SQL injection. The request first reaches AWS WAF sitting in front of YouTube's Load Balancer. WAF inspects the request body and detects dangerous SQL keywords and attack patterns that should never appear in a normal comment. The request is blocked immediately with a 403 Forbidden response. The malicious request never reaches YouTube's backend servers or database, keeping the comments table safe."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// Attacker's request reaches WAF first:\nPOST /api/comments\nBody: { \"text\": \"Great video!'; DROP TABLE comments;--\" }\n\n// WAF inspects the request body:\n// SQL injection pattern detected: DROP TABLE\n// Rule: SQLi-BlockRule → BLOCK\n\nResult: 403 Forbidden — request blocked at WAF ✅\n// YouTube's API server never received this request.\n// Comments database untouched.\n\n// Real user's comment passes through:\nPOST /api/comments\nBody: { \"text\": \"This video is amazing!\" }\n// WAF inspects — no malicious pattern found → ALLOW ✅\n// Request reaches YouTube's API server normally."
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "WAF blocks bot scraping attacks",
-      //         "desc": "A competitor's bot is scraping YouTube's entire video metadata — titles, descriptions, view counts — by sending thousands of API requests per minute from a single IP address. Real users don't send 5,000 requests per minute. WAF's rate limiting rule detects this pattern and blocks the IP address automatically after it exceeds the threshold."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// WAF rate limiting rule:\n{\n  \"Rule\": \"RateLimitBots\",\n  \"Type\": \"RateBasedRule\",\n  \"RateLimit\": 500,          // max 500 requests per 5 minutes per IP\n  \"Action\": \"BLOCK\"\n}\n\n// Bot sends 5,000 requests/minute from IP 203.45.67.89:\nRequests 1-500:    → ALLOW ✅\nRequests 501+:     → BLOCK ❌  (rate limit exceeded)\n// IP 203.45.67.89 is now blocked for 5 minutes automatically\n\n// Real YouTube user from same IP range:\n// Sends 3 requests in 5 minutes → well under limit → ALLOW ✅"
-      //       },
-      //       {
-      //         "type": "step",
-      //         "title": "AWS Managed WAF Rules — Pre-built protection",
-      //         "desc": "Just like IAM has pre-built managed policies, WAF has pre-built managed rule groups maintained by AWS. YouTube enables the AWS Core Rule Set — a collection of rules protecting against the OWASP Top 10 most common web vulnerabilities. One checkbox — hundreds of attack patterns blocked automatically without YouTube writing a single rule."
-      //       },
-      //       {
-      //         "type": "code",
-      //         "code": "// YouTube attaches AWS Managed Rules to their WAF:\n{\n  \"ManagedRules\": [\n    \"AWSManagedRulesCommonRuleSet\",      // OWASP Top 10 — SQL injection, XSS, etc.\n    \"AWSManagedRulesKnownBadInputsRuleSet\", // Known malicious request patterns\n    \"AWSManagedRulesAmazonIpReputationList\" // Known malicious IP addresses\n  ]\n}\n// ✅ Hundreds of attack patterns blocked.\n// Updated by AWS as new attack patterns emerge.\n// YouTube's security team didn't write a single rule."
-      //       },
-      //       {
-      //         "type": "table",
-      //         "headers": ["Threat", "AWS Shield", "AWS WAF"],
-      //         "rows": [
-      //           ["DDoS flood — billions of fake requests", "✅ Blocks at network level", "Not designed for this"],
-      //           ["SQL injection in API request", "Cannot detect — looks like normal traffic", "✅ Inspects request content and blocks"],
-      //           ["Bot scraping data at high rate", "Not designed for this", "✅ Rate limiting blocks the IP"],
-      //           ["Known malicious IP addresses", "Partial protection", "✅ IP reputation lists block known attackers"],
-      //           ["Cross-site scripting (XSS)", "Cannot detect", "✅ XSS patterns detected in request body"]
-      //         ]
-      //       },
-      //       {
-      //         "type": "error-callout",
-      //         "title": "Shield + WAF together — why both are needed:",
-      //         "list": [
-      //           "Shield without WAF — stops traffic floods but a single crafted SQL injection request gets through and wipes the database",
-      //           "WAF without Shield — blocks malicious request content but a 50 million requests/second flood overwhelms WAF itself before it can inspect anything",
-      //           "Together — Shield absorbs the flood at the network edge, WAF inspects the surviving requests for malicious content at the application edge"
-      //         ],
-      //         "footer": "YouTube runs both. Shield is the bouncer that stops the crowd crush. WAF is the security scanner that checks each person who gets through the door."
-      //       }
-      //     ]
+  //     //     "Secrets Manager": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "YouTube's API servers need to connect to their RDS database. To connect, they need the database password. Where does that password live? Not in the application code — if the code repo is ever exposed, the password is exposed. Not in environment variables hardcoded into EC2 — those are visible to anyone who can SSH in. AWS Secrets Manager is where YouTube stores all sensitive credentials — database passwords, API keys, third-party service tokens — securely, with automatic rotation and fine-grained access control."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ YouTube's backend server needs the production database password to connect to RDS. The password cannot be in the code. Cannot be in a config file on the server. Where does it live — and how does the server get it securely at runtime?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is Secrets Manager?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "AWS Secrets Manager is a secure vault for storing sensitive values — database passwords, API keys, OAuth tokens, certificates.."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "YouTube stores their database password in Secrets Manager",
+  //     //         "desc": "YouTube's DevOps team stores the production RDS database password in Secrets Manager under the name youtube/prod/db-password. The actual password is encrypted inside Secrets Manager using KMS. Only the youtube-api-role IAM Role has permission to retrieve it."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Store database password in Secrets Manager:\naws secretsmanager create-secret \\\n  --name 'youtube/prod/db-password' \\\n  --secret-string '{\"username\":\"youtube_api\",\"password\":\"Xk9#mP2@qL4n\"}'\n\n// Secret stored and encrypted with KMS. ✅\n// The actual password value is now locked in Secrets Manager.\n// Not in any code file. Not in any config. Not in any environment variable."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "API server fetches the password at runtime",
+  //     //         "desc": "YouTube's API server boots up. It needs the database password to establish a connection. Instead of reading it from a config file, the server calls Secrets Manager using the AWS SDK. Secrets Manager checks the server's IAM Role — youtube-api-role has permission. The password is returned. The server connects to the database. The password was never written to disk on the server."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// YouTube's API server fetching the DB password at runtime:\nconst AWS = require('aws-sdk');\nconst sm  = new AWS.SecretsManager({ region: 'ap-south-1' });\n\nasync function getDatabasePassword() {\n  const secret = await sm.getSecretValue({\n    SecretId: 'youtube/prod/db-password'\n  }).promise();\n\n  const { username, password } = JSON.parse(secret.SecretString);\n  return { username, password };\n}\n\n// Server boots → calls Secrets Manager → gets password → connects to DB\n// Password never in code. Never in config files. Never on disk. ✅\n\n// What happens if a different server tries to fetch this secret:\n// IAM check: does this role have secretsmanager:GetSecretValue permission\n//            on youtube/prod/db-password?\n// Answer: No → Access Denied ❌"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "Automatic password rotation — no human involved",
+  //     //         "desc": "YouTube configures Secrets Manager to automatically rotate the database password every 30 days. Secrets Manager generates a new password, updates it in RDS, then updates the stored secret — all automatically. The API servers fetch the new password on their next boot or secret refresh. No engineer manually rotates passwords. No downtime. No risk of engineers knowing the production database password."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Enable automatic rotation every 30 days:\naws secretsmanager rotate-secret \\\n  --secret-id 'youtube/prod/db-password' \\\n  --rotation-rules AutomaticallyAfterDays=30\n\n// Every 30 days — automatically:\n// 1. Secrets Manager generates a new strong password\n// 2. Updates the password in RDS\n// 3. Updates the stored secret value\n// 4. API servers fetch the new password on next call\n\n// ✅ No engineer knows the production DB password.\n// ✅ Password changes every 30 days automatically.\n// ✅ Even if an old password leaks — it expires in 30 days maximum."
+  //     //       },
+  //     //       {
+  //     //         "type": "error-callout",
+  //     //         "title": "What happens without Secrets Manager:",
+  //     //         "list": [
+  //     //           "Database password hardcoded in application code — committed to GitHub — visible to every engineer who ever clones the repo",
+  //     //           "Password in a .env file on the EC2 server — anyone who can SSH in can read it with 'cat .env'",
+  //     //           "Password never rotated — a leaked password from 2 years ago still works today",
+  //     //           "Engineer leaves the company — they still know the production database password"
+  //     //         ],
+  //     //         "footer": "Secrets Manager ensures the production database password is known to zero humans. Only authorized AWS services can retrieve it — and only for as long as their IAM permissions allow."
+  //     //       }
+  //     //     ],
 
-      //   }
-      // },
-      // {
-      //   "id": 7,
-      //   "title": "Load Balancing & Auto Scaling",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "Elastic Load Balancer (ELB)",
-      //     "Application Load Balancer (ALB)",
-      //     "Network Load Balancer (NLB)",
-      //     "Gateway Load Balancer",
-      //     "Target Groups",
-      //     "Health Checks",
-      //     "Auto Scaling Groups",
-      //     "Scaling Policies (Step, Target, Scheduled)",
-      //     "Sticky Sessions",
-      //     "High Availability Architecture"
-      //   ]
-      // },
-      // {
-      //   "id": 8,
-      //   "title": "Serverless on AWS",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "What is Serverless?",
-      //     "AWS Lambda",
-      //     "API Gateway",
-      //     "Lambda Triggers & Event Sources",
-      //     "Amazon EventBridge",
-      //     "AWS Step Functions",
-      //     "Amazon SQS",
-      //     "Amazon SNS",
-      //     "Serverless Application Model (SAM)",
-      //     "Cold Starts in Lambda"
-      //   ]
-      // },
-      // {
-      //   "id": 9,
-      //   "title": "AWS Container Services",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "What are Containers?",
-      //     "Amazon ECS (Elastic Container Service)",
-      //     "AWS Fargate",
-      //     "Amazon ECR (Elastic Container Registry)",
-      //     "ECS Task Definitions",
-      //     "ECS Services & Clusters",
-      //     "Container Networking in AWS",
-      //     "Container Auto Scaling",
-      //     "Amazon EKS (Elastic Kubernetes Service)",
-      //     "ECS vs EKS vs Fargate"
-      //   ]
-      // },
-      // {
-      //   "id": 10,
-      //   "title": "AWS Developer Tools & CI/CD",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "AWS CodeCommit",
-      //     "AWS CodeBuild",
-      //     "AWS CodeDeploy",
-      //     "AWS CodePipeline",
-      //     "AWS CodeArtifact",
-      //     "Blue-Green Deployment on AWS",
-      //     "Rolling Deployments",
-      //     "AWS CloudFormation",
-      //     "AWS CDK (Cloud Development Kit)",
-      //     "AWS Elastic Beanstalk"
-      //   ]
-      // },
-      // {
-      //   "id": 11,
-      //   "title": "Monitoring & Observability",
-      //   "level": "intermediate",
-      //   "topics": [
-      //     "Amazon CloudWatch",
-      //     "CloudWatch Logs & Log Groups",
-      //     "CloudWatch Metrics & Alarms",
-      //     "CloudWatch Dashboards",
-      //     "AWS X-Ray",
-      //     "AWS CloudTrail",
-      //     "AWS Config",
-      //     "Amazon GuardDuty",
-      //     "AWS Health Dashboard",
-      //     "Distributed Tracing on AWS"
-      //   ]
-      // },
-      // {
-      //   "id": 12,
-      //   "title": "Advanced Networking",
-      //   "level": "experienced",
-      //   "topics": [
-      //     "VPC Peering",
-      //     "AWS Transit Gateway",
-      //     "VPN & Direct Connect",
-      //     "AWS PrivateLink",
-      //     "Endpoint Services",
-      //     "Network ACLs Deep Dive",
-      //     "Egress-Only Internet Gateway",
-      //     "AWS Global Accelerator",
-      //     "Amazon CloudFront (CDN)",
-      //     "Multi-VPC Architecture"
-      //   ]
-      // },
-      // {
-      //   "id": 13,
-      //   "title": "Advanced AWS Architecture",
-      //   "level": "experienced",
-      //   "topics": [
-      //     "Microservices on AWS",
-      //     "Event-Driven Architecture",
-      //     "Decoupling with SQS & SNS",
-      //     "AWS Well-Architected Framework",
-      //     "Disaster Recovery Strategies",
-      //     "Multi-Region Deployments",
-      //     "Cost Optimization on AWS",
-      //     "AWS Trusted Advisor",
-      //     "AWS Organizations & Control Tower",
-      //     "Production Architecture Design"
-      //   ]
-      // }
-    ]
-  },
+  //     //     "AWS Shield": [
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "Imagine MrBeast uploads his biggest video ever and millions of users rush to YouTube simultaneously. At the same time, attackers launch a massive DDoS attack using thousands of hacked computers worldwide to flood YouTube with fake traffic. Without protection, YouTube's servers and internet bandwidth could get overwhelmed, causing real users to experience buffering, failed video loads, or complete downtime. AWS Shield is designed to stop these large-scale attacks before they impact YouTube."
+  //     //       },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ If attackers send tens of millions of fake requests every second toward YouTube, how do real users still manage to watch videos normally without YouTube going offline?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is AWS Shield?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "AWS Shield is AWS's managed DDoS protection service. A DDoS attack happens when thousands of compromised systems flood a target with enormous amounts of traffic to exhaust servers, bandwidth, or network resources. Shield continuously monitors traffic patterns across AWS's global network and automatically detects abnormal spikes, attack signatures, and malicious behavior. Suspicious traffic is filtered or absorbed at AWS's network edge before it can reach YouTube's infrastructure."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "How AWS Shield protects YouTube during a real DDoS attack",
+  //     //         "desc": "During normal operation, YouTube receives traffic from real users watching videos, uploading content, liking comments, and browsing recommendations. Suddenly, millions of fake requests begin arriving from thousands of compromised systems across the world attempting to overload YouTube's infrastructure. AWS Shield analyzes traffic patterns across AWS edge locations and notices behavior that differs from legitimate users — extremely abnormal request spikes, repeated connection floods, spoofed IP traffic, and coordinated botnet behavior. Instead of forwarding all traffic to YouTube's servers, Shield absorbs and drops the malicious traffic directly at AWS edge locations. Only verified legitimate traffic continues toward YouTube's Load Balancers and backend services. Real users continue watching videos normally while the attack traffic is blocked before it ever reaches YouTube's infrastructure."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Normal traffic reaching YouTube:\nReal users: 100,000 requests/second ✅\n\n// DDoS attack begins:\nFake traffic: 50,000,000 requests/second ❌\nReal users:   100,000 requests/second ✅\n\n// AWS Shield analyzes incoming traffic:\n// - Sudden abnormal traffic spike detected\n// - Traffic pattern matches known DDoS behavior\n// - Requests originate from large botnet network\n\n// Shield mitigation at AWS edge:\nBlocked fake traffic: 49,900,000 requests/second ❌\nAllowed real traffic:   100,000 requests/second ✅\n\n// Result:\n// Attack traffic stopped before reaching YouTube servers.\n// Real users continue watching videos normally. ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "warning-callout",
+  //     //         "text": "⚠️ AWS Shield mainly protects against large-scale traffic floods and network-level DDoS attacks. It does not inspect the actual content of HTTP requests for threats like SQL injection, XSS, or malicious API payloads. That type of protection is handled by AWS WAF, which works together with Shield as the application-layer security layer."
+  //     //       }
+  //     //     ],
+
+  //     //     "AWS WAF": [
+  //     //       // {
+  //     //       //   "type": "paragraph",
+  //     //       //   "text": "Shield stops traffic floods. But what about an attacker sending carefully crafted requests that look like real user traffic — but are designed to steal data, crash the application, or exploit vulnerabilities? A request to YouTube's API that contains a SQL injection attempt looks like a normal API call to a firewall. AWS WAF inspects the actual content of each request and blocks malicious ones before they reach YouTube's application code."
+  //     //       // },
+  //     //       {
+  //     //         "type": "curious-callout",
+  //     //         "text": "❓ An attacker sends a request to YouTube's comment API: POST /comments with body: 'Great video!'; DROP TABLE comments;--. This looks like a normal comment submission. Shield doesn't block it — it's just one request, not a flood. How does YouTube stop this SQL injection attack from wiping out their entire comments database?"
+  //     //       },
+  //     //       {
+  //     //         "type": "heading",
+  //     //         "text": "What is AWS WAF?"
+  //     //       },
+  //     //       {
+  //     //         "type": "paragraph",
+  //     //         "text": "AWS WAF stands for Web Application Firewall. It sits in front of YouTube's Load Balancer and CloudFront distribution, inspecting every incoming HTTP request. WAF checks each request against a set of rules — and blocks any request that matches a malicious pattern. SQL injection attempts, cross-site scripting, requests from known malicious IP addresses, bots scraping data, requests with suspicious headers — all caught and blocked by WAF before they reach YouTube's application."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "WAF blocks a SQL injection attack on YouTube's comment API",
+  //     //         "desc": "A hacker sends a malicious request to YouTube's comment API trying to manipulate the backend database using SQL injection. The request first reaches AWS WAF sitting in front of YouTube's Load Balancer. WAF inspects the request body and detects dangerous SQL keywords and attack patterns that should never appear in a normal comment. The request is blocked immediately with a 403 Forbidden response. The malicious request never reaches YouTube's backend servers or database, keeping the comments table safe."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// Attacker's request reaches WAF first:\nPOST /api/comments\nBody: { \"text\": \"Great video!'; DROP TABLE comments;--\" }\n\n// WAF inspects the request body:\n// SQL injection pattern detected: DROP TABLE\n// Rule: SQLi-BlockRule → BLOCK\n\nResult: 403 Forbidden — request blocked at WAF ✅\n// YouTube's API server never received this request.\n// Comments database untouched.\n\n// Real user's comment passes through:\nPOST /api/comments\nBody: { \"text\": \"This video is amazing!\" }\n// WAF inspects — no malicious pattern found → ALLOW ✅\n// Request reaches YouTube's API server normally."
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "WAF blocks bot scraping attacks",
+  //     //         "desc": "A competitor's bot is scraping YouTube's entire video metadata — titles, descriptions, view counts — by sending thousands of API requests per minute from a single IP address. Real users don't send 5,000 requests per minute. WAF's rate limiting rule detects this pattern and blocks the IP address automatically after it exceeds the threshold."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// WAF rate limiting rule:\n{\n  \"Rule\": \"RateLimitBots\",\n  \"Type\": \"RateBasedRule\",\n  \"RateLimit\": 500,          // max 500 requests per 5 minutes per IP\n  \"Action\": \"BLOCK\"\n}\n\n// Bot sends 5,000 requests/minute from IP 203.45.67.89:\nRequests 1-500:    → ALLOW ✅\nRequests 501+:     → BLOCK ❌  (rate limit exceeded)\n// IP 203.45.67.89 is now blocked for 5 minutes automatically\n\n// Real YouTube user from same IP range:\n// Sends 3 requests in 5 minutes → well under limit → ALLOW ✅"
+  //     //       },
+  //     //       {
+  //     //         "type": "step",
+  //     //         "title": "AWS Managed WAF Rules — Pre-built protection",
+  //     //         "desc": "Just like IAM has pre-built managed policies, WAF has pre-built managed rule groups maintained by AWS. YouTube enables the AWS Core Rule Set — a collection of rules protecting against the OWASP Top 10 most common web vulnerabilities. One checkbox — hundreds of attack patterns blocked automatically without YouTube writing a single rule."
+  //     //       },
+  //     //       {
+  //     //         "type": "code",
+  //     //         "code": "// YouTube attaches AWS Managed Rules to their WAF:\n{\n  \"ManagedRules\": [\n    \"AWSManagedRulesCommonRuleSet\",      // OWASP Top 10 — SQL injection, XSS, etc.\n    \"AWSManagedRulesKnownBadInputsRuleSet\", // Known malicious request patterns\n    \"AWSManagedRulesAmazonIpReputationList\" // Known malicious IP addresses\n  ]\n}\n// ✅ Hundreds of attack patterns blocked.\n// Updated by AWS as new attack patterns emerge.\n// YouTube's security team didn't write a single rule."
+  //     //       },
+  //     //       {
+  //     //         "type": "table",
+  //     //         "headers": ["Threat", "AWS Shield", "AWS WAF"],
+  //     //         "rows": [
+  //     //           ["DDoS flood — billions of fake requests", "✅ Blocks at network level", "Not designed for this"],
+  //     //           ["SQL injection in API request", "Cannot detect — looks like normal traffic", "✅ Inspects request content and blocks"],
+  //     //           ["Bot scraping data at high rate", "Not designed for this", "✅ Rate limiting blocks the IP"],
+  //     //           ["Known malicious IP addresses", "Partial protection", "✅ IP reputation lists block known attackers"],
+  //     //           ["Cross-site scripting (XSS)", "Cannot detect", "✅ XSS patterns detected in request body"]
+  //     //         ]
+  //     //       },
+  //     //       {
+  //     //         "type": "error-callout",
+  //     //         "title": "Shield + WAF together — why both are needed:",
+  //     //         "list": [
+  //     //           "Shield without WAF — stops traffic floods but a single crafted SQL injection request gets through and wipes the database",
+  //     //           "WAF without Shield — blocks malicious request content but a 50 million requests/second flood overwhelms WAF itself before it can inspect anything",
+  //     //           "Together — Shield absorbs the flood at the network edge, WAF inspects the surviving requests for malicious content at the application edge"
+  //     //         ],
+  //     //         "footer": "YouTube runs both. Shield is the bouncer that stops the crowd crush. WAF is the security scanner that checks each person who gets through the door."
+  //     //       }
+  //     //     ]
+
+  //     //   }
+  //     // },
+  //     // {
+  //     //   "id": 7,
+  //     //   "title": "Load Balancing & Auto Scaling",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "Elastic Load Balancer (ELB)",
+  //     //     "Application Load Balancer (ALB)",
+  //     //     "Network Load Balancer (NLB)",
+  //     //     "Gateway Load Balancer",
+  //     //     "Target Groups",
+  //     //     "Health Checks",
+  //     //     "Auto Scaling Groups",
+  //     //     "Scaling Policies (Step, Target, Scheduled)",
+  //     //     "Sticky Sessions",
+  //     //     "High Availability Architecture"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 8,
+  //     //   "title": "Serverless on AWS",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "What is Serverless?",
+  //     //     "AWS Lambda",
+  //     //     "API Gateway",
+  //     //     "Lambda Triggers & Event Sources",
+  //     //     "Amazon EventBridge",
+  //     //     "AWS Step Functions",
+  //     //     "Amazon SQS",
+  //     //     "Amazon SNS",
+  //     //     "Serverless Application Model (SAM)",
+  //     //     "Cold Starts in Lambda"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 9,
+  //     //   "title": "AWS Container Services",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "What are Containers?",
+  //     //     "Amazon ECS (Elastic Container Service)",
+  //     //     "AWS Fargate",
+  //     //     "Amazon ECR (Elastic Container Registry)",
+  //     //     "ECS Task Definitions",
+  //     //     "ECS Services & Clusters",
+  //     //     "Container Networking in AWS",
+  //     //     "Container Auto Scaling",
+  //     //     "Amazon EKS (Elastic Kubernetes Service)",
+  //     //     "ECS vs EKS vs Fargate"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 10,
+  //     //   "title": "AWS Developer Tools & CI/CD",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "AWS CodeCommit",
+  //     //     "AWS CodeBuild",
+  //     //     "AWS CodeDeploy",
+  //     //     "AWS CodePipeline",
+  //     //     "AWS CodeArtifact",
+  //     //     "Blue-Green Deployment on AWS",
+  //     //     "Rolling Deployments",
+  //     //     "AWS CloudFormation",
+  //     //     "AWS CDK (Cloud Development Kit)",
+  //     //     "AWS Elastic Beanstalk"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 11,
+  //     //   "title": "Monitoring & Observability",
+  //     //   "level": "intermediate",
+  //     //   "topics": [
+  //     //     "Amazon CloudWatch",
+  //     //     "CloudWatch Logs & Log Groups",
+  //     //     "CloudWatch Metrics & Alarms",
+  //     //     "CloudWatch Dashboards",
+  //     //     "AWS X-Ray",
+  //     //     "AWS CloudTrail",
+  //     //     "AWS Config",
+  //     //     "Amazon GuardDuty",
+  //     //     "AWS Health Dashboard",
+  //     //     "Distributed Tracing on AWS"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 12,
+  //     //   "title": "Advanced Networking",
+  //     //   "level": "experienced",
+  //     //   "topics": [
+  //     //     "VPC Peering",
+  //     //     "AWS Transit Gateway",
+  //     //     "VPN & Direct Connect",
+  //     //     "AWS PrivateLink",
+  //     //     "Endpoint Services",
+  //     //     "Network ACLs Deep Dive",
+  //     //     "Egress-Only Internet Gateway",
+  //     //     "AWS Global Accelerator",
+  //     //     "Amazon CloudFront (CDN)",
+  //     //     "Multi-VPC Architecture"
+  //     //   ]
+  //     // },
+  //     // {
+  //     //   "id": 13,
+  //     //   "title": "Advanced AWS Architecture",
+  //     //   "level": "experienced",
+  //     //   "topics": [
+  //     //     "Microservices on AWS",
+  //     //     "Event-Driven Architecture",
+  //     //     "Decoupling with SQS & SNS",
+  //     //     "AWS Well-Architected Framework",
+  //     //     "Disaster Recovery Strategies",
+  //     //     "Multi-Region Deployments",
+  //     //     "Cost Optimization on AWS",
+  //     //     "AWS Trusted Advisor",
+  //     //     "AWS Organizations & Control Tower",
+  //     //     "Production Architecture Design"
+  //     //   ]
+  //     // }
+  //   ]
+  // },
 
 
 

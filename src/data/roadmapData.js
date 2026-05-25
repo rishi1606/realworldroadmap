@@ -617,7 +617,561 @@ export const roadmapData = [
           "Security Groups & Basic Server Security",
           "User Data Scripts & EC2 Automation",
           "Introduction to Auto Scaling"
-        ]
+        ],
+        "topicDetails": {
+
+          "What is EC2 & How AWS Servers Work": [
+            {
+              "type": "paragraph",
+              "text": "Every time you upload a video to YouTube — something has to receive that upload, process it, transcode it into multiple resolutions, and store it. That 'something' is a server. In the AWS world, that server is EC2. Amazon Elastic Compute Cloud (EC2) is the backbone of AWS compute — it gives you virtual servers in the cloud that you can spin up in minutes, configure exactly how you need, and shut down the moment you're done."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ When you upload a 4K video to YouTube — what actually receives it, processes it, and converts it into 360p, 720p, and 1080p versions simultaneously? Where does that computation happen?"
+            },
+            {
+              "type": "heading",
+              "text": "What is EC2?"
+            },
+            {
+              "type": "paragraph",
+              "text": "EC2 is AWS's virtual server service. Instead of buying a physical machine, you rent a virtual one — choosing exactly how many CPUs, how much RAM, and what OS you want. It launches in under a minute, you pay per second of usage, and you can have 1 server or 10,000 servers running simultaneously."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of EC2 like renting a computer from AWS. You pick the size — small laptop, powerful workstation, or massive supercomputer. You install what you need. You use it. You return it when done. You only pay for the hours you kept it."
+            },
+            {
+              "type": "heading",
+              "text": "How Does EC2 Actually Work Under the Hood?"
+            },
+            {
+              "type": "paragraph",
+              "text": "AWS owns massive physical servers in its data centers globally. Using virtualization technology — specifically a hypervisor — AWS splits one powerful physical machine into dozens of isolated virtual machines. Each virtual machine is an EC2 instance. Your EC2 instance runs completely isolated from other customers' instances on the same physical hardware."
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — You request an EC2 instance",
+              "desc": "You choose Region, instance type (CPU/RAM), OS (Amazon Linux, Ubuntu, Windows), and storage. Click launch."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — AWS allocates a virtual machine",
+              "desc": "AWS's hypervisor carves out the requested CPU, RAM, and storage from a physical server in your chosen Region and AZ. A fresh virtual machine boots up with your chosen OS."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — You get a public IP address",
+              "desc": "AWS assigns a public IP to your instance. You can now SSH into it, install software, deploy your app, and start serving traffic — just like a real server."
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — You pay per second",
+              "desc": "Billing starts the moment the instance boots. Billing stops the moment you terminate it. Stopped instances are charged only for storage, not compute."
+            },
+            {
+              "type": "heading",
+              "text": "YouTube's EC2 Use Cases"
+            },
+            // {
+            //   "type": "step",
+            //   "title": "Video Upload Receivers",
+            //   "desc": "EC2 instances behind a load balancer receive incoming video uploads from creators globally — handling gigabytes of data per second during peak hours."
+            // },
+            // {
+            //   "type": "step",
+            //   "title": "Video Transcoding Workers",
+            //   "desc": "Compute-optimized EC2 instances (C-series) transcode uploaded videos into multiple resolutions simultaneously — 360p, 720p, 1080p, 4K — using parallel processing."
+            // },
+            {
+              "type": "step",
+              "title": "API Servers",
+              "desc": "EC2 instances run YouTube's backend APIs — handling billions of requests daily for video metadata, comments, likes, and recommendations."
+            },
+            {
+              "type": "error-callout",
+              "title": "Without EC2 — what YouTube would need:",
+              "list": [
+                "Buy thousands of physical servers — millions in upfront capital",
+                "Build and manage data centers in every country",
+                "Hire hardware engineers to replace failing machines 24/7",
+                "Over-provision for peak traffic — paying for idle servers at 3am",
+                "6-month lead time to scale up for a viral video event"
+              ],
+              "footer": "With EC2 — YouTube scales from 100 servers to 10,000 in minutes. Automatically. Without touching a single physical machine."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ EC2 is powerful — but a raw server does nothing by default. You need to connect to it, secure it, configure it, and deploy your application. The next topics walk through exactly how to do all of this step by step."
+            },
+            {
+              "type": "image",
+              "src": "ec2-1.png"
+            }
+          ],
+
+          "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)": [
+            {
+              "type": "paragraph",
+              "text": "Knowing what EC2 is means nothing if you can't actually use it. Launching your first EC2 instance and connecting to it is the single most fundamental hands-on skill in all of AWS. Every backend engineer at a company like YouTube has done this hundreds of times. Let's walk through exactly what happens — from clicking launch to being connected inside a live server."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube's engineers deploy code to remote servers every day. How do they actually connect to a server sitting in an AWS data center in Mumbai from their laptop in Bangalore?"
+            },
+            {
+              "type": "heading",
+              "text": "Step 1 — Launching an EC2 Instance"
+            },
+            {
+              "type": "paragraph",
+              "text": "Launching an EC2 instance is a series of decisions — each one defining exactly what kind of server you're renting and how it behaves."
+            },
+            {
+              "type": "step",
+              "title": "Choose an AMI (Amazon Machine Image)",
+              "desc": "AMI is the OS template for your server. Amazon Linux 2023 for most backend workloads. Ubuntu 22.04 if your team prefers it. Windows Server for .NET apps. YouTube's Linux-based servers would use Amazon Linux or Ubuntu."
+            },
+            {
+              "type": "step",
+              "title": "Choose Instance Type",
+              "desc": "This defines your server's CPU and RAM. t3.micro for learning and dev. c6i.4xlarge for YouTube's video transcoding workloads. We cover instance types in detail in the next topic."
+            },
+            {
+              "type": "step",
+              "title": "Configure Storage",
+              "desc": "Add an EBS volume — the hard disk for your server. 8GB default for OS. Add more for application data. YouTube's upload receivers would have large temporary storage for incoming video files."
+            },
+            {
+              "type": "step",
+              "title": "Configure Security Group",
+              "desc": "Firewall rules defining what traffic is allowed in and out. For SSH access — open port 22. For a web server — open port 80 and 443. Covered in detail in Security Groups topic."
+            },
+            {
+              "type": "heading",
+              "text": "Step 2 — Key Pairs (How SSH Authentication Works)"
+            },
+            {
+              "type": "paragraph",
+              "text": "To connect to an EC2 instance you need a Key Pair — a pair of cryptographic keys. AWS stores the public key on your server. You download the private key (.pem file) to your laptop. The private key is your identity proof — like a physical key to the server's door."
+            },
+            {
+              "type": "error-callout",
+              "title": "Key Pair rules you must never break:",
+              "list": [
+                "Download the .pem file once — AWS never shows it again. Ever.",
+                "Never share your .pem file — whoever has it can access your server",
+                "Never commit .pem files to GitHub — your server gets compromised instantly",
+                "Store it safely — losing it means you cannot SSH into that instance"
+              ],
+              "footer": "YouTube's engineers store Key Pairs in secure vaults — never on personal laptops or in code repositories."
+            },
+            {
+              "type": "heading",
+              "text": "Step 3 — Connecting via SSH"
+            },
+            {
+              "type": "paragraph",
+              "text": "SSH (Secure Shell) lets you connect to a remote Linux server securely over the internet. Once connected — you're inside the server's terminal, exactly as if you were sitting in front of it in the data center."
+            },
+            {
+              "type": "code",
+              "code": "# Give correct permissions to your .pem file first\nchmod 400 youtube-server.pem\n\n# Connect to your EC2 instance\nssh -i youtube-server.pem ec2-user@YOUR_PUBLIC_IP\n\n# For Ubuntu AMIs — username is ubuntu, not ec2-user\nssh -i youtube-server.pem ubuntu@YOUR_PUBLIC_IP\n\n# You're now inside the server ✅\n[ec2-user@ip-172-31-xx-xx ~]$"
+            },
+            {
+              "type": "heading",
+              "text": "Step 4 — Elastic IP (The Permanent IP Problem)"
+            },
+            {
+              "type": "paragraph",
+              "text": "Every time you stop and start an EC2 instance — AWS assigns a brand new public IP address. Your old IP is gone. If YouTube's API server IP changes every restart — every DNS record, every configuration pointing to it breaks. Elastic IP solves this."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 An Elastic IP is a static public IP address that stays yours until you release it. Attach it to an EC2 instance — it keeps that IP even through stops, starts, and restarts. YouTube's critical servers always have Elastic IPs so DNS never needs updating."
+            },
+            {
+              "type": "code",
+              "code": "# Without Elastic IP:\nStart instance  → IP: 54.123.45.67\nStop + Start    → IP: 18.234.56.78  ← completely different ❌\n\n# With Elastic IP:\nAllocate Elastic IP → 3.14.159.26\nAttach to instance  → always 3.14.159.26 ✅\nStop + Start        → still 3.14.159.26 ✅"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Elastic IPs are free only when attached to a running instance. If you allocate one and don't use it — AWS charges you per hour. Always release Elastic IPs you're not using. In production, most teams use Load Balancers with DNS instead of Elastic IPs directly — but understanding Elastic IP is fundamental."
+            },
+            {
+              "type": "image",
+              "src": "ec2-2.png"
+            }
+          ],
+
+          "EC2 Instance Types & AMIs": [
+            {
+              "type": "paragraph",
+              "text": "YouTube does not use the same server for uploading videos, serving recommendations, and storing thumbnails. A server that receives uploads needs massive network bandwidth. A server that transcodes video needs extreme CPU power. A server running a recommendation ML model needs enormous RAM. AWS gives you exactly the right hardware for each job — through EC2 Instance Types and AMIs."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube transcodes 500 hours of video every minute. That's an insane amount of compute. How does AWS provide the right type of processing power for such different workloads — transcoding vs API serving vs ML inference?"
+            },
+            {
+              "type": "heading",
+              "text": "What is an Instance Type?"
+            },
+            {
+              "type": "paragraph",
+              "text": "An Instance Type defines the hardware profile of your EC2 server — how many virtual CPUs, how much RAM, what network speed, and what storage type. AWS organizes instance types into families — each optimized for a specific workload category."
+            },
+            {
+              "type": "heading",
+              "text": "EC2 Instance Families"
+            },
+            {
+              "type": "step",
+              "title": "General Purpose — T and M Series",
+              "desc": "Balanced CPU and RAM. Best for web servers, APIs, small databases, and dev environments. YouTube's comment API servers run on M-series instances — steady traffic, balanced needs. t3.micro is the free-tier instance you'll use for learning."
+            },
+            {
+              "type": "step",
+              "title": "Compute Optimized — C Series",
+              "desc": "High CPU, lower RAM. Best for CPU-intensive tasks. YouTube's video transcoding fleet runs on C-series instances — converting 4K raw uploads into multiple resolutions requires pure compute power. c6i.8xlarge = 32 vCPUs."
+            },
+            {
+              "type": "step",
+              "title": "Memory Optimized — R and X Series",
+              "desc": "Massive RAM, moderate CPU. Best for in-memory databases, caching, and ML model serving. YouTube's recommendation engine — holding billions of user preference vectors in memory — runs on R-series instances. r6i.32xlarge = 1TB RAM."
+            },
+            {
+              "type": "step",
+              "title": "Storage Optimized — I and D Series",
+              "desc": "Extremely fast local NVMe SSD storage. Best for high-throughput databases and data warehouses. YouTube's raw video intake pipeline — needing ultra-fast temporary storage for incoming uploads — uses I-series instances."
+            },
+            {
+              "type": "step",
+              "title": "Accelerated Computing — P and G Series",
+              "desc": "GPU-powered instances. Best for machine learning training and video processing. YouTube's AI models for content moderation and caption generation are trained on P-series GPU instances."
+            },
+            {
+              "type": "heading",
+              "text": "Reading Instance Type Names"
+            },
+            {
+              "type": "code",
+              "code": "c6i.4xlarge\n│ │ │\n│ │ └── Size: nano < micro < small < medium < large < xlarge < 2xl < 4xl < 8xl < 16xl < 32xl\n│ └──── Generation + Processor: 6 = 6th gen, i = Intel (a = AMD, g = Graviton/ARM)\n└────── Family: c = Compute Optimized\n\n// Examples:\nt3.micro    → General Purpose, 3rd gen, 1 vCPU, 1GB RAM (Free Tier)\nm6i.xlarge  → General Purpose, 6th gen Intel, 4 vCPU, 16GB RAM\nc6i.4xlarge → Compute Optimized, 6th gen Intel, 16 vCPU, 32GB RAM\nr6i.8xlarge → Memory Optimized, 6th gen Intel, 32 vCPU, 256GB RAM"
+            },
+            {
+              "type": "heading",
+              "text": "What is an AMI?"
+            },
+            {
+              "type": "paragraph",
+              "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it as a snapshot of an entire configured server — OS, settings, installed packages, application code — all frozen into an image that can launch new identical instances in seconds."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 AMI is like a master stamp for your server. YouTube could configure one perfectly tuned video transcoding server — install ffmpeg, configure settings, optimize the OS — then create an AMI from it. Now they can launch 1000 identical transcoding servers from that stamp in minutes. Every single one perfectly configured."
+            },
+            {
+              "type": "step",
+              "title": "AWS Provided AMIs",
+              "desc": "Amazon Linux 2023, Ubuntu 22.04, Windows Server 2022, Red Hat, SUSE. These are official base OS images — clean slate, you configure from here."
+            },
+            {
+              "type": "step",
+              "title": "Custom AMIs (Golden Images)",
+              "desc": "YouTube's engineering team creates custom AMIs — pre-installed with all dependencies, security configurations, and monitoring agents. Every new server launches from this golden image — ready to serve in seconds, not hours."
+            },
+            {
+              "type": "step",
+              "title": "AWS Marketplace AMIs",
+              "desc": "Pre-configured third-party software images — NGINX pre-installed, WordPress ready to go, security-hardened images. Pay extra per hour for the software license."
+            },
+            {
+              "type": "table",
+              "headers": ["Instance Family", "Optimized For", "YouTube Use Case", "Example Type"],
+              "rows": [
+                ["T / M (General)", "Balanced workloads", "API servers, web backends", "t3.micro, m6i.xlarge"],
+                ["C (Compute)", "CPU intensive tasks", "Video transcoding", "c6i.4xlarge"],
+                ["R / X (Memory)", "RAM intensive workloads", "Recommendation engine", "r6i.8xlarge"],
+                ["I / D (Storage)", "Fast local disk I/O", "Video intake pipeline", "i3.2xlarge"],
+                ["P / G (GPU)", "ML and graphics", "AI model training, moderation", "p4d.24xlarge"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Choosing the wrong instance type is one of the most common and expensive AWS mistakes. Over-provisioning wastes money. Under-provisioning causes performance issues. Always benchmark your workload first, start with a general purpose instance, then right-size based on actual CPU and memory metrics from CloudWatch."
+            },
+            {
+              "type": "image",
+              "src": "ec2-3.png"
+            }
+          ],
+
+          "Security Groups & Basic Server Security": [
+            {
+              "type": "paragraph",
+              "text": "YouTube's EC2 servers are live on the internet — accessible from anywhere in the world. Without any protection, anyone could connect to any port, attempt to log in, run commands, or flood the server with traffic. Security Groups are AWS's first line of defense — a virtual firewall that sits in front of every EC2 instance and controls exactly what traffic is allowed in and out."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube's upload servers are publicly reachable on the internet. How does AWS ensure only legitimate video uploads get through — and attackers trying to SSH in, run malicious commands, or probe open ports get blocked?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Security Group?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Security Group is a stateful virtual firewall attached to EC2 instances. It controls inbound traffic (what can reach your server) and outbound traffic (what your server can send out). By default — all inbound traffic is blocked, all outbound traffic is allowed. You explicitly define rules to open specific ports for specific sources."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of a Security Group like a bouncer list for your server. Only traffic matching the list gets in. Everything else is silently dropped — no error, no response. The server doesn't even acknowledge the connection attempt."
+            },
+            {
+              "type": "heading",
+              "text": "Security Group Rules — How They Work"
+            },
+            {
+              "type": "code",
+              "code": "// YouTube Upload Server — Inbound Rules:\nPort 443 (HTTPS)  → Source: 0.0.0.0/0   ✅ Anyone can upload videos\nPort 22 (SSH)     → Source: 10.0.0.0/8  ✅ Only internal engineers can SSH\nPort 80 (HTTP)    → BLOCKED             ❌ Force HTTPS only\nPort 3306 (MySQL) → BLOCKED             ❌ Database never exposed publicly\n\n// Outbound Rules:\nAll traffic       → Destination: 0.0.0.0/0 ✅ Server can call any external service"
+            },
+            {
+              "type": "heading",
+              "text": "Stateful — What Does That Mean?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Security Groups are stateful — meaning if you allow inbound traffic on port 443, the response traffic is automatically allowed out without needing a separate outbound rule. AWS tracks the connection state and handles return traffic automatically."
+            },
+            {
+              "type": "step",
+              "title": "Inbound Rule: Allow HTTPS (443)",
+              "desc": "User in Mumbai uploads a video to YouTube's EC2 server on port 443. Security Group allows it in — rule matches."
+            },
+            {
+              "type": "step",
+              "title": "Response automatically allowed",
+              "desc": "Server responds to the upload request. Because Security Groups are stateful — the response is automatically allowed out, even without an explicit outbound rule for port 443."
+            },
+            {
+              "type": "heading",
+              "text": "Common Security Group Configurations"
+            },
+            {
+              "type": "table",
+              "headers": ["Server Type", "Allow Inbound", "Block Inbound", "YouTube Example"],
+              "rows": [
+                ["Web Server", "80, 443 from anywhere", "Everything else", "Video streaming servers"],
+                ["SSH Bastion", "22 from office IP only", "Everything else", "Engineer access gateway"],
+                ["Database", "3306 from app servers only", "Everything from internet", "YouTube's MySQL cluster"],
+                ["Internal API", "8080 from load balancer only", "Everything from internet", "Recommendation API"],
+                ["Video Processor", "No inbound needed", "Everything", "Pulls jobs from queue — no direct traffic"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Security Groups vs Network ACLs"
+            },
+            {
+              "type": "paragraph",
+              "text": "Security Groups operate at the instance level — they protect individual EC2 instances. Network ACLs (NACLs) operate at the subnet level — they protect entire subnets. Security Groups are stateful. NACLs are stateless — you must explicitly allow both inbound and outbound for each connection."
+            },
+            {
+              "type": "error-callout",
+              "title": "Most common Security Group mistakes that get servers compromised:",
+              "list": [
+                "Port 22 (SSH) open to 0.0.0.0/0 — the entire internet can attempt to login",
+                "Port 3306 (Database) open publicly — database directly exposed to attackers",
+                "All ports open (0-65535) — entire server surface area exposed",
+                "Default security group unchanged — beginners often forget to configure it"
+              ],
+              "footer": "Thousands of EC2 instances get compromised every month because of open port 22. Never open SSH to the entire internet in production."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Security Groups are your first defense — but not your only defense. YouTube also uses AWS WAF to block malicious web requests, AWS Shield for DDoS protection, and VPC private subnets to ensure database servers are never reachable from the internet at all. Defense in depth — multiple layers of security, not just one."
+            },
+            {
+              "type": "image",
+              "src": "ec2-4.png"
+            }
+          ],
+
+          "User Data Scripts & EC2 Automation": [
+            {
+              "type": "paragraph",
+              "text": "YouTube's Auto Scaling group just launched 500 new EC2 instances to handle a viral video spike. Each instance needs Node.js installed, the YouTube API server code deployed, environment variables configured, and the application started — all within minutes, automatically, without a single engineer touching any server. This is what User Data Scripts make possible."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ When YouTube auto-scales from 100 to 500 servers in 5 minutes during a viral event — who installs the software and deploys the code on those 400 new servers? No human can do that manually. So how does it happen?"
+            },
+            {
+              "type": "heading",
+              "text": "What is User Data?"
+            },
+            {
+              "type": "paragraph",
+              "text": "User Data is a shell script you provide when launching an EC2 instance. AWS runs this script automatically as root the very first time the instance boots — before it starts serving any traffic. You can install packages, download code, configure the OS, start services — anything you'd do manually on a server, automated completely."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 User Data is like leaving a to-do list for your server the moment it wakes up. The server boots, reads the list, executes every step automatically, and by the time it's fully up — it's already configured, deployed, and ready to serve traffic."
+            },
+            {
+              "type": "heading",
+              "text": "YouTube API Server — User Data Script"
+            },
+            {
+              "type": "code",
+              "code": "#!/bin/bash\n# This runs automatically on first boot — as root\n\n# Step 1 — Update the OS\nyum update -y\n\n# Step 2 — Install Node.js\ncurl -fsSL https://rpm.nodesource.com/setup_20.x | bash -\nyum install -y nodejs\n\n# Step 3 — Install PM2 (process manager — keeps Node.js running)\nnpm install -g pm2\n\n# Step 4 — Pull YouTube API server code from S3\naws s3 cp s3://youtube-deployments/api-server.tar.gz /home/ec2-user/\ntar -xzf /home/ec2-user/api-server.tar.gz -C /home/ec2-user/\n\n# Step 5 — Set environment variables\nexport NODE_ENV=production\nexport DB_HOST=youtube-db.cluster.us-east-1.rds.amazonaws.com\nexport REDIS_HOST=youtube-cache.abc123.ng.0001.use1.cache.amazonaws.com\n\n# Step 6 — Install dependencies and start the server\ncd /home/ec2-user/api-server\nnpm install\npm2 start app.js --name youtube-api\npm2 startup\npm2 save\n\n# ✅ Server is fully configured and running — automatically"
+            },
+            {
+              "type": "heading",
+              "text": "How YouTube Uses User Data at Scale"
+            },
+            {
+              "type": "step",
+              "title": "Auto Scaling Event Triggered",
+              "desc": "Traffic spikes — Auto Scaling Group decides to launch 50 new EC2 instances. Each instance gets the same User Data script."
+            },
+            {
+              "type": "step",
+              "title": "All 50 Instances Boot Simultaneously",
+              "desc": "AWS launches all 50 at once. Every single one executes the User Data script automatically on first boot."
+            },
+            {
+              "type": "step",
+              "title": "Within 3-5 Minutes",
+              "desc": "All 50 servers have Node.js installed, latest API code deployed, and the application running. Load balancer health checks pass — servers start receiving traffic."
+            },
+            {
+              "type": "step",
+              "title": "Zero Human Intervention",
+              "desc": "Not a single engineer SSHed into any server. 50 production-ready servers configured and deployed completely automatically."
+            },
+            {
+              "type": "heading",
+              "text": "Viewing User Data Logs"
+            },
+            {
+              "type": "code",
+              "code": "# SSH into the instance and check User Data execution logs\nsudo cat /var/log/cloud-init-output.log\n\n# See exactly what ran, what succeeded, what failed\n# This is your debug log when User Data scripts don't work as expected"
+            },
+            {
+              "type": "error-callout",
+              "title": "Common User Data mistakes:",
+              "list": [
+                "Forgetting #!/bin/bash at the top — script won't execute",
+                "Using relative paths — always use absolute paths in User Data",
+                "Script errors that fail silently — always check cloud-init-output.log",
+                "Hardcoding secrets in User Data — use AWS Secrets Manager instead",
+                "Forgetting User Data only runs on first boot — not on every restart"
+              ],
+              "footer": "User Data runs once. If your script fails halfway — the instance boots with a broken setup. Always test scripts manually on a dev instance first."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ User Data is the foundation of EC2 automation — but it's just the beginning. Production teams use it in combination with AMIs (pre-bake common dependencies), AWS Systems Manager (for ongoing configuration management), and CodeDeploy (for application deployments). User Data handles the bootstrap. Other tools handle ongoing management."
+            },
+            {
+              "type": "image",
+              "src": "ec2-5.png"
+            }
+          ],
+
+          "Introduction to Auto Scaling": [
+            {
+              "type": "paragraph",
+              "text": "MrBeast uploads a new video. Within minutes — 50 million people rush to YouTube simultaneously. Traffic spikes 20x in under 5 minutes. If YouTube runs a fixed number of servers — they all get overwhelmed instantly. The site crashes. 50 million users get a 503 error. Now flip it — at 4am, traffic drops to 2% of peak. If YouTube still runs 1000 servers for that tiny traffic — they're wasting millions of dollars on idle compute. Auto Scaling solves both problems simultaneously."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube traffic at 8pm on a Friday is 50x higher than at 4am on a Tuesday. How does YouTube run exactly the right number of servers for any traffic level — automatically, without anyone manually adding or removing servers?"
+            },
+            {
+              "type": "heading",
+              "text": "What is Auto Scaling?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Auto Scaling automatically adjusts the number of EC2 instances running based on actual traffic and load. When traffic increases — Auto Scaling launches new instances (scale out). When traffic drops — it terminates excess instances (scale in). The right capacity at all times, automatically, with zero manual intervention."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of Auto Scaling like a smart staffing agency for YouTube. When a viral video hits — the agency instantly sends 200 more workers. When midnight comes and traffic drops — the agency sends 180 of them home. YouTube only pays for the staff hours actually worked."
+            },
+            {
+              "type": "heading",
+              "text": "The Three Core Components"
+            },
+            {
+              "type": "step",
+              "title": "Launch Template",
+              "desc": "Defines what each new instance looks like — which AMI, instance type, security group, and User Data script to use. Think of it as the blueprint. Every auto-scaled instance is born from this template — identical configuration every time."
+            },
+            {
+              "type": "step",
+              "title": "Auto Scaling Group (ASG)",
+              "desc": "The actual group of EC2 instances being managed. You define the minimum instances (floor), maximum instances (ceiling), and desired capacity (target). ASG ensures the number of running instances always stays within these bounds."
+            },
+            {
+              "type": "step",
+              "title": "Scaling Policies",
+              "desc": "The rules that trigger scaling. CPU above 70% for 2 minutes — add 10 instances. CPU below 30% for 10 minutes — remove 5 instances. Policies define when and how much to scale."
+            },
+            {
+              "type": "heading",
+              "text": "Types of Scaling Policies"
+            },
+            {
+              "type": "table",
+              "headers": ["Policy Type", "How it works", "YouTube Use Case"],
+              "rows": [
+                ["Target Tracking", "Keep a metric at a target value — like keeping CPU at 60%", "Keep API server CPU at 60% always"],
+                ["Step Scaling", "Scale by different amounts at different thresholds", "Add 10 servers at 70% CPU, add 50 at 90% CPU"],
+                ["Scheduled Scaling", "Scale based on time — predictable patterns", "Pre-scale up every Friday evening before weekend traffic"],
+                ["Predictive Scaling", "ML-based — predicts future traffic and scales proactively", "Auto-scale before MrBeast's video goes live"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "YouTube Auto Scaling — Real Scenario"
+            },
+            {
+              "type": "code",
+              "code": "// YouTube API Server Auto Scaling Group Config:\n{\n  MinSize: 50,          // Never go below 50 instances — baseline always ready\n  MaxSize: 2000,        // Can scale up to 2000 instances during viral events\n  DesiredCapacity: 100, // Normal traffic baseline\n\n  ScalingPolicy: {\n    Type: \"TargetTracking\",\n    Metric: \"CPUUtilization\",\n    Target: 60,  // Keep CPU at 60%\n    ScaleOutCooldown: 60,   // Wait 60s before adding more (avoid over-scaling)\n    ScaleInCooldown: 300    // Wait 5min before removing (avoid premature scale-in)\n  }\n}\n\n// MrBeast video drops:\n// 8:00pm → 100 instances running, CPU at 60%\n// 8:01pm → Traffic spikes, CPU hits 85%\n// 8:02pm → Auto Scaling launches 200 new instances\n// 8:05pm → 300 instances running, CPU back to 60% ✅\n// 3:00am → Traffic drops, CPU at 20%\n// 3:05am → Auto Scaling terminates 220 instances\n// 3:10am → Back to 80 instances, CPU at 60% ✅"
+            },
+            {
+              "type": "heading",
+              "text": "Auto Scaling + Load Balancer — The Complete Picture"
+            },
+            {
+              "type": "paragraph",
+              "text": "Auto Scaling works hand-in-hand with Elastic Load Balancer. When Auto Scaling launches new instances — they're automatically registered with the Load Balancer and start receiving traffic. When instances are terminated — they're deregistered first, existing requests are drained, then the instance shuts down gracefully. Zero dropped requests."
+            },
+            {
+              "type": "error-callout",
+              "title": "Without Auto Scaling — YouTube's problems:",
+              "list": [
+                "Fixed 1000 servers — MrBeast video hits → all overwhelmed → site crashes",
+                "Fixed 1000 servers at 4am → 980 servers idle → millions wasted daily",
+                "Manual scaling → engineer wakes up at 3am to add servers during viral event",
+                "Over-provisioning for peak → 10x the necessary cost for normal traffic"
+              ],
+              "footer": "Auto Scaling is not optional at scale. It is the difference between a platform that survives viral moments and one that crashes under them."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Auto Scaling is powerful but requires your application to be stateless — each server must be interchangeable. If a user's session data is stored on one specific server, scaling breaks that session when the server is replaced. YouTube's architecture stores all session and state data in Redis and DynamoDB — never on the EC2 instance itself. Stateless design is a prerequisite for Auto Scaling to work correctly."
+            },
+            {
+              "type": "image",
+              "src": "ec2-6.png"
+            }
+          ]
+
+        }
       },
       {
         "id": 3,

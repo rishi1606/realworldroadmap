@@ -3,8 +3,8 @@ export const roadmapData = [
     id: "AWS",
     category: "Cloud & DevOps",
     sortOrder: 1,
-    image: "https://nodejs.org/static/images/logo.svg",
-    "title": "Learn AWS Through Real-World Scenarios",
+    image: "https://static.vecteezy.com/system/resources/thumbnails/042/148/649/small/youtube-logo-youtube-social-media-icon-free-png.png",
+    "title": "Learn AWS Through Youtube Examples",
     "description": "Master AWS the way it actually works in production — not just theory, but the real mechanics behind cloud infrastructure, scalability, security, and architecture. Every concept is taught through real-world backend scenarios inspired by systems like Flipkart, Swiggy, BGMI, and Netflix — so you understand not just the 'what' but the 'why' and 'when' behind every AWS decision. From core services like EC2, S3, VPC, and RDS to advanced topics like EKS, Lambda, CloudFront, and Multi-Region Architecture — this course takes you from cloud beginner to production-ready AWS engineer.",
     "tags": [
       "AWS",

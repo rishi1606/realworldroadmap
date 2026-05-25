@@ -1403,7 +1403,7 @@ export const roadmapData = [
           "Sharing Data Between Threads",
           "What is Clustering?",
           "Using Multiple CPU Cores",
-          "MessageChannel and Advanced Communication",
+          // "MessageChannel and Advanced Communication",
         ],
 
         "topicDetails": {

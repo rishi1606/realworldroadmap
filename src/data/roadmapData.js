@@ -38,8 +38,8 @@ export const roadmapData = [
           "On-Premise vs Cloud Computing",
           "IaaS vs PaaS vs SaaS",
           "AWS Global Infrastructure (Regions, AZs & Edge Locations)",
-          "AWS Shared Responsibility Model",
-          "Pay-As-You-Go Pricing Model",
+          // "AWS Shared Responsibility Model",
+          // "Pay-As-You-Go Pricing Model",
           "High Availability & Fault Tolerance Basics"
         ],
         "topicDetails": {
@@ -615,7 +615,7 @@ export const roadmapData = [
           "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)",
           "EC2 Instance Types & AMIs",
           "Security Groups & Basic Server Security",
-          "User Data Scripts & EC2 Automation",
+          // "User Data Scripts & EC2 Automation",
           "Introduction to Auto Scaling"
         ],
         "topicDetails": {
@@ -650,59 +650,78 @@ export const roadmapData = [
               "text": "AWS owns massive physical servers in its data centers globally. Using virtualization technology — specifically a hypervisor — AWS splits one powerful physical machine into dozens of isolated virtual machines. Each virtual machine is an EC2 instance. Your EC2 instance runs completely isolated from other customers' instances on the same physical hardware."
             },
             {
+              "type": "info-callout",
+              "text": "💡 Imagine one massive apartment building (physical server). The building owner (AWS) splits it into 50 separate apartments (EC2 instances). Each tenant (you, Netflix, Swiggy) gets their own apartment — completely private walls, separate lock, independent space. You cannot see or enter your neighbor's apartment. That isolation is what the hypervisor provides."
+            },
+            {
               "type": "step",
               "title": "Step 1 — You request an EC2 instance",
-              "desc": "You choose Region, instance type (CPU/RAM), OS (Amazon Linux, Ubuntu, Windows), and storage. Click launch."
+              "desc": "You go to AWS Console and fill out what kind of server you need. Think of this like ordering a custom laptop online — you pick the OS, CPU power, RAM size, and storage. Example: 'I want an Ubuntu server with 4 CPUs and 16GB RAM in Mumbai.' You click Launch. That's it from your side — AWS takes over."
+            },
+            {
+              "type": "code",
+              "code": "// What you're choosing at this step:\nRegion:        ap-south-1 (Mumbai)       → where in the world your server lives\nOS (AMI):      Ubuntu 22.04              → operating system on the server\nInstance Type: t3.medium                 → 2 vCPU, 4GB RAM\nStorage:       20GB EBS                  → hard disk size\nSecurity Group: Allow port 22, 443       → who can connect to this server"
             },
             {
               "type": "step",
               "title": "Step 2 — AWS allocates a virtual machine",
-              "desc": "AWS's hypervisor carves out the requested CPU, RAM, and storage from a physical server in your chosen Region and AZ. A fresh virtual machine boots up with your chosen OS."
+              "desc": "The moment you click Launch — AWS finds a physical server sitting in its Mumbai data center, carves out your requested CPU and RAM from it using a hypervisor, and boots up a fresh virtual machine with Ubuntu installed. This entire process takes under 60 seconds. You didn't touch any hardware. You didn't visit any data center. AWS did it all."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Real example — AWS Mumbai data center has a physical machine with 192 CPUs and 768GB RAM. AWS splits it: EC2 for you (2 CPU, 4GB), EC2 for a startup (4 CPU, 8GB), EC2 for a bank (8 CPU, 32GB), and so on — all running completely isolated on the same physical hardware. You never know who your neighbors are, and they can never see you."
             },
             {
               "type": "step",
               "title": "Step 3 — You get a public IP address",
-              "desc": "AWS assigns a public IP to your instance. You can now SSH into it, install software, deploy your app, and start serving traffic — just like a real server."
+              "desc": "Once the instance is running, AWS assigns it a public IP address — like 13.235.67.120. This is your server's address on the internet. Anyone who knows this IP (and your Security Group allows it) can reach your server. You use this IP to SSH into the server from your laptop and start setting it up."
+            },
+            {
+              "type": "code",
+              "code": "// Your EC2 instance is now live:\nPublic IP:   13.235.67.120        → how the internet reaches your server\nPrivate IP:  172.31.24.5          → how other AWS services reach it internally\nRegion:      ap-south-1 (Mumbai)\nStatus:      ✅ Running\n\n// You can now SSH in from your laptop:\nssh -i my-key.pem ubuntu@13.235.67.120\n\n// You're now INSIDE the server — just like sitting in front of it\nubuntu@ip-172-31-24-5:~$"
             },
             {
               "type": "step",
-              "title": "Step 4 — You pay per second",
-              "desc": "Billing starts the moment the instance boots. Billing stops the moment you terminate it. Stopped instances are charged only for storage, not compute."
+              "title": "Step 4 — You install your app and serve traffic",
+              "desc": "Now you're inside the server. From here — you install Node.js, deploy your YouTube API code, start the server on port 443. The moment it's running — real users can hit your server. YouTube creators uploading videos, viewers fetching recommendations — all hitting this EC2 instance."
+            },
+            {
+              "type": "code",
+              "code": "// Inside your EC2 instance — setting it up:\nsudo apt update\nsudo apt install nodejs npm -y\n\n// Clone your YouTube API code\ngit clone https://github.com/your-org/youtube-api.git\ncd youtube-api\nnpm install\n\n// Start the server\nnode app.js\n\n// ✅ Your server is now live at:\n// https://13.235.67.120 — real traffic can hit it"
+            },
+            {
+              "type": "step",
+              "title": "Step 5 — You pay per second, stop when done",
+              "desc": "Billing started the exact second your instance launched. If you run it for 3 hours and 22 minutes — you pay for exactly 3 hours and 22 minutes. Not a full day. Not a full month. The moment you terminate the instance — billing stops completely. This is the fundamental difference from buying a physical server — you pay only for what you use."
+            },
+            {
+              "type": "code",
+              "code": "// EC2 Billing example:\nInstance Type: t3.medium\nPrice:         $0.0416 per hour (Mumbai region)\n\nRan for: 3 hours 22 minutes = 3.37 hours\nTotal cost: 3.37 × $0.0416 = $0.14\n\n// You paid 14 cents for a full server for 3 hours ✅\n// Compare: buying a physical server = $3,000+ upfront\n\n// Stop vs Terminate:\n// Stop     → Server paused. Storage still billed. Can restart.\n// Terminate → Server deleted forever. Billing stops completely."
             },
             {
               "type": "heading",
               "text": "YouTube's EC2 Use Cases"
             },
-            // {
-            //   "type": "step",
-            //   "title": "Video Upload Receivers",
-            //   "desc": "EC2 instances behind a load balancer receive incoming video uploads from creators globally — handling gigabytes of data per second during peak hours."
-            // },
-            // {
-            //   "type": "step",
-            //   "title": "Video Transcoding Workers",
-            //   "desc": "Compute-optimized EC2 instances (C-series) transcode uploaded videos into multiple resolutions simultaneously — 360p, 720p, 1080p, 4K — using parallel processing."
-            // },
             {
               "type": "step",
               "title": "API Servers",
-              "desc": "EC2 instances run YouTube's backend APIs — handling billions of requests daily for video metadata, comments, likes, and recommendations."
+              "desc": "EC2 instances run YouTube's backend APIs — handling billions of requests daily for video metadata, comments, likes, and recommendations. When you hit the Like button on a video — an EC2 instance somewhere in AWS receives that request, updates the database, and sends back the new like count. All in milliseconds."
             },
             {
               "type": "error-callout",
               "title": "Without EC2 — what YouTube would need:",
               "list": [
-                "Buy thousands of physical servers — millions in upfront capital",
-                "Build and manage data centers in every country",
-                "Hire hardware engineers to replace failing machines 24/7",
-                "Over-provision for peak traffic — paying for idle servers at 3am",
-                "6-month lead time to scale up for a viral video event"
+                "Buy thousands of physical servers — millions in upfront capital before launch",
+                "Build and manage data centers in every country — real estate, cooling, power",
+                "Hire hardware engineers to replace failing machines 24/7 — people, not code",
+                "Over-provision for peak traffic — paying for 1000 servers at 3am when only 50 are needed",
+                "6-month lead time to scale up for a viral video event — by then the moment is gone"
               ],
               "footer": "With EC2 — YouTube scales from 100 servers to 10,000 in minutes. Automatically. Without touching a single physical machine."
             },
             {
               "type": "warning-callout",
-              "text": "⚠️ EC2 is powerful — but a raw server does nothing by default. You need to connect to it, secure it, configure it, and deploy your application. The next topics walk through exactly how to do all of this step by step."
+              "text": "⚠️ EC2 is powerful — but a raw server does nothing by default. The moment it launches — it's just a blank Linux machine sitting in AWS. You need to connect to it, secure it, configure it, and deploy your application. The next topics walk through exactly how to do all of this step by step."
             },
             {
               "type": "image",

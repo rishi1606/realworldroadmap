@@ -1,5 +1,818 @@
 export const roadmapData = [
   {
+    id: "AWS",
+    category: "Cloud",
+    sortOrder: 1,
+    image: "https://nodejs.org/static/images/logo.svg",
+    "title": "Learn AWS Through Real-World Scenarios",
+    "description": "Master AWS the way it actually works in production — not just theory, but the real mechanics behind cloud infrastructure, scalability, security, and architecture. Every concept is taught through real-world backend scenarios inspired by systems like Flipkart, Swiggy, BGMI, and Netflix — so you understand not just the 'what' but the 'why' and 'when' behind every AWS decision. From core services like EC2, S3, VPC, and RDS to advanced topics like EKS, Lambda, CloudFront, and Multi-Region Architecture — this course takes you from cloud beginner to production-ready AWS engineer.",
+    "tags": [
+      "AWS",
+      "Amazon Web Services",
+      "Cloud Computing",
+      "EC2",
+      "S3",
+      "VPC",
+      "RDS",
+      "AWS Lambda",
+      "Serverless",
+      "API Gateway",
+      "Amazon ECS",
+      "Amazon EKS",
+      "CloudFront",
+      "IAM",
+      "AWS Security",
+      "Auto Scaling",
+      "Load Balancing",
+      "Cloud Architecture",
+      "DevOps on AWS",
+      "Real-World Cloud"
+    ],
+    "nodes": [
+      {
+        "id": 1,
+        "title": "Cloud Fundamentals",
+        "level": "freshers",
+        "topics": [
+          "What is Cloud Computing & Types of Cloud",
+          "On-Premise vs Cloud Computing",
+          "IaaS vs PaaS vs SaaS",
+          "AWS Global Infrastructure (Regions, AZs & Edge Locations)",
+          "AWS Shared Responsibility Model",
+          "Pay-As-You-Go Pricing Model",
+          "High Availability & Fault Tolerance Basics"
+        ],
+        "topicDetails": {
+
+          "What is Cloud Computing & Types of Cloud": [
+            {
+              "type": "paragraph",
+              "text": "You open YouTube. Search for a video. It loads in seconds. Behind that — millions of servers, databases, and networks firing simultaneously across the globe. YouTube streams over 500 hours of video every single minute to 2 billion users. They don't own a single server room for all of this. They rent everything from the cloud. But what exactly is the cloud — and why does every company from startups to YouTube use it?"
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube serves 2 billion users every day. Does that mean Google has a giant server room somewhere handling all of it? Where does all that computing actually happen?"
+            },
+            {
+              "type": "heading",
+              "text": "What is Cloud Computing?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Cloud computing is the delivery of computing services — servers, storage, databases, networking, software — over the internet, on demand, with pay-as-you-go pricing. Instead of buying and maintaining physical hardware, you rent exactly what you need from a cloud provider like AWS. YouTube uploads, processes, stores, and streams every video through cloud infrastructure — not a single physical server you can touch."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of electricity. You don't build your own power plant to power your house. You plug in and pay for what you use. Cloud computing works exactly the same way — plug in, use compute power, pay only for what you consume. YouTube pays for compute only when videos are being processed and streamed — not 24/7 for idle machines."
+            },
+            {
+              "type": "heading",
+              "text": "Types of Cloud"
+            },
+            {
+              "type": "paragraph",
+              "text": "Not every company uses the cloud the same way. Depending on size, security needs, and budget — companies choose different cloud models. Each model has a completely different structure and purpose."
+            },
+            {
+              "type": "step",
+              "title": "Public Cloud",
+              "desc": "Infrastructure owned and operated by a third-party provider like AWS, shared over the internet. Example: A startup building a video platform uses AWS EC2 and S3 to store and serve videos — just like YouTube does — without owning a single server."
+            },
+            {
+              "type": "step",
+              "title": "Private Cloud",
+              "desc": "Dedicated cloud infrastructure built for one organization only. Example: A government broadcasting company stores classified video archives on a private cloud — nobody outside can access it."
+            },
+            {
+              "type": "step",
+              "title": "Hybrid Cloud",
+              "desc": "A mix of public and private cloud working together. Example: A media company stores sensitive licensing contracts on a private cloud but uses AWS public cloud to transcode and stream videos globally — just like large studios do."
+            },
+            {
+              "type": "step",
+              "title": "Multi-Cloud",
+              "desc": "Using multiple cloud providers together. Example: A company uses AWS for video storage and streaming, but Google Cloud for its AI-powered recommendation engine — the same way YouTube uses multiple Google infrastructure layers for different jobs."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ YouTube itself runs on Google Cloud — not AWS. But the architecture concepts are identical. The reason AWS matters is that it holds over 31% of the entire cloud market — more than Azure and Google Cloud combined. Most companies you'll work at use AWS."
+            },
+            {
+              "type": "image",
+              "src": "cloud1.png"
+            }
+          ],
+
+          "On-Premise vs Cloud Computing": [
+            {
+              "type": "paragraph",
+              "text": "Before YouTube existed — if you wanted to build a video platform, you had to buy your own servers, rent a data center, hire a team to maintain hardware, and still pray it doesn't crash during peak traffic. That was the on-premise world. Today YouTube serves 2 billion users without owning a single public-facing server. What changed?"
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ In 2005, building something like YouTube meant buying millions of dollars of physical servers before writing a single line of code. How did cloud computing completely flip this?"
+            },
+            {
+              "type": "heading",
+              "text": "What is On-Premise?"
+            },
+            {
+              "type": "paragraph",
+              "text": "On-premise means your company owns and operates its own physical servers inside its own data center. You buy the hardware, you set it up, you maintain it, you scale it — everything is your responsibility."
+            },
+            {
+              "type": "error-callout",
+              "title": "The On-Premise nightmare for a YouTube-like platform:",
+              "list": [
+                "Buy thousands of servers upfront — millions of dollars before launch",
+                "Rent and build out data center space — cooling, power, security",
+                "Hire hardware engineers to maintain and replace failing machines",
+                "Over-provision for peak traffic — servers sit idle 90% of the time",
+                "A flood, fire, or power outage = your entire platform goes down"
+              ],
+              "footer": "On-premise means you're running a hardware company AND a software company at the same time."
+            },
+            {
+              "type": "heading",
+              "text": "What Changed With Cloud?"
+            },
+            {
+              "type": "paragraph",
+              "text": "With cloud computing — specifically AWS — you rent servers by the hour. You scale up when traffic spikes, scale down when it drops. No hardware to buy. No data center to manage. YouTube can go from serving 1 million to 100 million users without touching a single physical machine."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Imagine YouTube gets featured on the news and traffic spikes 10x in one hour. On-premise — your servers crash. On AWS — you auto-scale in minutes. This is the fundamental difference between on-premise and cloud."
+            },
+            {
+              "type": "heading",
+              "text": "On-Premise vs Cloud — Side by Side"
+            },
+            {
+              "type": "table",
+              "headers": ["", "On-Premise", "Cloud (AWS)"],
+              "rows": [
+                ["Cost Model", "Huge upfront capital expense", "Pay only for what you use"],
+                ["Scaling", "Buy more hardware — weeks/months", "Scale in minutes automatically"],
+                ["Maintenance", "Your team manages everything", "AWS manages the hardware"],
+                ["Availability", "Single location — single point of failure", "Multiple regions and AZs globally"],
+                ["Speed to Launch", "Months of setup before going live", "Live in hours"],
+                ["YouTube Example", "Own servers in own data centers", "Stream globally via distributed cloud infrastructure"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ On-premise isn't dead. Banks, government systems, and defense organizations still use it for regulatory and security reasons. But for 99% of modern software companies — cloud wins on every dimension. The question is no longer on-premise vs cloud. It's which cloud and which services."
+            },
+            {
+              "type": "image",
+              "src": "cloud2.png"
+            }
+          ],
+
+          "IaaS vs PaaS vs SaaS": [
+            {
+              "type": "paragraph",
+              "text": "Not all cloud services are the same. When YouTube needs to store a video — that's storage. When a developer needs a server to run code — that's compute. When a company uses Gmail — that's software. AWS and the cloud world organizes all of these into three clean layers: IaaS, PaaS, and SaaS. Every AWS service you'll ever use fits into one of these."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube uses cloud for storage, compute, databases, and CDN. Are all of these the same type of cloud service — or are they fundamentally different layers?"
+            },
+            {
+              "type": "heading",
+              "text": "The Pizza Analogy — Easiest Way to Understand This"
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of making pizza. On-Premise = you buy ingredients, own the oven, make everything yourself. IaaS = you rent the kitchen and oven — you still cook. PaaS = you get the kitchen, oven, and raw dough — you just add toppings. SaaS = you order a delivered pizza — you just eat it."
+            },
+            {
+              "type": "heading",
+              "text": "IaaS — Infrastructure as a Service"
+            },
+            {
+              "type": "paragraph",
+              "text": "IaaS gives you raw infrastructure — virtual servers, storage, and networking. You manage everything above the hardware. AWS handles the physical machines. You handle the OS, runtime, application, and data."
+            },
+            {
+              "type": "step",
+              "title": "IaaS — YouTube Example",
+              "desc": "YouTube uses raw virtual servers (like AWS EC2) to run its video processing jobs. They control the OS, install their own software, and manage how videos get transcoded. AWS just provides the raw compute power underneath."
+            },
+            {
+              "type": "step",
+              "title": "IaaS — AWS Services",
+              "desc": "EC2 (virtual servers), S3 (raw storage), VPC (networking), EBS (block storage). You get the building — you furnish it yourself."
+            },
+            {
+              "type": "heading",
+              "text": "PaaS — Platform as a Service"
+            },
+            {
+              "type": "paragraph",
+              "text": "PaaS gives you a managed platform to build on. No OS management, no runtime setup, no infrastructure configuration. You just deploy your code and the platform handles everything underneath."
+            },
+            {
+              "type": "step",
+              "title": "PaaS — YouTube Example",
+              "desc": "If YouTube's comment system used AWS Elastic Beanstalk — they'd just upload their Node.js app. AWS automatically handles server setup, load balancing, and scaling. No DevOps needed."
+            },
+            {
+              "type": "step",
+              "title": "PaaS — AWS Services",
+              "desc": "Elastic Beanstalk, AWS Lambda, AWS RDS (managed database), AWS App Runner. You bring the code — platform runs it."
+            },
+            {
+              "type": "heading",
+              "text": "SaaS — Software as a Service"
+            },
+            {
+              "type": "paragraph",
+              "text": "SaaS is complete software delivered over the internet. No infrastructure, no platform, no code. Just open and use. The provider manages everything end to end."
+            },
+            {
+              "type": "step",
+              "title": "SaaS — YouTube Example",
+              "desc": "YouTube's internal teams use Google Workspace (Gmail, Docs, Meet) for daily operations. They don't manage any servers for email — Google runs it all. That's SaaS."
+            },
+            {
+              "type": "step",
+              "title": "SaaS — AWS Services",
+              "desc": "Amazon Chime (video calls), Amazon WorkMail (email). Also third-party SaaS on AWS infrastructure: Zoom, Slack, Salesforce."
+            },
+            {
+              "type": "table",
+              "headers": ["", "IaaS", "PaaS", "SaaS"],
+              "rows": [
+                ["You manage", "OS, runtime, app, data", "App and data only", "Nothing — just use it"],
+                ["AWS manages", "Hardware only", "Hardware + OS + runtime", "Everything"],
+                ["Flexibility", "Maximum control", "Medium control", "No control"],
+                ["Best for", "Custom infrastructure needs", "Developers who want to focus on code", "End users needing ready software"],
+                ["AWS Example", "EC2, S3, VPC", "Elastic Beanstalk, Lambda, RDS", "Amazon Chime, WorkMail"],
+                ["YouTube Parallel", "Video processing servers", "Comment service deployment", "Internal team tools"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ In real AWS work — you'll mostly deal with IaaS and PaaS. EC2, S3, RDS, Lambda, ECS — these are what backend engineers use daily. Knowing which layer a service sits on tells you instantly how much responsibility you carry for that service."
+            },
+            {
+              "type": "image",
+              "src": "cloud3.png"
+            }
+          ],
+
+          "AWS Global Infrastructure (Regions, AZs & Edge Locations)": [
+            {
+              "type": "paragraph",
+              "text": "You're in Mumbai. You open YouTube and a video loads in under a second. Your friend in New York opens the same video — also under a second. Someone in Tokyo — same thing. YouTube serves billions of users globally with near-zero latency. This isn't magic — it's infrastructure. AWS powers this kind of global reach through a carefully designed three-layer infrastructure: Regions, Availability Zones, and Edge Locations."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube has one set of videos. But users are spread across 190 countries. How does the same video load fast whether you're in Mumbai, New York, or Tokyo?"
+            },
+            {
+              "type": "heading",
+              "text": "Layer 1 — AWS Regions"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Region is a physical geographic location in the world where AWS has built a cluster of data centers. Each Region is completely independent — if one Region has a major outage, the others are completely unaffected."
+            },
+            {
+              "type": "step",
+              "title": "Regions — YouTube Example",
+              "desc": "YouTube stores video data in multiple AWS Regions — ap-south-1 (Mumbai) for Indian users, us-east-1 (Virginia) for US users, eu-west-1 (Ireland) for European users. Each region serves its local audience with the lowest possible latency."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 AWS has 33 Regions globally as of 2024 — with more launching every year. When you launch an AWS service, the first thing you choose is the Region. This decision affects latency, cost, compliance, and disaster recovery."
+            },
+            {
+              "type": "heading",
+              "text": "Layer 2 — Availability Zones (AZs)"
+            },
+            {
+              "type": "paragraph",
+              "text": "Inside every Region, there are multiple Availability Zones — usually 3 to 6. Each AZ is one or more physically separate data centers with independent power, cooling, and networking. AZs within a Region are connected by ultra-low-latency private fiber."
+            },
+            {
+              "type": "step",
+              "title": "AZs — YouTube Example",
+              "desc": "YouTube's Mumbai infrastructure runs across 3 AZs inside ap-south-1. If one data center catches fire or loses power — the other two AZs keep serving Indian users without a single second of downtime. This is High Availability."
+            },
+            {
+              "type": "error-callout",
+              "title": "What happens without multiple AZs:",
+              "list": [
+                "Your app runs on one data center — one AZ",
+                "That data center loses power during a storm",
+                "Your entire app goes down for millions of users",
+                "YouTube goes dark in India — every second of downtime = millions in lost revenue"
+              ],
+              "footer": "This is why production systems always deploy across multiple AZs — never a single point of failure."
+            },
+            {
+              "type": "heading",
+              "text": "Layer 3 — Edge Locations"
+            },
+            {
+              "type": "paragraph",
+              "text": "Edge Locations are AWS's global content delivery points — spread across 400+ cities worldwide. They are not full Regions or AZs. They are smaller caching servers placed as close to end users as possible. AWS CloudFront (CDN) uses Edge Locations to serve cached content at lightning speed."
+            },
+            {
+              "type": "step",
+              "title": "Edge Locations — YouTube Example",
+              "desc": "When you watch a YouTube video in Pune — the video isn't streamed from a server in Virginia. It's cached at an Edge Location in Mumbai or Pune itself. The video travels milliseconds instead of thousands of miles. This is exactly how YouTube achieves sub-second load times globally."
+            },
+            {
+              "type": "table",
+              "headers": ["", "Region", "Availability Zone", "Edge Location"],
+              "rows": [
+                ["What it is", "Geographic cluster of data centers", "Independent data center within a Region", "Content caching point close to users"],
+                ["Count", "33+ globally", "3-6 per Region", "400+ worldwide"],
+                ["Purpose", "Choose where your app lives", "High availability and fault tolerance", "Low latency content delivery"],
+                ["AWS Service", "All AWS services", "EC2, RDS Multi-AZ, ECS", "CloudFront CDN"],
+                ["YouTube Parallel", "Store videos near your users", "Keep app running if one DC fails", "Cache videos close to viewers"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Choosing the right Region is one of the most important decisions in AWS architecture. It affects latency for your users, pricing (costs vary by Region), data residency laws (GDPR in Europe, data localization in India), and disaster recovery strategy. Always deploy in the Region closest to your primary users."
+            },
+            {
+              "type": "image",
+              "src": "cloud4.png"
+            }
+          ],
+
+          "AWS Shared Responsibility Model": [
+            {
+              "type": "paragraph",
+              "text": "You deploy a YouTube-like app on AWS. A hacker breaks in and steals all your user data. Whose fault is it — yours or AWS's? This question has a very precise answer in the cloud world. AWS and you divide security responsibilities down a clean line. AWS calls this the Shared Responsibility Model — and every AWS engineer must understand it deeply."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ If your AWS-hosted app gets hacked — is AWS responsible? Or are you? Where exactly does AWS's responsibility end and yours begin?"
+            },
+            {
+              "type": "heading",
+              "text": "The Core Idea"
+            },
+            {
+              "type": "paragraph",
+              "text": "AWS is responsible for security OF the cloud. You are responsible for security IN the cloud. AWS secures the global infrastructure — the physical data centers, hardware, networking, and hypervisors. You secure everything you put on top of it — your OS, applications, data, IAM configurations, and network settings."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of renting an apartment. The landlord (AWS) is responsible for the building structure — walls, roof, locks on the main entrance, security cameras in hallways. You (the tenant) are responsible for what happens inside your apartment — locking your own door, not leaving valuables exposed, choosing who gets a key. If someone breaks your apartment window because you left it open — that's on you, not the landlord."
+            },
+            {
+              "type": "heading",
+              "text": "AWS's Responsibility — Security OF the Cloud"
+            },
+            {
+              "type": "step",
+              "title": "Physical Infrastructure",
+              "desc": "AWS secures all physical data centers — biometric access, 24/7 guards, surveillance. Nobody walks into an AWS data center without extreme vetting. Not even AWS employees freely."
+            },
+            {
+              "type": "step",
+              "title": "Hardware & Networking",
+              "desc": "AWS manages and secures all servers, routers, switches, and physical networking equipment globally."
+            },
+            {
+              "type": "step",
+              "title": "Hypervisor & Virtualization Layer",
+              "desc": "AWS ensures complete isolation between different customers' virtual machines. Your EC2 instance cannot see or touch another customer's EC2 instance — ever."
+            },
+            {
+              "type": "step",
+              "title": "Managed Service Security",
+              "desc": "For managed services like RDS or Lambda — AWS also patches the OS and runtime underneath. You never touch that layer."
+            },
+            {
+              "type": "heading",
+              "text": "Your Responsibility — Security IN the Cloud"
+            },
+            {
+              "type": "step",
+              "title": "Your Data",
+              "desc": "Encrypting your YouTube video files in S3, protecting your user database — 100% your responsibility. AWS provides the tools (KMS, S3 encryption) but you must enable and configure them."
+            },
+            {
+              "type": "step",
+              "title": "IAM & Access Management",
+              "desc": "Who has access to your AWS account and resources is entirely your job. If you give everyone admin access and someone leaks credentials — AWS is not responsible."
+            },
+            {
+              "type": "step",
+              "title": "Operating System & Application",
+              "desc": "If you run an EC2 instance — patching the OS, updating software, fixing vulnerabilities in your app is your responsibility."
+            },
+            {
+              "type": "step",
+              "title": "Network Configuration",
+              "desc": "Security Groups, NACLs, VPC settings — if you leave port 22 open to the entire internet on your EC2 instance and get hacked, AWS is not liable."
+            },
+            {
+              "type": "error-callout",
+              "title": "Real-world breaches that were YOUR responsibility, not AWS:",
+              "list": [
+                "Misconfigured S3 bucket left public — user data exposed (Capital One breach, 2019)",
+                "EC2 instance with default password — server compromised",
+                "IAM access keys committed to GitHub — entire AWS account taken over",
+                "No encryption on RDS database — data stolen after SQL injection"
+              ],
+              "footer": "AWS infrastructure was perfectly secure in all these cases. The customer misconfigured their own resources."
+            },
+            {
+              "type": "table",
+              "headers": ["Responsibility", "AWS", "You"],
+              "rows": [
+                ["Physical data centers", "✅", "❌"],
+                ["Hardware & networking", "✅", "❌"],
+                ["Hypervisor isolation", "✅", "❌"],
+                ["Managed service OS patching (RDS, Lambda)", "✅", "❌"],
+                ["EC2 OS patching", "❌", "✅"],
+                ["Application security", "❌", "✅"],
+                ["IAM & access control", "❌", "✅"],
+                ["Data encryption", "❌", "✅"],
+                ["Network configuration (Security Groups, VPC)", "❌", "✅"],
+                ["Your S3 bucket permissions", "❌", "✅"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ The Shared Responsibility Model is not just theoretical — it's tested in every AWS certification exam and it comes up in real security audits. When something goes wrong in production, this model determines who is accountable. Know the line precisely."
+            },
+            {
+              "type": "image",
+              "src": "cloud5.png"
+            }
+          ],
+
+          "Pay-As-You-Go Pricing Model": [
+            {
+              "type": "paragraph",
+              "text": "In 2005, launching a video platform like YouTube meant buying millions of dollars of servers before writing a single line of code. You guessed how much traffic you'd get, bought hardware for that guess, and paid for it whether you used it or not. AWS completely destroyed this model. Today you pay only for exactly what you use — per second, per GB, per request. Nothing more."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube traffic at 3am is a fraction of what it is at 8pm. In the old world — you'd pay for 8pm capacity 24 hours a day. How does AWS's pricing model fix this?"
+            },
+            {
+              "type": "heading",
+              "text": "How Pay-As-You-Go Actually Works"
+            },
+            {
+              "type": "paragraph",
+              "text": "AWS measures usage in the smallest possible units and charges accordingly. There are no upfront costs, no long-term commitments in the default model, and no paying for idle resources. You spin up a server — you pay. You shut it down — billing stops."
+            },
+            {
+              "type": "step",
+              "title": "EC2 — Compute",
+              "desc": "Charged per second of usage. YouTube spins up 1000 EC2 instances during a viral video spike — pays for those hours. Traffic drops at night — instances terminated — billing stops instantly."
+            },
+            {
+              "type": "step",
+              "title": "S3 — Storage",
+              "desc": "Charged per GB stored per month + per GB transferred out. YouTube pays only for the actual video data stored — not for empty reserved space."
+            },
+            {
+              "type": "step",
+              "title": "Lambda — Serverless Compute",
+              "desc": "Charged per invocation and per millisecond of execution. If YouTube's thumbnail generation Lambda runs 10 million times a month — they pay for exactly 10 million executions. Zero requests = zero cost."
+            },
+            {
+              "type": "step",
+              "title": "Data Transfer",
+              "desc": "Inbound data to AWS is free. Outbound data (serving videos to users) is charged per GB. This is why CDN and caching strategies matter enormously at YouTube's scale."
+            },
+            {
+              "type": "heading",
+              "text": "Three AWS Pricing Models"
+            },
+            {
+              "type": "table",
+              "headers": ["Model", "How it works", "Best for", "YouTube Parallel"],
+              "rows": [
+                ["On-Demand", "Pay per second/hour, no commitment", "Unpredictable or spiky traffic", "Viral video traffic spikes"],
+                ["Reserved Instances", "1 or 3 year commitment — up to 72% cheaper", "Stable, predictable baseline load", "Core video serving infrastructure"],
+                ["Spot Instances", "Bid for unused AWS capacity — up to 90% cheaper", "Fault-tolerant batch jobs", "Overnight video transcoding jobs"]
+              ]
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Smart AWS architects combine all three. YouTube-like platforms use Reserved Instances for steady baseline servers, On-Demand for traffic spikes, and Spot Instances for cheap batch processing like video encoding — cutting cloud bills by 60-70% compared to On-Demand only."
+            },
+            {
+              "type": "error-callout",
+              "title": "Common AWS billing mistakes beginners make:",
+              "list": [
+                "Leaving EC2 instances running after testing — billed 24/7 even if idle",
+                "Storing unnecessary data in S3 — paying for GBs you forgot about",
+                "Not setting billing alerts — surprise bills of thousands of dollars",
+                "Using On-Demand for everything — paying 3x more than needed"
+              ],
+              "footer": "Always set AWS Budget Alerts before you start experimenting. One forgotten EC2 instance can cost hundreds of dollars a month."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ AWS has 200+ services each with their own pricing structure. You don't need to memorize pricing — but you must understand the model. Always use the AWS Pricing Calculator before architecting a production system. Cost optimization is a real engineering skill — not an afterthought."
+            },
+            {
+              "type": "image",
+              "src": "cloud6.png"
+            }
+          ],
+
+          "High Availability & Fault Tolerance Basics": [
+            {
+              "type": "paragraph",
+              "text": "YouTube goes down for 1 hour. That's $1.7 million in lost ad revenue — gone. 2 billion users hit a blank screen. In 2018, YouTube actually went down for 1.5 hours due to a single internal issue. It was a global news story. For a platform that runs 24/7/365 — downtime is not just a technical failure, it's a business catastrophe. High Availability and Fault Tolerance are the two AWS architectural principles that exist specifically to prevent this."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube serves 2 billion users non-stop. A single server will fail eventually — it's guaranteed. So how does YouTube keep running even when servers, data centers, or entire regions go down?"
+            },
+            {
+              "type": "heading",
+              "text": "What is High Availability?"
+            },
+            {
+              "type": "paragraph",
+              "text": "High Availability (HA) means your system is designed to stay operational with minimal downtime — even when components fail. It is measured as a percentage of uptime over a year. 99.9% uptime sounds great — but that's still 8.7 hours of downtime per year. YouTube targets 99.99% or higher — just 52 minutes of downtime per year."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 High Availability is not about preventing failures — failures are inevitable. It's about designing your system so that when something fails, users don't notice. The system keeps running through the failure automatically."
+            },
+            {
+              "type": "step",
+              "title": "HA on AWS — Multi-AZ Deployment",
+              "desc": "YouTube's video serving infrastructure runs across 3 Availability Zones in each Region. If one AZ loses power — the other two AZs instantly take all the traffic. Users in Mumbai never notice a single second of interruption."
+            },
+            {
+              "type": "step",
+              "title": "HA on AWS — Load Balancing",
+              "desc": "AWS Elastic Load Balancer distributes traffic across multiple EC2 instances. If one instance crashes — the load balancer instantly routes all requests to the healthy instances. No manual intervention. No downtime."
+            },
+            {
+              "type": "step",
+              "title": "HA on AWS — Auto Scaling",
+              "desc": "When a YouTube video goes viral and traffic spikes 10x — Auto Scaling Groups automatically launch new EC2 instances within minutes. When traffic drops — instances are terminated automatically. System stays healthy under any load."
+            },
+            {
+              "type": "heading",
+              "text": "What is Fault Tolerance?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Fault Tolerance is a stronger guarantee than High Availability. A fault-tolerant system continues operating at full capacity with zero degradation — even when components fail. It requires full redundancy at every layer."
+            },
+            {
+              "type": "table",
+              "headers": ["", "High Availability", "Fault Tolerance"],
+              "rows": [
+                ["Goal", "Minimize downtime", "Zero downtime and zero degradation"],
+                ["On failure", "Brief disruption possible, then recovers", "Continues fully with no impact"],
+                ["Cost", "Moderate redundancy", "Full redundancy — expensive"],
+                ["AWS approach", "Multi-AZ, Load Balancer, Auto Scaling", "Multi-Region active-active, full data replication"],
+                ["YouTube parallel", "Video serving stays up if one AZ fails", "Live stream continues perfectly even if entire region fails"]
+              ]
+            },
+            {
+              "type": "error-callout",
+              "title": "What a non-HA YouTube architecture looks like:",
+              "list": [
+                "Single EC2 instance serving all traffic — one crash = total outage",
+                "Single database with no replica — disk fails = all data inaccessible",
+                "Deployed in one AZ only — power outage = platform completely down",
+                "No auto scaling — traffic spike = servers overwhelmed, site crashes"
+              ],
+              "footer": "This is exactly how startups launch — and exactly why they go down the moment they hit the front page of Reddit."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Every AWS service you'll learn going forward — EC2, RDS, S3, ECS, Lambda — has specific HA and fault tolerance features built in. Multi-AZ RDS, S3's 11-nines durability, Lambda's automatic scaling — these are all implementations of the same two principles. Understanding HA and Fault Tolerance now means every subsequent AWS service will immediately make sense architecturally."
+            },
+            {
+              "type": "image",
+              "src": "cloud7.png"
+            }
+          ]
+
+        }
+      },
+      {
+        "id": 2,
+        "title": "AWS Compute Services",
+        "level": "freshers",
+        "topics": [
+          "What is EC2 & How AWS Servers Work",
+          "Launching & Connecting to EC2 (SSH, Key Pairs, Elastic IP)",
+          "EC2 Instance Types & AMIs",
+          "Security Groups & Basic Server Security",
+          "User Data Scripts & EC2 Automation",
+          "Introduction to Auto Scaling"
+        ]
+      },
+      {
+        "id": 3,
+        "title": "AWS Storage Services",
+        "level": "freshers",
+        "topics": [
+          "What is Amazon S3?",
+          "Buckets & Objects",
+          "S3 Storage Classes",
+          "S3 Versioning",
+          "Lifecycle Policies",
+          "Static Website Hosting",
+          "EBS (Elastic Block Store)",
+          "EFS (Elastic File System)",
+          "Glacier Storage",
+          "Data Backup Strategies"
+        ],
+      },
+      {
+        "id": 4,
+        "title": "AWS Networking",
+        "level": "freshers",
+        "topics": [
+          "What is VPC?",
+          "CIDR Blocks",
+          "Public vs Private Subnets",
+          "Internet Gateway",
+          "NAT Gateway",
+          "Route Tables",
+          "Security Groups vs NACL",
+          "Elastic Load Balancer",
+          "Route 53 Basics",
+          "DNS Fundamentals"
+        ]
+      },
+      {
+        "id": 5,
+        "title": "AWS Databases",
+        "level": "freshers",
+        "topics": [
+          "RDS Basics",
+          "MySQL/PostgreSQL on AWS",
+          "Read Replicas",
+          "Multi-AZ Deployments",
+          "Amazon DynamoDB",
+          "SQL vs NoSQL",
+          "ElastiCache Redis",
+          "Database Backups",
+          "Scaling Databases",
+          "Aurora Basics"
+        ]
+      },
+      {
+        "id": 6,
+        "title": "IAM & AWS Security",
+        "level": "freshers",
+        "topics": [
+          "What is IAM?",
+          "IAM Users & Groups",
+          "IAM Roles",
+          "Policies & Permissions",
+          "Least Privilege Principle",
+          "MFA in AWS",
+          "AWS KMS",
+          "Secrets Manager",
+          "AWS Shield",
+          "AWS WAF"
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Load Balancing & Auto Scaling",
+        "level": "intermediate",
+        "topics": [
+          "Elastic Load Balancer (ELB)",
+          "Application Load Balancer (ALB)",
+          "Network Load Balancer (NLB)",
+          "Gateway Load Balancer",
+          "Target Groups",
+          "Health Checks",
+          "Auto Scaling Groups",
+          "Scaling Policies (Step, Target, Scheduled)",
+          "Sticky Sessions",
+          "High Availability Architecture"
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Serverless on AWS",
+        "level": "intermediate",
+        "topics": [
+          "What is Serverless?",
+          "AWS Lambda",
+          "API Gateway",
+          "Lambda Triggers & Event Sources",
+          "Amazon EventBridge",
+          "AWS Step Functions",
+          "Amazon SQS",
+          "Amazon SNS",
+          "Serverless Application Model (SAM)",
+          "Cold Starts in Lambda"
+        ]
+      },
+      {
+        "id": 9,
+        "title": "AWS Container Services",
+        "level": "intermediate",
+        "topics": [
+          "What are Containers?",
+          "Amazon ECS (Elastic Container Service)",
+          "AWS Fargate",
+          "Amazon ECR (Elastic Container Registry)",
+          "ECS Task Definitions",
+          "ECS Services & Clusters",
+          "Container Networking in AWS",
+          "Container Auto Scaling",
+          "Amazon EKS (Elastic Kubernetes Service)",
+          "ECS vs EKS vs Fargate"
+        ]
+      },
+      {
+        "id": 10,
+        "title": "AWS Developer Tools & CI/CD",
+        "level": "intermediate",
+        "topics": [
+          "AWS CodeCommit",
+          "AWS CodeBuild",
+          "AWS CodeDeploy",
+          "AWS CodePipeline",
+          "AWS CodeArtifact",
+          "Blue-Green Deployment on AWS",
+          "Rolling Deployments",
+          "AWS CloudFormation",
+          "AWS CDK (Cloud Development Kit)",
+          "AWS Elastic Beanstalk"
+        ]
+      },
+      {
+        "id": 11,
+        "title": "Monitoring & Observability",
+        "level": "intermediate",
+        "topics": [
+          "Amazon CloudWatch",
+          "CloudWatch Logs & Log Groups",
+          "CloudWatch Metrics & Alarms",
+          "CloudWatch Dashboards",
+          "AWS X-Ray",
+          "AWS CloudTrail",
+          "AWS Config",
+          "Amazon GuardDuty",
+          "AWS Health Dashboard",
+          "Distributed Tracing on AWS"
+        ]
+      },
+      {
+        "id": 12,
+        "title": "Advanced Networking",
+        "level": "experienced",
+        "topics": [
+          "VPC Peering",
+          "AWS Transit Gateway",
+          "VPN & Direct Connect",
+          "AWS PrivateLink",
+          "Endpoint Services",
+          "Network ACLs Deep Dive",
+          "Egress-Only Internet Gateway",
+          "AWS Global Accelerator",
+          "Amazon CloudFront (CDN)",
+          "Multi-VPC Architecture"
+        ]
+      },
+      {
+        "id": 13,
+        "title": "Advanced AWS Architecture",
+        "level": "experienced",
+        "topics": [
+          "Microservices on AWS",
+          "Event-Driven Architecture",
+          "Decoupling with SQS & SNS",
+          "AWS Well-Architected Framework",
+          "Disaster Recovery Strategies",
+          "Multi-Region Deployments",
+          "Cost Optimization on AWS",
+          "AWS Trusted Advisor",
+          "AWS Organizations & Control Tower",
+          "Production Architecture Design"
+        ]
+      }
+    ]
+  },
+
+
+
+
+  {
     id: "nodejs-foundation",
     category: "Backend Concepts",
     sortOrder: 1,

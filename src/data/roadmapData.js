@@ -754,7 +754,7 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it as a frozen snapshot of an entire configured server — OS, installed packages, application code, environment variables, security settings — all captured at one moment and reusable forever."
+              "text": "AMI stands for Amazon Machine Image. It is the template that defines what OS and pre-installed software your EC2 instance starts with. Think of it like this — imagine YouTube needs to launch 500 new servers right now to handle a traffic spike. They are not going to sit and manually install Linux, configure settings, and install software on each one. Instead they take one perfectly configured server — OS installed, software ready, settings done — and take a snapshot of it. That snapshot is the AMI. Now they can launch 500 identical servers in seconds, all booting up exactly like that original. Same OS. Same software. Same settings. Ready to go instantly."
             },
             {
               "type": "info-callout",

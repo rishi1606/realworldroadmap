@@ -5139,19 +5139,7 @@ export const roadmapData = [
           "Topics": [
             {
               "type": "paragraph",
-              "text": "Every second on Zepto — orders are placed, payments are processed, delivery partners are moving, stocks are updating, and notifications are flying out. All of these are different types of events. Kafka needs a way to organize all these different events so the right service gets the right event. That's exactly what a Topic is."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ Zepto has hundreds of different events happening every second — order placed, payment done, delivery assigned, stock updated, user rated the order. How does Kafka make sure the Inventory Service only gets stock-related events and not payment events? How does it keep everything organized?"
-            },
-            {
-              "type": "heading",
-              "text": "What is a Kafka Topic?"
-            },
-            {
-              "type": "paragraph",
-              "text": "A Kafka Topic is a named channel where events of the same type are stored and organized. Think of it as a dedicated lane on a highway. Every type of event gets its own lane. Publishers put events into a specific topic. Consumers read events from that specific topic. Nobody gets confused. Nobody gets the wrong event."
+              "text": "Every second on Zepto, many things happen — people place orders, make payments, delivery partners move, stock gets updated, and notifications are sent.All these actions are called events.Kafka uses something called a Topic to keep similar events together, so the correct service can read the correct events."
             },
             {
               "type": "info-callout",

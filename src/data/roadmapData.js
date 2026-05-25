@@ -47,11 +47,11 @@ export const roadmapData = [
           "What is Cloud Computing & Types of Cloud": [
             {
               "type": "paragraph",
-              "text": "You open YouTube. Search for a video. It loads in seconds. Behind that — millions of servers, databases, and networks firing simultaneously across the globe. YouTube streams over 500 hours of video every single minute to 2 billion users. They don't own a single server room for all of this. They rent everything from the cloud. But what exactly is the cloud — and why does every company from startups to YouTube use it?"
+              "text": "You open YouTube. Search for a video. It loads in seconds. Now imagine doing that for 2 billion people — every single day. YouTube streams over 500 hours of video every minute. They don't own giant server rooms for all of this. They rent everything from something called 'the cloud.' Let's break down exactly what that means — step by step."
             },
             {
               "type": "curious-callout",
-              "text": "❓ YouTube serves 2 billion users every day. Does that mean Google has a giant server room somewhere handling all of it? Where does all that computing actually happen?"
+              "text": "❓ When you hit play on a YouTube video, where does it actually come from? Is there a massive computer somewhere storing every cat video ever uploaded? Let's find out."
             },
             {
               "type": "heading",
@@ -59,48 +59,47 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Cloud computing is the delivery of computing services — servers, storage, databases, networking, software — over the internet, on demand, with pay-as-you-go pricing. Instead of buying and maintaining physical hardware, you rent exactly what you need from a cloud provider like AWS. YouTube uploads, processes, stores, and streams every video through cloud infrastructure — not a single physical server you can touch."
+              "text": "Cloud computing simply means using someone else's computers — over the internet — to store, process, and run things. Instead of buying expensive hardware, you rent exactly what you need and pay only for what you use. YouTube uses cloud computing to upload, store, process, and stream every single video to every single user — instantly."
             },
             {
               "type": "info-callout",
-              "text": "💡 Think of electricity. You don't build your own power plant to power your house. You plug in and pay for what you use. Cloud computing works exactly the same way — plug in, use compute power, pay only for what you consume. YouTube pays for compute only when videos are being processed and streamed — not 24/7 for idle machines."
+              "text": "💡 Real-life analogy: Think of electricity at your home. You don't build your own power plant to charge your phone. You just plug in and pay your bill. Cloud computing is exactly that — but for computers. YouTube 'plugs in' to Google's cloud and pays only when videos are being watched or processed — not for idle machines sitting unused."
             },
+            ,
             {
               "type": "heading",
-              "text": "Types of Cloud"
+              "text": "Types of Cloud — Explained Simply"
             },
             {
               "type": "paragraph",
-              "text": "Not every company uses the cloud the same way. Depending on size, security needs, and budget — companies choose different cloud models. Each model has a completely different structure and purpose."
+              "text": "Not every company uses cloud the same way. Depending on their size, security needs, and budget — they pick different cloud models. There are 4 main types, and each works very differently."
             },
             {
               "type": "step",
-              "title": "Public Cloud",
-              "desc": "Infrastructure owned and operated by a third-party provider like AWS, shared over the internet. Example: A startup building a video platform uses AWS EC2 and S3 to store and serve videos — just like YouTube does — without owning a single server."
+              "title": "Public Cloud — Search, Play, Upload, Comments",
+              "desc": "What it is: Infrastructure owned by a cloud provider (Google Cloud, AWS, Azure) and used by thousands of companies over the internet. You pay only for what you use. No hardware. No maintenance. Just plug in and go.\n\nYouTube Example — Search: You type 'how to make pasta' in YouTube's search bar. Within milliseconds, YouTube's search engine scans through 800 million+ videos and shows you the most relevant results. All of this — the search index, the ranking algorithm, the results delivery — runs on public cloud servers spread across the world."
             },
             {
               "type": "step",
-              "title": "Private Cloud",
-              "desc": "Dedicated cloud infrastructure built for one organization only. Example: A government broadcasting company stores classified video archives on a private cloud — nobody outside can access it."
+              "title": "Private Cloud — Creator Contracts, Revenue Data, Legal Files",
+              "desc": "What it is: A cloud built exclusively for one organization. Completely isolated. No sharing with other companies. Full control over security.\n\nYouTube Example  — Creator Contracts: YouTube has contracts with thousands of creators — MrBeast, T-Series, Cocomelon — with specific revenue splits, exclusivity deals, and confidential clauses. These documents are stored on private, locked-down infrastructure. No public cloud where other companies share space. Only YouTube's internal legal team can access them."
             },
             {
               "type": "step",
-              "title": "Hybrid Cloud",
-              "desc": "A mix of public and private cloud working together. Example: A media company stores sensitive licensing contracts on a private cloud but uses AWS public cloud to transcode and stream videos globally — just like large studios do."
+              "title": "Hybrid Cloud — Live Streaming + Copyright Protection Together",
+              "desc": "What it is: Public and private cloud working together. Sensitive stuff stays private. High-scale public tasks go to public cloud. Both connected seamlessly.\n\nYouTube Example 1 — Live Streaming a Concert: A major artist like Arijit Singh does a live concert on YouTube. The public cloud handles the massive spike — millions of simultaneous viewers streaming the live feed globally, CDN servers near every viewer delivering low-latency video. At the same time, the private cloud is running Content ID checks in real time — scanning the live audio against the private copyright database to detect and flag unlicensed music. Public cloud for scale. Private cloud for protection. Both working together in real time."
             },
             {
               "type": "step",
-              "title": "Multi-Cloud",
-              "desc": "Using multiple cloud providers together. Example: A company uses AWS for video storage and streaming, but Google Cloud for its AI-powered recommendation engine — the same way YouTube uses multiple Google infrastructure layers for different jobs."
-            },
+              "title": "Multi-Cloud — Recommendations, Translations, Analytics",
+              "desc": "What it is: Using multiple different cloud providers at the same time — each chosen because they're the best at a specific job. Not putting all eggs in one basket.\n\nYouTube Example 1 — Recommendations (Up Next): The 'Up Next' recommendation engine is one of the most powerful AI systems ever built — it drives 70% of all YouTube watch time. YouTube uses Google Cloud's TPUs (custom AI chips) specifically built for training these massive recommendation models. No other cloud does AI at this scale as efficiently."
+            }, ,
             {
               "type": "warning-callout",
-              "text": "⚠️ YouTube itself runs on Google Cloud — not AWS. But the architecture concepts are identical. The reason AWS matters is that it holds over 31% of the entire cloud market — more than Azure and Google Cloud combined. Most companies you'll work at use AWS."
+              "text": "⚠️ Quick Reality Check: YouTube itself runs on Google Cloud — not AWS. But here's why AWS still matters: AWS holds over 31% of the entire global cloud market — more than Microsoft Azure and Google Cloud combined. The majority of companies you'll ever work at use AWS. The concepts are identical across all providers — learn one, understand them all."
             },
-            {
-              "type": "image",
-              "src": "cloud1.png"
-            }
+            ,
+
           ],
 
           "On-Premise vs Cloud Computing": [

@@ -98,13 +98,10 @@ export function HomePage() {
           </div>
         ) : (
           (() => {
-            const groups = {
-              "Backend Concepts": [],
-              "Databases": []
-            };
+            const groups = {};
 
             roadmaps.forEach(item => {
-              const cat = item.category || (item.slug === 'mongodb-swiggy' || item.id === 'mongodb-swiggy' ? 'Databases' : 'Backend Concepts');
+              const cat = item.category || (item.slug === 'mongodb-swiggy' || item.id === 'mongodb-swiggy' ? 'Databases' : 'Backend Fundamentals');
               if (!groups[cat]) {
                 groups[cat] = [];
               }
@@ -116,10 +113,30 @@ export function HomePage() {
               groups[cat].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
             });
 
+            const categoryOrder = [
+              "Backend Fundamentals",
+              "Performance & Scalability",
+              "Databases",
+              "Real-Time Systems",
+              "Distributed Systems & Messaging"
+            ];
+
+            const sortedCategories = Object.keys(groups).sort((a, b) => {
+              const indexA = categoryOrder.indexOf(a);
+              const indexB = categoryOrder.indexOf(b);
+              if (indexA !== -1 && indexB !== -1) {
+                return indexA - indexB;
+              }
+              if (indexA !== -1) return -1;
+              if (indexB !== -1) return 1;
+              return a.localeCompare(b);
+            });
+
             return (
               <div className="space-y-16">
-                {Object.entries(groups).map(([categoryName, items]) => {
-                  if (items.length === 0) return null;
+                {sortedCategories.map((categoryName) => {
+                  const items = groups[categoryName];
+                  if (!items || items.length === 0) return null;
                   return (
                     <div key={categoryName} className="flex flex-col space-y-6">
                       <div className="flex items-center gap-4">

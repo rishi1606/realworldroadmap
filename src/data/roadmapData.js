@@ -4238,6 +4238,715 @@ export const roadmapData = [
   },
 
 
+  {
+    "id": 6,
+    "title": "Understand Kafka through Zepto (Online Grocery System)",
+    "category": "Backend Concepts",
+    "sortOrder": 9,
+    "brand": "Zepto",
+    "image": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/81/Zepto_Logo.svg/3840px-Zepto_Logo.svg.png",
+    "description": "Learn how Apache Kafka works internally — including topics, partitions, offsets, producers, consumers, brokers, replication, schema registry, Kafka streams, and delivery guarantees through real-world Zepto instant delivery scenarios.",
+    "tags": [
+      "Kafka",
+      "Topics",
+      "Partitions",
+      "Producers",
+      "Consumers",
+      "Brokers",
+      "Replication",
+      "Kafka Streams",
+      "Schema Registry",
+      "Event Streaming",
+      "Backend",
+      "Real-time Systems"
+    ],
+    "nodes": [
+      {
+        "id": 1,
+        "title": "Kafka Fundamentals",
+        "level": "freshers",
+        "topics": [
+          "What is Kafka and Why do we use ?",
+          "Topics",
+          "Partitions",
+          "Offsets",
+          "Producers",
+          "Consumers and Consumer Groups",
+
+        ],
+        topicDetails: {
+          "What is Kafka and Why do we use ?": [
+            {
+              "type": "paragraph",
+              "text": "You open Zepto. Add 2 packets of chips, 1 bottle of water, and some fruits. Hit order. Within 10 minutes — a delivery partner is at your door. But behind that 10-minute delivery, hundreds of things happened simultaneously — inventory was checked, dark store was notified, delivery partner was assigned, payment was processed, your location was tracked, notifications were sent, and analytics were updated. All of this happened in real time, in parallel, without any step waiting for the other. How? The answer is Apache Kafka."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ When you place a Zepto order, at least 10 different systems need to know about it instantly — inventory, delivery, payment, notifications, analytics, fraud detection. How does one order event reach all 10 systems simultaneously without anything breaking?"
+            },
+            {
+              "type": "heading",
+              "text": "The Problem Without Kafka"
+            },
+            {
+              "type": "paragraph",
+              "text": "Imagine Zepto's old system where every service talks directly to every other service. When you place an order, the Order Service calls the Inventory Service, then calls the Delivery Service, then calls the Notification Service, then calls the Analytics Service — one by one, in a chain. If any one service is slow or crashes, the entire chain breaks. Your order gets stuck. The delivery partner never gets notified. You get no SMS. The system collapses under pressure."
+            },
+            {
+              "type": "code",
+              "code": "Without Kafka — Direct Service Calls:\n\nOrder Service → Inventory Service ❌ slow\n                      ↓\n             Delivery Service ⏳ waiting\n                      ↓\n          Notification Service ❌ crashed\n                      ↓\n           Analytics Service ⏳ never reached\n\nResult: Order stuck. User gets no update."
+            },
+            {
+              "type": "heading",
+              "text": "What is Kafka?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Apache Kafka is a distributed event streaming platform. In simple words — Kafka is a super fast, reliable message highway where one service publishes an event and multiple other services can read that event independently, simultaneously, and at their own speed. Nobody waits for anyone. Nobody calls anyone directly. Everything communicates through Kafka."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of Kafka like a Zepto dark store notice board. When a new order arrives, it gets posted on the notice board. The picker reads it. The delivery partner reads it. The billing system reads it. The analytics team reads it. Everyone reads from the same board independently — nobody had to call anyone directly."
+            },
+            {
+              "type": "heading",
+              "text": "How Kafka Solves Zepto's Problem"
+            },
+            {
+              "type": "code",
+              "code": "With Kafka — Event Streaming:\n\nUser Places Order\n        ↓\nOrder Service publishes event to Kafka\n        ↓\n----------------------------------------\nKafka Topic: 'order-placed'\n----------------------------------------\n        ↓               ↓              ↓\nInventory         Delivery        Notification\nService           Service         Service\n(reads             (reads          (reads\ninstantly)        instantly)      instantly)\n        ↓               ↓              ↓\nStock            Partner         SMS sent\nreduced          assigned        to user\n\nAll happening simultaneously. Zero waiting."
+            },
+            {
+              "type": "step",
+              "title": "User places Zepto order",
+              "desc": "You tap 'Place Order' on Zepto app. Order Service creates the order and publishes one event to Kafka."
+            },
+            {
+              "type": "step",
+              "title": "Kafka receives the event",
+              "desc": "Kafka stores this 'order-placed' event safely and reliably. It does not disappear. It stays there for all services to read."
+            },
+            {
+              "type": "step",
+              "title": "Inventory Service reads the event",
+              "desc": "Instantly reduces stock from the nearest dark store. Nobody told it directly — it read from Kafka on its own."
+            },
+            {
+              "type": "step",
+              "title": "Delivery Service reads the event",
+              "desc": "Finds the nearest available delivery partner and assigns the order. Completely independent of Inventory Service."
+            },
+            {
+              "type": "step",
+              "title": "Notification Service reads the event",
+              "desc": "Sends you an SMS and push notification — 'Your order is confirmed'. No waiting for delivery assignment to finish first."
+            },
+            {
+              "type": "step",
+              "title": "Analytics Service reads the event",
+              "desc": "Updates dashboards, sales reports, and demand forecasting models in real time."
+            },
+            {
+              "type": "step",
+              "title": "All 6 things happened simultaneously",
+              "desc": "One event published. Six services reacted independently. Zero direct calls. Zero waiting. Zero single point of failure."
+            },
+            {
+              "type": "heading",
+              "text": "Why Do We Use Kafka?"
+            },
+            {
+              "type": "table",
+              "headers": ["Problem Without Kafka", "How Kafka Solves It"],
+              "rows": [
+                ["Services call each other directly — tightly coupled", "Services communicate through Kafka — fully decoupled"],
+                ["One slow service blocks everything", "Each service reads at its own speed independently"],
+                ["One crashed service breaks the chain", "Kafka stores events safely — service reads when it recovers"],
+                ["Cannot handle millions of events per second", "Kafka handles millions of events per second easily"],
+                ["Messages lost if service is down", "Kafka retains messages for days — nothing is lost"],
+                ["Hard to add new services later", "New service just subscribes to Kafka — zero changes elsewhere"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Real Zepto Events Flowing Through Kafka"
+            },
+            {
+              "type": "code",
+              "code": "Kafka Topics at Zepto:\n\n'order-placed'         → Inventory, Delivery, Notification, Analytics\n'payment-processed'    → Invoice, Wallet, Fraud Detection\n'delivery-assigned'    → Driver App, Tracking Service, User App\n'location-updated'     → Map Service, ETA Calculator, User App\n'order-delivered'      → Rating Service, Analytics, Loyalty Points\n'item-out-of-stock'    → Inventory Team, Procurement, Recommendations"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Kafka is NOT a database. It does not store data permanently for querying. It is a real-time event pipeline — data flows through it at massive speed so multiple systems can react to events instantly."
+            },
+
+            {
+              "type": "success-callout",
+              "text": "✅ Kafka is the backbone of real-time systems like Zepto, Swiggy, Uber, LinkedIn, and Netflix. Any system where millions of events happen every second and multiple services need to react instantly — Kafka is the answer."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ But how does Kafka actually store and organize all these events? Where do 'order-placed' events actually go inside Kafka? That's where Topics, Partitions, and Offsets come in — the core building blocks of Kafka."
+            }
+          ],
+          "Topics": [
+            {
+              "type": "paragraph",
+              "text": "Every second on Zepto — orders are placed, payments are processed, delivery partners are moving, stocks are updating, and notifications are flying out. All of these are different types of events. Kafka needs a way to organize all these different events so the right service gets the right event. That's exactly what a Topic is."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Zepto has hundreds of different events happening every second — order placed, payment done, delivery assigned, stock updated, user rated the order. How does Kafka make sure the Inventory Service only gets stock-related events and not payment events? How does it keep everything organized?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Kafka Topic?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Kafka Topic is a named channel where events of the same type are stored and organized. Think of it as a dedicated lane on a highway. Every type of event gets its own lane. Publishers put events into a specific topic. Consumers read events from that specific topic. Nobody gets confused. Nobody gets the wrong event."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of Kafka Topics like different WhatsApp groups inside Zepto's dark store team. 'New Orders' group only has order messages. 'Stock Alerts' group only has inventory messages. 'Delivery Updates' group only has delivery messages. Every team reads only the group that's relevant to them — nobody reads everything."
+            },
+            {
+              "type": "heading",
+              "text": "Zepto's Real Kafka Topics"
+            },
+            {
+              "type": "code",
+              "code": "Kafka Topics at Zepto:\n\n📦 'order-placed'          → New order arrived\n💳 'payment-processed'     → Payment success or failure\n🛵 'delivery-assigned'     → Partner picked up order\n📍 'location-updated'      → Partner live location every 3 sec\n✅ 'order-delivered'       → Order successfully delivered\n⭐ 'rating-submitted'      → User rated the delivery\n🔴 'item-out-of-stock'     → Item exhausted in dark store\n🎯 'promo-applied'         → Coupon or discount used"
+            },
+            {
+              "type": "heading",
+              "text": "How Topics Work — Step by Step"
+            },
+            {
+              "type": "step",
+              "title": "User places a Zepto order",
+              "desc": "You tap 'Place Order'. Zepto's Order Service creates the order and publishes an event to the 'order-placed' topic in Kafka."
+            },
+            {
+              "type": "step",
+              "title": "Event lands in the correct topic",
+              "desc": "Kafka receives the event and stores it inside the 'order-placed' topic. It does not go anywhere else. It sits there safely."
+            },
+            {
+              "type": "step",
+              "title": "Inventory Service reads from 'order-placed'",
+              "desc": "Inventory Service is subscribed to the 'order-placed' topic. It reads the event and immediately reduces stock from the dark store."
+            },
+            {
+              "type": "step",
+              "title": "Delivery Service reads from 'order-placed'",
+              "desc": "Delivery Service is also subscribed to 'order-placed'. It reads the same event independently and assigns the nearest delivery partner."
+            },
+            {
+              "type": "step",
+              "title": "Notification Service reads from 'order-placed'",
+              "desc": "Notification Service reads the same event and fires an SMS and push notification to the user — 'Your order is confirmed'."
+            },
+            {
+              "type": "step",
+              "title": "Payment event goes to a different topic",
+              "desc": "When payment is deducted, that event goes to the 'payment-processed' topic — completely separate. Invoice Service and Fraud Detection read from there."
+            },
+            {
+              "type": "code",
+              "code": "User Places Order\n        ↓\nOrder Service\n        ↓\npublish → Kafka Topic: 'order-placed'\n                    ↓\n      ┌─────────────┼──────────────┐\n      ↓             ↓              ↓\nInventory      Delivery      Notification\nService        Service        Service\n(reduce        (assign        (send SMS\n  stock)       partner)       & push)"
+            },
+            {
+              "type": "heading",
+              "text": "One Topic — Multiple Consumers"
+            },
+            {
+              "type": "paragraph",
+              "text": "The most powerful thing about Kafka Topics is that multiple services can read from the same topic independently and simultaneously. When Zepto publishes one 'order-placed' event, five different services can all read that same event — each doing their own job — without interfering with each other. The event is not deleted after one service reads it. Everyone gets their own copy."
+            },
+            {
+              "type": "code",
+              "code": "Topic: 'order-placed'\n\nEvent: { orderId: 'ZPT-9821', items: ['chips', 'water'], userId: 'U-441' }\n\nReader 1 → Inventory Service   → reduces stock\nReader 2 → Delivery Service    → assigns partner\nReader 3 → Notification Service → sends SMS\nReader 4 → Analytics Service   → updates dashboard\nReader 5 → Fraud Service       → checks suspicious activity\n\nAll 5 read the same event. Nobody blocks anyone."
+            },
+            {
+              "type": "heading",
+              "text": "Topics Are Append-Only Logs"
+            },
+            {
+              "type": "paragraph",
+              "text": "Inside Kafka, a Topic is not a queue where messages disappear after being read. It is an append-only log — like a notebook where new events keep getting written at the bottom and old events stay there. Every new order appended to 'order-placed' topic stays there. Services can read from any point in the log. New services added later can even replay old events from the beginning."
+            },
+            {
+              "type": "code",
+              "code": "Topic: 'order-placed' — Append Only Log\n\nPosition 0 → { orderId: 'ZPT-001', user: 'Rahul' }   ← old event, still here\nPosition 1 → { orderId: 'ZPT-002', user: 'Priya' }   ← still here\nPosition 2 → { orderId: 'ZPT-003', user: 'Aman' }    ← still here\nPosition 3 → { orderId: 'ZPT-004', user: 'Sneha' }   ← latest event\n\nNew events always added at the end.\nOld events never deleted immediately.\nAny service can read from any position."
+            },
+            {
+              "type": "heading",
+              "text": "Topics vs Traditional Database Tables"
+            },
+            {
+              "type": "table",
+              "headers": ["Feature", "Kafka Topic", "Database Table"],
+              "rows": [
+                ["Purpose", "Real-time event streaming", "Permanent data storage"],
+                ["Data deleted after read?", "No — stays for all consumers", "Depends on query"],
+                ["Multiple readers?", "Yes — all read independently", "Yes but via queries"],
+                ["Speed", "Millions of events per second", "Slower for real-time streams"],
+                ["Best for", "Events, notifications, logs", "Structured business data"],
+                ["Zepto example", "'order-placed' event stream", "Orders table in PostgreSQL"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Zepto Topic Design — Real World"
+            },
+            {
+              "type": "table",
+              "headers": ["Topic Name", "Who Publishes", "Who Consumes"],
+              "rows": [
+                ["order-placed", "Order Service", "Inventory, Delivery, Notification, Analytics"],
+                ["payment-processed", "Payment Service", "Invoice Service, Fraud Detection, Wallet"],
+                ["location-updated", "Driver App", "Map Service, ETA Calculator, User App"],
+                ["item-out-of-stock", "Inventory Service", "Procurement Team, Recommendation Engine"],
+                ["order-delivered", "Delivery Service", "Rating Service, Loyalty Points, Analytics"],
+                ["promo-applied", "Promo Service", "Analytics, Finance Team, A/B Testing"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Naming topics well is critical in production. Bad topic names like 'data' or 'events' cause confusion. Good topic names are specific, action-based, and describe exactly what event they carry — like 'order-placed', 'payment-failed', 'delivery-assigned'."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Topics are the foundation of Kafka. Every event in Zepto — from order placement to delivery completion — flows through a dedicated topic. One topic. Multiple consumers. Zero direct dependencies. That's the Kafka way."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ But here's the real question — Zepto gets 10 lakh orders a day. Can one topic handle all that load? What if the topic gets too big or too slow? That's where Partitions come in — Kafka's secret weapon for massive scale."
+            }
+          ],
+          "Partitions": [
+            {
+              "type": "paragraph",
+              "text": "Zepto gets lakhs of orders every single day. If all those 'order-placed' events went into one single topic lane — it would get jammed. One lane cannot handle lakh of orders per minute. Kafka solves this by splitting a topic into multiple Partitions. Instead of one lane, you get many parallel lanes — all part of the same topic, all handling traffic simultaneously."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Zepto operates in Mumbai, Delhi, Bangalore, Hyderabad, and Chennai simultaneously. Lakhs of orders are coming in every minute. How does Kafka handle all of them without slowing down?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Partition?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Partition is a subdivision of a Kafka Topic. When you create a topic called 'order-placed', you can split it into multiple partitions — Partition 0, Partition 1, Partition 2. Each partition is an independent lane that receives and stores events separately. All partitions together form the complete topic."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of it like Zepto's dark stores. One central warehouse cannot deliver to all of Mumbai in 10 minutes. So Zepto has multiple dark stores across the city — Andheri, Bandra, Thane, Powai. Each dark store handles its own area independently. Partitions work exactly the same way — each partition handles its own slice of events independently."
+            },
+            {
+              "type": "code",
+              "code": "Topic: 'order-placed' — Split into 4 Partitions\n\nPartition 0 → Mumbai orders\nPartition 1 → Delhi orders\nPartition 2 → Bangalore orders\nPartition 3 → Hyderabad orders\n\nAll 4 partitions running in parallel.\nAll 4 are part of the same 'order-placed' topic."
+            },
+            {
+              "type": "heading",
+              "text": "How Kafka Decides Which Partition an Event Goes To"
+            },
+            {
+              "type": "step",
+              "title": "Using a Partition Key",
+              "desc": "When Zepto publishes an event, it can pass a key — like cityId or userId. Kafka hashes that key and sends the event to a specific partition. All Mumbai orders always go to Partition 0. All Delhi orders always go to Partition 1. Same key = same partition. Always."
+            },
+            {
+              "type": "step",
+              "title": "Without a Key — Round Robin",
+              "desc": "If no key is given, Kafka distributes events across partitions in round robin — first event to Partition 0, next to Partition 1, next to Partition 2, and so on. Evenly spread. No overloading."
+            },
+            {
+              "type": "code",
+              "code": "Zepto Order Events with Partition Key = cityId\n\nOrder from Mumbai  → hash('mumbai')  → Partition 0\nOrder from Delhi   → hash('delhi')   → Partition 1\nOrder from Mumbai  → hash('mumbai')  → Partition 0  ✅ same city, same partition\nOrder from Bangalore → hash('blr')  → Partition 2"
+            },
+            {
+              "type": "heading",
+              "text": "Why Partitions Give Kafka Massive Speed"
+            },
+            {
+              "type": "paragraph",
+              "text": "Without partitions, one consumer reads one topic sequentially — slowly. With partitions, multiple consumers read multiple partitions simultaneously in parallel. Zepto can have 4 consumers reading 4 partitions at the same time — 4x the speed. Add more partitions, add more consumers, handle more load. That's how Kafka scales."
+            },
+            {
+              "type": "code",
+              "code": "Without Partitions:\nConsumer 1 → reads ALL events one by one → slow ❌\n\nWith 4 Partitions:\nConsumer 1 → reads Partition 0 (Mumbai)    ↗\nConsumer 2 → reads Partition 1 (Delhi)     ↗  all parallel ✅\nConsumer 3 → reads Partition 2 (Bangalore) ↗\nConsumer 4 → reads Partition 3 (Hyderabad) ↗"
+            },
+            {
+              "type": "table",
+              "headers": ["Feature", "Without Partitions", "With Partitions"],
+              "rows": [
+                ["Throughput", "Limited to one lane", "Scales with number of partitions"],
+                ["Parallel processing", "Not possible", "Multiple consumers in parallel"],
+                ["City-wise ordering", "Cannot guarantee", "Same city always same partition"],
+                ["Fault tolerance", "One failure = all events blocked", "Other partitions keep running"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Events inside one partition are always in order — first in, first out. But across partitions, order is NOT guaranteed. That's why Zepto uses cityId as the key — so all events for one city stay in order inside one partition."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Partitions are what make Kafka infinitely scalable. More orders? Add more partitions. More cities? Add more partitions. Each partition is an independent, parallel lane — all working together to handle Zepto's lakh of daily orders at lightning speed."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Events inside a partition are stored at specific positions — 0, 1, 2, 3. How does a consumer know which event it last read? How does it resume from where it stopped? That's where Offsets come in."
+            }
+          ],
+          "Offsets": [
+            {
+              "type": "paragraph",
+              "text": "Every event inside a Kafka partition sits at a specific position — 0, 1, 2, 3, 4... This position number is called an Offset. It is Kafka's way of tracking exactly which events have been read and which haven't. Without offsets, a consumer would never know where it left off — and would either miss events or read the same event twice."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Zepto's Notification Service is reading 'order-placed' events. Suddenly the service crashes. When it restarts — how does it know which orders it already sent notifications for and which ones it missed? How does it not send duplicate notifications?"
+            },
+            {
+              "type": "heading",
+              "text": "What is an Offset?"
+            },
+            {
+              "type": "paragraph",
+              "text": "An Offset is simply a sequential number assigned to every event inside a partition. First event gets offset 0. Second event gets offset 1. Third gets offset 2. It never resets. It only goes forward. Kafka uses this number to track exactly where each consumer is in the partition."
+            },
+            {
+              "type": "code",
+              "code": "Partition 0 — Mumbai Orders\n\nOffset 0 → { orderId: 'ZPT-001', user: 'Rahul'  } ✅ read\nOffset 1 → { orderId: 'ZPT-002', user: 'Priya'  } ✅ read\nOffset 2 → { orderId: 'ZPT-003', user: 'Aman'   } ✅ read\nOffset 3 → { orderId: 'ZPT-004', user: 'Sneha'  } ⏳ not yet read\nOffset 4 → { orderId: 'ZPT-005', user: 'Vikram' } ⏳ not yet read\n\nConsumer is currently at Offset 3 — will read from here next."
+            },
+            {
+              "type": "heading",
+              "text": "How Offsets Work — Zepto Crash Example"
+            },
+            {
+              "type": "step",
+              "title": "Notification Service starts reading",
+              "desc": "It reads Offset 0, 1, 2 — sends notifications for ZPT-001, ZPT-002, ZPT-003. Kafka records that this consumer is at Offset 2."
+            },
+            {
+              "type": "step",
+              "title": "Service crashes at Offset 3",
+              "desc": "Notification Service goes down before reading Offset 3 and 4. Those events are still safely sitting in Kafka — nothing is lost."
+            },
+            {
+              "type": "step",
+              "title": "Service restarts",
+              "desc": "Kafka remembers this consumer was at Offset 2. So it resumes from Offset 3 automatically. ZPT-004 and ZPT-005 notifications go out. No duplicates. No missed orders."
+            },
+            {
+              "type": "code",
+              "code": "Before Crash:\nConsumer read up to → Offset 2 ✅\nKafka saves         → committed offset = 2\n\nCrash happens ❌\n\nAfter Restart:\nKafka tells consumer → resume from Offset 3\nConsumer reads       → Offset 3, 4 normally ✅\nZero events missed. Zero duplicates."
+            },
+            {
+              "type": "heading",
+              "text": "Committed Offset vs Current Offset"
+            },
+            {
+              "type": "table",
+              "headers": ["Term", "Meaning", "Zepto Example"],
+              "rows": [
+                ["Current Offset", "The event the consumer is reading right now", "Notification Service reading Offset 3"],
+                ["Committed Offset", "The last offset the consumer confirmed it processed", "Confirmed up to Offset 2"],
+                ["Lag", "Gap between latest event and committed offset", "2 unread orders pending in Mumbai"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Replaying Events with Offsets"
+            },
+            {
+              "type": "paragraph",
+              "text": "Offsets give Kafka a superpower that traditional queues don't have — replay. Because events are never immediately deleted, any service can go back to any offset and re-read old events. Zepto's Analytics Service can replay all orders from the last 7 days to rebuild a dashboard. A new service joining Zepto can start from Offset 0 and read everything from the beginning."
+            },
+            {
+              "type": "code",
+              "code": "Zepto launches new Fraud Detection Service\n        ↓\nIt starts reading from Offset 0\n        ↓\nReplays all past orders\n        ↓\nBuilds fraud patterns from historical data\n        ↓\nCatches up to current offset and goes live\n\nNo data pipeline needed. Just replay from Kafka."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Kafka retains events based on a configured retention period — default is 7 days. So Zepto can replay any event from the last 7 days using offsets. After retention expires, old events are cleaned up automatically."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Offsets are Kafka's bookmark system. Every consumer knows exactly where it is, where it left off, and where to resume. No event is ever missed. No event is ever processed twice by accident. That's what makes Kafka reliable at Zepto's scale."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ But who is actually putting these events into Kafka topics in the first place? When Zepto's Order Service publishes an 'order-placed' event — what exactly is it doing internally? That's where Producers come in."
+            }
+          ],
+          "Producers": [
+            {
+              "type": "paragraph",
+              "text": "Every event that flows through Kafka has to come from somewhere. When you place a Zepto order, something has to take that order event and push it into Kafka. That something is called a Producer. A Producer is any service or application that creates events and publishes them into a Kafka topic."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ You tap 'Place Order' on Zepto. Within milliseconds, the Inventory Service knows, the Delivery Service knows, the Notification Service knows. Who told all of them? Who pushed that event into Kafka in the first place?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Producer?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Producer is a service that publishes events into a Kafka topic. It is the starting point of every event in Kafka. At Zepto, the Order Service is a producer — the moment you place an order, it creates an event and pushes it into the 'order-placed' topic. The Producer does not care who reads it or what they do with it. Its only job is to publish the event reliably into Kafka."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of a Producer like Zepto's order desk at the dark store. The moment an order comes in, the desk puts an order slip on the conveyor belt. It does not care who picks it up — the picker, packer, or delivery partner. It just puts the slip on the belt and moves to the next order."
+            },
+            {
+              "type": "heading",
+              "text": "Zepto's Producers — Who Publishes What"
+            },
+            {
+              "type": "table",
+              "headers": ["Producer Service", "Kafka Topic", "Event Published"],
+              "rows": [
+                ["Order Service", "order-placed", "User placed a new order"],
+                ["Payment Service", "payment-processed", "Payment success or failure"],
+                ["Delivery Service", "delivery-assigned", "Partner picked up the order"],
+                ["Driver App", "location-updated", "Partner live location every 3 sec"],
+                ["Inventory Service", "item-out-of-stock", "Item exhausted in dark store"],
+                ["Delivery Service", "order-delivered", "Order successfully delivered"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "How a Producer Works — Step by Step"
+            },
+            {
+              "type": "step",
+              "title": "User taps Place Order on Zepto",
+              "desc": "Zepto's Order Service receives the request — items, address, userId, amount."
+            },
+            {
+              "type": "step",
+              "title": "Order Service creates an event",
+              "desc": "It builds a JSON event — orderId, userId, items, darkStoreId, cityId, timestamp — and prepares to publish."
+            },
+            {
+              "type": "step",
+              "title": "Producer picks the topic",
+              "desc": "Order Service publishes the event to the 'order-placed' topic in Kafka."
+            },
+            {
+              "type": "step",
+              "title": "Producer picks the partition",
+              "desc": "It uses cityId as the partition key. Kafka hashes 'mumbai' and routes the event to Partition 0 automatically."
+            },
+            {
+              "type": "step",
+              "title": "Event lands in Kafka at next offset",
+              "desc": "Kafka stores the event at the next available offset — say Offset 4 — inside Partition 0. Done."
+            },
+            {
+              "type": "step",
+              "title": "Producer moves on immediately",
+              "desc": "Order Service does not wait for any consumer to read it. It already moved on to handle the next incoming order."
+            },
+            {
+              "type": "code",
+              "code": "// Zepto Order Service — Producer Example\n\nconst { Kafka } = require('kafkajs')\n\nconst kafka = new Kafka({ brokers: ['kafka-broker:9092'] })\n\nconst producer = kafka.producer()\n\nawait producer.connect()\n\nawait producer.send({\n  topic: 'order-placed',\n  messages: [\n    {\n      key: 'mumbai',   // partition key — same city = same partition\n      value: JSON.stringify({\n        orderId: 'ZPT-9821',\n        userId: 'U-441',\n        items: ['chips', 'water', 'fruits'],\n        darkStoreId: 'DS-Andheri',\n        amount: 349,\n        timestamp: Date.now()\n      })\n    }\n  ]\n})\n\nawait producer.disconnect()"
+            },
+            {
+              "type": "heading",
+              "text": "Producer Acknowledgement — How Reliable is Publishing?"
+            },
+            {
+              "type": "paragraph",
+              "text": "When Zepto's Order Service publishes an event, how does it know Kafka actually received it? Kafka gives producers a setting called 'acks' — acknowledgement — to control how reliable the publish should be."
+            },
+            {
+              "type": "table",
+              "headers": ["acks Setting", "Meaning", "Zepto Use Case"],
+              "rows": [
+                ["acks: 0", "Fire and forget — no confirmation", "Live location updates — okay to lose one"],
+                ["acks: 1", "Kafka leader confirms receipt", "Order notifications — mostly reliable"],
+                ["acks: all", "All replicas confirm — fully safe", "Payment events — cannot afford to lose"]
+              ]
+            },
+            {
+              "type": "code",
+              "code": "// Payment Producer — must be fully reliable\nawait producer.send({\n  topic: 'payment-processed',\n  acks: 'all',   // wait for all replicas to confirm\n  messages: [\n    {\n      key: 'mumbai',\n      value: JSON.stringify({\n        orderId: 'ZPT-9821',\n        status: 'success',\n        amount: 349,\n        method: 'UPI'\n      })\n    }\n  ]\n})\n\n// Location Producer — speed over reliability\nawait producer.send({\n  topic: 'location-updated',\n  acks: 0,   // fire and forget — next update coming in 3 seconds anyway\n  messages: [\n    {\n      key: 'driver-D221',\n      value: JSON.stringify({\n        driverId: 'D-221',\n        lat: 19.1136,\n        lng: 72.8697\n      })\n    }\n  ]\n})"
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ A Producer only publishes. It has zero knowledge of who is consuming, how many consumers exist, or what they do with the event. This decoupling is exactly what makes Kafka so powerful — producers and consumers are completely independent of each other."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Producers are the entry point of every event in Kafka. Every action on Zepto — placing an order, processing payment, updating location, delivering an order — starts with a Producer pushing an event into the right Kafka topic."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Events are now sitting in Kafka topics. But who is actually reading them? How does the Inventory Service read from Kafka? How does the Notification Service read the same event without conflicting with Inventory? That's where Consumers and Consumer Groups come in."
+            }
+          ],
+          "Consumers and Consumer Groups": [
+            {
+              "type": "paragraph",
+              "text": "Events are sitting in Kafka topics. Producers have done their job. Now something needs to actually read those events and act on them. That something is called a Consumer. A Consumer is any service that reads events from a Kafka topic and processes them. At Zepto — the Inventory Service, Delivery Service, Notification Service, and Analytics Service are all consumers. They all read from the same 'order-placed' topic and each does their own job independently."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Zepto has 5 different services all reading from the same 'order-placed' topic. If one event arrives — do all 5 services get it? Or does only one get it? And what happens when Zepto scales up and runs 10 instances of the Notification Service — do all 10 send the same SMS to the user?"
+            },
+            {
+              "type": "heading",
+              "text": "What is a Consumer?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Consumer is a service that subscribes to a Kafka topic and reads events from it. It keeps track of its own offset — so it knows exactly which events it has already processed and which ones are new. Every time a new event arrives in the topic, the consumer picks it up and processes it."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of a Consumer like a dark store employee reading the order slip conveyor belt. The Picker reads it and picks items. The Packer reads it and packs the bag. The Delivery Desk reads it and assigns a partner. All three are consumers — all reading the same conveyor belt — all doing completely different jobs independently."
+            },
+            {
+              "type": "code",
+              "code": "// Zepto Notification Service — Consumer Example\n\nconst { Kafka } = require('kafkajs')\n\nconst kafka = new Kafka({ brokers: ['kafka-broker:9092'] })\n\nconst consumer = kafka.consumer({ groupId: 'notification-service' })\n\nawait consumer.connect()\nawait consumer.subscribe({ topic: 'order-placed' })\n\nawait consumer.run({\n  eachMessage: async ({ topic, partition, message }) => {\n    const order = JSON.parse(message.value.toString())\n\n    console.log(`Sending SMS to user ${order.userId}`)\n    console.log(`Your Zepto order ${order.orderId} is confirmed!`)\n    console.log(`Reading from Partition: ${partition}, Offset: ${message.offset}`)\n  }\n})"
+            },
+            {
+              "type": "heading",
+              "text": "The Problem — Multiple Instances of Same Service"
+            },
+            {
+              "type": "paragraph",
+              "text": "Zepto's Notification Service is getting overwhelmed. 50,000 orders per minute are coming in. One instance of the service cannot keep up. So Zepto scales up — runs 3 instances of the Notification Service in parallel. But now there is a problem — all 3 instances are reading from the same topic. Will the same SMS go out 3 times to the same user?"
+            },
+            {
+              "type": "code",
+              "code": "Problem Without Consumer Groups:\n\nOrder ZPT-9821 arrives in 'order-placed' topic\n        ↓\nNotification Instance 1 → reads it → sends SMS ✅\nNotification Instance 2 → reads it → sends SMS again ❌ duplicate!\nNotification Instance 3 → reads it → sends SMS again ❌ duplicate!\n\nUser gets 3 SMS for 1 order. Terrible experience."
+            },
+            {
+              "type": "heading",
+              "text": "What is a Consumer Group?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A Consumer Group is a group of consumers that work together to read a topic — but each event is processed by only ONE consumer in the group. Kafka automatically divides partitions among consumers in the same group. So if the 'order-placed' topic has 4 partitions and the Notification Service has 3 instances all in the same group — Kafka assigns different partitions to each instance. No two instances ever read the same event."
+            },
+            {
+              "type": "code",
+              "code": "Topic: 'order-placed' — 4 Partitions\n\nConsumer Group: 'notification-service'\n\nInstance 1 → reads Partition 0 (Mumbai orders)\nInstance 2 → reads Partition 1 (Delhi orders)\nInstance 3 → reads Partition 2 (Bangalore orders)\nPartition 3 → waiting — no instance assigned yet\n\nEach partition owned by exactly ONE instance.\nNo duplicate SMS. No missed orders."
+            },
+            {
+              "type": "heading",
+              "text": "Multiple Consumer Groups — Each Service Gets All Events"
+            },
+            {
+              "type": "paragraph",
+              "text": "Here is the real power of Consumer Groups. Different services have different Consumer Group IDs. Kafka treats each group completely independently. So when one 'order-placed' event arrives — the Notification Group gets it, the Inventory Group gets it, the Delivery Group gets it, and the Analytics Group gets it — all independently, all at the same time. Each group processes every event. No sharing between groups."
+            },
+            {
+              "type": "code",
+              "code": "Topic: 'order-placed'\nEvent: { orderId: 'ZPT-9821', city: 'mumbai' }\n\nConsumer Group: 'notification-service'\n  → Instance reads it → sends SMS to user ✅\n\nConsumer Group: 'inventory-service'\n  → Instance reads it → reduces stock from dark store ✅\n\nConsumer Group: 'delivery-service'\n  → Instance reads it → assigns delivery partner ✅\n\nConsumer Group: 'analytics-service'\n  → Instance reads it → updates sales dashboard ✅\n\nAll 4 groups got the SAME event.\nAll 4 processed it independently.\nZero conflict. Zero duplication."
+            },
+            {
+              "type": "heading",
+              "text": "Consumer Group — Partition Assignment Rules"
+            },
+            {
+              "type": "step",
+              "title": "Consumers less than Partitions",
+              "desc": "3 instances, 4 partitions — one instance handles 2 partitions. Still works fine, just that one instance does slightly more work."
+            },
+            {
+              "type": "step",
+              "title": "Consumers equal to Partitions",
+              "desc": "4 instances, 4 partitions — perfect balance. Each instance owns exactly one partition. Maximum parallelism. Ideal setup for Zepto."
+            },
+            {
+              "type": "step",
+              "title": "Consumers more than Partitions",
+              "desc": "6 instances, 4 partitions — 2 instances sit idle. Kafka cannot assign more consumers than partitions. Extra instances are standby — ready to take over if one crashes."
+            },
+            {
+              "type": "code",
+              "code": "Zepto Notification Service Scaling:\n\n4 Partitions: Mumbai, Delhi, Bangalore, Hyderabad\n\nScenario 1 — 2 Instances (under-scaled)\nInstance 1 → Partition 0 + Partition 1\nInstance 2 → Partition 2 + Partition 3\n\nScenario 2 — 4 Instances (perfect)\nInstance 1 → Partition 0 (Mumbai)\nInstance 2 → Partition 1 (Delhi)\nInstance 3 → Partition 2 (Bangalore)\nInstance 4 → Partition 3 (Hyderabad)\n\nScenario 3 — 6 Instances (over-scaled)\nInstance 1 → Partition 0\nInstance 2 → Partition 1\nInstance 3 → Partition 2\nInstance 4 → Partition 3\nInstance 5 → idle ⏸\nInstance 6 → idle ⏸"
+            },
+            {
+              "type": "heading",
+              "text": "What Happens When a Consumer Crashes"
+            },
+            {
+              "type": "paragraph",
+              "text": "Zepto's Notification Instance 2 crashes during a sale. Kafka detects it immediately and triggers a Rebalance — it redistributes the crashed instance's partitions to the remaining healthy instances automatically. No orders are missed. No manual intervention needed."
+            },
+            {
+              "type": "code",
+              "code": "Before Crash:\nInstance 1 → Partition 0\nInstance 2 → Partition 1 ❌ crashes\nInstance 3 → Partition 2\n\nKafka Rebalance Triggered\n        ↓\nAfter Rebalance:\nInstance 1 → Partition 0 + Partition 1 (took over)\nInstance 3 → Partition 2\n\nNo missed events. Kafka resumes from last committed offset."
+            },
+            {
+              "type": "heading",
+              "text": "Consumers vs Consumer Groups — Quick Summary"
+            },
+            {
+              "type": "table",
+              "headers": ["Concept", "Meaning", "Zepto Example"],
+              "rows": [
+                ["Consumer", "One service instance reading from Kafka", "One Notification Service instance"],
+                ["Consumer Group", "Multiple instances of same service working together", "All 3 Notification Service instances"],
+                ["Same Group", "Each event processed by only ONE instance in group", "Only one instance sends the SMS"],
+                ["Different Groups", "Each group gets every event independently", "Notification + Inventory + Delivery all get the order"],
+                ["Rebalance", "Kafka reassigns partitions when instance crashes or joins", "Crashed instance's partition taken by healthy one"]
+              ]
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Always give each service its own unique groupId. If two completely different services accidentally use the same groupId — they will split events between them. Inventory Service will get some orders. Notification Service will get the rest. Half your users will never get an SMS."
+            },
+            {
+              "type": "success-callout",
+              "text": "✅ Consumers and Consumer Groups are what make Kafka truly powerful at scale. Multiple services read every event independently. Multiple instances of the same service share the load without duplication. One crash does not break anything. Zepto can scale to any number of orders — Kafka's consumer model handles it all."
+            }
+          ]
+        }
+
+      },
+      {
+        "id": 2,
+        "title": "Kafka Infrastructure",
+        "level": "intermediate",
+        "topics": [
+          "Brokers",
+          "Clusters",
+          "Zookeeper / KRaft",
+          "Replication & Replication Factor",
+          "Leaders & Followers",
+          "Message Retention"
+        ],
+
+      },
+      {
+        "id": 3,
+        "title": "Kafka Advanced",
+        "level": "experienced",
+        "topics": [
+          "Serialization & Deserialization",
+          "Schema Registry",
+          "Kafka Connect",
+          "Kafka Streams",
+          "Dead Letter Queue (DLQ)",
+          "Exactly Once / At Least Once / At Most Once Delivery"
+        ],
+
+      }
+    ]
+  },
 
 
 

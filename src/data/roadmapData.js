@@ -4,7 +4,7 @@ export const roadmapData = [
     category: "Cloud & DevOps",
     sortOrder: 1,
     image: "https://static.vecteezy.com/system/resources/thumbnails/042/148/649/small/youtube-logo-youtube-social-media-icon-free-png.png",
-    "title": "Learn AWS Through Youtube Examples",
+    "title": "Learn AWS Basics Through Youtube Examples",
     "description": "Master AWS the way it actually works in production — not just theory, but the real mechanics behind cloud infrastructure, scalability, security, and architecture. Every concept is taught through real-world backend scenarios inspired by systems like Flipkart, Swiggy, BGMI, and Netflix — so you understand not just the 'what' but the 'why' and 'when' behind every AWS decision. From core services like EC2, S3, VPC, and RDS to advanced topics like EKS, Lambda, CloudFront, and Multi-Region Architecture — this course takes you from cloud beginner to production-ready AWS engineer.",
     "tags": [
       "AWS",
@@ -1856,176 +1856,707 @@ export const roadmapData = [
 
 
       },
-      {
-        "id": 4,
-        "title": "AWS Networking",
-        "level": "freshers",
-        "topics": [
-          "What is VPC?",
-          "CIDR Blocks",
-          "Public vs Private Subnets",
-          "Internet Gateway",
-          "NAT Gateway",
-          "Route Tables",
-          "Security Groups vs NACL",
-          "Elastic Load Balancer",
-          "Route 53 Basics",
-          "DNS Fundamentals"
-        ]
-      },
-      {
-        "id": 5,
-        "title": "AWS Databases",
-        "level": "intermediate",
-        "topics": [
-          "RDS Basics",
-          "MySQL/PostgreSQL on AWS",
-          "Read Replicas",
-          "Multi-AZ Deployments",
-          "Amazon DynamoDB",
-          "SQL vs NoSQL",
-          "ElastiCache Redis",
-          "Database Backups",
-          "Scaling Databases",
-          "Aurora Basics"
-        ]
-      },
-      {
-        "id": 6,
-        "title": "IAM & AWS Security",
-        "level": "freshers",
-        "topics": [
-          "What is IAM?",
-          "IAM Users & Groups",
-          "IAM Roles",
-          "Policies & Permissions",
-          "Least Privilege Principle",
-          "MFA in AWS",
-          "AWS KMS",
-          "Secrets Manager",
-          "AWS Shield",
-          "AWS WAF"
-        ]
-      },
-      {
-        "id": 7,
-        "title": "Load Balancing & Auto Scaling",
-        "level": "intermediate",
-        "topics": [
-          "Elastic Load Balancer (ELB)",
-          "Application Load Balancer (ALB)",
-          "Network Load Balancer (NLB)",
-          "Gateway Load Balancer",
-          "Target Groups",
-          "Health Checks",
-          "Auto Scaling Groups",
-          "Scaling Policies (Step, Target, Scheduled)",
-          "Sticky Sessions",
-          "High Availability Architecture"
-        ]
-      },
-      {
-        "id": 8,
-        "title": "Serverless on AWS",
-        "level": "intermediate",
-        "topics": [
-          "What is Serverless?",
-          "AWS Lambda",
-          "API Gateway",
-          "Lambda Triggers & Event Sources",
-          "Amazon EventBridge",
-          "AWS Step Functions",
-          "Amazon SQS",
-          "Amazon SNS",
-          "Serverless Application Model (SAM)",
-          "Cold Starts in Lambda"
-        ]
-      },
-      {
-        "id": 9,
-        "title": "AWS Container Services",
-        "level": "intermediate",
-        "topics": [
-          "What are Containers?",
-          "Amazon ECS (Elastic Container Service)",
-          "AWS Fargate",
-          "Amazon ECR (Elastic Container Registry)",
-          "ECS Task Definitions",
-          "ECS Services & Clusters",
-          "Container Networking in AWS",
-          "Container Auto Scaling",
-          "Amazon EKS (Elastic Kubernetes Service)",
-          "ECS vs EKS vs Fargate"
-        ]
-      },
-      {
-        "id": 10,
-        "title": "AWS Developer Tools & CI/CD",
-        "level": "intermediate",
-        "topics": [
-          "AWS CodeCommit",
-          "AWS CodeBuild",
-          "AWS CodeDeploy",
-          "AWS CodePipeline",
-          "AWS CodeArtifact",
-          "Blue-Green Deployment on AWS",
-          "Rolling Deployments",
-          "AWS CloudFormation",
-          "AWS CDK (Cloud Development Kit)",
-          "AWS Elastic Beanstalk"
-        ]
-      },
-      {
-        "id": 11,
-        "title": "Monitoring & Observability",
-        "level": "intermediate",
-        "topics": [
-          "Amazon CloudWatch",
-          "CloudWatch Logs & Log Groups",
-          "CloudWatch Metrics & Alarms",
-          "CloudWatch Dashboards",
-          "AWS X-Ray",
-          "AWS CloudTrail",
-          "AWS Config",
-          "Amazon GuardDuty",
-          "AWS Health Dashboard",
-          "Distributed Tracing on AWS"
-        ]
-      },
-      {
-        "id": 12,
-        "title": "Advanced Networking",
-        "level": "experienced",
-        "topics": [
-          "VPC Peering",
-          "AWS Transit Gateway",
-          "VPN & Direct Connect",
-          "AWS PrivateLink",
-          "Endpoint Services",
-          "Network ACLs Deep Dive",
-          "Egress-Only Internet Gateway",
-          "AWS Global Accelerator",
-          "Amazon CloudFront (CDN)",
-          "Multi-VPC Architecture"
-        ]
-      },
-      {
-        "id": 13,
-        "title": "Advanced AWS Architecture",
-        "level": "experienced",
-        "topics": [
-          "Microservices on AWS",
-          "Event-Driven Architecture",
-          "Decoupling with SQS & SNS",
-          "AWS Well-Architected Framework",
-          "Disaster Recovery Strategies",
-          "Multi-Region Deployments",
-          "Cost Optimization on AWS",
-          "AWS Trusted Advisor",
-          "AWS Organizations & Control Tower",
-          "Production Architecture Design"
-        ]
-      }
+      // {
+      //   "id": 4,
+      //   "title": "AWS Networking",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "What is VPC?",
+      //     "CIDR Blocks",
+      //     "Public vs Private Subnets",
+      //     "Internet Gateway",
+      //     "NAT Gateway",
+      //     "Route Tables",
+      //     "Security Groups vs NACL",
+      //     "Elastic Load Balancer",
+      //     "Route 53 Basics",
+      //     "DNS Fundamentals"
+      //   ]
+      // },
+      // {
+      //   "id": 5,
+      //   "title": "AWS Databases",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "RDS Basics",
+      //     "MySQL/PostgreSQL on AWS",
+      //     "Read Replicas",
+      //     "Multi-AZ Deployments",
+      //     "Amazon DynamoDB",
+      //     "SQL vs NoSQL",
+      //     "ElastiCache Redis",
+      //     "Database Backups",
+      //     "Scaling Databases",
+      //     "Aurora Basics"
+      //   ]
+      // },
+      // {
+      //   "id": 6,
+      //   "title": "IAM & AWS Security",
+      //   "level": "freshers",
+      //   "topics": [
+      //     "What is IAM?",
+      //     "IAM Users & Groups",
+      //     "IAM Roles",
+      //     "Policies & Permissions",
+      //     "Least Privilege Principle",
+      //     "MFA in AWS",
+      //     "AWS KMS",
+      //     "Secrets Manager",
+      //     // "AWS Shield",
+      //     "AWS WAF"
+      //   ],
+      //   "topicDetails": {
+
+      //     "What is IAM?": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "YouTube has thousands of engineers, hundreds of automated systems, and dozens of AWS services — all needing access to AWS resources. Some engineers should be able to deploy code. Some should only be able to read logs. A transcoding server should be able to read from S3 but never touch the database. A billing system should see cost reports but never touch any servers. Without a way to control exactly who can do what — anyone inside YouTube could accidentally delete a production database or a rogue automated script could wipe out years of video files. IAM is how AWS controls all of this."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube has 10,000 engineers. Some are backend engineers who deploy APIs. Some are data analysts who only read logs. Some are interns who should only access dev environments. How does AWS ensure each person can only touch exactly what their job requires — and nothing else?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is IAM?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "IAM stands for Identity and Access Management. It is AWS's system for controlling who can access your AWS account and what they are allowed to do inside it. Every action in AWS — launching an EC2 instance, uploading a file to S3, reading a secret from Secrets Manager — goes through IAM first. IAM checks: who is making this request? Are they allowed to do this? If yes — the action proceeds. If no — it is blocked immediately."
+      //       },
+      //       {
+      //         "type": "info-callout",
+      //         "text": "💡 Think of IAM like YouTube's internal access badge system. Every employee gets a badge. The badge defines exactly which doors they can open — server room, finance office, data center. A junior engineer's badge opens the dev server room but not the production database room. IAM is that badge system — but for every AWS service and every action inside AWS."
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "The Three Core Questions IAM Answers"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Who are you? — Authentication",
+      //         "desc": "Before IAM checks what you can do — it first confirms who you are. You prove your identity using credentials — a username and password for human engineers, or an access key for automated systems. Until IAM confirms your identity, no AWS action is possible."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "What are you allowed to do? — Authorization",
+      //         "desc": "Once IAM knows who you are — it checks your permissions. What specific AWS actions are you allowed to perform? Can you launch EC2 instances? Can you read from S3? Can you delete a database? Every action is checked against the permissions attached to your identity."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "What resources can you touch? — Resource Scope",
+      //         "desc": "Permissions in IAM are not just about actions — they also define which specific resources those actions apply to. An engineer might be allowed to read from S3 — but only from the dev bucket, not the production bucket. Same action, different resource, different permission."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Every AWS action goes through IAM — here's what happens behind the scenes:\n\n// Engineer tries to launch an EC2 instance:\nRequest: Launch EC2 instance in ap-south-1\n\n// IAM checks:\n1. Who is making this request?     → engineer-rahul@youtube.com ✅\n2. Are they allowed to do this?    → has ec2:RunInstances permission? ✅\n3. In which resources/regions?     → ap-south-1 allowed? ✅\n\nResult: ✅ EC2 instance launches\n\n// Same engineer tries to delete an S3 bucket:\nRequest: Delete S3 bucket youtube-processed-videos\n\n// IAM checks:\n1. Who is making this request?     → engineer-rahul@youtube.com ✅\n2. Are they allowed to do this?    → has s3:DeleteBucket permission? ❌\n\nResult: ❌ Access Denied — request blocked before it reaches S3"
+      //       },
+      //       {
+      //         "type": "warning-callout",
+      //         "text": "⚠️ IAM is global — it applies across every AWS region. A permission you grant or deny in IAM applies everywhere in your AWS account, not just in one region. This is why getting IAM right is the most important security decision in AWS. Every other service — EC2, S3, RDS, Lambda — relies on IAM to decide who can touch it."
+      //       }
+      //     ],
+
+      //     "IAM Users & Groups": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "YouTube has thousands of engineers across different teams — backend, frontend, data, DevOps, security, finance. Each person needs AWS access. Each team needs different levels of access. Creating and managing permissions for every individual engineer one by one would be impossible. IAM Users and Groups are how YouTube manages this at scale — create a user for each person, put them in a group, and the group's permissions automatically apply to everyone in it."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube hires 50 new backend engineers this month. Each one needs identical AWS permissions — deploy to EC2, read from S3, push to CodeDeploy. Does someone manually set up permissions for all 50 one by one? What happens when their permissions need to change next month?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "IAM Users"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "An IAM User is an identity created inside your AWS account for a specific person or application. Each user gets their own credentials — a username and password for AWS Console access, or access keys for programmatic access via CLI or SDK. Every action that user takes in AWS is tracked and logged against their identity."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Creating an IAM User for a new YouTube engineer",
+      //         "desc": "A new backend engineer joins YouTube. The DevOps team creates an IAM User for them — priya@youtube.com. She gets a temporary password for her first login and is immediately placed into the backend-engineers group. Her permissions come from the group — not set individually."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Creating a new IAM User for a YouTube engineer:\naws iam create-user --user-name priya-backend\n\n// Give her console access with a temporary password:\naws iam create-login-profile \\\n  --user-name priya-backend \\\n  --password TempPass@123 \\\n  --password-reset-required   // ← forces her to change on first login\n\n// ✅ Priya can now log into the AWS Console.\n// She has zero permissions yet — just an identity."
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "IAM Groups"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "An IAM Group is a collection of IAM Users. You attach permissions to the group — and every user in that group automatically inherits those permissions. YouTube has groups like backend-engineers, data-analysts, devops-team, security-team, finance-team. When a new engineer joins — add them to the right group. Their permissions are set instantly. When their role changes — move them to a different group. One action, all permissions updated."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Adding Priya to the backend-engineers group",
+      //         "desc": "Priya is a backend engineer. YouTube adds her to the backend-engineers IAM Group. This group has permissions to deploy EC2, read from S3, push to CodeDeploy, and read CloudWatch logs. The moment she's added to the group — she has all of these permissions. No individual permission setup needed."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Add Priya to the backend-engineers group:\naws iam add-user-to-group \\\n  --user-name priya-backend \\\n  --group-name backend-engineers\n\n// backend-engineers group permissions:\n{\n  \"Group\": \"backend-engineers\",\n  \"Permissions\": [\n    \"ec2:RunInstances\",       // ← can launch EC2 instances\n    \"ec2:DescribeInstances\",  // ← can view EC2 instances\n    \"s3:GetObject\",           // ← can read from S3\n    \"codedeploy:*\",           // ← full CodeDeploy access\n    \"cloudwatch:GetMetricData\" // ← can read monitoring metrics\n  ]\n}\n\n// ✅ Priya now has all backend-engineers permissions.\n// 50 new engineers join next month → add them to the same group.\n// All 50 get identical permissions instantly. Zero individual setup."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Priya gets promoted to DevOps — permissions update in one step",
+      //         "desc": "6 months later Priya moves to the DevOps team. She needs different permissions now — more access than backend engineers. YouTube removes her from backend-engineers and adds her to devops-team. Her old permissions are gone. Her new permissions are active. One group change — complete permission update."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Priya moves to DevOps — one command updates all her permissions:\naws iam remove-user-from-group \\\n  --user-name priya-backend \\\n  --group-name backend-engineers\n\naws iam add-user-to-group \\\n  --user-name priya-backend \\\n  --group-name devops-team\n\n// Before: ec2 deploy, s3 read, codedeploy access\n// After:  ec2 full access, s3 full access, rds access, vpc management\n// One change. All permissions updated instantly. ✅"
+      //       },
+      //       {
+      //         "type": "table",
+      //         "headers": ["YouTube IAM Group", "Who is in it", "What they can do"],
+      //         "rows": [
+      //           ["backend-engineers", "API and server developers", "Deploy EC2, read S3, push CodeDeploy, read CloudWatch"],
+      //           ["data-analysts", "Data and ML engineers", "Read S3, query Athena, read RDS — no write access anywhere"],
+      //           ["devops-team", "Infrastructure engineers", "Full EC2, S3, RDS, VPC, IAM management"],
+      //           ["security-team", "Security engineers", "Read all logs, CloudTrail, GuardDuty — no resource modification"],
+      //           ["finance-team", "Cost and billing team", "AWS Cost Explorer, billing console — no infrastructure access"],
+      //           ["interns", "New joiners", "Read-only access to dev environment S3 and CloudWatch only"]
+      //         ]
+      //       },
+      //       {
+      //         "type": "error-callout",
+      //         "title": "Never use the AWS root account for daily work:",
+      //         "list": [
+      //           "The root account is created when you first sign up for AWS — it has unlimited access to everything with no restrictions",
+      //           "YouTube's root account credentials are locked in a vault — used only for extreme emergencies like account recovery",
+      //           "Every engineer gets their own IAM User — tracked, scoped, and revokable",
+      //           "If a root account gets compromised — the attacker has unlimited access to every AWS resource with no way to restrict them"
+      //         ],
+      //         "footer": "AWS itself recommends never using the root account for daily operations. Create IAM Users for every person. Lock the root account credentials away."
+      //       }
+      //     ],
+
+      //     "IAM Roles": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "IAM Users are for humans — engineers who log in with a username and password. But YouTube's EC2 transcoding servers also need AWS access — they need to read raw videos from S3, write processed videos back to S3, and send metrics to CloudWatch. Giving a server a username and password makes no sense. Hardcoding access keys inside server code is dangerous. IAM Roles solve this — they give AWS services a temporary, automatic identity with exactly the permissions they need."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube's EC2 transcoding server needs to fetch a video from S3 to process it. How does the server prove to S3 that it's an authorized YouTube system — and not some random server trying to access private video files?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is an IAM Role?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "An IAM Role is an identity with specific permissions — just like an IAM User. The key difference: a Role is not tied to one specific person or server. It is assumed temporarily by whoever needs it — an EC2 instance, a Lambda function, another AWS service. When a service assumes a Role, AWS automatically provides temporary credentials that expire after a short time and are auto-refreshed. No hardcoded passwords. No long-lived access keys sitting in code."
+      //       },
+      //       {
+      //         "type": "info-callout",
+      //         "text": "💡 Think of an IAM Role like a job title at YouTube. The title 'Transcoding Server' comes with specific access rights — read raw uploads from S3, write processed videos to S3. Any EC2 instance assigned this job title automatically gets those rights. When the instance is terminated, the job title goes with it — credentials gone automatically."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Step 1 — YouTube creates a Role for their transcoding servers",
+      //         "desc": "YouTube's DevOps team creates an IAM Role called youtube-transcoding-role. This role has exactly the permissions a transcoding server needs — read from the raw uploads bucket, write to the processed videos bucket, send metrics to CloudWatch. Nothing more."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// youtube-transcoding-role permissions:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\n    \"s3:GetObject on youtube-raw-uploads/*\",      // ← read raw videos\n    \"s3:PutObject on youtube-processed-videos/*\", // ← write processed videos\n    \"cloudwatch:PutMetricData\"                    // ← send processing metrics\n  ]\n  // ❌ No s3:DeleteObject — server cannot delete any files\n  // ❌ No ec2:* — server cannot touch other EC2 instances\n  // ❌ No rds:* — server cannot touch the database\n}"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Step 2 — EC2 instance is launched with this Role attached",
+      //         "desc": "When YouTube's Auto Scaling group launches a new transcoding server, the youtube-transcoding-role is attached to it at launch. The moment the instance boots — it automatically has the role's permissions. No engineer SSHed in. No credentials were configured. AWS handled it entirely."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Launch Template with IAM Role attached:\n{\n  ImageId:      'ami-youtube-transcoder-v1.4',\n  InstanceType: 'c6i.8xlarge',\n  IamInstanceProfile: {\n    Name: 'youtube-transcoding-role'  // ← role attached at launch\n  }\n}\n\n// The moment the instance boots — it can call S3 directly:\naws s3 cp s3://youtube-raw-uploads/videos/user123/raw.mp4 /tmp/\n// ✅ Works — role gives it read permission on this bucket\n\naws s3 cp s3://youtube-raw-uploads/ --recursive --delete\n// ❌ Access Denied — role has no delete permission"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Step 3 — AWS automatically rotates the credentials",
+      //         "desc": "Behind the scenes, AWS gives the EC2 instance temporary credentials that expire every few hours and are automatically replaced. The server never stores long-lived access keys. If the server is compromised — the credentials expire on their own within hours. An attacker cannot use stolen credentials indefinitely.\n\nA hacker breaks into YouTube's transcoding server and steals the AWS credentials they find. Those credentials expire in 4 hours. The hacker tries to use them the next day — they're already invalid. With hardcoded permanent access keys, the hacker would have had permanent access until someone manually rotated the keys."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Temporary credentials AWS provides to the EC2 instance via the Role:\n{\n  AccessKeyId:     'ASIA1234567890EXAMPLE',\n  SecretAccessKey: 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY',\n  SessionToken:    'AQoDYXdzEJr...',\n  Expiration:      '2025-01-15T18:00:00Z'   // ← expires in 4 hours\n}\n// AWS automatically replaces these before they expire.\n// The server always has valid credentials — without storing anything permanently.\n\n// Compare to the WRONG way — hardcoded keys in application code:\nconst s3 = new AWS.S3({\n  accessKeyId: 'AKIAIOSFODNN7EXAMPLE',       // ❌ permanent key in code\n  secretAccessKey: 'wJalrXUtnFEMI/EXAMPLE'  // ❌ if repo is public — game over\n})\n// Anyone who sees this code has permanent AWS access. Forever."
+      //       },
+      //       {
+      //         "type": "error-callout",
+      //         "title": "Never hardcode AWS credentials in application code:",
+      //         "list": [
+      //           "Hardcoded access keys in code get committed to GitHub — bots scan public repos 24/7 and find them within minutes",
+      //           "A leaked access key gives permanent AWS access until someone manually rotates it — which might take days to notice",
+      //           "IAM Roles give automatic temporary credentials — nothing to hardcode, nothing to leak, nothing to rotate manually",
+      //           "YouTube's codebase has a CI check that blocks any commit containing strings that look like AWS access keys"
+      //         ],
+      //         "footer": "Every AWS service — EC2, Lambda, ECS, CodeBuild — supports IAM Roles. There is never a reason to hardcode credentials in code."
+      //       }
+      //     ],
+
+      //     "Policies & Permissions": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "IAM Users, Groups, and Roles define who can act in AWS. Policies define exactly what they are allowed to do. A Policy is a JSON document that lists specific AWS actions — and whether each action is allowed or denied. Every permission in IAM — whether attached to an engineer's account, a group, or a server's role — comes from a Policy."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube's data analyst needs to query video metadata from S3 — but must never be able to delete or modify any files. How does IAM express this precisely — allow reading, deny everything else — in a way that AWS enforces on every single request?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is a Policy?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "A Policy is a JSON document attached to an IAM User, Group, or Role. It defines a list of statements — each statement says: for these actions, on these resources, the answer is Allow or Deny. When any AWS request is made, IAM reads all policies attached to the requester's identity and makes a decision — allowed or blocked."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Allow Policy — YouTube data analyst reading S3",
+      //         "desc": "YouTube's data analyst needs to read video metadata files from S3 for reporting. They get a policy that explicitly allows S3 read actions — and nothing else. Every other S3 action is implicitly denied because it is not listed."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Policy attached to YouTube's data-analysts IAM Group:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\":   \"Allow\",\n      \"Action\": [\n        \"s3:GetObject\",       // ← can download files\n        \"s3:ListBucket\"       // ← can see what files exist\n      ],\n      \"Resource\": [\n        \"arn:aws:s3:::youtube-metadata/*\"   // ← only this specific bucket\n      ]\n    }\n  ]\n}\n\n// What this analyst CAN do:\naws s3 cp s3://youtube-metadata/reports/jan.csv .    // ✅ allowed\naws s3 ls s3://youtube-metadata/                     // ✅ allowed\n\n// What this analyst CANNOT do:\naws s3 rm s3://youtube-metadata/reports/jan.csv      // ❌ no DeleteObject\naws s3 cp ./fake.csv s3://youtube-metadata/          // ❌ no PutObject\naws s3 ls s3://youtube-processed-videos/             // ❌ wrong bucket"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Deny Policy — Explicitly blocking dangerous actions",
+      //         "desc": "YouTube adds an explicit Deny policy to all engineers — even DevOps — blocking them from deleting the production S3 buckets. Even if someone's other policies accidentally grant delete permissions — an explicit Deny always wins. Deny overrides Allow. Always."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Deny policy attached to ALL YouTube IAM Groups:\n{\n  \"Version\": \"2012-10-17\",\n  \"Statement\": [\n    {\n      \"Effect\":   \"Deny\",\n      \"Action\": [\n        \"s3:DeleteBucket\",           // ← nobody can delete S3 buckets\n        \"rds:DeleteDBInstance\",      // ← nobody can delete the database\n        \"ec2:TerminateInstances\"     // ← nobody can terminate prod servers\n      ],\n      \"Resource\": \"*\",\n      \"Condition\": {\n        \"StringEquals\": {\n          \"aws:ResourceTag/Environment\": \"production\"  // ← only blocks prod\n        }\n      }\n    }\n  ]\n}\n\n// Even if a DevOps engineer has full S3 permissions:\naws s3 rb s3://youtube-processed-videos   // ❌ Deny overrides Allow — blocked\naws s3 rb s3://youtube-dev-test           // ✅ not tagged production — allowed"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "AWS Managed Policies — Pre-built common permission sets",
+      //         "desc": "AWS provides hundreds of pre-built policies for common use cases. Instead of writing JSON from scratch — YouTube attaches these standard policies as a starting point and customizes from there. AmazonS3ReadOnlyAccess, AmazonEC2FullAccess, CloudWatchLogsFullAccess — all pre-built and maintained by AWS."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Attaching an AWS Managed Policy to YouTube's data-analysts group:\naws iam attach-group-policy \\\n  --group-name data-analysts \\\n  --policy-arn arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess\n\n// AmazonS3ReadOnlyAccess — what AWS pre-built for you:\n{\n  \"Statement\": [{\n    \"Effect\": \"Allow\",\n    \"Action\": [\n      \"s3:Get*\",    // all read actions\n      \"s3:List*\"    // all list actions\n    ],\n    \"Resource\": \"*\"\n  }]\n}\n// ✅ Attach once — analyst can read from any S3 bucket.\n// Scope it further with a custom policy that restricts to specific buckets."
+      //       },
+      //       {
+      //         "type": "info-callout",
+      //         "text": "💡 Policy evaluation order in IAM: By default everything is Denied. An explicit Allow grants access. An explicit Deny always overrides any Allow — no exceptions. So if YouTube accidentally gives an engineer both an Allow and a Deny for the same action — the Deny wins. This makes accidental over-permission extremely difficult."
+      //       }
+      //     ],
+
+      //     "Least Privilege Principle": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "YouTube's transcoding server needs to read raw videos from S3 and write processed videos back. That is all it needs to do its job. But what if it was given full S3 access — read, write, delete, on every bucket? If that server is ever compromised by an attacker — they now have the ability to delete every video YouTube has ever stored. The Least Privilege Principle says: give every identity exactly the permissions it needs for its job — nothing more."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube's transcoding server only needs to read from one S3 bucket and write to another. Why does it matter if it also has permission to delete files or access the database — as long as it never actually does those things?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is Least Privilege?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "Least Privilege means every IAM identity — user, group, or role — gets the minimum permissions required to perform its specific job. Not the permissions that might be convenient. Not broad permissions to avoid permission errors. Exactly what is needed. Nothing extra. The smaller the permission surface, the smaller the damage if credentials are ever compromised."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Over-permissioned server — what goes wrong",
+      //         "desc": "A YouTube engineer is in a hurry setting up a new transcoding server. Instead of writing a precise policy, they attach AmazonS3FullAccess — it's quick, it works, no permission errors. 3 months later a vulnerability in the transcoding software is exploited. The attacker gets access to the server's AWS credentials. With S3 Full Access — they download every raw video ever uploaded to YouTube, then delete all of it. Complete data breach. Complete data loss."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// ❌ Over-permissioned transcoding server — what NOT to do:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\"s3:*\"]   // full S3 access — all buckets, all actions\n}\n\n// If this server is compromised — attacker can:\naws s3 cp s3://youtube-raw-uploads/ ./stolen/ --recursive    // steal all raw videos\naws s3 rm s3://youtube-processed-videos/ --recursive         // delete all content\naws s3 rm s3://youtube-thumbnails/ --recursive               // delete all thumbnails\n// Complete data breach. Complete data loss. ❌\n\n// ✅ Least privilege — what the transcoding role should actually have:\n{\n  \"Role\": \"youtube-transcoding-role\",\n  \"Permissions\": [\n    \"s3:GetObject on youtube-raw-uploads/videos/*\",      // read raw only\n    \"s3:PutObject on youtube-processed-videos/videos/*\" // write processed only\n  ]\n}\n// Same server compromised — attacker can only read raw uploads and write processed.\n// Cannot delete anything. Cannot touch thumbnails. Cannot touch the database. ✅"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Least privilege for a YouTube intern",
+      //         "desc": "A new intern joins YouTube's data team. They need to run queries against the dev S3 bucket to learn the data pipeline. They get read-only access to the dev bucket only — no production, no write, no delete. Even if the intern makes a mistake — the blast radius is limited to the dev bucket. Production is untouched."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Intern IAM policy — minimum required for their job:\n{\n  \"Statement\": [{\n    \"Effect\":   \"Allow\",\n    \"Action\":   [\"s3:GetObject\", \"s3:ListBucket\"],\n    \"Resource\": \"arn:aws:s3:::youtube-dev-bucket/*\"   // dev only\n  }]\n}\n\n// Intern tries to access production:\naws s3 ls s3://youtube-processed-videos/   // ❌ Access Denied\n\n// Intern tries to delete a dev file:\naws s3 rm s3://youtube-dev-bucket/test.mp4  // ❌ Access Denied\n\n// Intern can only do:\naws s3 ls s3://youtube-dev-bucket/          // ✅\naws s3 cp s3://youtube-dev-bucket/test.mp4 . // ✅"
+      //       },
+      //       {
+      //         "type": "table",
+      //         "headers": ["Identity", "What they need", "What NOT to give", "Why"],
+      //         "rows": [
+      //           ["Transcoding EC2", "Read raw S3, write processed S3", "Delete, full S3, RDS access", "Compromise only affects transcoding pipeline"],
+      //           ["Data analyst", "Read metadata S3 bucket", "Write, delete, other buckets", "Cannot accidentally corrupt production data"],
+      //           ["Backend engineer", "Deploy EC2, read S3, push CodeDeploy", "Delete production, RDS write", "Deployment mistakes can't cause data loss"],
+      //           ["Intern", "Read dev S3 bucket only", "Everything else", "Learning mistakes stay in dev environment"],
+      //           ["Lambda function", "Write to one specific DynamoDB table", "Read all tables, S3 access", "Function bug can only affect its own table"]
+      //         ]
+      //       },
+      //       {
+      //         "type": "warning-callout",
+      //         "text": "⚠️ Least privilege feels like extra work upfront — writing precise policies takes longer than attaching a broad managed policy. But at YouTube's scale, a single over-permissioned role that gets compromised can cause billions of dollars in damage. YouTube's security team runs quarterly IAM access reviews — automatically flagging any role or user that has permissions they haven't used in the last 90 days and removing them."
+      //       }
+      //     ],
+
+      //     "MFA in AWS": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "A YouTube engineer's laptop gets stolen at a coffee shop. The thief finds the AWS Console password saved in the browser. Without MFA — they now have full access to YouTube's AWS account with whatever permissions that engineer had. With MFA enabled — the stolen password is useless. Without the second factor, the AWS Console login fails completely."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ Passwords get stolen — through phishing, data breaches, shoulder surfing, or saved in browsers. If a YouTube engineer's AWS password is compromised — what stops an attacker from logging straight into YouTube's AWS account and causing damage?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is MFA?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "MFA stands for Multi-Factor Authentication. It adds a second verification step on top of a password. Even if an attacker has the correct password — they cannot log in without also having the second factor. For AWS, the second factor is typically a 6-digit code generated by an authenticator app on your phone — Google Authenticator, Authy, or a physical hardware key. The code changes every 30 seconds and can only be used once."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "How MFA works for a YouTube engineer logging in",
+      //         "desc": "YouTube's DevOps engineer Rahul logs into the AWS Console. He enters his username and password — correct. AWS then asks for his MFA code. He opens Google Authenticator on his phone, gets the current 6-digit code, enters it. AWS verifies it — correct. Login succeeds. The thief who stole Rahul's password tries to log in — enters the password — correct. AWS asks for MFA code. The thief doesn't have Rahul's phone. Login fails."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Login flow without MFA:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nResult:   → AWS Console access granted  ❌ (no second check)\n\n// Login flow with MFA:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nMFA Code: 847291             ✅ (from Google Authenticator — valid for 30 seconds)\nResult:   → AWS Console access granted  ✅\n\n// Attacker with stolen password:\nUsername: rahul@youtube.com  ✅\nPassword: correctpassword    ✅\nMFA Code: ???                ❌ (attacker doesn't have Rahul's phone)\nResult:   → Access Denied. Login blocked. ✅"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Enforcing MFA with an IAM Policy",
+      //         "desc": "YouTube enforces MFA on all engineers through an IAM Policy — if an engineer logs in without MFA, they can see the AWS Console but every single action is denied until they set up MFA. They literally cannot do anything in AWS without completing MFA setup first."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// IAM Policy that blocks all actions if MFA is not active:\n{\n  \"Statement\": [{\n    \"Effect\": \"Deny\",\n    \"Action\": \"*\",\n    \"Resource\": \"*\",\n    \"Condition\": {\n      \"BoolIfExists\": {\n        \"aws:MultiFactorAuthPresent\": \"false\"  // ← if MFA not used at login\n      }\n    }\n  }]\n}\n// Engineer logs in without MFA:\n// They can see the AWS Console — but every action returns Access Denied.\n// They cannot launch EC2, read S3, or do anything until MFA is set up. ✅"
+      //       },
+      //       {
+      //         "type": "warning-callout",
+      //         "text": "⚠️ MFA is non-negotiable for the AWS root account — always. For IAM Users, YouTube enforces MFA for anyone with access to production resources. For automated systems using IAM Roles — MFA doesn't apply since there's no human logging in. The role's temporary credentials are the security mechanism for automated systems."
+      //       }
+      //     ],
+
+      //     "AWS KMS": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "YouTube stores hundreds of petabytes of video files in S3. If AWS's physical hard drives were ever stolen from a data center — those drives would contain raw video data readable by anyone. KMS prevents this. Every video file stored in S3, every database row in RDS, every secret in Secrets Manager — encrypted with a key managed by KMS. Without the key, the data is unreadable gibberish. KMS controls who has the key."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube stores private unlisted videos in S3 — videos creators haven't made public yet. If someone physically broke into an AWS data center and walked out with hard drives — could they read those private video files?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is KMS?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "AWS Key Management Service is AWS's encryption key management system. You create encryption keys in KMS. AWS services — S3, RDS, EBS, Secrets Manager — use these keys to encrypt data before writing it to disk. To read the data back, the same key is used to decrypt it. KMS controls who is allowed to use each key — so even if someone steals the physical storage media, they cannot decrypt the data without the key."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "YouTube enables KMS encryption on their S3 buckets",
+      //         "desc": "YouTube creates a KMS key called youtube-video-encryption-key and configures their S3 buckets to use it. Every file uploaded to S3 is automatically encrypted before being written to disk. When an authorized service reads the file — S3 automatically decrypts it. Unauthorized access — even from inside AWS — returns encrypted gibberish."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// YouTube creates a KMS key:\naws kms create-key \\\n  --description 'YouTube video files encryption key' \\\n  --key-usage ENCRYPT_DECRYPT\n\n// Key created:\n{\n  KeyId:  'arn:aws:kms:ap-south-1:123456789:key/abc-123-def-456',\n  Status:  'Enabled'\n}\n\n// Configure S3 bucket to encrypt all files using this key:\naws s3api put-bucket-encryption \\\n  --bucket youtube-processed-videos \\\n  --server-side-encryption-configuration '{\n    \"Rules\": [{\n      \"ApplyServerSideEncryptionByDefault\": {\n        \"SSEAlgorithm\": \"aws:kms\",\n        \"KMSMasterKeyID\": \"arn:aws:kms:ap-south-1:123456789:key/abc-123-def-456\"\n      }\n    }]\n  }'\n\n// ✅ Every file in this bucket is now encrypted at rest.\n// Physical drives stolen from AWS data center → unreadable without the KMS key."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Who can use the key — KMS Key Policy",
+      //         "desc": "YouTube's KMS key has a policy defining exactly which services and roles can use it to encrypt and decrypt. The transcoding EC2 role can decrypt — it needs to read videos. The data analyst role cannot decrypt video files — they have no business accessing raw video content. Even inside YouTube's own AWS account, KMS controls access at the key level."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// KMS Key Policy — who can use youtube-video-encryption-key:\n{\n  \"Statement\": [\n    {\n      \"Effect\": \"Allow\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::youtube:role/youtube-transcoding-role\"\n      },\n      \"Action\": [\"kms:Decrypt\", \"kms:GenerateDataKey\"],  // ← can decrypt videos\n      \"Resource\": \"*\"\n    },\n    {\n      \"Effect\": \"Deny\",\n      \"Principal\": {\n        \"AWS\": \"arn:aws:iam::youtube:group/data-analysts\"\n      },\n      \"Action\": \"kms:Decrypt\",   // ← analysts cannot decrypt video content\n      \"Resource\": \"*\"\n    }\n  ]\n}\n\n// Transcoding server reads a video from S3:\n// S3 → KMS: 'can youtube-transcoding-role decrypt this?' → Yes ✅\n// File decrypted → server processes video\n\n// Data analyst tries to access same video:\n// S3 → KMS: 'can data-analysts decrypt this?' → No ❌\n// Access Denied — even though S3 bucket permissions allow reading"
+      //       },
+      //       {
+      //         "type": "warning-callout",
+      //         "text": "⚠️ KMS keys can be disabled or deleted — which immediately makes all data encrypted with that key unreadable. YouTube never deletes KMS keys that are actively used. Deleting a key used to encrypt 500TB of videos would make all 500TB permanently unreadable — with no recovery possible. KMS enforces a mandatory 7-30 day waiting period before key deletion for exactly this reason."
+      //       }
+      //     ],
+
+      //     "Secrets Manager": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "YouTube's API servers need to connect to their RDS database. To connect, they need the database password. Where does that password live? Not in the application code — if the code repo is ever exposed, the password is exposed. Not in environment variables hardcoded into EC2 — those are visible to anyone who can SSH in. AWS Secrets Manager is where YouTube stores all sensitive credentials — database passwords, API keys, third-party service tokens — securely, with automatic rotation and fine-grained access control."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ YouTube's backend server needs the production database password to connect to RDS. The password cannot be in the code. Cannot be in a config file on the server. Where does it live — and how does the server get it securely at runtime?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is Secrets Manager?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "AWS Secrets Manager is a secure vault for storing sensitive values — database passwords, API keys, OAuth tokens, certificates.."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "YouTube stores their database password in Secrets Manager",
+      //         "desc": "YouTube's DevOps team stores the production RDS database password in Secrets Manager under the name youtube/prod/db-password. The actual password is encrypted inside Secrets Manager using KMS. Only the youtube-api-role IAM Role has permission to retrieve it."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Store database password in Secrets Manager:\naws secretsmanager create-secret \\\n  --name 'youtube/prod/db-password' \\\n  --secret-string '{\"username\":\"youtube_api\",\"password\":\"Xk9#mP2@qL4n\"}'\n\n// Secret stored and encrypted with KMS. ✅\n// The actual password value is now locked in Secrets Manager.\n// Not in any code file. Not in any config. Not in any environment variable."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "API server fetches the password at runtime",
+      //         "desc": "YouTube's API server boots up. It needs the database password to establish a connection. Instead of reading it from a config file, the server calls Secrets Manager using the AWS SDK. Secrets Manager checks the server's IAM Role — youtube-api-role has permission. The password is returned. The server connects to the database. The password was never written to disk on the server."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// YouTube's API server fetching the DB password at runtime:\nconst AWS = require('aws-sdk');\nconst sm  = new AWS.SecretsManager({ region: 'ap-south-1' });\n\nasync function getDatabasePassword() {\n  const secret = await sm.getSecretValue({\n    SecretId: 'youtube/prod/db-password'\n  }).promise();\n\n  const { username, password } = JSON.parse(secret.SecretString);\n  return { username, password };\n}\n\n// Server boots → calls Secrets Manager → gets password → connects to DB\n// Password never in code. Never in config files. Never on disk. ✅\n\n// What happens if a different server tries to fetch this secret:\n// IAM check: does this role have secretsmanager:GetSecretValue permission\n//            on youtube/prod/db-password?\n// Answer: No → Access Denied ❌"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "Automatic password rotation — no human involved",
+      //         "desc": "YouTube configures Secrets Manager to automatically rotate the database password every 30 days. Secrets Manager generates a new password, updates it in RDS, then updates the stored secret — all automatically. The API servers fetch the new password on their next boot or secret refresh. No engineer manually rotates passwords. No downtime. No risk of engineers knowing the production database password."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Enable automatic rotation every 30 days:\naws secretsmanager rotate-secret \\\n  --secret-id 'youtube/prod/db-password' \\\n  --rotation-rules AutomaticallyAfterDays=30\n\n// Every 30 days — automatically:\n// 1. Secrets Manager generates a new strong password\n// 2. Updates the password in RDS\n// 3. Updates the stored secret value\n// 4. API servers fetch the new password on next call\n\n// ✅ No engineer knows the production DB password.\n// ✅ Password changes every 30 days automatically.\n// ✅ Even if an old password leaks — it expires in 30 days maximum."
+      //       },
+      //       {
+      //         "type": "error-callout",
+      //         "title": "What happens without Secrets Manager:",
+      //         "list": [
+      //           "Database password hardcoded in application code — committed to GitHub — visible to every engineer who ever clones the repo",
+      //           "Password in a .env file on the EC2 server — anyone who can SSH in can read it with 'cat .env'",
+      //           "Password never rotated — a leaked password from 2 years ago still works today",
+      //           "Engineer leaves the company — they still know the production database password"
+      //         ],
+      //         "footer": "Secrets Manager ensures the production database password is known to zero humans. Only authorized AWS services can retrieve it — and only for as long as their IAM permissions allow."
+      //       }
+      //     ],
+
+      //     "AWS Shield": [
+      //       {
+      //         "type": "paragraph",
+      //         "text": "Imagine MrBeast uploads his biggest video ever and millions of users rush to YouTube simultaneously. At the same time, attackers launch a massive DDoS attack using thousands of hacked computers worldwide to flood YouTube with fake traffic. Without protection, YouTube's servers and internet bandwidth could get overwhelmed, causing real users to experience buffering, failed video loads, or complete downtime. AWS Shield is designed to stop these large-scale attacks before they impact YouTube."
+      //       },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ If attackers send tens of millions of fake requests every second toward YouTube, how do real users still manage to watch videos normally without YouTube going offline?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is AWS Shield?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "AWS Shield is AWS's managed DDoS protection service. A DDoS attack happens when thousands of compromised systems flood a target with enormous amounts of traffic to exhaust servers, bandwidth, or network resources. Shield continuously monitors traffic patterns across AWS's global network and automatically detects abnormal spikes, attack signatures, and malicious behavior. Suspicious traffic is filtered or absorbed at AWS's network edge before it can reach YouTube's infrastructure."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "How AWS Shield protects YouTube during a real DDoS attack",
+      //         "desc": "During normal operation, YouTube receives traffic from real users watching videos, uploading content, liking comments, and browsing recommendations. Suddenly, millions of fake requests begin arriving from thousands of compromised systems across the world attempting to overload YouTube's infrastructure. AWS Shield analyzes traffic patterns across AWS edge locations and notices behavior that differs from legitimate users — extremely abnormal request spikes, repeated connection floods, spoofed IP traffic, and coordinated botnet behavior. Instead of forwarding all traffic to YouTube's servers, Shield absorbs and drops the malicious traffic directly at AWS edge locations. Only verified legitimate traffic continues toward YouTube's Load Balancers and backend services. Real users continue watching videos normally while the attack traffic is blocked before it ever reaches YouTube's infrastructure."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Normal traffic reaching YouTube:\nReal users: 100,000 requests/second ✅\n\n// DDoS attack begins:\nFake traffic: 50,000,000 requests/second ❌\nReal users:   100,000 requests/second ✅\n\n// AWS Shield analyzes incoming traffic:\n// - Sudden abnormal traffic spike detected\n// - Traffic pattern matches known DDoS behavior\n// - Requests originate from large botnet network\n\n// Shield mitigation at AWS edge:\nBlocked fake traffic: 49,900,000 requests/second ❌\nAllowed real traffic:   100,000 requests/second ✅\n\n// Result:\n// Attack traffic stopped before reaching YouTube servers.\n// Real users continue watching videos normally. ✅"
+      //       },
+      //       {
+      //         "type": "warning-callout",
+      //         "text": "⚠️ AWS Shield mainly protects against large-scale traffic floods and network-level DDoS attacks. It does not inspect the actual content of HTTP requests for threats like SQL injection, XSS, or malicious API payloads. That type of protection is handled by AWS WAF, which works together with Shield as the application-layer security layer."
+      //       }
+      //     ],
+
+      //     "AWS WAF": [
+      //       // {
+      //       //   "type": "paragraph",
+      //       //   "text": "Shield stops traffic floods. But what about an attacker sending carefully crafted requests that look like real user traffic — but are designed to steal data, crash the application, or exploit vulnerabilities? A request to YouTube's API that contains a SQL injection attempt looks like a normal API call to a firewall. AWS WAF inspects the actual content of each request and blocks malicious ones before they reach YouTube's application code."
+      //       // },
+      //       {
+      //         "type": "curious-callout",
+      //         "text": "❓ An attacker sends a request to YouTube's comment API: POST /comments with body: 'Great video!'; DROP TABLE comments;--. This looks like a normal comment submission. Shield doesn't block it — it's just one request, not a flood. How does YouTube stop this SQL injection attack from wiping out their entire comments database?"
+      //       },
+      //       {
+      //         "type": "heading",
+      //         "text": "What is AWS WAF?"
+      //       },
+      //       {
+      //         "type": "paragraph",
+      //         "text": "AWS WAF stands for Web Application Firewall. It sits in front of YouTube's Load Balancer and CloudFront distribution, inspecting every incoming HTTP request. WAF checks each request against a set of rules — and blocks any request that matches a malicious pattern. SQL injection attempts, cross-site scripting, requests from known malicious IP addresses, bots scraping data, requests with suspicious headers — all caught and blocked by WAF before they reach YouTube's application."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "WAF blocks a SQL injection attack on YouTube's comment API",
+      //         "desc": "A hacker sends a malicious request to YouTube's comment API trying to manipulate the backend database using SQL injection. The request first reaches AWS WAF sitting in front of YouTube's Load Balancer. WAF inspects the request body and detects dangerous SQL keywords and attack patterns that should never appear in a normal comment. The request is blocked immediately with a 403 Forbidden response. The malicious request never reaches YouTube's backend servers or database, keeping the comments table safe."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// Attacker's request reaches WAF first:\nPOST /api/comments\nBody: { \"text\": \"Great video!'; DROP TABLE comments;--\" }\n\n// WAF inspects the request body:\n// SQL injection pattern detected: DROP TABLE\n// Rule: SQLi-BlockRule → BLOCK\n\nResult: 403 Forbidden — request blocked at WAF ✅\n// YouTube's API server never received this request.\n// Comments database untouched.\n\n// Real user's comment passes through:\nPOST /api/comments\nBody: { \"text\": \"This video is amazing!\" }\n// WAF inspects — no malicious pattern found → ALLOW ✅\n// Request reaches YouTube's API server normally."
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "WAF blocks bot scraping attacks",
+      //         "desc": "A competitor's bot is scraping YouTube's entire video metadata — titles, descriptions, view counts — by sending thousands of API requests per minute from a single IP address. Real users don't send 5,000 requests per minute. WAF's rate limiting rule detects this pattern and blocks the IP address automatically after it exceeds the threshold."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// WAF rate limiting rule:\n{\n  \"Rule\": \"RateLimitBots\",\n  \"Type\": \"RateBasedRule\",\n  \"RateLimit\": 500,          // max 500 requests per 5 minutes per IP\n  \"Action\": \"BLOCK\"\n}\n\n// Bot sends 5,000 requests/minute from IP 203.45.67.89:\nRequests 1-500:    → ALLOW ✅\nRequests 501+:     → BLOCK ❌  (rate limit exceeded)\n// IP 203.45.67.89 is now blocked for 5 minutes automatically\n\n// Real YouTube user from same IP range:\n// Sends 3 requests in 5 minutes → well under limit → ALLOW ✅"
+      //       },
+      //       {
+      //         "type": "step",
+      //         "title": "AWS Managed WAF Rules — Pre-built protection",
+      //         "desc": "Just like IAM has pre-built managed policies, WAF has pre-built managed rule groups maintained by AWS. YouTube enables the AWS Core Rule Set — a collection of rules protecting against the OWASP Top 10 most common web vulnerabilities. One checkbox — hundreds of attack patterns blocked automatically without YouTube writing a single rule."
+      //       },
+      //       {
+      //         "type": "code",
+      //         "code": "// YouTube attaches AWS Managed Rules to their WAF:\n{\n  \"ManagedRules\": [\n    \"AWSManagedRulesCommonRuleSet\",      // OWASP Top 10 — SQL injection, XSS, etc.\n    \"AWSManagedRulesKnownBadInputsRuleSet\", // Known malicious request patterns\n    \"AWSManagedRulesAmazonIpReputationList\" // Known malicious IP addresses\n  ]\n}\n// ✅ Hundreds of attack patterns blocked.\n// Updated by AWS as new attack patterns emerge.\n// YouTube's security team didn't write a single rule."
+      //       },
+      //       {
+      //         "type": "table",
+      //         "headers": ["Threat", "AWS Shield", "AWS WAF"],
+      //         "rows": [
+      //           ["DDoS flood — billions of fake requests", "✅ Blocks at network level", "Not designed for this"],
+      //           ["SQL injection in API request", "Cannot detect — looks like normal traffic", "✅ Inspects request content and blocks"],
+      //           ["Bot scraping data at high rate", "Not designed for this", "✅ Rate limiting blocks the IP"],
+      //           ["Known malicious IP addresses", "Partial protection", "✅ IP reputation lists block known attackers"],
+      //           ["Cross-site scripting (XSS)", "Cannot detect", "✅ XSS patterns detected in request body"]
+      //         ]
+      //       },
+      //       {
+      //         "type": "error-callout",
+      //         "title": "Shield + WAF together — why both are needed:",
+      //         "list": [
+      //           "Shield without WAF — stops traffic floods but a single crafted SQL injection request gets through and wipes the database",
+      //           "WAF without Shield — blocks malicious request content but a 50 million requests/second flood overwhelms WAF itself before it can inspect anything",
+      //           "Together — Shield absorbs the flood at the network edge, WAF inspects the surviving requests for malicious content at the application edge"
+      //         ],
+      //         "footer": "YouTube runs both. Shield is the bouncer that stops the crowd crush. WAF is the security scanner that checks each person who gets through the door."
+      //       }
+      //     ]
+
+      //   }
+      // },
+      // {
+      //   "id": 7,
+      //   "title": "Load Balancing & Auto Scaling",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "Elastic Load Balancer (ELB)",
+      //     "Application Load Balancer (ALB)",
+      //     "Network Load Balancer (NLB)",
+      //     "Gateway Load Balancer",
+      //     "Target Groups",
+      //     "Health Checks",
+      //     "Auto Scaling Groups",
+      //     "Scaling Policies (Step, Target, Scheduled)",
+      //     "Sticky Sessions",
+      //     "High Availability Architecture"
+      //   ]
+      // },
+      // {
+      //   "id": 8,
+      //   "title": "Serverless on AWS",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "What is Serverless?",
+      //     "AWS Lambda",
+      //     "API Gateway",
+      //     "Lambda Triggers & Event Sources",
+      //     "Amazon EventBridge",
+      //     "AWS Step Functions",
+      //     "Amazon SQS",
+      //     "Amazon SNS",
+      //     "Serverless Application Model (SAM)",
+      //     "Cold Starts in Lambda"
+      //   ]
+      // },
+      // {
+      //   "id": 9,
+      //   "title": "AWS Container Services",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "What are Containers?",
+      //     "Amazon ECS (Elastic Container Service)",
+      //     "AWS Fargate",
+      //     "Amazon ECR (Elastic Container Registry)",
+      //     "ECS Task Definitions",
+      //     "ECS Services & Clusters",
+      //     "Container Networking in AWS",
+      //     "Container Auto Scaling",
+      //     "Amazon EKS (Elastic Kubernetes Service)",
+      //     "ECS vs EKS vs Fargate"
+      //   ]
+      // },
+      // {
+      //   "id": 10,
+      //   "title": "AWS Developer Tools & CI/CD",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "AWS CodeCommit",
+      //     "AWS CodeBuild",
+      //     "AWS CodeDeploy",
+      //     "AWS CodePipeline",
+      //     "AWS CodeArtifact",
+      //     "Blue-Green Deployment on AWS",
+      //     "Rolling Deployments",
+      //     "AWS CloudFormation",
+      //     "AWS CDK (Cloud Development Kit)",
+      //     "AWS Elastic Beanstalk"
+      //   ]
+      // },
+      // {
+      //   "id": 11,
+      //   "title": "Monitoring & Observability",
+      //   "level": "intermediate",
+      //   "topics": [
+      //     "Amazon CloudWatch",
+      //     "CloudWatch Logs & Log Groups",
+      //     "CloudWatch Metrics & Alarms",
+      //     "CloudWatch Dashboards",
+      //     "AWS X-Ray",
+      //     "AWS CloudTrail",
+      //     "AWS Config",
+      //     "Amazon GuardDuty",
+      //     "AWS Health Dashboard",
+      //     "Distributed Tracing on AWS"
+      //   ]
+      // },
+      // {
+      //   "id": 12,
+      //   "title": "Advanced Networking",
+      //   "level": "experienced",
+      //   "topics": [
+      //     "VPC Peering",
+      //     "AWS Transit Gateway",
+      //     "VPN & Direct Connect",
+      //     "AWS PrivateLink",
+      //     "Endpoint Services",
+      //     "Network ACLs Deep Dive",
+      //     "Egress-Only Internet Gateway",
+      //     "AWS Global Accelerator",
+      //     "Amazon CloudFront (CDN)",
+      //     "Multi-VPC Architecture"
+      //   ]
+      // },
+      // {
+      //   "id": 13,
+      //   "title": "Advanced AWS Architecture",
+      //   "level": "experienced",
+      //   "topics": [
+      //     "Microservices on AWS",
+      //     "Event-Driven Architecture",
+      //     "Decoupling with SQS & SNS",
+      //     "AWS Well-Architected Framework",
+      //     "Disaster Recovery Strategies",
+      //     "Multi-Region Deployments",
+      //     "Cost Optimization on AWS",
+      //     "AWS Trusted Advisor",
+      //     "AWS Organizations & Control Tower",
+      //     "Production Architecture Design"
+      //   ]
+      // }
     ]
   },
 

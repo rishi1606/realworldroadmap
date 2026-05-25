@@ -4986,7 +4986,7 @@ export const roadmapData = [
 
 
   {
-    "id": 6,
+    "id": 9,
     "title": "Understand Kafka through Zepto (Online Grocery System)",
     "category": "Backend Concepts",
     "sortOrder": 9,

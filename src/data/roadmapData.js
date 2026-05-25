@@ -582,7 +582,7 @@ export const roadmapData = [
             },
             {
               "type": "info-callout",
-              "text": "💡 YouTube Example — YouTube's video upload receiver servers need large temporary storage. When a creator uploads a raw 4K video file — it can be 50GB or more. That file lands on the EC2 server's EBS volume temporarily while it's being processed and moved to S3. So YouTube configures those instances with 500GB+ EBS volumes. Their API servers (comments, likes, metadata) need far less — 50GB is enough since they don't store video files."
+              "text": "💡 YouTube Example — YouTube's video upload receiver servers need large temporary storage. \nWhen a creator uploads a raw 4K video file — it can be 50GB or more. That file lands on the EC2 server's EBS volume temporarily while it's being processed and moved to S3. So YouTube configures those instances with 500GB+ EBS volumes. Their API servers (comments, likes, metadata) need far less — 50GB is enough since they don't store video files."
             },
             {
               "type": "step",
@@ -1098,16 +1098,763 @@ export const roadmapData = [
         "level": "freshers",
         "topics": [
           "What is Amazon S3?",
-          "Buckets & Objects",
           "S3 Storage Classes",
           "S3 Versioning",
-          "Lifecycle Policies",
-          "Static Website Hosting",
+          // "Static Website Hosting",
           "EBS (Elastic Block Store)",
           "EFS (Elastic File System)",
           "Glacier Storage",
           "Data Backup Strategies"
         ],
+        "topicDetails": {
+          "What is Amazon S3?": [
+            {
+              "type": "paragraph",
+              "text": "Amazon S3 (Simple Storage Service) is AWS's object storage service. It is used to store files like videos, images, PDFs, backups, logs, thumbnails, and datasets at massive scale."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ Platforms like YouTube store billions of video files. Where do all these files actually live?"
+            },
+            {
+              "type": "heading",
+              "text": "Why S3 Exists"
+            },
+            {
+              "type": "paragraph",
+              "text": "EC2 servers are meant for running applications — not storing billions of files. If an EC2 instance crashes or terminates, files can be lost. S3 separates storage from compute and provides durable, scalable file storage."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 S3 is designed for high durability, virtually unlimited storage, and global accessibility. AWS claims 99.999999999% durability (11 nines)."
+            },
+            {
+              "type": "heading",
+              "text": "Core S3 Concepts"
+            },
+            {
+              "type": "step",
+              "title": "Bucket",
+              "desc": "A bucket is the top-level container in S3 where you store all your files.\nYouTube creates separate buckets for separate purposes. One bucket for raw uploads coming in from creators. One bucket for processed videos ready for viewers. One bucket for thumbnails. Each bucket lives in one AWS region — YouTube picks Mumbai so files don't travel across the world just to get stored. One hard rule: bucket names must be unique across every AWS account in the entire world — not just yours. If someone already created a bucket called 'my-videos' before you, that name is gone. Same idea as domain names — once taken, it's taken."
+            },
+            {
+              "type": "code",
+              "code": "// YouTube's S3 buckets — one per purpose:\n\nyoutube-raw-uploads        → raw video files from creators land here first\nyoutube-processed-videos   → finished 1080p, 720p, 480p versions live here\nyoutube-thumbnails         → every video's thumbnail image stored here\nyoutube-subtitles          → subtitle and caption files stored here\n\n// Each bucket is completely separate.\n// A file in youtube-raw-uploads has nothing to do with youtube-thumbnails.\n// YouTube keeps them separate — one bucket, one job."
+            },
+            {
+              "type": "step",
+              "title": "Object",
+              "desc": "An object is the actual file stored inside a bucket. When a creator uploads a 4GB video — that video file becomes one object inside YouTube's raw uploads bucket. A thumbnail image — another object. A subtitle file — another object. Every file YouTube stores in S3 is an object. Along with the file data itself, each object automatically carries basic information — when it was uploaded, how large it is, what type of file it is. You don't set any of this manually — S3 captures it automatically the moment the file is uploaded."
+            },
+            {
+              "type": "code",
+              "code": "// One video upload = one object stored in S3:\n\nObject 1 — raw video file:\n  File data:    4GB of video\n  Type:         video/mp4\n  Size:         4,000,000,000 bytes\n  Uploaded at:  2025-01-15, 2:32pm\n\nObject 2 — thumbnail image:\n  File data:    85KB image\n  Type:         image/jpeg\n  Size:         85,000 bytes\n  Uploaded at:  2025-01-15, 2:45pm\n\n// Each file = its own separate object.\n// YouTube's S3 buckets hold billions of these objects — all managed by AWS."
+            },
+            {
+              "type": "step",
+              "title": "Key",
+              "desc": "A key is the unique name of an object inside a bucket. It's how S3 knows which exact file to return when your application asks for it. YouTube has billions of objects across all their buckets — the key is what separates one from another. Keys look like file paths — 'videos/user-delhi-123/720p.mp4' — but S3 has no real folders. The entire string is just one flat unique name. YouTube uses slashes in keys just to keep things readable for engineers — S3 itself sees it as one single name. Same key, same bucket — always returns the exact same file."
+            },
+            {
+              "type": "code",
+              "code": "// YouTube's object keys — how each file is uniquely named:\n\n// Inside bucket: youtube-raw-uploads\nvideos/user-delhi-123/raw.mp4          ← creator 1's raw upload\nvideos/user-mumbai-456/raw.mp4         ← creator 2's raw upload\nvideos/user-chennai-789/raw.mp4        ← creator 3's raw upload\n\n// Inside bucket: youtube-processed-videos\nvideos/user-delhi-123/1080p.mp4        ← creator 1's finished 1080p\nvideos/user-delhi-123/720p.mp4         ← creator 1's finished 720p\nvideos/user-delhi-123/480p.mp4         ← creator 1's finished 480p\n\n// Inside bucket: youtube-thumbnails\nthumbnails/user-delhi-123/thumb.jpg    ← creator 1's thumbnail\n\n// How YouTube fetches a specific file:\n// Bucket: youtube-processed-videos\n// Key:    videos/user-delhi-123/720p.mp4\n// → S3 returns exactly that file. Nothing else."
+            },
+            {
+              "type": "code",
+              "code": "Bucket: youtube-videos\n\nObject Key:\nvideos/user-101/intro-to-nodejs.mp4"
+            },
+            {
+              "type": "heading",
+              "text": "How Uploading to S3 Works"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Client uploads file",
+              "desc": "A browser, mobile app, or backend service uploads a file to S3.\n\n Example — A YouTuber in Delhi just finished editing a 20-minute video on their phone. They hit the Upload button on the YouTube app. That 4GB video file travels from their phone, through the internet, straight into YouTube's S3 bucket in Mumbai. YouTube's backend receives the file and sends it directly into S3. The creator just sees a progress bar. Behind that progress bar — their 4GB file is landing inside an S3 bucket."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — S3 stores the object across multiple locations",
+              "desc": "S3 stores the file across multiple Availability Zones automatically for durability.\n\n Example — The moment that 4GB video lands in S3, AWS silently makes 3 copies of it — each copy sitting in a physically separate data center building in Mumbai. YouTube never asked for this. There is no setting to turn on. S3 just does it automatically. So if one entire data center in Mumbai loses power during a monsoon — the video is untouched in the other two buildings. The creator never experiences a single second of disruption. Their video is safe."
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — S3 returns the object URL",
+              "desc": "AWS returns the object's location so applications can access it later.\n\n Example — Once the video is stored, S3 gives back a URL — a web address pointing exactly to that file. YouTube saves this URL in their database against that video's record. Now whenever a viewer clicks Play on that video — YouTube looks up the URL from the database and fetches the video file from S3 using that address. Without this URL, YouTube would have no way to find that specific video among the billions of other files sitting in S3."
+            },
+            {
+              "type": "code",
+              "code": "https://youtube-videos.s3.ap-south-1.amazonaws.com/videos/user-101/intro-to-nodejs.mp4"
+            },
+            {
+              "type": "heading",
+              "text": "S3 Storage Classes"
+            },
+            {
+              "type": "paragraph",
+              "text": "Different files have different access patterns. S3 provides multiple storage classes optimized for performance and cost."
+            },
+            {
+              "type": "table",
+              "headers": ["Storage Class", "Use Case", "Cost"],
+              "rows": [
+                ["S3 Standard", "Frequently accessed files", "Highest"],
+                ["S3 Standard-IA", "Rarely accessed files", "Lower"],
+                ["S3 Intelligent-Tiering", "Unknown access patterns", "Automatic optimization"],
+                ["S3 Glacier", "Archive storage", "Very low"],
+                ["S3 Deep Archive", "Long-term backup", "Cheapest"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Lifecycle Policies"
+            },
+            {
+              "type": "paragraph",
+              "text": "Lifecycle Policies automatically move objects between storage classes based on age."
+            },
+            {
+              "type": "code",
+              "code": "// Example Lifecycle Rule\n30 days  → STANDARD_IA\n365 days → GLACIER\n1825 days → DEEP_ARCHIVE"
+            },
+            {
+              "type": "heading",
+              "text": "S3 Access Control"
+            },
+            {
+              "type": "paragraph",
+              "text": "By default, all S3 buckets and objects are private. Access is controlled using Bucket Policies, IAM Policies, and ACLs."
+            },
+            {
+              "type": "code",
+              "code": "// Public read policy\n{\n  \"Effect\": \"Allow\",\n  \"Principal\": \"*\",\n  \"Action\": \"s3:GetObject\",\n  \"Resource\": \"arn:aws:s3:::youtube-videos/*\"\n}"
+            },
+            {
+              "type": "heading",
+              "text": "S3 vs EBS"
+            },
+            {
+              "type": "table",
+              "headers": ["Feature", "S3", "EBS"],
+              "rows": [
+                ["Type", "Object Storage", "Block Storage"],
+                ["Scalability", "Virtually Unlimited", "Limited per volume"],
+                ["Access", "Accessible globally", "Attached to EC2"],
+                ["Best For", "Videos, images, backups", "OS & database disks"],
+                ["Cost", "Cheaper", "More expensive"]
+              ]
+            },
+            {
+              "type": "error-callout",
+              "title": "Without S3",
+              "list": [
+                "Files would be tied to EC2 instances",
+                "Scaling storage would become difficult",
+                "Servers terminating could cause data loss",
+                "Sharing files across services becomes complex",
+                "Global access becomes harder"
+              ],
+              "footer": "S3 decouples storage from compute, making cloud systems scalable and resilient."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ S3 is object storage — not a traditional filesystem. You cannot mount it like a normal Linux disk without additional tools."
+            }
+          ],
+          "S3 Storage Classes": [
+            {
+              "type": "paragraph",
+              "text": "Not every video on YouTube gets watched at the same rate. A video MrBeast uploaded yesterday has millions of views today. A video some creator uploaded in 2009 with 200 views total might get watched once a month. Storing both of these in the exact same way — paying the same price for both — makes no sense. S3 Storage Classes solve this. They let YouTube pay less for files that are rarely accessed, and pay more only for files that need to be instantly available at all times."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube has videos from 2005 that nobody watches anymore. YouTube also has videos uploaded 10 minutes ago that are trending right now. Should both cost the same to store? AWS says no — and gives you different storage tiers for different situations."
+            },
+            {
+              "type": "heading",
+              "text": "The Storage Classes"
+            },
+            {
+              "type": "step",
+              "title": "S3 Standard — For videos being watched right now",
+              "desc": "S3 Standard is the default storage class. Files stored here are instantly accessible at any time with no delay. This is the most expensive tier — but it's built for files that get accessed constantly.\n\n Example — When a creator uploads a new video, it lands in S3 Standard. When that video is trending and 10 million people are watching it simultaneously — every single one of those viewers is fetching the video file from S3 Standard. It needs to respond instantly, every time, without any delay. This is the right tier for that job."
+            },
+            {
+              "type": "step",
+              "title": "S3 Standard-IA (Infrequent Access) — For older videos with fewer views",
+              "desc": "Standard-IA stores files at a lower monthly cost — but charges a small fee each time the file is actually accessed. Built for files you still need available instantly when someone asks for them, but that aren't being accessed constantly every day.\n\n Example — A YouTube video uploaded 2 years ago gets maybe 50 views a month now. It's not trending. Nobody is actively searching for it. But if someone does click on it — it needs to play immediately with no buffering delay. YouTube moves this video from S3 Standard to Standard-IA. Monthly storage cost drops significantly. The 50 viewers per month still get instant playback — they just don't know their video came from a cheaper storage tier."
+            },
+            {
+              "type": "step",
+              "title": "S3 Intelligent-Tiering — For videos with unpredictable view patterns",
+              "desc": "Intelligent-Tiering monitors how often each file is accessed and automatically moves it between Standard and Standard-IA depending on the pattern. If a file hasn't been accessed in 30 days — it moves to the cheaper tier automatically. If it suddenly gets accessed again — it moves back to Standard automatically. YouTube pays a small monthly monitoring fee per file, but saves money overall without having to manually decide which tier each video belongs in.\n\n Example — A creator uploads a video that gets 1000 views in the first week, then goes quiet for months. Then a popular podcast mentions it — suddenly it gets 500,000 views in a day. With Intelligent-Tiering, S3 automatically moved it to the cheaper tier during the quiet months, then automatically moved it back to Standard the moment traffic spiked. YouTube's engineers didn't touch anything. The cost savings happened automatically. The viral moment was handled automatically."
+            },
+            {
+              "type": "step",
+              "title": "S3 Glacier Instant Retrieval — For very old videos rarely watched",
+              "desc": "Glacier Instant Retrieval is for files that are almost never accessed — but when someone does access them, they still need the file immediately with no waiting. Storage cost is very low. Access cost is higher than Standard-IA. But because these files are accessed so rarely, the total cost is still far cheaper.\n\n Example — A YouTube video from 2007 with 800 total views. It gets watched maybe once every few weeks by someone doing research on old internet history. YouTube still needs to serve it when that person clicks play — it can't just say 'this video is unavailable'. But paying full S3 Standard prices for a file accessed once a month makes no sense. Glacier Instant Retrieval stores it at a fraction of the cost. When that researcher clicks play — the video loads instantly, just like any other YouTube video. They have no idea it came from a cheaper archive tier."
+            },
+            {
+              "type": "step",
+              "title": "S3 Glacier Flexible Retrieval — For backups YouTube never needs urgently",
+              "desc": "Glacier Flexible Retrieval is for files that are purely for backup or compliance — files YouTube hopes to never actually need, but must keep just in case. When you do need to access a file, it takes minutes to hours to retrieve. Not instant. This tier is for situations where waiting is acceptable.\n\n Example — YouTube is legally required to keep records of videos that were removed for policy violations — even after deletion — for potential legal cases. These files will almost certainly never be accessed. But if a court case comes up years later, YouTube needs to produce them. YouTube stores these in Glacier Flexible Retrieval. If a legal team ever needs one, they request it and wait a few hours for retrieval. The waiting is fine — this isn't a viewer clicking play. It's a legal request that can wait."
+            },
+            {
+              "type": "step",
+              "title": "S3 Glacier Deep Archive — For files YouTube almost certainly will never open again",
+              "desc": "Deep Archive is the cheapest storage class S3 offers. Files can take up to 12 hours to retrieve when accessed. This is purely for long-term archival — files kept for compliance, regulation, or disaster recovery that have an extremely low chance of ever being needed.\n\n Example — YouTube keeps a complete raw backup of every video ever uploaded — even videos creators have deleted from their own channels — for a mandatory 7-year regulatory retention period. The chance of any specific deleted video needing to be retrieved is extremely low. But regulations require keeping them. YouTube stores all of this in Deep Archive. Cost is the lowest possible. If a specific file is ever needed — YouTube requests it and waits up to 12 hours. That wait time is completely acceptable for a compliance retrieval that happens maybe once a year."
+            },
+            {
+              "type": "table",
+              "headers": ["Storage Class", "Retrieval Speed", "Best For", "YouTube Example"],
+              "rows": [
+                ["S3 Standard", "Instant", "Files accessed constantly", "Trending videos being watched by millions right now"],
+                ["S3 Standard-IA", "Instant", "Files accessed occasionally", "2-year-old video with 50 views per month"],
+                ["S3 Intelligent-Tiering", "Instant", "Files with unpredictable access patterns", "Video that goes quiet then suddenly goes viral again"],
+                ["S3 Glacier Instant", "Instant", "Files rarely accessed but need instant playback", "2007 video watched once every few weeks"],
+                ["S3 Glacier Flexible", "Minutes to hours", "Backup files, no urgency needed", "Removed videos kept for potential legal cases"],
+                ["S3 Glacier Deep Archive", "Up to 12 hours", "Long-term compliance archives", "Deleted videos kept for 7-year regulatory requirement"]
+              ]
+            },
+            {
+              "type": "heading",
+              "text": "Lifecycle Policies — YouTube Never Moves Files Manually"
+            },
+            {
+              "type": "paragraph",
+              "text": "YouTube has billions of videos. Nobody manually decides which storage class each video belongs in. Instead, YouTube sets up Lifecycle Policies — rules that tell S3 to automatically move files between storage classes based on age and access patterns. YouTube defines the rules once. S3 follows them forever."
+            },
+            {
+              "type": "step",
+              "title": "How YouTube's Lifecycle Policy works",
+              "desc": "YouTube sets one rule: when a video is first uploaded, store it in S3 Standard. After 30 days — automatically move it to Standard-IA. After 1 year — automatically move it to Glacier Instant. After 5 years — automatically move it to Deep Archive. S3 follows this rule for every single video ever uploaded — billions of files — without YouTube's engineers touching a single one.\n\n Example — A creator uploads a video today. It starts in S3 Standard — fast, available, ready for the initial traffic. 30 days later, S3 automatically moves it to Standard-IA — still instant when accessed, but cheaper to store. A year later, S3 moves it to Glacier Instant — even cheaper. 5 years later, Deep Archive. The creator's video is still watchable at every stage. YouTube just stopped paying full price for a file that nobody watches anymore."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Moving a file to a cheaper storage class saves money on storage — but accessing it costs more per request than S3 Standard. If a video in Glacier Instant suddenly goes viral and gets 10 million views, YouTube pays higher retrieval fees for every one of those views. Intelligent-Tiering exists exactly for this reason — it automatically moves the video back to Standard the moment it detects the traffic spike, so YouTube never overpays on retrieval fees for a file that's suddenly popular again."
+            }
+          ],
+          "S3 Versioning": [
+            {
+              "type": "paragraph",
+              "text": "A creator uploads a new thumbnail for their video. 10 minutes later they realize the old thumbnail was getting more clicks — they want it back. Without versioning, the old thumbnail is gone forever — S3 overwrote it the moment the new one was uploaded. With versioning turned on, S3 keeps every version of every file ever uploaded. Nothing is ever truly overwritten. Nothing is ever truly deleted. Every change is preserved."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ A YouTube engineer accidentally runs a script that overwrites 10,000 video thumbnail files with corrupted images. Every affected video now shows a broken thumbnail to viewers. How does YouTube get all 10,000 original thumbnails back — instantly — without manually re-uploading each one?"
+            },
+            {
+              "type": "heading",
+              "text": "What is S3 Versioning?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Versioning is a setting you enable on an S3 bucket. Once turned on — every time a file is uploaded, S3 does not overwrite the existing file. Instead it keeps the old file as a previous version and stores the new file as the latest version. Both exist. Both are accessible. S3 assigns each version a unique version ID so you can always tell them apart and retrieve any specific one."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of versioning like Google Docs version history. Every time you save a document, Google Docs keeps the previous version. You can go back and see exactly what the document looked like 3 days ago. S3 Versioning does the same thing — but for every file in your bucket."
+            },
+            {
+              "type": "heading",
+              "text": "How Versioning Works — Step by Step"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Versioning is enabled on the bucket",
+              "desc": "YouTube enables versioning on their youtube-thumbnails bucket. Every upload, overwrite, and delete on any file in this bucket is now tracked and preserved automatically."
+            },
+            {
+              "type": "code",
+              "code": "aws s3api put-bucket-versioning \\\n  --bucket youtube-thumbnails \\\n  --versioning-configuration Status=Enabled\n\n// ✅ Every file upload, overwrite, and delete is now tracked."
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Creator uploads a thumbnail",
+              "desc": "A creator in Delhi uploads a bright red thumbnail for their new video. S3 stores it and auto-assigns it a version ID — 'v1-abc123'. This is Version 1. It starts getting 100,000 clicks per week."
+            },
+            {
+              "type": "code",
+              "code": "// S3 stores the first upload:\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v1-abc123',   // ← S3 auto-assigns this\n  Status:    'Current'      // ← what viewers see right now\n}"
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Creator uploads a new thumbnail to the same key",
+              "desc": "A week later the creator uploads a new blue thumbnail — same filename, different image. S3 keeps the red thumbnail as Version 1 and stores the blue one as Version 2. Viewers now see the blue thumbnail. The red one is still preserved in S3 under 'v1-abc123' — untouched, retrievable anytime."
+            },
+            {
+              "type": "code",
+              "code": "// S3 now holds TWO versions of the same file:\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v2-xyz456',   // ← new blue thumbnail — viewers see this\n  Status:    'Current'\n},\n{\n  Key:       'thumbnails/user-delhi-123/thumb.jpg',\n  VersionId: 'v1-abc123',   // ← original red thumbnail — safely preserved\n  Status:    'Previous'\n}"
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Engineer accidentally overwrites 10,000 thumbnails",
+              "desc": "A bug in a YouTube script replaces 10,000 thumbnail files with a blank corrupted image. Every affected video now shows a broken thumbnail to viewers. Because versioning is on — S3 quietly stored all 10,000 previous versions automatically. The engineer runs a restore script pointing to the previous version IDs. All 10,000 original thumbnails are back in minutes. Zero manual re-uploading."
+            },
+            {
+              "type": "code",
+              "code": "// What S3 holds after the bug runs:\n{\n  VersionId: 'v3-corrupt',  // ← corrupted file — current version ❌\n  Status:    'Current'\n},\n{\n  VersionId: 'v2-xyz456',  // ← last good version — still safe in S3 ✅\n  Status:    'Previous'\n}\n\n// Engineer restores the previous version:\naws s3api copy-object \\\n  --bucket youtube-thumbnails \\\n  --copy-source youtube-thumbnails/thumbnails/user-delhi-123/thumb.jpg?versionId=v2-xyz456 \\\n  --key thumbnails/user-delhi-123/thumb.jpg\n\n// ✅ Original thumbnail is back as current version."
+            },
+            {
+              "type": "heading",
+              "text": "Deleting Files With Versioning On"
+            },
+            {
+              "type": "paragraph",
+              "text": "When versioning is enabled and you delete a file — S3 does not actually delete it. Instead S3 places a Delete Marker on top of the file. The file looks deleted to your application — requests for it return a 404 not found. But all the previous versions are still sitting in S3 underneath that marker. To truly recover the file — you just remove the Delete Marker."
+            },
+            {
+              "type": "step",
+              "title": "Delete Marker — The Safety Net",
+              "desc": "A creator deletes their video from YouTube. S3 places a Delete Marker on the thumbnail — the file appears gone to the system. 6 months later the creator contacts support wanting the video reinstated. YouTube removes the Delete Marker. The original thumbnail reappears instantly — exactly as it was on the day it was deleted."
+            },
+            {
+              "type": "code",
+              "code": "// Creator deletes video — S3 places a Delete Marker:\n{\n  VersionId: 'dm-delete001',  // ← Delete Marker\n  Status:    'Current'        // ← file appears deleted, returns 404\n}\n// All previous versions still preserved underneath\n\n// 6 months later — creator wants reinstatement:\naws s3api delete-object \\\n  --bucket youtube-thumbnails \\\n  --key thumbnails/user-delhi-123/thumb.jpg \\\n  --version-id dm-delete001\n\n// ✅ Delete Marker removed. Original thumbnail is back."
+            },
+            {
+              "type": "error-callout",
+              "title": "What happens without versioning:",
+              "list": [
+                "Engineer accidentally overwrites 10,000 thumbnails — all originals gone forever, no recovery possible",
+                "Creator deletes a video by mistake — thumbnail permanently deleted, cannot be restored",
+                "A bad deployment pushes corrupted files to S3 — previous working files are gone, rollback is impossible",
+                "A script runs with a bug and overwrites the wrong files — no way to know what the files looked like before"
+              ],
+              "footer": "Every one of these scenarios becomes a full recovery with versioning enabled. Without it — each one is permanent data loss."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Versioning keeps every version of every file forever — which means storage costs grow over time. YouTube manages this with S3 Lifecycle Policies on old versions — keeping the last 3 versions in S3 Standard, automatically moving older versions to Glacier after 90 days, and permanently deleting versions older than 1 year."
+            }
+          ],
+          "EBS (Elastic Block Store)": [
+            {
+              "type": "paragraph",
+              "text": "Every EC2 server needs a hard drive — somewhere to store the operating system, application code, logs, and temporary files. On your laptop, that's your SSD. On AWS, that's EBS. Elastic Block Store is the hard drive attached to an EC2 instance. Unlike the EC2 server itself, the EBS volume can survive even if the server crashes or gets terminated. You can detach it from one instance and attach it to another, similar to unplugging an external SSD from one laptop and plugging it into another."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ When YouTube's transcoding server is converting a 4K video, where are all the temporary files stored during processing? If the server crashes halfway through the job, does all the work disappear?"
+            },
+            {
+              "type": "heading",
+              "text": "What is EBS?"
+            },
+            {
+              "type": "paragraph",
+              "text": "EBS (Elastic Block Store) is a network-attached storage volume for EC2 instances. It behaves like a physical hard drive where the instance reads and writes data normally. The important difference is that EBS exists independently from the EC2 instance, so the volume and its data can survive even after the server is terminated."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of EBS like an external SSD. Your laptop (EC2) performs the work, while the SSD (EBS) stores the data. If the laptop breaks, the SSD still contains all the files and can be connected to another laptop."
+            },
+            {
+              "type": "heading",
+              "text": "How EBS Works — The YouTube Story"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — EC2 instance launches with an EBS volume attached",
+              "desc": "When YouTube launches a transcoding EC2 instance, AWS automatically attaches an EBS volume to it. This volume stores the operating system, ffmpeg software, logs, and all temporary transcoding files.\n\nExample — YouTube launches a c6i.8xlarge transcoding server with a 100GB gp3 EBS volume attached as the root drive. The OS boots from this volume, ffmpeg is installed here, and all temporary video processing files are written here during transcoding."
+            },
+            {
+              "type": "code",
+              "code": "// YouTube's transcoding EC2 instance with EBS attached:\n{\n  InstanceType: 'c6i.8xlarge',\n  EBSVolume: {\n    VolumeId:   'vol-0abc123def456',\n    Size:        100,\n    Type:       'gp3',\n    IOPS:        3000,\n    AttachedTo: 'i-0xyz789',\n    MountPoint: '/dev/xvda'\n  }\n}\n\n// Everything reads/writes to this EBS volume:\n// - OS files         → /dev/xvda\n// - ffmpeg binary    → /usr/bin/ffmpeg\n// - temp video files → /tmp/transcoding/"
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Server processes video using EBS as working storage",
+              "desc": "The EC2 server downloads the raw 4K video from S3 onto the EBS volume, processes it using ffmpeg, writes intermediate and output files back to EBS, then uploads the finished videos to S3.\n\nExample — A creator uploads a 50GB 4K video. The transcoding server stores the raw file temporarily on EBS, generates 1080p and 720p versions on the same volume, uploads the final outputs back to S3, and then clears the temporary files from EBS. EBS acts like the working desk while S3 acts like permanent storage."
+            },
+            {
+              "type": "code",
+              "code": "// Step 1 — Download raw video from S3 to EBS\naws s3 cp s3://youtube-raw-uploads/videos/user123/raw-4k.mp4 /tmp/transcoding/\n\n// Step 2 — ffmpeg reads/writes on EBS\nffmpeg -i /tmp/transcoding/raw-4k.mp4 /tmp/transcoding/output-1080p.mp4\nffmpeg -i /tmp/transcoding/raw-4k.mp4 /tmp/transcoding/output-720p.mp4\n\n// Step 3 — Upload processed videos back to S3\naws s3 cp /tmp/transcoding/output-1080p.mp4 s3://youtube-processed/videos/user123/\naws s3 cp /tmp/transcoding/output-720p.mp4 s3://youtube-processed/videos/user123/\n\n// Step 4 — Cleanup temp files from EBS\nrm -rf /tmp/transcoding/*"
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Server crashes but EBS volume survives",
+              "desc": "If the EC2 instance crashes during transcoding, the EBS volume still survives because it exists independently from the server.\n\nExample — A transcoding server crashes at 60% progress. AWS terminates the EC2 instance, but the EBS volume remains intact with all partially processed files still stored on it. YouTube launches a new EC2 instance, attaches the same EBS volume, and resumes the job from where it stopped."
+            },
+            {
+              "type": "code",
+              "code": "// EC2 instance crashes\nInstance i-0xyz789  → TERMINATED ❌\nEBS vol-0abc123def → AVAILABLE ✅\n\n// Attach same EBS volume to new EC2 instance\naws ec2 attach-volume \\\n  --volume-id vol-0abc123def456 \\\n  --instance-id i-0new456instance \\\n  --device /dev/xvda\n\n// New server mounts the EBS volume\nls /tmp/transcoding/\n// raw-4k.mp4\n// output-1080p.mp4\n// output-720p.mp4\n\n// New server resumes processing"
+            },
+            {
+              "type": "heading",
+              "text": "EBS Volume Types"
+            },
+            {
+              "type": "table",
+              "headers": ["Volume Type", "Best For", "YouTube Use Case"],
+              "rows": [
+                [
+                  "gp3 (General Purpose SSD)",
+                  "Balanced performance and cost",
+                  "OS volumes, backend servers, transcoding workers"
+                ],
+                [
+                  "io2 (Provisioned IOPS SSD)",
+                  "High-performance databases with consistent low latency",
+                  "YouTube's critical RDS database storage"
+                ],
+                [
+                  "st1 (Throughput HDD)",
+                  "Large sequential file processing",
+                  "Large batch video processing and log analysis"
+                ],
+                [
+                  "sc1 (Cold HDD)",
+                  "Rarely accessed low-cost storage",
+                  "Old archived logs and compliance storage"
+                ]
+              ]
+            },
+            {
+              "type": "error-callout",
+              "title": "Important EBS limitations",
+              "list": [
+                "One EBS volume can usually be attached to only one EC2 instance at a time",
+                "EBS volumes are locked to a single Availability Zone",
+                "EBS is designed for active compute workloads, not massive permanent object storage"
+              ],
+              "footer": "EBS is temporary working storage for servers. Permanent user files are usually stored in S3."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ EBS volumes continue charging even after the EC2 instance is stopped or terminated. Many companies accidentally leave unused EBS volumes running and pay for forgotten storage. Large companies use automated cleanup systems to detect and remove unattached EBS volumes."
+            }
+          ],
+
+          "EFS (Elastic File System)": [
+            {
+              "type": "paragraph",
+              "text": "EBS gives one EC2 server its own persistent hard drive. But large systems like YouTube run hundreds or thousands of servers simultaneously, and many of those servers need access to the same files at the same time. EFS solves this problem by providing a shared file system that multiple EC2 instances can read from and write to simultaneously."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ YouTube's subtitle generation system runs on 500 EC2 servers in parallel. Every server needs access to the same language model files and must write generated subtitle files to one central shared location. How can all 500 servers access the same files simultaneously?"
+            },
+            {
+              "type": "heading",
+              "text": "What is EFS?"
+            },
+            {
+              "type": "paragraph",
+              "text": "EFS (Elastic File System) is a fully managed shared network file system for AWS. Multiple EC2 instances can mount the same EFS simultaneously and access identical files in real time. Unlike EBS, which acts like a private hard drive for one server, EFS behaves like a shared drive accessible by an entire fleet of servers."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of EFS like a shared Google Drive folder mounted on 500 servers simultaneously. One server can read a language model while another writes a subtitle file, all using the same shared storage in real time."
+            },
+            {
+              "type": "heading",
+              "text": "How EFS Works — The YouTube Story"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — YouTube creates a shared EFS file system",
+              "desc": "YouTube creates a single EFS file system for its subtitle generation pipeline. Large language model files like Hindi, Tamil, Telugu, and English models are stored centrally inside EFS so every subtitle server can access them.\n\nExample — YouTube uploads 52 language models, each several GB in size, into one EFS file system. Any EC2 instance in the VPC can connect to this shared storage using the EFS mount address."
+            },
+            {
+              "type": "code",
+              "code": "// Create EFS file system\naws efs create-file-system \\\n  --region ap-south-1 \\\n  --tags Key=Name,Value=youtube-subtitle-models\n\n// EFS created\n{\n  FileSystemId: 'fs-0abc123def',\n  Region:       'ap-south-1',\n  SizeInBytes:  450_000_000_000,\n  MountTarget:  'fs-0abc123def.efs.ap-south-1.amazonaws.com'\n}"
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — 500 EC2 servers mount the same EFS",
+              "desc": "YouTube launches 500 subtitle processing servers. Each server mounts the same EFS file system during startup, giving every server access to identical files instantly.\n\nExample — All 500 subtitle servers mount EFS at /models. Every server can read the same Hindi or Tamil language model simultaneously without copying files separately to each machine."
+            },
+            {
+              "type": "code",
+              "code": "// Mount EFS on each EC2 server\nmkdir -p /models\nmount -t efs fs-0abc123def:/ /models\n\n// Shared files visible on every server\nls /models\n// hindi-model-v3.bin\n// tamil-model-v2.bin\n// telugu-model-v2.bin\n// english-model-v5.bin\n\n// All 500 servers can access the same files simultaneously"
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Servers write subtitle outputs back to EFS",
+              "desc": "Each subtitle server writes completed subtitle files into a shared output directory inside EFS. Other services can instantly see and process those files.\n\nExample — Server 147 generates Hindi subtitles and writes them to /output/user-delhi-123/hindi.vtt. YouTube's collection service immediately sees the new file appear and picks it up for final processing."
+            },
+            {
+              "type": "code",
+              "code": "// Server 147 writes subtitle output\necho 'subtitle content...' > /output/user-delhi-123/hindi.vtt\n\n// Another server writes simultaneously\necho 'subtitle content...' > /output/user-mumbai-456/hindi.vtt\n\n// Collection service reads outputs\nls /output/\n// user-delhi-123/hindi.vtt\n// user-mumbai-456/hindi.vtt\n// user-pune-789/tamil.vtt"
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — EFS storage scales automatically",
+              "desc": "When YouTube adds or removes files, EFS automatically grows or shrinks without manual resizing.\n\nExample — YouTube uploads a new Marathi language model to EFS. Seconds later, all 500 subtitle servers instantly see the new model file without restarts, deployments, or copying data individually to every server."
+            },
+            {
+              "type": "heading",
+              "text": "EBS vs EFS — When to Use Which"
+            },
+            {
+              "type": "table",
+              "headers": ["Feature", "EBS", "EFS"],
+              "rows": [
+                [
+                  "Attached to",
+                  "One EC2 instance",
+                  "Multiple EC2 instances simultaneously"
+                ],
+                [
+                  "Access",
+                  "Private storage",
+                  "Shared storage"
+                ],
+                [
+                  "Scaling",
+                  "Manual resizing",
+                  "Automatic scaling"
+                ],
+                [
+                  "Performance",
+                  "Faster local disk-like performance",
+                  "Slightly slower network storage"
+                ],
+                [
+                  "Cost",
+                  "Cheaper",
+                  "More expensive"
+                ],
+                [
+                  "Best for",
+                  "OS, app files, temporary processing",
+                  "Shared models, configs, shared outputs"
+                ],
+                [
+                  "YouTube example",
+                  "Per-server transcoding workspace",
+                  "Language models shared across 500 servers"
+                ]
+              ]
+            },
+            {
+              "type": "error-callout",
+              "title": "Common mistakes when choosing EBS vs EFS",
+              "list": [
+                "Using EBS when multiple servers need the same files",
+                "Using EFS for workloads that only require single-server storage",
+                "Using EBS or EFS for permanent large-scale file storage instead of S3"
+              ],
+              "footer": "Rule of thumb: single server storage → EBS. Shared storage across many servers → EFS. Permanent scalable object storage → S3."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ EFS is significantly more expensive than EBS and S3. Companies only use EFS for workloads where many servers truly need shared real-time access to the same files."
+            }
+          ],
+
+          "Glacier Storage": [
+            {
+              "type": "paragraph",
+              "text": "Not all data needs to be accessed instantly. Companies like YouTube store billions of old videos, logs, audit records, and deleted creator backups that are rarely opened but still must be preserved for years. Keeping all this data in fast S3 storage would be extremely expensive. Glacier is AWS's ultra-cheap archival storage designed for files that are rarely accessed but must remain safely stored for long periods."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ A creator uploaded a video 7 years ago that nobody has watched since. YouTube still needs to preserve it safely for legal, compliance, and recovery reasons. Should they keep it in expensive high-speed storage forever?"
+            },
+            {
+              "type": "heading",
+              "text": "What is Glacier Storage?"
+            },
+            {
+              "type": "paragraph",
+              "text": "Amazon S3 Glacier is AWS's long-term archival storage service. It stores files at extremely low cost compared to normal S3 storage, but retrieval is much slower. Instead of milliseconds, recovering files can take minutes or even hours depending on the retrieval option chosen."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Think of Glacier like a huge underground archive warehouse. S3 Standard is your active office desk with instant access. Glacier is the storage basement where old files are safely packed away until someone specifically requests them."
+            },
+            {
+              "type": "heading",
+              "text": "How Glacier Works — The YouTube Story"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Old videos are moved from S3 to Glacier",
+              "desc": "YouTube automatically detects videos that haven't been watched for years and moves them from expensive hot storage into Glacier archival storage.\n\nExample — A 2018 uploaded video hasn't been viewed in 4 years. AWS lifecycle policies automatically transfer the video from S3 Standard to Glacier Flexible Retrieval to reduce storage cost dramatically."
+            },
+            {
+              "type": "code",
+              "code": "// S3 Lifecycle Rule\n{\n  \"Rules\": [\n    {\n      \"ID\": \"archive-old-videos\",\n      \"Status\": \"Enabled\",\n      \"Filter\": {\n        \"Prefix\": \"videos/\"\n      },\n      \"Transitions\": [\n        {\n          \"Days\": 365,\n          \"StorageClass\": \"GLACIER\"\n        }\n      ]\n    }\n  ]\n}"
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Glacier stores files cheaply for years",
+              "desc": "The archived video now lives in Glacier storage where AWS optimizes for low cost instead of instant access.\n\nExample — Millions of rarely watched YouTube videos, old moderation logs, and deleted creator backups remain safely stored in Glacier for compliance and recovery purposes at a fraction of normal S3 storage cost."
+            },
+            {
+              "type": "code",
+              "code": "// Example archived object\n{\n  Key: 'videos/2018/old-video.mp4',\n  StorageClass: 'GLACIER',\n  Size: '12GB',\n  AccessFrequency: 'Rare'\n}"
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — User requests an old archived video",
+              "desc": "If someone requests an archived file, YouTube must first restore it from Glacier before it becomes accessible again.\n\nExample — A creator requests recovery of a deleted video from 2019. YouTube sends a Glacier restore request. AWS begins retrieving the archived file, which may take several minutes or hours depending on retrieval speed."
+            },
+            {
+              "type": "code",
+              "code": "// Restore archived object\naws s3api restore-object \\\n  --bucket youtube-archive \\\n  --key videos/2018/old-video.mp4 \\\n  --restore-request '{\"Days\":7,\"GlacierJobParameters\":{\"Tier\":\"Standard\"}}'"
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — File becomes temporarily accessible again",
+              "desc": "After restoration completes, the archived file becomes temporarily available in S3 for normal access.\n\nExample — The creator downloads the restored 2019 video. After the temporary restore window expires, AWS automatically returns the file to Glacier archival storage."
+            },
+            {
+              "type": "heading",
+              "text": "Glacier Retrieval Options"
+            },
+            {
+              "type": "table",
+              "headers": ["Retrieval Type", "Speed", "Best For"],
+              "rows": [
+                [
+                  "Expedited",
+                  "1–5 minutes",
+                  "Urgent recovery requests"
+                ],
+                [
+                  "Standard",
+                  "3–5 hours",
+                  "Normal archive retrieval"
+                ],
+                [
+                  "Bulk",
+                  "5–12 hours",
+                  "Large-scale cheap retrieval"
+                ]
+              ]
+            },
+            {
+              "type": "error-callout",
+              "title": "Important things to know about Glacier",
+              "list": [
+                "Glacier is extremely cheap but not designed for instant access",
+                "Retrieving archived files costs extra money",
+                "Frequent retrieval from Glacier defeats the cost-saving purpose",
+                "Glacier is best for long-term archival and compliance storage"
+              ],
+              "footer": "Hot frequently-used files belong in S3 Standard. Rarely accessed archival data belongs in Glacier."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ A common mistake is moving frequently accessed data into Glacier to save money. Retrieval delays and retrieval costs can quickly become a problem if files are constantly being restored."
+            }
+          ],
+
+          "Data Backup Strategies": [
+            {
+              "type": "paragraph",
+              "text": "Hardware fails. Databases get corrupted. Developers accidentally delete production data. Entire AWS regions can experience outages. Large companies survive disasters because they always maintain multiple backups of critical data. A backup strategy is not optional — it is a core survival system for modern infrastructure."
+            },
+            {
+              "type": "curious-callout",
+              "text": "❓ What happens if YouTube's main database storing video metadata suddenly gets corrupted? Without backups, billions of videos could permanently lose titles, descriptions, comments, and creator information."
+            },
+            {
+              "type": "heading",
+              "text": "What is a Backup Strategy?"
+            },
+            {
+              "type": "paragraph",
+              "text": "A backup strategy is a planned system for copying and protecting important data so it can be restored after failures, accidental deletion, cyberattacks, or disasters. Good backup systems create multiple copies of data across different locations and storage systems."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Backups are like insurance policies for data. You hope you never need them, but when disaster happens, backups are the reason a company survives."
+            },
+            {
+              "type": "heading",
+              "text": "How Backup Strategies Work — The YouTube Story"
+            },
+            {
+              "type": "step",
+              "title": "Step 1 — Primary production database handles live traffic",
+              "desc": "YouTube's production database stores live metadata like video titles, creator info, comments, and recommendations.\n\nExample — Millions of users upload videos, edit titles, and post comments every minute. All this live data continuously updates the production database."
+            },
+            {
+              "type": "code",
+              "code": "// Production database\nProductionDB {\n  Videos,\n  Comments,\n  CreatorProfiles,\n  Recommendations\n}"
+            },
+            {
+              "type": "step",
+              "title": "Step 2 — Automated backups run continuously",
+              "desc": "AWS automatically creates snapshots and backups of critical systems at scheduled intervals.\n\nExample — YouTube creates hourly database snapshots, daily backups, and cross-region backup copies to ensure recovery is always possible."
+            },
+            {
+              "type": "code",
+              "code": "// Example backup schedule\nEvery 1 hour  → Database snapshot\nEvery 24 hour → Full backup to S3\nEvery 7 days  → Cross-region disaster recovery backup"
+            },
+            {
+              "type": "step",
+              "title": "Step 3 — Production failure occurs",
+              "desc": "A major outage, accidental deletion, or corruption damages the production system.\n\nExample — A faulty deployment accidentally deletes millions of comment records from the production database."
+            },
+            {
+              "type": "code",
+              "code": "// Accidentally deleted data\nDELETE FROM comments\nWHERE created_at < '2025-01-01';\n\n// Millions of comments removed ❌"
+            },
+            {
+              "type": "step",
+              "title": "Step 4 — Restore data from backups",
+              "desc": "Engineers restore the affected systems using recent backups and snapshots.\n\nExample — YouTube restores the deleted comments using the latest database snapshot and transaction logs, recovering almost all lost data."
+            },
+            {
+              "type": "code",
+              "code": "// Restore latest snapshot\naws rds restore-db-instance-from-db-snapshot \\\n  --db-instance-identifier youtube-restored-db \\\n  --db-snapshot-identifier snapshot-2026-05-25"
+            },
+            {
+              "type": "heading",
+              "text": "Common Backup Strategies"
+            },
+            {
+              "type": "table",
+              "headers": ["Strategy", "Description", "Example"],
+              "rows": [
+                [
+                  "Snapshots",
+                  "Point-in-time storage copy",
+                  "EBS and RDS snapshots"
+                ],
+                [
+                  "Cross-region backup",
+                  "Store copies in another AWS region",
+                  "Mumbai backup copied to Singapore"
+                ],
+                [
+                  "Incremental backup",
+                  "Only changed data is backed up",
+                  "Daily changed records only"
+                ],
+                [
+                  "Versioning",
+                  "Keep older file versions",
+                  "Recover accidentally deleted S3 objects"
+                ]
+              ]
+            },
+            {
+              "type": "error-callout",
+              "title": "Common backup mistakes",
+              "list": [
+                "Keeping backups in the same region as production",
+                "Never testing whether backups actually restore correctly",
+                "Running backups too infrequently",
+                "Not protecting backups from accidental deletion or ransomware"
+              ],
+              "footer": "A backup is useless if it cannot be restored during a real disaster."
+            },
+            {
+              "type": "warning-callout",
+              "text": "⚠️ Many companies discover their backups are broken only during real emergencies. Large companies regularly perform disaster recovery drills to verify backup systems actually work."
+            }
+          ],
+
+
+        }
+
+
       },
       {
         "id": 4,

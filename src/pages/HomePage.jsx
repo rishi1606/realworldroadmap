@@ -17,7 +17,7 @@ export function HomePage() {
       setLoading(false);
     };
     init();
-  }, [fetchAllRoadmaps, roadmaps.length]);
+  }, [roadmaps.length]);
 
   const homeSchema = {
     "@context": "https://schema.org",
@@ -71,11 +71,11 @@ export function HomePage() {
           </div>
 
           <h1 className="text-4xl md:text-6xl font-bold mb-6 tracking-tight text-slate-900 leading-[1.1]">
-            Developer Roadmaps
+            Learn Tech the Simple Way
           </h1>
 
           <p className="text-slate-500 text-lg md:text-xl leading-relaxed max-w-2xl font-medium">
-            <span className="text-slate-900 font-semibold">ByteByteTech</span> is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.
+            <span className="text-slate-900 font-semibold">ByteByteTech</span> is a community-driven platform focused on making complex tech concepts simple through real-world examples and practical explanations. The goal is to help developers, students, and beginners understand how technologies work in real applications — from fundamentals to advanced system design concepts — in an easy and engaging way.
           </p>
 
         </div>

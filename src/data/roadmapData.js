@@ -87,7 +87,7 @@ export const roadmapData = [
             {
               "type": "step",
               "title": "Hybrid Cloud — Live Streaming + Copyright Protection Together",
-              "desc": "What it is: Public and private cloud working together. Sensitive stuff stays private. High-scale public tasks go to public cloud. Both connected seamlessly.\n\nYouTube Example 1 — Live Streaming a Concert: A major artist like Arijit Singh does a live concert on YouTube. The public cloud handles the massive spike — millions of simultaneous viewers streaming the live feed globally, CDN servers near every viewer delivering low-latency video. At the same time, the private cloud is running Content ID checks in real time — scanning the live audio against the private copyright database to detect and flag unlicensed music. Public cloud for scale. Private cloud for protection. Both working together in real time."
+              "desc": "What it is: Public and private cloud working together. Sensitive stuff stays private. High-scale public tasks go to public cloud. Both connected seamlessly.\n\nExample - Live Streaming a Concert: A major artist like Arijit Singh does a live concert on YouTube. The public cloud handles the massive spike — millions of simultaneous viewers streaming the live feed globally, CDN servers near every viewer delivering low-latency video. At the same time, the private cloud is running Content ID checks in real time — scanning the live audio against the private copyright database to detect and flag unlicensed music. Public cloud for scale. Private cloud for protection. Both working together in real time."
             },
             {
               "type": "step",
@@ -178,14 +178,7 @@ export const roadmapData = [
               "type": "curious-callout",
               "text": "❓ YouTube uses cloud for storage, compute, databases, and CDN. Are all of these the same type of cloud service — or are they fundamentally different layers?"
             },
-            {
-              "type": "heading",
-              "text": "The Pizza Analogy — Easiest Way to Understand This"
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of making pizza. On-Premise = you buy ingredients, own the oven, make everything yourself. IaaS = you rent the kitchen and oven — you still cook. PaaS = you get the kitchen, oven, and raw dough — you just add toppings. SaaS = you order a delivered pizza — you just eat it."
-            },
+
             {
               "type": "heading",
               "text": "IaaS — Infrastructure as a Service"
@@ -294,7 +287,7 @@ export const roadmapData = [
             },
             {
               "type": "paragraph",
-              "text": "Inside every Region, there are multiple Availability Zones — usually 3 to 6. Each AZ is one or more physically separate data centers with independent power, cooling, and networking. AZs within a Region are connected by ultra-low-latency private fiber."
+              "text": "Inside every Region, there are multiple Availability Zones — usually 3 to 6. Each AZ is one or more physically separate data centers with independent power, cooling, and networking."
             },
             {
               "type": "step",
@@ -346,186 +339,7 @@ export const roadmapData = [
             }
           ],
 
-          "AWS Shared Responsibility Model": [
-            {
-              "type": "paragraph",
-              "text": "You deploy a YouTube-like app on AWS. A hacker breaks in and steals all your user data. Whose fault is it — yours or AWS's? This question has a very precise answer in the cloud world. AWS and you divide security responsibilities down a clean line. AWS calls this the Shared Responsibility Model — and every AWS engineer must understand it deeply."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ If your AWS-hosted app gets hacked — is AWS responsible? Or are you? Where exactly does AWS's responsibility end and yours begin?"
-            },
-            {
-              "type": "heading",
-              "text": "The Core Idea"
-            },
-            {
-              "type": "paragraph",
-              "text": "AWS is responsible for security OF the cloud. You are responsible for security IN the cloud. AWS secures the global infrastructure — the physical data centers, hardware, networking, and hypervisors. You secure everything you put on top of it — your OS, applications, data, IAM configurations, and network settings."
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Think of renting an apartment. The landlord (AWS) is responsible for the building structure — walls, roof, locks on the main entrance, security cameras in hallways. You (the tenant) are responsible for what happens inside your apartment — locking your own door, not leaving valuables exposed, choosing who gets a key. If someone breaks your apartment window because you left it open — that's on you, not the landlord."
-            },
-            {
-              "type": "heading",
-              "text": "AWS's Responsibility — Security OF the Cloud"
-            },
-            {
-              "type": "step",
-              "title": "Physical Infrastructure",
-              "desc": "AWS secures all physical data centers — biometric access, 24/7 guards, surveillance. Nobody walks into an AWS data center without extreme vetting. Not even AWS employees freely."
-            },
-            {
-              "type": "step",
-              "title": "Hardware & Networking",
-              "desc": "AWS manages and secures all servers, routers, switches, and physical networking equipment globally."
-            },
-            {
-              "type": "step",
-              "title": "Hypervisor & Virtualization Layer",
-              "desc": "AWS ensures complete isolation between different customers' virtual machines. Your EC2 instance cannot see or touch another customer's EC2 instance — ever."
-            },
-            {
-              "type": "step",
-              "title": "Managed Service Security",
-              "desc": "For managed services like RDS or Lambda — AWS also patches the OS and runtime underneath. You never touch that layer."
-            },
-            {
-              "type": "heading",
-              "text": "Your Responsibility — Security IN the Cloud"
-            },
-            {
-              "type": "step",
-              "title": "Your Data",
-              "desc": "Encrypting your YouTube video files in S3, protecting your user database — 100% your responsibility. AWS provides the tools (KMS, S3 encryption) but you must enable and configure them."
-            },
-            {
-              "type": "step",
-              "title": "IAM & Access Management",
-              "desc": "Who has access to your AWS account and resources is entirely your job. If you give everyone admin access and someone leaks credentials — AWS is not responsible."
-            },
-            {
-              "type": "step",
-              "title": "Operating System & Application",
-              "desc": "If you run an EC2 instance — patching the OS, updating software, fixing vulnerabilities in your app is your responsibility."
-            },
-            {
-              "type": "step",
-              "title": "Network Configuration",
-              "desc": "Security Groups, NACLs, VPC settings — if you leave port 22 open to the entire internet on your EC2 instance and get hacked, AWS is not liable."
-            },
-            {
-              "type": "error-callout",
-              "title": "Real-world breaches that were YOUR responsibility, not AWS:",
-              "list": [
-                "Misconfigured S3 bucket left public — user data exposed (Capital One breach, 2019)",
-                "EC2 instance with default password — server compromised",
-                "IAM access keys committed to GitHub — entire AWS account taken over",
-                "No encryption on RDS database — data stolen after SQL injection"
-              ],
-              "footer": "AWS infrastructure was perfectly secure in all these cases. The customer misconfigured their own resources."
-            },
-            {
-              "type": "table",
-              "headers": ["Responsibility", "AWS", "You"],
-              "rows": [
-                ["Physical data centers", "✅", "❌"],
-                ["Hardware & networking", "✅", "❌"],
-                ["Hypervisor isolation", "✅", "❌"],
-                ["Managed service OS patching (RDS, Lambda)", "✅", "❌"],
-                ["EC2 OS patching", "❌", "✅"],
-                ["Application security", "❌", "✅"],
-                ["IAM & access control", "❌", "✅"],
-                ["Data encryption", "❌", "✅"],
-                ["Network configuration (Security Groups, VPC)", "❌", "✅"],
-                ["Your S3 bucket permissions", "❌", "✅"]
-              ]
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ The Shared Responsibility Model is not just theoretical — it's tested in every AWS certification exam and it comes up in real security audits. When something goes wrong in production, this model determines who is accountable. Know the line precisely."
-            },
-            {
-              "type": "image",
-              "src": "cloud5.png"
-            }
-          ],
 
-          "Pay-As-You-Go Pricing Model": [
-            {
-              "type": "paragraph",
-              "text": "In 2005, launching a video platform like YouTube meant buying millions of dollars of servers before writing a single line of code. You guessed how much traffic you'd get, bought hardware for that guess, and paid for it whether you used it or not. AWS completely destroyed this model. Today you pay only for exactly what you use — per second, per GB, per request. Nothing more."
-            },
-            {
-              "type": "curious-callout",
-              "text": "❓ YouTube traffic at 3am is a fraction of what it is at 8pm. In the old world — you'd pay for 8pm capacity 24 hours a day. How does AWS's pricing model fix this?"
-            },
-            {
-              "type": "heading",
-              "text": "How Pay-As-You-Go Actually Works"
-            },
-            {
-              "type": "paragraph",
-              "text": "AWS measures usage in the smallest possible units and charges accordingly. There are no upfront costs, no long-term commitments in the default model, and no paying for idle resources. You spin up a server — you pay. You shut it down — billing stops."
-            },
-            {
-              "type": "step",
-              "title": "EC2 — Compute",
-              "desc": "Charged per second of usage. YouTube spins up 1000 EC2 instances during a viral video spike — pays for those hours. Traffic drops at night — instances terminated — billing stops instantly."
-            },
-            {
-              "type": "step",
-              "title": "S3 — Storage",
-              "desc": "Charged per GB stored per month + per GB transferred out. YouTube pays only for the actual video data stored — not for empty reserved space."
-            },
-            {
-              "type": "step",
-              "title": "Lambda — Serverless Compute",
-              "desc": "Charged per invocation and per millisecond of execution. If YouTube's thumbnail generation Lambda runs 10 million times a month — they pay for exactly 10 million executions. Zero requests = zero cost."
-            },
-            {
-              "type": "step",
-              "title": "Data Transfer",
-              "desc": "Inbound data to AWS is free. Outbound data (serving videos to users) is charged per GB. This is why CDN and caching strategies matter enormously at YouTube's scale."
-            },
-            {
-              "type": "heading",
-              "text": "Three AWS Pricing Models"
-            },
-            {
-              "type": "table",
-              "headers": ["Model", "How it works", "Best for", "YouTube Parallel"],
-              "rows": [
-                ["On-Demand", "Pay per second/hour, no commitment", "Unpredictable or spiky traffic", "Viral video traffic spikes"],
-                ["Reserved Instances", "1 or 3 year commitment — up to 72% cheaper", "Stable, predictable baseline load", "Core video serving infrastructure"],
-                ["Spot Instances", "Bid for unused AWS capacity — up to 90% cheaper", "Fault-tolerant batch jobs", "Overnight video transcoding jobs"]
-              ]
-            },
-            {
-              "type": "info-callout",
-              "text": "💡 Smart AWS architects combine all three. YouTube-like platforms use Reserved Instances for steady baseline servers, On-Demand for traffic spikes, and Spot Instances for cheap batch processing like video encoding — cutting cloud bills by 60-70% compared to On-Demand only."
-            },
-            {
-              "type": "error-callout",
-              "title": "Common AWS billing mistakes beginners make:",
-              "list": [
-                "Leaving EC2 instances running after testing — billed 24/7 even if idle",
-                "Storing unnecessary data in S3 — paying for GBs you forgot about",
-                "Not setting billing alerts — surprise bills of thousands of dollars",
-                "Using On-Demand for everything — paying 3x more than needed"
-              ],
-              "footer": "Always set AWS Budget Alerts before you start experimenting. One forgotten EC2 instance can cost hundreds of dollars a month."
-            },
-            {
-              "type": "warning-callout",
-              "text": "⚠️ AWS has 200+ services each with their own pricing structure. You don't need to memorize pricing — but you must understand the model. Always use the AWS Pricing Calculator before architecting a production system. Cost optimization is a real engineering skill — not an afterthought."
-            },
-            {
-              "type": "image",
-              "src": "cloud6.png"
-            }
-          ],
 
           "High Availability & Fault Tolerance Basics": [
             {
@@ -567,10 +381,12 @@ export const roadmapData = [
               "type": "heading",
               "text": "What is Fault Tolerance?"
             },
-            {
-              "type": "paragraph",
-              "text": "Fault Tolerance is a stronger guarantee than High Availability. A fault-tolerant system continues operating at full capacity with zero degradation — even when components fail. It requires full redundancy at every layer."
-            },
+            [
+              {
+                "type": "paragraph",
+                "text": "Fault Tolerance is a stronger guarantee than High Availability. A fault-tolerant system continues operating at full capacity with zero degradation — even when components fail. It requires full redundancy at every layer. Think of it this way — you're watching a YouTube video. Somewhere in Google's data center, a server handling your stream just crashed and died. But your video never paused. Never buffered. Never showed an error. You had absolutely zero idea anything broke. That is Fault Tolerance — the system silently switched to a duplicate server in milliseconds, and your experience stayed completely perfect."
+              }
+            ],
             {
               "type": "table",
               "headers": ["", "High Availability", "Fault Tolerance"],

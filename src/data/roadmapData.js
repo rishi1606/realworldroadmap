@@ -1,7 +1,7 @@
 export const roadmapData = [
   {
     id: "AWS",
-    category: "Cloud",
+    category: "Cloud & DevOps",
     sortOrder: 1,
     image: "https://nodejs.org/static/images/logo.svg",
     "title": "Learn AWS Through Real-World Scenarios",

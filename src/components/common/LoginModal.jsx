@@ -129,8 +129,8 @@ export function LoginModal() {
           <form onSubmit={handleForgotPassword} className="flex flex-col gap-4 mb-4">
             <div className="flex flex-col gap-1.5 text-left">
               <label className="text-sm font-medium text-text-main">Email</label>
-              <input 
-                type="email" 
+              <input
+                type="email"
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -138,14 +138,14 @@ export function LoginModal() {
                 placeholder="m@example.com"
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-subtle focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-10 px-4 py-2 w-full mt-2"
             >
               {loading ? 'Sending OTP...' : 'Send OTP'}
             </button>
-            <button 
+            <button
               type="button"
               onClick={() => setMode('login')}
               className="text-xs text-text-muted hover:text-text-main transition-colors text-center"
@@ -159,8 +159,8 @@ export function LoginModal() {
           <form onSubmit={handleVerifyOTP} className="flex flex-col gap-4 mb-4">
             <div className="flex flex-col gap-1.5 text-left">
               <label className="text-sm font-medium text-text-main">Enter 6-digit OTP</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 required
                 maxLength={6}
                 value={otp}
@@ -169,14 +169,14 @@ export function LoginModal() {
                 placeholder="000000"
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-subtle focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-10 px-4 py-2 w-full mt-2"
             >
               {loading ? 'Verifying...' : 'Verify OTP'}
             </button>
-            <button 
+            <button
               type="button"
               onClick={() => setMode('forgot')}
               className="text-xs text-text-muted hover:text-text-main transition-colors text-center"
@@ -190,8 +190,8 @@ export function LoginModal() {
           <form onSubmit={handleResetPassword} className="flex flex-col gap-4 mb-4">
             <div className="flex flex-col gap-1.5 text-left">
               <label className="text-sm font-medium text-text-main">New Password</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 required
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
@@ -200,16 +200,16 @@ export function LoginModal() {
             </div>
             <div className="flex flex-col gap-1.5 text-left">
               <label className="text-sm font-medium text-text-main">Confirm Password</label>
-              <input 
-                type="password" 
+              <input
+                type="password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 className="flex h-10 w-full rounded-md border border-border-subtle bg-bg-base px-3 py-2 text-sm text-text-main ring-offset-bg-surface placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-subtle focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               />
             </div>
-            <button 
-              type="submit" 
+            <button
+              type="submit"
               disabled={loading}
               className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-subtle focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-10 px-4 py-2 w-full mt-2"
             >
@@ -221,10 +221,10 @@ export function LoginModal() {
         return (
           <>
             <form onSubmit={handleEmailLogin} className="flex flex-col gap-4 mb-4">
-              <div className="flex flex-col gap-1.5 text-left">
+              {/* <div className="flex flex-col gap-1.5 text-left">
                 <label className="text-sm font-medium text-text-main">Email</label>
-                <input 
-                  type="email" 
+                <input
+                  type="email"
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -235,7 +235,7 @@ export function LoginModal() {
               <div className="flex flex-col gap-1.5 text-left">
                 <div className="flex items-center justify-between">
                   <label className="text-sm font-medium text-text-main">Password</label>
-                  <button 
+                  <button
                     type="button"
                     onClick={() => setMode('forgot')}
                     className="text-xs text-text-muted hover:text-text-main transition-colors"
@@ -243,30 +243,30 @@ export function LoginModal() {
                     Forgot password?
                   </button>
                 </div>
-                <input 
-                  type="password" 
+                <input
+                  type="password"
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="flex h-10 w-full rounded-md border border-border-subtle bg-bg-base px-3 py-2 text-sm text-text-main ring-offset-bg-surface placeholder:text-text-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-subtle focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                 />
               </div>
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-border-subtle focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none bg-text-main text-bg-base hover:bg-text-main/90 h-10 px-4 py-2 w-full mt-2"
               >
                 {loading ? 'Signing in...' : 'Sign In'}
-              </button>
+              </button> */}
             </form>
 
             <div className="relative mb-4 mt-2">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t border-border-subtle"></span>
               </div>
-              <div className="relative flex justify-center text-xs uppercase">
+              {/* <div className="relative flex justify-center text-xs uppercase">
                 <span className="bg-bg-surface px-2 text-text-muted">Or continue with</span>
-              </div>
+              </div> */}
             </div>
 
             <div className="flex justify-center w-full mt-4 mb-2">
@@ -334,11 +334,11 @@ export function LoginModal() {
 
         {renderContent()}
 
-        {mode === 'login' && (
+        {/* {mode === 'login' && (
           <div className="mt-6 text-center text-sm text-text-muted">
             Don't have an account? <Link onClick={() => setShowLoginModal(false)} to="/signup" className="text-text-main font-medium underline underline-offset-4 hover:text-text-main/80">Sign up</Link>
           </div>
-        )}
+        )} */}
 
       </div>
     </div>,

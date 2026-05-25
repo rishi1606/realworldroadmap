@@ -848,12 +848,24 @@ export const roadmapData = [
             {
               "type": "step",
               "title": "Inbound Rule: Allow HTTPS (443)",
-              "desc": "User in Mumbai uploads a video to YouTube's EC2 server on port 443. Security Group allows it in — rule matches."
+              "desc": "You open YouTube on your phone in Mumbai and tap upload on your new video. Your phone sends that video file to YouTube's EC2 server over port 443 (HTTPS). The moment that request hits the EC2 instance — the Security Group checks its inbound rules. It sees: 'Port 443 from 0.0.0.0/0 — ALLOW'. Rule matches. Request is let through. The EC2 server starts receiving your video file."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 What if port 443 was NOT in the inbound rules? Your phone sends the upload request — it hits the Security Group — no matching rule found — request is silently dropped. Your YouTube app just spins forever showing 'Uploading...' with 0% progress. No error message. No response. Just silence. The server never even saw your request. That's how powerful Security Group rules are — they decide what the server is even allowed to know about."
             },
             {
               "type": "step",
-              "title": "Response automatically allowed",
-              "desc": "Server responds to the upload request. Because Security Groups are stateful — the response is automatically allowed out, even without an explicit outbound rule for port 443."
+              "title": "Response Automatically Allowed Out — Stateful Magic",
+              "desc": "Your video upload is received. Now YouTube's EC2 server needs to send back a response — 'Upload successful. Video ID: xK9mP2qL4n'. This response needs to travel from the EC2 server back to your phone in Mumbai over the same connection. Here's the key — there is NO explicit outbound rule for port 443 in YouTube's Security Group. But the response still gets through. Why? Because Security Groups are stateful."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 Stateful means the Security Group remembers the conversation. When your phone opened a connection to YouTube's server on port 443 — the Security Group noted it: 'A connection was established from 103.56.78.90 on port 443.' When the server tries to respond back to your phone — the Security Group recognizes this as part of that same conversation. It automatically allows the response out — no outbound rule needed. It knows this isn't a new random outbound request — it's a reply to something it already approved."
+            },
+            {
+              "type": "info-callout",
+              "text": "💡 This is exactly why Security Groups being stateful is such a big deal. YouTube's Security Group only needs ONE inbound rule for port 443 — and the entire two-way conversation (upload in, response out) works automatically. If Security Groups were stateless like Network ACLs, YouTube would need to explicitly open outbound rules for every possible response port — a maintenance nightmare for a platform handling billions of connections a day."
             },
             {
               "type": "heading",
@@ -1010,17 +1022,22 @@ export const roadmapData = [
             {
               "type": "step",
               "title": "Launch Template",
-              "desc": "Defines what each new instance looks like — which AMI, instance type, security group, and User Data script to use. Think of it as the blueprint. Every auto-scaled instance is born from this template — identical configuration every time."
+              "desc": "Defines what each new instance looks like — which AMI, instance type, security group, and User Data script to use. Think of it as the blueprint. Every auto-scaled instance is born from this template — identical configuration every time.\n\n Example — YouTube's DevOps team creates a Launch Template for their video API servers. It says: use our Golden AMI (pre-installed with Node.js, monitoring agent, YouTube API code), use m6i.2xlarge instance type (8 vCPU, 32GB RAM), attach the 'youtube-api-sg' Security Group (port 443 open), run this User Data script on boot (pull latest config from S3 and start the server). Now when traffic spikes at 8pm and Auto Scaling needs 50 new servers in 3 minutes — every single one launches from this exact template. Server 1 and Server 50 are byte-for-byte identical. No engineer configured any of them manually."
             },
             {
               "type": "step",
               "title": "Auto Scaling Group (ASG)",
-              "desc": "The actual group of EC2 instances being managed. You define the minimum instances (floor), maximum instances (ceiling), and desired capacity (target). ASG ensures the number of running instances always stays within these bounds."
+              "desc": "The actual group of EC2 instances being managed. You define the minimum instances (floor), maximum instances (ceiling), and desired capacity (target). ASG ensures the number of running instances always stays within these bounds.\n\n Example — YouTube's API Auto Scaling Group is configured with: Minimum 50 instances (even at 4am with almost no traffic — these 50 always run, so YouTube is never completely empty and can handle sudden traffic without a cold start delay), Maximum 2000 instances (the hard ceiling — AWS won't launch beyond this no matter how much traffic spikes, protecting YouTube from a runaway scaling bug that could cost millions), Desired 100 instances (normal daytime traffic target — ASG tries to maintain 100 healthy instances during regular hours). At 3am — ASG scales down to 50 (the floor). At 8pm Friday — ASG scales up toward 2000 if needed. It never goes below 50. It never goes above 2000. Everything in between is automatic."
             },
             {
               "type": "step",
               "title": "Scaling Policies",
-              "desc": "The rules that trigger scaling. CPU above 70% for 2 minutes — add 10 instances. CPU below 30% for 10 minutes — remove 5 instances. Policies define when and how much to scale."
+              "desc": "The rules that trigger scaling. CPU above 70% for 2 minutes — add 10 instances. CPU below 30% for 10 minutes — remove 5 instances. Policies define when and how much to scale.\n\n Example — YouTube uses different scaling policies for different situations. For normal traffic fluctuations — Target Tracking keeps CPU at 60% by automatically adding or removing instances. For sudden viral spikes — Step Scaling kicks in hard: CPU hits 80% — immediately add 100 instances. CPU hits 90% — add 500 more. For predictable patterns — Scheduled Scaling pre-scales every Friday at 6pm before the weekend rush hits, because YouTube knows from historical data that Friday evenings see a 3x traffic spike. For truly unpredictable events like a breaking news video going viral — Predictive Scaling uses ML to detect the traffic acceleration early and scales proactively before servers get overwhelmed."
+            },
+
+            {
+              "type": "info-callout",
+              "text": "💡 Why does YouTube need all four policies? Target Tracking handles the normal ebb and flow of daily traffic smoothly. Step Scaling handles sudden unpredictable viral explosions aggressively. Scheduled Scaling handles known patterns (weekends, evenings, major events) proactively. Predictive Scaling learns from history and acts before users feel any impact. Each policy fills a gap the others can't. Using just one would leave YouTube exposed to the scenarios the others cover."
             },
             {
               "type": "heading",

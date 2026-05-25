@@ -84,7 +84,7 @@ function CopyButton({ text }) {
 export function SupportPage() {
   return (
     <div className="min-h-screen bg-bg-base">
-      <SEO 
+      <SEO
         title="Support the Developer"
         description="Help ByteByteTech grow as a solo-developer project. Support real-world tech and engineering curriculum development."
         keywords="support bytebytetech, system design roadmaps donation, developer project support, system design learning support"
@@ -176,7 +176,7 @@ export function SupportPage() {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
           {/* Buy Me a Coffee */}
-          <div
+          {/* <div
             style={{
               border: '1px solid var(--color-border-subtle)',
               borderRadius: '12px',
@@ -261,122 +261,9 @@ export function SupportPage() {
             >
               One-time donation. Quick and easy for everyone.
             </p>
-          </div>
+          </div> */}
 
           {/* Bank Card */}
-          <div
-            style={{
-              border: '1px solid var(--color-border-subtle)',
-              borderRadius: '12px',
-              padding: '20px 24px',
-              background: 'var(--color-bg-surface)',
-            }}
-          >
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-              <span style={{ fontSize: '16px' }}>💳</span>
-              <span
-                style={{
-                  fontSize: '15px',
-                  fontWeight: 600,
-                  color: 'var(--color-text-main)',
-                }}
-              >
-                Bank Card
-              </span>
-            </div>
-            <p
-              style={{
-                fontSize: '13px',
-                color: 'var(--color-text-muted)',
-                marginBottom: '16px',
-                marginTop: 0,
-              }}
-            >
-              Direct transfer to Visa card. Works from any country.
-            </p>
-
-            {/* Card Number */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 14px',
-                borderRadius: '8px',
-                background: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                marginBottom: '10px',
-                flexWrap: 'wrap',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  color: '#2563eb',
-                  background: '#eff6ff',
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                  letterSpacing: '0.02em',
-                }}
-              >
-                Visa
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--color-text-main)',
-                  letterSpacing: '0.04em',
-                  flex: 1,
-                }}
-              >
-                4196 7200 5539 1667
-              </span>
-              <CopyButton text="4196720055391667" />
-            </div>
-
-            {/* Card Holder */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '10px 14px',
-                borderRadius: '8px',
-                background: '#f8fafc',
-                border: '1px solid #e2e8f0',
-                flexWrap: 'wrap',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 600,
-                  color: 'var(--color-text-muted)',
-                  background: '#f1f5f9',
-                  padding: '2px 8px',
-                  borderRadius: '4px',
-                }}
-              >
-                Holder
-              </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-mono)',
-                  fontSize: '14px',
-                  fontWeight: 500,
-                  color: 'var(--color-text-main)',
-                  letterSpacing: '0.02em',
-                  flex: 1,
-                }}
-              >
-                Rishi Shah
-              </span>
-              <CopyButton text="Rishi Shah" />
-            </div>
-          </div>
 
           {/* UPI (India) */}
           <div
